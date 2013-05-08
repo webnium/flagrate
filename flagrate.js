@@ -284,7 +284,7 @@
 				
 				pY += this.spacing + notify.offsetHeight;
 				
-				if ((pY + notify.getHeight() + this.vMargin + this.spacing) >= tH) {
+				if ((pY + notify.offsetHeight + this.vMargin + this.spacing) >= tH) {
 					pY  = 0;
 					pX += this.spacing + notify.offsetWidth;
 				}
