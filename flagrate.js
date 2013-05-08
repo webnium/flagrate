@@ -99,10 +99,10 @@
 			
 			/*- Create a new element for notify -*/
 			//
-			// <div class="hypernotifier-notify">
-			//   <div class="hypernotifier-title">Notification</div>
-			//   <div class="hypernotifier-message">yadda yadda yadda..</div>
-			//   <div class="hypernotifier-close">&#xd7;</div>
+			// <div class="flagrate-notify">
+			//   <div class="title">Notification</div>
+			//   <div class="text">yadda yadda yadda..</div>
+			//   <div class="close">&#xd7;</div>
 			// </div>
 			//
 			var notify = document.createElement('div');
