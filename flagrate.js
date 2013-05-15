@@ -25,7 +25,27 @@
 	};
 	
 	/*?
-	 * Notify
+	 *  class flagrate.Notify
+	**/
+	
+	/*?
+	 *  new flagrate.Notify(option) -> flagrate.Notify
+	 *  - option (Object) - configuration for the notifications.
+	 *  
+	 *  Initialize the notifications.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `target`               (Element; default `document.body`):
+	 *  * `className`            (String;  default `"flagrate-notify"`):
+	 *  * `disableDesktopNotify` (Boolean; default `false`):
+	 *  * `hAlign`               (String;  default `"right"`):
+	 *  * `vAlign`               (String;  default `"bottom"`):
+	 *  * `hMargin`              (Number;  default `10`):
+	 *  * `vMargin`              (Number;  default `10`):
+	 *  * `spacing`              (Number;  default `10`):
+	 *  * `timeout`              (Number;  default `5`):
+	 *  * `title`                (String;  default `"Notify"`):
 	**/
 	var Notify = flagrate.Notify = function _Notify(opt) {
 		
@@ -74,6 +94,20 @@
 	};
 	
 	Notify.prototype = {
+		/*?
+		 *  flagrate.Notify#create(option) -> flagrate.Notify
+		 *  - option (Object) - configuration for the notification.
+		 *  
+		 *  Create and show the notification.
+		 *  
+		 *  ##### option
+		 *  
+		 *  * `title`   (String; default `"Notify"`):
+		 *  * `message` (String; required):
+		 *  * `onClick` (Function):
+		 *  * `onClose` (Function):
+		 *  * `timeout` (Number; default `5`):
+		**/
 		create: function _create(opt) {
 			
 			/*- Desktop notify -*/
@@ -94,8 +128,8 @@
 			var closeTimer;
 			
 			/*- Positions -*/
-			var hPosition   = this.hMargin;
-			var vPosition   = this.vMargin;
+			var hPosition = this.hMargin;
+			var vPosition = this.vMargin;
 			
 			/*- Create a new element for notify -*/
 			//
