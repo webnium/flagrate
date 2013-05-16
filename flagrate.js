@@ -20,8 +20,120 @@
 	flagrate.className = 'flagrate';
 	
 	// deep copy a object
-	var objectCloner = flagrate.objectCloner = function _objectCloner(object) {
+	var cloneObject = flagrate.objectCloner = function _cloneObject(object) {
 		return JSON.parse(JSON.stringify(object));
+	};
+	
+	// extend object
+	var extendObject = flagrate.extendObject = function _extendObject(b, a) {
+		for (var k in a) b[k] = a[k];
+		return b;
+	};
+	
+	/*?
+	 *  class flagrate.Element
+	**/
+	
+	/*?
+	 *  new flagrate.Element([tagName = "div", attribute]) -> flagrate.Element
+	 *  - tagName (String) - The name of the HTML element to create.
+	 *  - attribute (Object) - An optional group of attribute/value pairs to set on the element.
+	 *  
+	 *  Creates an HTML element with `tagName` as the tag name, optionally with the given attributes.
+	 *
+	 *  ##### Example
+	 *  
+	 *      // The old way:
+	 *      var a = document.createElement('a');
+	 *      a.setAttribute('class', 'foo');
+	 *      a.setAttribute('href', '/foo.html');
+	 *      a.appendChild(document.createTextNode("Next page"));
+	 *      x.appendChild(a);
+	 *      
+	 *      // The new way:
+	 *      var a = new flagrate.Element('a', { className: 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
+	**/
+	var Element = flagrate.Element = function _Element(tagName, attr) {
+		
+		tagName = tagName || 'div';
+		attr    = attr    || {};
+		
+		tagName = tagName.toLowerCase();
+		
+		if (Element.cache[tagName] || 'type' in attr) {
+			var node = Element.cache[tagName].cloneNode(false);
+		} else {
+			var node = document.createElement(tagName);
+			Element.cache[tagName] = node.cloneNode(false);
+		}
+		
+		extendObject(node, this);
+		
+		return Element.writeAttribute(node, attr);
+	};
+	
+	Element.cache = {};
+	
+	/*?
+	 *  flagrate.Element.writeAttribute(element, attribute[, value = true]) -> Element
+	 *  - element (Element) - instance of Element.
+	 *  - attribute (String|Object) - attribute name or name/value pairs object.
+	 *  - value (Boolean|String) - value of attribute.
+	 *  
+	 *  Adds, specifies or removes attributes passed as either a hash or a name/value pair.
+	**/
+	Element.writeAttribute = function(element, name, value) {
+		
+		var attr = {};
+		
+		if (typeof name === 'object') {
+			attr = name;
+		} else {
+			attr[name] = (typeof value === 'undefined') ? true : value;
+		}
+		
+		for (var k in attr) {
+			value = attr[k];
+			if (value === false || value === null) {
+				element.removeAttribute(k);
+			} else if (value === true) {
+				element.setAttribute(k, k);
+			} else {
+				element.setAttribute(k, value);
+			}
+		}
+		
+		return element;
+	};
+	
+	Element.prototype = {
+		/*?
+		 *  flagrate.Element#writeAttribute(attribute[, value = true]) -> flagrate.Element
+		 *  - attribute (String|Object) - attribute name or name/value pairs object.
+		 *  - value (Boolean|String) - value of attribute.
+		 *
+		 *  please refer to flagrate.Element.writeAttribute
+		**/
+		writeAttribute: function(name, value) {
+			return Element.writeAttribute(this, name, value);
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Button
+	**/
+	
+	/*?
+	 *  new flagrate.Button(option)
+	 *  - option (Object) - options.
+	**/
+	var Button = flagrate.Button = function _Button(opt) {
+		
+		return this;
+	};
+	
+	Button.prototype = {
+		
 	};
 	
 	/*?
@@ -39,8 +151,8 @@
 	 *  * `target`               (Element; default `document.body`):
 	 *  * `className`            (String;  default `"flagrate-notify"`):
 	 *  * `disableDesktopNotify` (Boolean; default `false`):
-	 *  * `hAlign`               (String;  default `"right"`):
-	 *  * `vAlign`               (String;  default `"bottom"`):
+	 *  * `hAlign`               (String;  default `"right"`; `"right"` | `"left"`):
+	 *  * `vAlign`               (String;  default `"bottom"`; `"top"` | `"bottom"`):
 	 *  * `hMargin`              (Number;  default `10`):
 	 *  * `vMargin`              (Number;  default `10`):
 	 *  * `spacing`              (Number;  default `10`):
@@ -49,7 +161,7 @@
 	**/
 	var Notify = flagrate.Notify = function _Notify(opt) {
 		
-		if (!opt) var opt = {};
+		opt = opt || {};
 		
 		this.target    = opt.target    || document.body;
 		this.className = opt.className || flagrate.className + ' ' + flagrate.className + '-notify';
@@ -103,7 +215,7 @@
 		 *  ##### option
 		 *  
 		 *  * `title`   (String; default `"Notify"`):
-		 *  * `message` (String; required):
+		 *  * `text`    (String; required):
 		 *  * `onClick` (Function):
 		 *  * `onClose` (Function):
 		 *  * `timeout` (Number; default `5`):
@@ -324,6 +436,52 @@
 				}
 			}.bind(this));
 		}
+	};
+	
+	/*?
+	 *  class flagrate.Modal
+	**/
+	
+	/*?
+	 *  new flagrate.Modal(option) -> flagrate.Modal
+	 *  - option (Object) - configuration for the modal.
+	 *  
+	 *  Create and initialize the modal.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String):
+	 *  * `className`                (String;  default `"flagrate-modal"`):
+	 *  * `title`                    (String;  required):
+	 *  * `subtitle`                 (String):
+	 *  * `text`                     (String):
+	 *  * `html`                     (String):
+	 *  * `element`                  (Element):
+	 *  * `href`                     (String):
+	 *  * `buttons`                  (Array): of button object.
+	 *  * `sizing`                   (String;  default `"flex"`; `"flex"` | `"full"`):
+	 *  * `onBeforeClose`            (Function):
+	 *  * `onClose`                  (Function):
+	 *  * `onRender`                 (Function):
+	 *  * `disableKeyboardShortcuts` (Boolean; default `false`):
+	 *  * `disableCloseButton`       (Boolean; default `false`):
+	 *  * `disableCloseByMask`       (Boolean; default `false`):
+	 *  
+	 *  ##### button
+	 *  
+	 *  * `key`                      (String):
+	 *  * `label`                    (String; required):
+	 *  * `color`                    (String):
+	 *  * `onSelect`                 (Function):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	**/
+	var Modal = flagrate.Modal = function _Modal(opt) {
+		
+		return this;
+	};
+	
+	Modal.prototype = {
+		
 	};
 	
 })();
