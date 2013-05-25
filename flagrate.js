@@ -971,6 +971,98 @@
 	};
 	
 	/*?
+	 *  class flagrate.TextArea
+	**/
+	
+	/*?
+	 *  new flagrate.TextArea(attribute, option)
+	 *  - attribute (Object) - attributes for input element.
+	 *  - option (Object) - options.
+	**/
+	var TextArea = flagrate.TextArea = function _TextArea(attr, opt) {
+		
+		opt = opt || {};
+		
+		this.icon   = opt.icon   || null;
+		this.regexp = opt.regexp || null;
+		
+		//create
+		var that = new Element('textarea', attr);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-textarea');
+		
+		if (this.icon) {
+			that.addClassName(flagrate.className + '-textarea-icon');
+			that.setStyle({
+				backgroundImage: 'url(' + this.icon + ')'
+			});
+		}
+		
+		extendObject(that, this);
+		
+		return that;
+	};
+	
+	TextArea.prototype = {
+		/*?
+		 *  flagrate.TextArea#disable() -> flagrate.TextArea
+		**/
+		disable: function() {
+			
+			this.addClassName(flagrate.className + '-textarea-disabled');
+			this.writeAttribute('disabled', true);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.TextArea#enable() -> flagrate.TextArea
+		**/
+		enable: function() {
+			
+			this.removeClassName(flagrate.className + '-textarea-disabled');
+			this.writeAttribute('disabled', false);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.TextArea#isDisabled() -> Boolean
+		**/
+		isDisabled: function() {
+			return this.hasClassName(flagrate.className + '-textarea-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.TextArea#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-textarea-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.TextArea#getValue() -> String
+		**/
+		getValue: function() {
+			return this.value || '';
+		}
+		,
+		/*?
+		 *  flagrate.TextArea#setValue(value) -> flagrate.TextArea
+		**/
+		setValue: function(value) {
+			return this.value = value;
+		}
+		,
+		/*?
+		 *  flagrate.TextArea#isValid() -> Boolean
+		**/
+		isValid: function() {
+			return this.regexp.test(this.getValue());
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Notify
 	**/
 	
