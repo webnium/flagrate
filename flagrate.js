@@ -51,7 +51,7 @@
 	 *      x.appendChild(a);
 	 *      
 	 *      // The new way:
-	 *      var a = new flagrate.Element('a', { className: 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
+	 *      var a = new flagrate.Element('a', { 'class': 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
 	**/
 	var Element = flagrate.Element = function _Element(tagName, attr) {
 		
@@ -354,6 +354,8 @@
 	**/
 	Element.update = function(element, content) {
 		
+		if (content.element) content = content.element;
+		
 		if (!content) {
 			element.innerHTML = '';
 			return element;
@@ -380,6 +382,8 @@
 	 *  - newContent (String|Number) - new text content.
 	**/
 	Element.updateText = function(element, content) {
+		
+		if (content.element) content = content.element;
 		
 		if (!content) {
 			element.innerHTML = '';
@@ -411,6 +415,8 @@
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/insert/
 	**/
 	Element.insert = function(element, insertion) {
+		
+		if (insertion.element) insertion = insertion.element;
 		
 		if (
 			typeof insertion === 'string' ||
@@ -454,6 +460,8 @@
 	 *  the given element, depending on the option(s) given.
 	**/
 	Element.insertText = function(element, insertion) {
+		
+		if (insertion.element) insertion = insertion.element;
 		
 		if (
 			typeof insertion === 'string' ||
@@ -752,13 +760,117 @@
 	 *  new flagrate.Button(option)
 	 *  - option (Object) - options.
 	**/
-	var Button = flagrate.Button = function _Button(opt) {
+	var Button = flagrate.Button = function _Button(opt, attr) {
+		
+		this.label             = opt.label             || '';
+		this.icon              = opt.icon              || null;
+		this.onSelect          = opt.onSelect          || function(){};
+		this.onRemove          = opt.onRemove          || function(){};
+		this.isRemovableByUser = opt.isRemovableByUser || false;
+		
+		//create
+		this.element = new Element('button', attr).update(this.label);
+		
+		this.element.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
+		
+		this.element.addEventListener('click', this.onSelectHandler.bind(this));
+		
+		if (this.icon) {
+			this.element.addClassName(flagrate.className + '-button-icon');
+			this.element.setStyle({
+				backgroundImage: 'url(' + this.icon + ')'
+			});
+		}
+		
+		if (this.isRemovableByUser) {
+			this.element.insert(
+				new Element('button', { 'class': flagrate.className + '-button-remove' }).update(
+					'&#215;'
+				).addEventListener('click', this.onRemoveHandler.bind(this))
+			);
+		}
 		
 		return this;
 	};
 	
 	Button.prototype = {
-		
+		/*?
+		 *  flagrate.Button#onSelectHandler() -> flagrate.Button
+		**/
+		onSelectHandler: function(e) {
+			
+			if (this.isEnabled()) this.onSelect(e);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Button#onRemoveHandler() -> flagrate.Button
+		**/
+		onRemoveHandler: function(e) {
+			
+			if (this.isEnabled()) this.element.remove() && this.onRemove(e);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Button#select() -> flagrate.Button
+		**/
+		select: function() {
+			return this.onSelectHandler(null);
+		}
+		,
+		/*?
+		 *  flagrate.Button#disable() -> flagrate.Button
+		**/
+		disable: function() {
+			
+			this.element.addClassName(flagrate.className + '-button-disabled');
+			this.element.writeAttribute('disabled', true);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Button#enable() -> flagrate.Button
+		**/
+		enable: function() {
+			
+			this.element.removeClassName(flagrate.className + '-button-disabled');
+			this.element.writeAttribute('disabled', false);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Button#isDisabled() -> Boolean
+		**/
+		isDisabled: function() {
+			return this.element.hasClassName(flagrate.className + '-button-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Button#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.element.hasClassName(flagrate.className + '-button-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Button#setColor(color) -> flagrate.Button
+		**/
+		setColor: function(color) {
+			
+			if (color.charAt(0) === '@') {
+				this.element.style.backgroundColor = '';
+				this.element.addClassName(flagrate.className + '-button-color-' + color.slice(1));
+			} else {
+				this.element.style.backgroundColor = color;
+			}
+			
+			return this;
+		}
 	};
 	
 	/*?
@@ -876,10 +988,10 @@
 			//   <div class="close">&#xd7;</div>
 			// </div>
 			//
-			var notify = new flagrate.Element('div', { 'class': this.className });
-			new flagrate.Element('div', { 'class': 'title' }).insertText(title).insertTo(notify);
-			new flagrate.Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
-			var notifyClose = new flagrate.Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
+			var notify = new Element('div', { 'class': this.className });
+			new Element('div', { 'class': 'title' }).insertText(title).insertTo(notify);
+			new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
+			var notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
 			
 			notifyClose.addEventListener('click', function(e) {
 				
@@ -1065,9 +1177,10 @@
 	 *  
 	 *  ##### option
 	 *  
+	 *  * `target`                   (Element; default `document.body`):
 	 *  * `id`                       (String):
 	 *  * `className`                (String;  default `"flagrate-modal"`):
-	 *  * `title`                    (String;  required):
+	 *  * `title`                    (String):
 	 *  * `subtitle`                 (String):
 	 *  * `text`                     (String):
 	 *  * `html`                     (String):
@@ -1077,26 +1190,232 @@
 	 *  * `sizing`                   (String;  default `"flex"`; `"flex"` | `"full"`):
 	 *  * `onBeforeClose`            (Function):
 	 *  * `onClose`                  (Function):
-	 *  * `onRender`                 (Function):
-	 *  * `disableKeyboardShortcuts` (Boolean; default `false`):
+	 *  * `onShow`                   (Function):
 	 *  * `disableCloseButton`       (Boolean; default `false`):
 	 *  * `disableCloseByMask`       (Boolean; default `false`):
+	 *  * `disableCloseByEsc`        (Boolean; default `false`):
 	 *  
 	 *  ##### button
 	 *  
 	 *  * `key`                      (String):
 	 *  * `label`                    (String; required):
+	 *  * `icon`                     (String):
 	 *  * `color`                    (String):
 	 *  * `onSelect`                 (Function):
+	 *  * `isFocused`                (Boolean; default `false`):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
 	var Modal = flagrate.Modal = function _Modal(opt) {
+		
+		this.target    = opt.target    || document.body;
+		this.id        = opt.id        || null;
+		this.className = opt.className || flagrate.className + ' ' + flagrate.className + '-modal';
+		
+		this.title     = opt.title    || '';
+		this.subtitle  = opt.subtitle || '';
+		this.text      = opt.text     || '';
+		this.html      = opt.html     || '';
+		this.element   = opt.element  || null;
+		this.href      = opt.href     || '';
+		this.buttons   = opt.buttons  || [];
+		this.sizing    = opt.sizing   || 'flex';
+		
+		this.onBeforeClose = opt.onBeforeClose || function(){};
+		this.onClose       = opt.onClose       || function(){};
+		this.onShow        = opt.onShow        || function(){};
+		
+		this.disableCloseButton = opt.disableCloseButton || false;
+		this.disableCloseByMask = opt.disableCloseByMask || false;
+		this.disableCloseByEsc  = opt.disableCloseByEsc  || false;
+		
+		if (this.buttons.length === 0) {
+			this.buttons = [
+				{
+					label    : 'OK',
+					color    : '@blue',
+					onSelect : this.close.bind(this),
+					isFocused: true
+				}
+			];
+		}
+		
+		//create
+		this._modal = new Element('div');
+		this._modal.addEventListener('click', function(e) {
+			
+			e.stopPropagation();
+		});
+		
+		if (this.disableCloseButton === false) {
+			new Button({
+				label   : '&#215',
+				onSelect: this.close.bind(this)
+			}).element.insertTo(this._modal);
+		}
+		
+		this._header = new Element('hgroup').insertTo(this._modal);
+		new Element('h1').insertText(this.title).insertTo(this._header);
+		new Element('small').insertText(this.subtitle).insertTo(this._header);
+		
+		this._content = new Element('div').insertTo(this._modal);
+		this.content  = new Element('div').insertTo(this._content);
+		
+		if (this.text    !== '') this.content.insertText(this.text);
+		if (this.html    !== '') this.content.update(this.html);
+		if (this.element !== null) this.content.update(this.element);
+		
+		this._footer = new Element('footer').insertTo(this._modal);
+		
+		this.buttons.forEach(function(a) {
+			
+			a.button = new Button({
+				label   : a.label,
+				icon    : a.icon,
+				onSelect: function(e) {
+					a.onSelect(e, a.button, this)
+				}.bind(this)
+			}, {
+				autofocus: a.isFocused || false
+			});
+			
+			if (a.color) a.button.setColor(a.color);
+			
+			if (a.isDisabled) a.button.disable();
+			
+			this._footer.insert(a.button);
+		}.bind(this));
+		
+		this._base = new Element('div', {
+			id     : this.id,
+			'class': this.className
+		});
+		
+		this._obi = new Element('div').update(this._modal).insertTo(this._base);
+		
+		if (this.disableCloseByMask === false) {
+			this._base.addEventListener('click', this.close.bind(this));
+		}
+		
+		this._onKeydownHandler = function(e) {
+			console.log(e);
+		}.bind(this);
 		
 		return this;
 	};
 	
 	Modal.prototype = {
-		
+		/*?
+		 *  flagrate.Modal#visible() -> Boolean
+		 *  
+		 *  Tells weather modal is visible
+		**/
+		visible: function _visible() {
+			return this._base.hasClassName(flagrate.className + '-modal-visible');
+		}
+		,
+		/*?
+		 *  flagrate.Modal#show() -> flagrate.Modal
+		 *  
+		 *  Show the modal.
+		**/
+		show: function _show() {
+			
+			if (this.visible() === true) return this;
+			
+			if (this.closingTimer) clearTimeout(this.closingTimer);
+			
+			Element.insert(this.target, this._base);
+			
+			setTimeout(function() {
+				this._base.addClassName(flagrate.className + '-modal-visible');
+			}.bind(this), 0);
+			
+			// Callback: onShow
+			this.onShow(this);
+			
+			var baseWidth   = -1;
+			var baseHeight  = -1;
+			var modalWidth  = -1;
+			var modalHeight = -1;
+			var positioning = function _positioning() {
+				
+				if (
+					baseWidth   !== this._base.getWidth()   ||
+					baseHeight  !== this._base.getHeight()  ||
+					modalWidth  !== this._modal.getWidth()  ||
+					modalHeight !== this._modal.getHeight()
+				) {
+					baseWidth   = this._base.getWidth();
+					baseHeight  = this._base.getHeight();
+					modalWidth  = this._modal.getWidth();
+					modalHeight = this._modal.getHeight();
+				
+					if (this.sizing === 'flex') {
+						if (baseWidth - 20 <= modalWidth) {
+							this._modal.style.right       = '10px';
+							this._modal.style.left        = '10px';
+							this._content.style.overflowX = 'auto';
+						} else {
+							this._modal.style.right       = '';
+							this._modal.style.left        = (baseWidth / 2) - (modalWidth / 2) + 'px';
+							this._content.style.overflowX = 'visible';
+						}
+						
+						if (baseHeight - 20 <= modalHeight) {
+							this._obi.style.top        = '10px';
+							this._obi.style.bottom     = '10px';
+							this._obi.style.height     = '';
+							this._content.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
+							this._content.style.overflowY = 'auto';
+						} else {
+							this._obi.style.top           = (baseHeight / 2) - (modalHeight / 2) + 'px';
+							this._obi.style.bottom        = '';
+							this._obi.style.height        = modalHeight + 'px';
+							this._content.style.height    = '';
+							this._content.style.overflowY = 'visible';
+						}
+					}
+				}
+				
+				this.positioningTimer = setTimeout(positioning.bind(this), 30);
+			};
+			this.positioningTimer = setTimeout(positioning.bind(this), 0);
+			
+			window.addEventListener('keydown', this._onKeydownHandler);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Modal#close() -> flagrate.Modal
+		 *  
+		 *  Close the modal.
+		**/
+		close: function _close(e) {
+			
+			if (this.visible() === false) return this;
+			
+			this._base.removeClassName(flagrate.className + '-modal-visible');
+			
+			if (e) {
+				e.stopPropagation();
+				e.preventDefault();
+			}
+			
+			// Callback: onBeforeClose
+			if (this.onBeforeClose(this, e) === false) {
+				return this;//abort closing
+			}
+			
+			clearTimeout(this.positioningTimer);
+			
+			this.closingTimer = setTimeout(function(){ this._base.remove(); }.bind(this), 200);
+			
+			// Callback: onClose
+			this.onClose(this, e);
+			
+			return this;
+		}
 	};
 	
 })();
