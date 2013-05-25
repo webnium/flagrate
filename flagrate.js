@@ -1297,7 +1297,11 @@
 		}
 		
 		this._onKeydownHandler = function(e) {
-			console.log(e);
+			
+			// ESC:27
+			if (e.keyCode !== 27) return;
+			
+			this.close();
 		}.bind(this);
 		
 		return this;
@@ -1381,7 +1385,7 @@
 			};
 			this.positioningTimer = setTimeout(positioning.bind(this), 0);
 			
-			window.addEventListener('keydown', this._onKeydownHandler);
+			if (this.disableCloseByEsc === false) window.addEventListener('keydown', this._onKeydownHandler);
 			
 			return this;
 		}
@@ -1410,6 +1414,8 @@
 			clearTimeout(this.positioningTimer);
 			
 			this.closingTimer = setTimeout(function(){ this._base.remove(); }.bind(this), 200);
+			
+			if (this.disableCloseByEsc === false) window.removeEventListener('keydown', this._onKeydownHandler);
 			
 			// Callback: onClose
 			this.onClose(this, e);
