@@ -891,7 +891,7 @@
 		
 		opt = opt || {};
 		
-		this.icon   = opt.icon  || null;
+		this.icon   = opt.icon   || null;
 		this.regexp = opt.regexp || null;
 		
 		//create
