@@ -166,15 +166,6 @@
 		}
 		,
 		/*?
-		 *  flagrate.Element#wrap(wrapper[, attribute]) -> flagrate.Element
-		 *
-		 *  please refer to flagrate.Element.wrap
-		**/
-		wrap: function(wrapper, attribute) {
-			return Element.wrap(this, wrapper, attribute);
-		}
-		,
-		/*?
 		 *  flagrate.Element#readAttribute(attributeName) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.readAttribute
