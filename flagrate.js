@@ -1545,12 +1545,12 @@
 				
 					if (this.sizing === 'flex') {
 						if (baseWidth - 20 <= modalWidth) {
-							this._modal.style.right       = '10px';
 							this._modal.style.left        = '10px';
+							this._content.style.width     = baseWidth - 20 + 'px';
 							this._content.style.overflowX = 'auto';
 						} else {
-							this._modal.style.right       = '';
 							this._modal.style.left        = (baseWidth / 2) - (modalWidth / 2) + 'px';
+							this._content.style.width     = '';
 							this._content.style.overflowX = 'visible';
 						}
 						
