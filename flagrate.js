@@ -1476,6 +1476,18 @@
 							this._content.style.overflowY = 'visible';
 						}
 					}
+					
+					if (this.sizing === 'full') {
+						this._modal.style.right       = '10px';
+						this._modal.style.left        = '10px';
+						this._content.style.overflowX = 'auto';
+						
+						this._obi.style.top        = '10px';
+						this._obi.style.bottom     = '10px';
+						this._obi.style.height     = '';
+						this._content.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
+						this._content.style.overflowY = 'auto';
+					}
 				}
 				
 				this.positioningTimer = setTimeout(positioning.bind(this), 30);
