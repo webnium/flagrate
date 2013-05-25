@@ -757,10 +757,13 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Button(option)
+	 *  new flagrate.Button(attribute, option)
+	 *  - attribute (Object) - attributes for button element.
 	 *  - option (Object) - options.
 	**/
-	var Button = flagrate.Button = function _Button(opt, attr) {
+	var Button = flagrate.Button = function _Button(attr, opt) {
+		
+		opt = opt || {};
 		
 		this.label             = opt.label             || '';
 		this.icon              = opt.icon              || null;
@@ -769,28 +772,30 @@
 		this.isRemovableByUser = opt.isRemovableByUser || false;
 		
 		//create
-		this.element = new Element('button', attr).update(this.label);
+		var that = new Element('button', attr).update(this.label);
 		
-		this.element.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
 		
-		this.element.addEventListener('click', this.onSelectHandler.bind(this));
+		that.addEventListener('click', this.onSelectHandler.bind(that));
 		
 		if (this.icon) {
-			this.element.addClassName(flagrate.className + '-button-icon');
-			this.element.setStyle({
+			that.addClassName(flagrate.className + '-button-icon');
+			that.setStyle({
 				backgroundImage: 'url(' + this.icon + ')'
 			});
 		}
 		
 		if (this.isRemovableByUser) {
-			this.element.insert(
+			that.insert(
 				new Element('button', { 'class': flagrate.className + '-button-remove' }).update(
 					'&#215;'
-				).addEventListener('click', this.onRemoveHandler.bind(this))
+				).addEventListener('click', this.onRemoveHandler.bind(that))
 			);
 		}
 		
-		return this;
+		extendObject(that, this);
+		
+		return that;
 	};
 	
 	Button.prototype = {
@@ -809,7 +814,7 @@
 		**/
 		onRemoveHandler: function(e) {
 			
-			if (this.isEnabled()) this.element.remove() && this.onRemove(e);
+			if (this.isEnabled()) this.remove() && this.onRemove(e);
 			
 			return this;
 		}
@@ -826,8 +831,8 @@
 		**/
 		disable: function() {
 			
-			this.element.addClassName(flagrate.className + '-button-disabled');
-			this.element.writeAttribute('disabled', true);
+			this.addClassName(flagrate.className + '-button-disabled');
+			this.writeAttribute('disabled', true);
 			
 			return this;
 		}
@@ -837,8 +842,8 @@
 		**/
 		enable: function() {
 			
-			this.element.removeClassName(flagrate.className + '-button-disabled');
-			this.element.writeAttribute('disabled', false);
+			this.removeClassName(flagrate.className + '-button-disabled');
+			this.writeAttribute('disabled', false);
 			
 			return this;
 		}
@@ -847,14 +852,14 @@
 		 *  flagrate.Button#isDisabled() -> Boolean
 		**/
 		isDisabled: function() {
-			return this.element.hasClassName(flagrate.className + '-button-disabled');
+			return this.hasClassName(flagrate.className + '-button-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Button#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.element.hasClassName(flagrate.className + '-button-disabled');
+			return !this.hasClassName(flagrate.className + '-button-disabled');
 		}
 		,
 		/*?
@@ -863,10 +868,10 @@
 		setColor: function(color) {
 			
 			if (color.charAt(0) === '@') {
-				this.element.style.backgroundColor = '';
-				this.element.addClassName(flagrate.className + '-button-color-' + color.slice(1));
+				this.style.backgroundColor = '';
+				this.addClassName(flagrate.className + '-button-color-' + color.slice(1));
 			} else {
-				this.element.style.backgroundColor = color;
+				this.style.backgroundColor = color;
 			}
 			
 			return this;
@@ -1247,10 +1252,10 @@
 		});
 		
 		if (this.disableCloseButton === false) {
-			new Button({
+			new Button(null, {
 				label   : '&#215',
 				onSelect: this.close.bind(this)
-			}).element.insertTo(this._modal);
+			}).insertTo(this._modal);
 		}
 		
 		this._header = new Element('hgroup').insertTo(this._modal);
@@ -1269,13 +1274,13 @@
 		this.buttons.forEach(function(a) {
 			
 			a.button = new Button({
+				autofocus: a.isFocused || false
+			}, {
 				label   : a.label,
 				icon    : a.icon,
 				onSelect: function(e) {
 					a.onSelect(e, a.button, this)
 				}.bind(this)
-			}, {
-				autofocus: a.isFocused || false
 			});
 			
 			if (a.color) a.button.setColor(a.color);
