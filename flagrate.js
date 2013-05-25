@@ -895,7 +895,7 @@
 		this.regexp = opt.regexp || null;
 		
 		//create
-		that = new Element('input', attr);
+		var that = new Element('input', attr);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-textinput');
 		
