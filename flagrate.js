@@ -879,6 +879,98 @@
 	};
 	
 	/*?
+	 *  class flagrate.TextInput
+	**/
+	
+	/*?
+	 *  new flagrate.TextInput(attribute, option)
+	 *  - attribute (Object) - attributes for input element.
+	 *  - option (Object) - options.
+	**/
+	var TextInput = flagrate.TextInput = function _TextInput(attr, opt) {
+		
+		opt = opt || {};
+		
+		this.icon   = opt.icon  || null;
+		this.regexp = opt.regexp || null;
+		
+		//create
+		that = new Element('input', attr);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-textinput');
+		
+		if (this.icon) {
+			that.addClassName(flagrate.className + '-textinput-icon');
+			that.setStyle({
+				backgroundImage: 'url(' + this.icon + ')'
+			});
+		}
+		
+		extendObject(that, this);
+		
+		return that;
+	};
+	
+	TextInput.prototype = {
+		/*?
+		 *  flagrate.TextInput#disable() -> flagrate.TextInput
+		**/
+		disable: function() {
+			
+			this.addClassName(flagrate.className + '-textinput-disabled');
+			this.writeAttribute('disabled', true);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.TextInput#enable() -> flagrate.TextInput
+		**/
+		enable: function() {
+			
+			this.removeClassName(flagrate.className + '-textinput-disabled');
+			this.writeAttribute('disabled', false);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.TextInput#isDisabled() -> Boolean
+		**/
+		isDisabled: function() {
+			return this.hasClassName(flagrate.className + '-textinput-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.TextInput#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-textinput-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.TextInput#getValue() -> String
+		**/
+		getValue: function() {
+			return this.readAttribute('value') || '';
+		}
+		,
+		/*?
+		 *  flagrate.TextInput#setValue(value) -> flagrate.TextInput
+		**/
+		setValue: function(value) {
+			return this.writeAttribute('value', value);
+		}
+		,
+		/*?
+		 *  flagrate.TextInput#isValid() -> Boolean
+		**/
+		isValid: function() {
+			return this.regexp.test(this.getValue());
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Notify
 	**/
 	
