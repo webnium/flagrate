@@ -338,7 +338,7 @@
 	**/
 	Element.remove = function(element) {
 		
-		element.parentNode.removeChild(element);
+		if (element.parentNode) element.parentNode.removeChild(element);
 		return element;
 	};
 	
