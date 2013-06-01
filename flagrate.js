@@ -1122,7 +1122,7 @@
 			
 			if (aw > 30) {
 				this._input.style.width = aw + 'px';
-			} else if (aw < 0) {
+			} else if (aw < -5) {
 				this._input.style.width = '';
 			} else {
 				this._input.style.width = '100%';
@@ -1214,7 +1214,7 @@
 				}
 			}
 			
-			if (this._input.value === '') {
+			if (this._input.value === '' && this.values.length !== 0) {
 				if (
 					// BS:8
 					(e.keyCode === 8)
