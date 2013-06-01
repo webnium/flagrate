@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>flagrate</title>
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="robots" content="noarchive">
+	<script type="text/javascript" src="../flagrate.js"></script>
+	<link rel="stylesheet" type="text/css" href="../flagrate.css">
+	<style type="text/css">
+		body {
+			background-color: #e5e4e6; }
+		
+		body, input {
+			font-family     : "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ",
+			                  Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; }
+		
+		div#c > * {
+			margin-bottom: 10px; }
+	</style>
+</head>
+<body>
+	<div id="c"></div>
+	<script type="text/javascript">
+		var c = document.getElementById('c');
+		
+		new flagrate.Element().insertText('<b>text</b>').hide().insertTo(c);
+		
+		new flagrate.Element().insert('<b>html</b>').hide().insertTo(c);
+		
+		new flagrate.Element('div', { id: 'id' }).hide().insertTo(c);
+		
+		new flagrate.Button(null, { label: 'Button' }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		new flagrate.Button(null, { label: 'Button', isRemovableByUser: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		new flagrate.Menu(
+			null,
+			{
+				items: [
+					{
+						label: 'Menu'
+					},
+					{
+						label: 'Menu2'
+					},
+					{
+						label: 'Menu3'
+					}
+				]
+			}
+		).setStyle({
+			display: 'inline-block'
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		new flagrate.TextInput({ placeholder: 'TextInput' }).insertTo(c);
+		new flagrate.TextInput({ value: 'TextInput' }).insertTo(c);
+		
+		new flagrate.Tokenizer(null, { placeholder: 'Tokenizer' }).insertTo(c);
+		new flagrate.Tokenizer(null, { values: ['Token'] }).insertTo(c);
+		
+		new flagrate.TextArea({ placeholder: 'TextArea' }).insertTo(c);
+		new flagrate.TextArea().insert('TextArea').insertTo(c);
+		
+		var notify = new flagrate.Notify();
+		new flagrate.Button(null, {
+			color   : '@orange',
+			label   : 'click to create Notify',
+			onSelect: function() {
+				notify.create({ message: 'message' });
+			}
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		new flagrate.Button(null, {
+			color   : '@blue',
+			label   : 'click to create Modal',
+			onSelect: function() {
+				new flagrate.Modal({ title: 'Modal', subtitle: 'subtitle', text: 'text' }).show();
+			}
+		}).insertTo(c);
+	</script>
+</body>
+</html>

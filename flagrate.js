@@ -779,6 +779,8 @@
 			}).insertTo(that).addEventListener('click', that._onRemoveHandler.bind(that))
 		}
 		
+		if (opt.color) that.setColor(opt.color);
+		
 		return that;
 	};
 	
@@ -1042,6 +1044,8 @@
 			that._updateTokens();
 		}
 		
+		that.addEventListener('click', that._onClickHandler.bind(that));
+		
 		that._input.addEventListener('keyup',   that._onKeyupHandler.bind(that));
 		that._input.addEventListener('keydown', that._onKeydownHandler.bind(that));
 		that._input.addEventListener('focus',   that._onFocusHandler.bind(that));
@@ -1188,6 +1192,10 @@
 			this._menu = menu;
 			
 			return this;
+		}
+		,
+		_onClickHandler: function(e) {
+			this._input.focus();
 		}
 		,
 		_onKeyupHandler: function(e) {
@@ -1395,7 +1403,7 @@
 			}
 			
 			/*- Get Permissions -*/
-			if ((this.desktopNotifyType === 'webkit') && (window.webkitNotifications.checkPermission() !== 0)) {
+			if ((this.desktopNotifyType === 'webkit') && (window.webkitNotifications.checkPermission() === 1)) {
 				this.create({
 					text   : 'Click here to activate desktop notifications...',
 					onClick: function() {
@@ -1424,6 +1432,8 @@
 		 *  * `timeout` (Number; default `5`):
 		**/
 		create: function _create(opt) {
+			
+			opt = opt || {};
 			
 			/*- Desktop notify -*/
 			if (this.disableDesktopNotify === false) {
@@ -1568,7 +1578,7 @@
 					return false;
 				}
 				
-				notify = window.webkitNotifications.createNotification('', title, message.stripTags());
+				notify = window.webkitNotifications.createNotification('', title, message);
 			}
 			
 			/*- Set timeout -*/
@@ -1672,6 +1682,8 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
 	var Modal = flagrate.Modal = function _Modal(opt) {
+		
+		opt = opt || {};
 		
 		this.target    = opt.target    || document.body;
 		this.id        = opt.id        || null;
