@@ -17,7 +17,13 @@
 			                  Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; }
 		
 		div#c > * {
-			margin-bottom: 10px; }
+			margin-bottom: 10px;
+			margin-right : 5px; }
+		
+		div#c > input,
+		div#c > textarea,
+		div#c > .flagrate-tokenizer {
+			display      : inline-block; }
 	</style>
 </head>
 <body>
@@ -32,9 +38,7 @@
 		new flagrate.Element('div', { id: 'id' }).hide().insertTo(c);
 		
 		new flagrate.Button(null, { label: 'Button' }).insertTo(c);
-		
-		flagrate.Element.insert(c, '<br>');
-		
+		new flagrate.Button(null, { label: 'Button', icon: 'icon.png' }).insertTo(c);
 		new flagrate.Button(null, { label: 'Button', isRemovableByUser: true }).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
@@ -50,7 +54,8 @@
 						label: 'Menu2'
 					},
 					{
-						label: 'Menu3'
+						label: 'Menu3',
+						icon : 'icon.png'
 					}
 				]
 			}
@@ -62,12 +67,21 @@
 		
 		new flagrate.TextInput({ placeholder: 'TextInput' }).insertTo(c);
 		new flagrate.TextInput({ value: 'TextInput' }).insertTo(c);
+		new flagrate.TextInput({ placeholder: 'TextInput' }, { icon: 'icon.png' }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
 		
 		new flagrate.Tokenizer(null, { placeholder: 'Tokenizer' }).insertTo(c);
 		new flagrate.Tokenizer(null, { values: ['Token'] }).insertTo(c);
+		new flagrate.Tokenizer(null, { placeholder: 'Tokenizer', icon: 'icon.png' }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
 		
 		new flagrate.TextArea({ placeholder: 'TextArea' }).insertTo(c);
 		new flagrate.TextArea().insert('TextArea').insertTo(c);
+		new flagrate.TextArea({ placeholder: 'TextArea' }, { icon: 'icon.png' }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
 		
 		var notify = new flagrate.Notify();
 		new flagrate.Button(null, {

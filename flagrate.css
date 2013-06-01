@@ -15,6 +15,10 @@ textarea.flagrate {
 	-webkit-appearance: none;
 	border-radius     : 0; }
 
+.flagrate-icon {
+	background-repeat  : no-repeat;
+	background-position: 5px center; }
+
 button.flagrate-button {
 	display           : inline-block;
 	cursor            : pointer;
@@ -34,6 +38,9 @@ button.flagrate-button {
 	-ms-transition    : all 0.3s ease;
 	-o-transition     : all 0.3s ease;
 	transition        : all 0.3s ease; }
+
+button.flagrate-button.flagrate-icon {
+	padding-left      : 24px; }
 
 button.flagrate-button:focus,
 button.flagrate-button:hover {
@@ -90,7 +97,8 @@ div.flagrate-menu {
 		color           : #222;
 		border          : none;
 		box-shadow      : none;
-		padding         : 4px 14px 3px; }
+		padding         : 4px 24px 3px;
+		text-align      : left; }
 	
 	div.flagrate-menu > button:hover,
 	div.flagrate-menu > button:focus {
@@ -111,6 +119,11 @@ div.flagrate-tokenizer {
 	line-height       : 1.6em;
 	width             : 220px; }
 
+input.flagrate-textinput.flagrate-icon,
+textarea.flagrate-textarea.flagrate-icon,
+div.flagrate-tokenizer.flagrate-icon {
+	padding-left      : 24px; }
+
 input.flagrate-textinput:focus,
 textarea.flagrate-textarea:focus,
 div.flagrate-tokenizer:hover {
@@ -123,6 +136,10 @@ div.flagrate-tokenizer {
 	cursor            : text;
 	padding           : 0px 4px 4px 2px;
 	width             : 230px; }
+
+div.flagrate-tokenizer.flagrate-icon {
+	padding-left      : 22px;
+	width             : 226px; }
 	
 	div.flagrate-tokenizer > span {
 		display: inline-block;
@@ -155,7 +172,7 @@ div.flagrate-tokenizer {
 	
 	div.flagrate-tokenizer > input {
 		display   : inline-block;
-		width     : 50px;
+		width     : 65px;
 		padding   : 0;
 		margin    : 4px 0 0 2px;
 		border    : none;
