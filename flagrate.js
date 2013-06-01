@@ -19,6 +19,10 @@
 	
 	flagrate.className = 'flagrate';
 	
+	var identity = flagrate.identity = function _id(a) {
+		return a;
+	};
+	
 	// deep copy a object
 	var cloneObject = flagrate.objectCloner = function _cloneObject(object) {
 		return JSON.parse(JSON.stringify(object));
@@ -345,8 +349,6 @@
 	**/
 	Element.update = function(element, content) {
 		
-		if (content.element) content = content.element;
-		
 		if (!content) {
 			element.innerHTML = '';
 			return element;
@@ -373,8 +375,6 @@
 	 *  - newContent (String|Number) - new text content.
 	**/
 	Element.updateText = function(element, content) {
-		
-		if (content.element) content = content.element;
 		
 		if (!content) {
 			element.innerHTML = '';
@@ -406,8 +406,6 @@
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/insert/
 	**/
 	Element.insert = function(element, insertion) {
-		
-		if (insertion.element) insertion = insertion.element;
 		
 		if (
 			typeof insertion === 'string' ||
@@ -451,8 +449,6 @@
 	 *  the given element, depending on the option(s) given.
 	**/
 	Element.insertText = function(element, insertion) {
-		
-		if (insertion.element) insertion = insertion.element;
 		
 		if (
 			typeof insertion === 'string' ||
@@ -763,58 +759,35 @@
 		this.isRemovableByUser = opt.isRemovableByUser || false;
 		
 		//create
-		var that = new Element('button', attr).update(this.label);
+		var that = new Element('button', attr).updateText(this.label);
+		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
 		
-		that.addEventListener('click', this.onSelectHandler.bind(that));
+		that.addEventListener('click', that._onSelectHandler.bind(that));
 		
-		if (this.icon) {
-			that.addClassName(flagrate.className + '-button-icon');
+		if (that.icon) {
+			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + this.icon + ')'
+				backgroundImage: 'url(' + that.icon + ')'
 			});
 		}
 		
-		if (this.isRemovableByUser) {
-			that.insert(
-				new Element('button', { 'class': flagrate.className + '-button-remove' }).update(
-					'&#215;'
-				).addEventListener('click', this.onRemoveHandler.bind(that))
-			);
+		if (that.isRemovableByUser) {
+			new Element('button', {
+				'class': flagrate.className + '-button-remove'
+			}).insertTo(that).addEventListener('click', that._onRemoveHandler.bind(that))
 		}
-		
-		extendObject(that, this);
 		
 		return that;
 	};
 	
 	Button.prototype = {
 		/*?
-		 *  flagrate.Button#onSelectHandler() -> flagrate.Button
-		**/
-		onSelectHandler: function(e) {
-			
-			if (this.isEnabled()) this.onSelect(e);
-			
-			return this;
-		}
-		,
-		/*?
-		 *  flagrate.Button#onRemoveHandler() -> flagrate.Button
-		**/
-		onRemoveHandler: function(e) {
-			
-			if (this.isEnabled()) this.remove() && this.onRemove(e);
-			
-			return this;
-		}
-		,
-		/*?
 		 *  flagrate.Button#select() -> flagrate.Button
 		**/
 		select: function() {
-			return this.onSelectHandler(null);
+			return this._onSelectHandler(null);
 		}
 		,
 		/*?
@@ -867,6 +840,76 @@
 			
 			return this;
 		}
+		,
+		_onSelectHandler: function(e) {
+			
+			if (this.isEnabled()) this.onSelect(e);
+			
+			return this;
+		}
+		,
+		_onRemoveHandler: function(e) {
+			
+			if (this.isEnabled()) this.remove() && this.onRemove(e);
+			
+			return this;
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Menu
+	**/
+	
+	/*?
+	 *  new flagrate.Menu(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Menu = flagrate.Menu = function _Menu(attr, opt) {
+		
+		opt = opt || {};
+		
+		this.items    = opt.items    || [];
+		this.onSelect = opt.onSelect || function(){};
+		
+		//create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-menu');
+		
+		that.items.forEach(function(a) {
+			that.push(a);
+		}.bind(that));
+		
+		return that;
+	};
+	
+	Menu.prototype = {
+		/*?
+		 *  flagrate.Menu#push(item) -> flagrate.Menu
+		**/
+		push: function(a) {
+			
+			if (a instanceof Array) {
+				//todo
+			} else {
+				new Button(
+					null,
+					{
+						icon    : a.icon,
+						label   : a.label,
+						onSelect: function(e) {
+							
+							if (a.onSelect) a.onSelect(e);
+							this.onSelect(e);
+						}.bind(this)
+					}
+				).insertTo(this);
+			}
+			
+			return this;
+		}
 	};
 	
 	/*?
@@ -887,17 +930,16 @@
 		
 		//create
 		var that = new Element('input', attr);
+		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-textinput');
 		
-		if (this.icon) {
-			that.addClassName(flagrate.className + '-textinput-icon');
+		if (that.icon) {
+			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + this.icon + ')'
+				backgroundImage: 'url(' + that.icon + ')'
 			});
 		}
-		
-		extendObject(that, this);
 		
 		return that;
 	};
@@ -962,6 +1004,251 @@
 	};
 	
 	/*?
+	 *  class flagrate.Tokenizer
+	**/
+	
+	/*?
+	 *  new flagrate.Tokenizer(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Tokenizer = flagrate.Tokenizer = function _Tokenizer(attr, opt) {
+		
+		opt = opt || {};
+		
+		this.icon        = opt.icon        || null;
+		this.placeholder = opt.placeholder || null;
+		this.values      = opt.values      || [];
+		this.maximum     = opt.maximum     || -1;
+		this.tokenize    = opt.tokenize    || identity;
+		
+		//create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-tokenizer');
+		
+		if (that.icon) {
+			that.addClassName(flagrate.className + '-icon');
+			that.setStyle({
+				backgroundImage: 'url(' + that.icon + ')'
+			});
+		}
+		
+		that._tokens = new Element('span').insertTo(that);
+		that._input  = new TextInput({ placeholder: that.placeholder }).insertTo(that);
+		
+		if (that.values.length !== 0) {
+			that._updateTokens();
+		}
+		
+		that._input.addEventListener('keyup',   that._onKeyupHandler.bind(that));
+		that._input.addEventListener('keydown', that._onKeydownHandler.bind(that));
+		that._input.addEventListener('focus',   that._onFocusHandler.bind(that));
+		that._input.addEventListener('blur',    that._onBlurHandler.bind(that));
+		
+		return that;
+	};
+	
+	Tokenizer.prototype = {
+		/*?
+		 *  flagrate.Tokenizer#getValues() -> Array
+		**/
+		getValues: function() {
+			return this.values;
+		}
+		,
+		/*?
+		 *  flagrate.Tokenizer#setValues(values) -> flagrate.Tokenizer
+		**/
+		setValues: function(values) {
+			
+			this.values = values;
+			
+			return this._updateTokens();
+		}
+		,
+		/*?
+		 *  flagrate.Tokenizer#removeAllValues() -> flagrate.Tokenizer
+		**/
+		removeAllValues: function() {
+			
+			this.values = [];
+			
+			return this._updateTokens();
+		}
+		,
+		/*?
+		 *  flagrate.Tokenizer#removeValue(value) -> flagrate.Tokenizer
+		**/
+		removeValue: function(value) {
+			
+			this.values.splice(this.values.indexOf(value), 1);
+			
+			return this._updateTokens();
+		}
+		,
+		_updateTokens: function() {
+			
+			this._tokens.update();
+			
+			this.values.forEach(function(value) {
+				
+				var label = '';
+				
+				if (typeof value === 'string') {
+					label = value;
+				} else {
+					label = value.label;
+				}
+				
+				new Button(
+					null,
+					{
+						isRemovableByUser: true,
+						onRemove         : function(){ this.removeValue(value); }.bind(this),
+						label            : label
+					}
+				).insertTo(this._tokens);
+			}.bind(this));
+			
+			var vw = this.getWidth();
+			var pl = parseInt(this.getStyle('padding-left').replace('px', ''), 10)  || 4;
+			var pr = parseInt(this.getStyle('padding-right').replace('px', ''), 10) || 4;
+			var tw = this._tokens.getWidth();
+			var tm = parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10) || 2;
+			var im = parseInt(this._input.getStyle('margin-left').replace('px', ''), 10) || 2;
+			var aw = vw - pl - pr - tw - tm - im - 2;
+			
+			if (aw > 30) {
+				this._input.style.width = aw + 'px';
+			} else if (aw < 0) {
+				this._input.style.width = '';
+			} else {
+				this._input.style.width = '100%';
+			}
+			
+			return this;
+		}
+		,
+		_tokenize: function(e) {
+			
+			this._candidates = [];
+			
+			var str = this._input.value;
+			
+			var result = this.tokenize(str, this._tokenized.bind(this));
+			
+			if (result) this._tokenized(result);
+			
+			return this;
+		}
+		,
+		_tokenized: function(candidates) {
+			
+			if (candidates instanceof Array === false) candidates = [candidates];
+			
+			this._candidates = candidates;
+			
+			var menu = new Menu(
+				null,
+				{
+					onSelect: function() {
+						menu.remove();
+					}
+				}
+			);
+			
+			menu.style.left = this._input.offsetLeft + 'px';
+			
+			this.insert({ top: menu });
+			
+			candidates.forEach(function(candidate) {
+				
+				if (typeof candidate === 'string') {
+					var a = { label: candidate };
+				} else {
+					var a = candidate;
+				}
+				
+				if (a.onSelect) a._onSelect = a.onSelect;
+				
+				a.onSelect = function(e) {
+					
+					this.values.push(candidate);
+					this._updateTokens();
+					
+					if (a._onSelect) a._onSelect(e);
+				}.bind(this);
+				
+				menu.push(a);
+			}.bind(this));
+			
+			if (this._menu) this._menu.remove();
+			this._menu = menu;
+			
+			return this;
+		}
+		,
+		_onKeyupHandler: function(e) {
+			this._tokenize();
+		}
+		,
+		_onKeydownHandler: function(e) {
+			
+			if (this._candidates && this._candidates.length !== 0) {
+				if (
+					// ENTER:13
+					(e.keyCode === 13) ||
+					// right:39
+					(e.keyCode === 39)
+				) {
+					e.stopPropagation();
+					e.preventDefault();
+					
+					this._input.value = '';
+					this.values.push(this._candidates[0]);
+					this._updateTokens();
+					
+					if (this._menu) this._menu.remove();
+				}
+			}
+			
+			if (this._input.value === '') {
+				if (
+					// BS:8
+					(e.keyCode === 8)
+				) {
+					e.stopPropagation();
+					e.preventDefault();
+					
+					this._input.value = this.values.pop();
+					this._updateTokens();
+					
+					if (this._menu) this._menu.remove();
+				}
+			}
+		}
+		,
+		_onFocusHandler: function(e) {
+			
+			this._updateTokens();
+			
+			this._tokenize();
+		}
+		,
+		_onBlurHandler: function(e) {
+			
+			this._input.value = '';
+			
+			if (this._menu) {
+				this._menu.style.opacity = '0';
+				setTimeout(function(){ this._menu.remove(); }.bind(this), 500);
+			}
+		}
+	};
+	
+	/*?
 	 *  class flagrate.TextArea
 	**/
 	
@@ -979,17 +1266,16 @@
 		
 		//create
 		var that = new Element('textarea', attr);
+		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-textarea');
 		
-		if (this.icon) {
-			that.addClassName(flagrate.className + '-textarea-icon');
+		if (that.icon) {
+			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + this.icon + ')'
+				backgroundImage: 'url(' + that.icon + ')'
 			});
 		}
-		
-		extendObject(that, this);
 		
 		return that;
 	};
@@ -1428,7 +1714,7 @@
 		
 		if (this.disableCloseButton === false) {
 			new Button(null, {
-				label   : '&#215',
+				label   : '',
 				onSelect: this.close.bind(this)
 			}).insertTo(this._modal);
 		}
