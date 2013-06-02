@@ -88,9 +88,9 @@ div.flagrate-menu {
 	display           : block;
 	box-shadow        : 0 0 0 1px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,0,0,0.15); }
 	
-	div.flagrate-menu > button,
-	div.flagrate-menu > button:hover,
-	div.flagrate-menu > button:focus {
+	div.flagrate-menu > button.flagrate-button,
+	div.flagrate-menu > button.flagrate-button:hover,
+	div.flagrate-menu > button.flagrate-button:focus {
 		display         : block;
 		width           : 100%;
 		background-color: #fff;
@@ -98,14 +98,23 @@ div.flagrate-menu {
 		border          : none;
 		box-shadow      : none;
 		padding         : 4px 24px 3px;
-		text-align      : left; }
+		text-align      : left;
+		outline         : none; }
 	
-	div.flagrate-menu > button:hover,
-	div.flagrate-menu > button:focus {
+	div.flagrate-menu > button.flagrate-button:hover,
+	div.flagrate-menu > button.flagrate-button:focus {
 		background-color: #eee; }
 	
-	div.flagrate-menu > button:active {
-		color           : #000; }
+	div.flagrate-menu > button.flagrate-button:active {
+		color           : #000;
+		background-color: #ddd; }
+	
+	div.flagrate-menu > button.flagrate-button-disabled,
+	div.flagrate-menu > button.flagrate-button-disabled:hover,
+	div.flagrate-menu > button.flagrate-button-disabled:focus,
+	div.flagrate-menu > button.flagrate-button-disabled:active {
+		color           : #aaa;
+		background-color: #fff; }
 
 input.flagrate-textinput,
 textarea.flagrate-textarea,
@@ -136,6 +145,16 @@ div.flagrate-tokenizer {
 	cursor            : text;
 	padding           : 0px 4px 4px 2px;
 	width             : 230px; }
+
+input.flagrate-textinput-disabled,
+textarea.flagrate-textarea-disabled,
+div.flagrate-tokenizer-disabled,
+div.flagrate-tokenizer-disabled:hover {
+	box-shadow        : inset 0 0 0 2px rgba(0,0,0,0.05);
+	border-color      : rgba(0,0,0,0.25);
+	background-color  : #e5e5e5;
+	color             : #555;
+	cursor            : not-allowed; }
 
 div.flagrate-tokenizer.flagrate-icon {
 	padding-left      : 22px;

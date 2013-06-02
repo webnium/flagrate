@@ -781,6 +781,8 @@
 		
 		if (opt.color) that.setColor(opt.color);
 		
+		if (opt.isDisabled) that.disable();
+		
 		return that;
 	};
 	
@@ -899,9 +901,10 @@
 				new Button(
 					null,
 					{
-						icon    : a.icon,
-						label   : a.label,
-						onSelect: function(e) {
+						icon      : a.icon,
+						label     : a.label,
+						isDisabled: a.isDisabled,
+						onSelect  : function(e) {
 							
 							if (a.onSelect) a.onSelect(e);
 							this.onSelect(e);
@@ -942,6 +945,8 @@
 				backgroundImage: 'url(' + that.icon + ')'
 			});
 		}
+		
+		if (opt.isDisabled) that.disable();
 		
 		return that;
 	};
@@ -1051,10 +1056,48 @@
 		that._input.addEventListener('focus',   that._onFocusHandler.bind(that));
 		that._input.addEventListener('blur',    that._onBlurHandler.bind(that));
 		
+		if (opt.isDisabled) that.disable();
+		
 		return that;
 	};
 	
 	Tokenizer.prototype = {
+		/*?
+		 *  flagrate.Tokenizer#disable() -> flagrate.Tokenizer
+		**/
+		disable: function() {
+			
+			this.addClassName(flagrate.className + '-tokenizer-disabled');
+			this._input.disable();
+			
+			return this._updateTokens();
+		}
+		,
+		/*?
+		 *  flagrate.Tokenizer#enable() -> flagrate.Tokenizer
+		**/
+		enable: function() {
+			
+			this.removeClassName(flagrate.className + '-tokenizer-disabled');
+			this._input.enable();
+			
+			return this._updateTokens();
+		}
+		,
+		/*?
+		 *  flagrate.Tokenizer#isDisabled() -> Boolean
+		**/
+		isDisabled: function() {
+			return this.hasClassName(flagrate.className + '-tokenizer-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Tokenizer#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-tokenizer-disabled');
+		}
+		,
 		/*?
 		 *  flagrate.Tokenizer#getValues() -> Array
 		**/
@@ -1109,7 +1152,7 @@
 				new Button(
 					null,
 					{
-						isRemovableByUser: true,
+						isRemovableByUser: (this.isEnabled()),
 						onRemove         : function(){ this.removeValue(value); }.bind(this),
 						label            : label
 					}
@@ -1284,6 +1327,8 @@
 				backgroundImage: 'url(' + that.icon + ')'
 			});
 		}
+		
+		if (opt.isDisabled) that.disable();
 		
 		return that;
 	};

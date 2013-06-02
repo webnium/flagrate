@@ -31,18 +31,44 @@
 	<script type="text/javascript">
 		var c = document.getElementById('c');
 		
+		// Element tests
 		new flagrate.Element().insertText('<b>text</b>').hide().insertTo(c);
-		
 		new flagrate.Element().insert('<b>html</b>').hide().insertTo(c);
-		
 		new flagrate.Element('div', { id: 'id' }).hide().insertTo(c);
 		
+		// Button
 		new flagrate.Button(null, { label: 'Button' }).insertTo(c);
 		new flagrate.Button(null, { label: 'Button', icon: 'icon.png' }).insertTo(c);
 		new flagrate.Button(null, { label: 'Button', isRemovableByUser: true }).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// disabled Button
+		new flagrate.Button(null, { label: 'Button' }).disable().insertTo(c);
+		new flagrate.Button(null, { label: 'Button', icon: 'icon.png' }).disable().insertTo(c);
+		new flagrate.Button(null, { label: 'Button', isRemovableByUser: true }).disable().insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// colored Button
+		new flagrate.Button(null, { label: 'Blue'   }).setColor('@blue').insertTo(c);
+		new flagrate.Button(null, { label: 'Pink'   }).setColor('@pink').insertTo(c);
+		new flagrate.Button(null, { label: 'Red'    }).setColor('@red').insertTo(c);
+		new flagrate.Button(null, { label: 'Green'  }).setColor('@green').insertTo(c);
+		new flagrate.Button(null, { label: 'Orange' }).setColor('@orange').insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// disabled colored Button
+		new flagrate.Button(null, { label: 'Blue'   }).setColor('@blue').disable().insertTo(c);
+		new flagrate.Button(null, { label: 'Pink'   }).setColor('@pink').disable().insertTo(c);
+		new flagrate.Button(null, { label: 'Red'    }).setColor('@red').disable().insertTo(c);
+		new flagrate.Button(null, { label: 'Green'  }).setColor('@green').disable().insertTo(c);
+		new flagrate.Button(null, { label: 'Orange' }).setColor('@orange').disable().insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Menu
 		new flagrate.Menu(
 			null,
 			{
@@ -51,11 +77,15 @@
 						label: 'Menu'
 					},
 					{
-						label: 'Menu2'
+						label: 'Menu 2'
 					},
 					{
-						label: 'Menu3',
+						label: 'Menu 3',
 						icon : 'icon.png'
+					},
+					{
+						label     : 'Menu 4',
+						isDisabled: true
 					}
 				]
 			}
@@ -65,24 +95,49 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Pulldown
+		//todo
+		
+		// Toolbar
+		//todo
+		
+		// TextInput
 		new flagrate.TextInput({ placeholder: 'TextInput' }).insertTo(c);
-		new flagrate.TextInput({ value: 'TextInput' }).insertTo(c);
+		new flagrate.TextInput({ value: 'TextInput' }).disable().insertTo(c);
 		new flagrate.TextInput({ placeholder: 'TextInput' }, { icon: 'icon.png' }).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Tokenizer
 		new flagrate.Tokenizer(null, { placeholder: 'Tokenizer' }).insertTo(c);
-		new flagrate.Tokenizer(null, { values: ['Token'] }).insertTo(c);
+		new flagrate.Tokenizer(null, { values: ['Token'] }).disable().insertTo(c);
 		new flagrate.Tokenizer(null, { placeholder: 'Tokenizer', icon: 'icon.png' }).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// TextArea
 		new flagrate.TextArea({ placeholder: 'TextArea' }).insertTo(c);
-		new flagrate.TextArea().insert('TextArea').insertTo(c);
+		new flagrate.TextArea().insert('TextArea').disable().insertTo(c);
 		new flagrate.TextArea({ placeholder: 'TextArea' }, { icon: 'icon.png' }).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Progress
+		//todo
+		
+		// Slider
+		//todo
+		
+		// Checkbox
+		//todo
+		
+		// Radio
+		//todo
+		
+		// Switch
+		//todo
+		
+		// Notify
 		var notify = new flagrate.Notify();
 		new flagrate.Button(null, {
 			color   : '@orange',
@@ -94,12 +149,12 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Modal
+		var modal = new flagrate.Modal({ title: 'Modal', subtitle: 'subtitle', text: 'text' });
 		new flagrate.Button(null, {
 			color   : '@blue',
 			label   : 'click to create Modal',
-			onSelect: function() {
-				new flagrate.Modal({ title: 'Modal', subtitle: 'subtitle', text: 'text' }).show();
-			}
+			onSelect: function(){ modal.show(); }
 		}).insertTo(c);
 	</script>
 </body>
