@@ -10,7 +10,8 @@
 	<link rel="stylesheet" type="text/css" href="../flagrate.css">
 	<style type="text/css">
 		body {
-			background-color: #e5e4e6; }
+			background-color: #e5e4e6;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJUlEQVQYV2N88ODBfwYCQEBAgIFxVCGuUCIteD58+EAwwEE2AQD70iYhFOygFAAAAABJRU5ErkJggg==); }
 		
 		body, input {
 			font-family     : "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ",
@@ -133,21 +134,6 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// Toolbar
-		new flagrate.Toolbar(null, {
-			items: [
-				new flagrate.Button(null, { label: 'Button' }),
-				'--',
-				new flagrate.Pulldown(null, { label: 'Pulldown', items: [{ label: 'item' }] }),
-				new flagrate.Button(null, { label: 'Button', icon: 'icon.png' }),
-				'--',
-				{
-					key    : 'hoge',
-					element: new flagrate.TextInput({ placeholder: 'TextInput' }, { icon: 'icon.png' })
-				}
-			]
-		}).insertTo(c);
-		
 		// TextInput
 		new flagrate.TextInput({ placeholder: 'TextInput' }).insertTo(c);
 		new flagrate.TextInput({ value: 'TextInput' }).disable().insertTo(c);
@@ -172,6 +158,27 @@
 		new flagrate.TextArea({ placeholder: 'TextArea' }).insertTo(c);
 		new flagrate.TextArea().insert('TextArea').disable().insertTo(c);
 		new flagrate.TextArea({ placeholder: 'TextArea' }, { icon: 'icon.png' }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Toolbar
+		new flagrate.Toolbar(null, {
+			items: [
+				new flagrate.Button(null, { label: 'Button' }),
+				'--',
+				new flagrate.Pulldown(null, { label: 'Pulldown', items: [{ label: 'item' }] }),
+				new flagrate.Button(null, { label: 'Button', icon: 'icon.png' }),
+				'--',
+				{
+					key    : 'hoge',
+					element: new flagrate.TextInput({ placeholder: 'TextInput' }, { icon: 'icon.png' })
+				},
+				new flagrate.Button(null, { label: 'Button', color: '@green' }),
+				'--',
+				new flagrate.Button(null, { label: 'Button', isDisabled: true }),
+				new flagrate.Button(null, { label: 'Button', color: '@blue', isDisabled: true })
+			]
+		}).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		

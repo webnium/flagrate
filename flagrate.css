@@ -147,8 +147,10 @@ div.flagrate-tokenizer {
 	padding           : 3px 8px 2px;
 	color             : #222;
 	line-height       : 21px;
-	height            : 21px;
 	width             : 220px; }
+
+input.flagrate-textinput {
+	height            : 21px; }
 
 input.flagrate-textinput.flagrate-icon,
 textarea.flagrate-textarea.flagrate-icon,
@@ -165,7 +167,6 @@ div.flagrate-tokenizer:hover {
 div.flagrate-tokenizer {
 	cursor            : text;
 	padding           : 0px 4px 2px 2px;
-	height            : auto;
 	width             : 230px; }
 
 input.flagrate-textinput-disabled,
@@ -222,12 +223,16 @@ div.flagrate-tokenizer.flagrate-icon {
 		position: absolute;
 		top     : 100%; }
 
-div.flagrate-toolbar { }
+div.flagrate-toolbar {
+	display         : inline-block;
+	padding         : 5px;
+	background-color: #555; }
 	
 	div.flagrate-toolbar > * {
 		display       : inline-block;
 		margin-left   : 5px;
-		vertical-align: top; }
+		vertical-align: top;
+		border        : none; }
 	
 	div.flagrate-toolbar > *:first-child {
 		margin-left: 0; }
@@ -238,9 +243,16 @@ div.flagrate-toolbar { }
 		font-size       : 12px;
 		width           : 120px; }
 	
+	div.flagrate-toolbar > button {
+		background-color: transparent; }
+	
+	div.flagrate-toolbar > button.flagrate-button-disabled {
+		box-shadow      : none;
+		opacity         : 0.5; }
+	
 	div.flagrate-toolbar > hr {
 		width           : 1px;
-		height          : 28px;
+		height          : 24px;
 		background-color: rgba(0,0,0,0.25); }
 
 div.flagrate-notify {
