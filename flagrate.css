@@ -15,6 +15,11 @@ textarea.flagrate {
 	-webkit-appearance: none;
 	border-radius     : 0; }
 
+button.flagrate::-moz-focus-inner {
+	border : 0;
+	padding: 0;
+	margin : 0; }
+
 .flagrate-icon {
 	background-repeat  : no-repeat;
 	background-position: 5px center; }
@@ -22,7 +27,7 @@ textarea.flagrate {
 button.flagrate-button {
 	display           : inline-block;
 	cursor            : pointer;
-	padding           : 3px 5px 2px;
+	padding           : 3px 10px 2px;
 	border            : 2px solid rgba(0,0,0,0.2);
 	box-shadow        : inset 0 0 0 rgba(0,0,0,0);
 	background-color  : #555;
@@ -66,7 +71,8 @@ button.flagrate-button.flagrate-button-color-red    { background-color  : #bd362
 button.flagrate-button.flagrate-button-color-green  { background-color  : #5bb75b; }
 button.flagrate-button.flagrate-button-color-orange { background-color  : #faa732; }
 
-	button.flagrate-button > button.flagrate-button-remove {
+	button.flagrate-button > button.flagrate-button-remove,
+	button.flagrate-pulldown > span.flagrate-pulldown-triangle {
 		display    : inline-block;
 		cursor     : pointer;
 		color      : rgba(255,255,255,0.25);
@@ -76,24 +82,40 @@ button.flagrate-button.flagrate-button-color-orange { background-color  : #faa73
 		background : transparent; }
 	
 	button.flagrate-button > button.flagrate-button-remove:hover,
-	button.flagrate-button > button.flagrate-button-remove:focus {
+	button.flagrate-button > button.flagrate-button-remove:focus,
+	button.flagrate-pulldown:hover > span.flagrate-pulldown-triangle,
+	button.flagrate-pulldown:focus > span.flagrate-pulldown-triangle {
 		color      : #fff;
 		outline    : none; }
 	
 	button.flagrate-button > button.flagrate-button-remove:after {
 		content    : '\2716'; }
+	
+	button.flagrate-pulldown > span.flagrate-pulldown-triangle:after {
+		content    : '\25bc'; }
 
 div.flagrate-menu {
-	z-index           : 1;
+	z-index           : 2;
 	display           : block;
-	box-shadow        : 0 0 0 1px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,0,0,0.15); }
+	box-shadow        : 0 0 0 1px rgba(0,0,0,0.20), 0 0 0 2px rgba(0,0,0,0.2);
+	background-color  : #fff; }
+
+div.flagrate-pulldown-menu {
+	position          : absolute;
+	margin-top        : 4px; }
+	
+	div.flagrate-menu > hr {
+		border          : none;
+		height          : 1px;
+		background-color: #bbb;
+		margin          : 2px 2px; }
 	
 	div.flagrate-menu > button.flagrate-button,
 	div.flagrate-menu > button.flagrate-button:hover,
 	div.flagrate-menu > button.flagrate-button:focus {
 		display         : block;
 		width           : 100%;
-		background-color: #fff;
+		background-color: transparent;
 		color           : #222;
 		border          : none;
 		box-shadow      : none;

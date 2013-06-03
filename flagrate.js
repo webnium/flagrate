@@ -699,7 +699,7 @@
 		var value = element.style[style];
 		if (!value || value === 'auto') {
 			var css = document.defaultView.getComputedStyle(element, null);
-			value = css ? css[style] : null;
+			value = css ? css.getPropertyValue(style) : null;
 		}
 		
 		if (style === 'opacity') return value ? parseFloat(value) : 1.0;
@@ -774,9 +774,10 @@
 		}
 		
 		if (that.isRemovableByUser) {
-			new Element('button', {
+			that._removeButton = new Element('button', {
 				'class': flagrate.className + '-button-remove'
-			}).insertTo(that).addEventListener('click', that._onRemoveHandler.bind(that))
+			}).insertTo(that);
+			that._removeButton.addEventListener('click', that._onRemoveHandler.bind(that));
 		}
 		
 		if (opt.color) that.setColor(opt.color);
@@ -847,7 +848,31 @@
 		,
 		_onSelectHandler: function(e) {
 			
-			if (this.isEnabled()) this.onSelect(e);
+			if (this.isDisabled()) return this;
+			
+			//for Firefox
+			if (this.isRemovableByUser && e && e.layerX) {
+				var bw = this.getWidth();
+				var bh = this.getHeight();
+				var bp = parseInt(this.getStyle('padding-right').replace('px', ''), 10);
+				var rw = this._removeButton.getWidth();
+				var rh = this._removeButton.getHeight();
+				var lx = e.layerX;
+				var ly = e.layerY;
+				
+				if (
+					lx > bw - bp - rw &&
+					lx < bw - bp &&
+					ly > bh - ((bh - rh) / 2) - rh &&
+					ly < bh - ((bh - rh) / 2)
+				) {
+					this._onRemoveHandler(e);
+					
+					return this;
+				}
+			}
+			
+			this.onSelect(e);
 			
 			return this;
 		}
@@ -886,6 +911,12 @@
 			that.push(a);
 		}.bind(that));
 		
+		that.addEventListener('click', function(e) {
+			
+			e.stopPropagation();
+			e.preventDefault();
+		});
+		
 		return that;
 	};
 	
@@ -897,6 +928,8 @@
 			
 			if (a instanceof Array) {
 				//todo
+			} else if (typeof a === 'string') {
+				new Element('hr').insertTo(this);
 			} else {
 				new Button(
 					null,
@@ -915,6 +948,87 @@
 			
 			return this;
 		}
+	};
+	
+	/*?
+	 *  class flagrate.Pulldown
+	**/
+	
+	/*?
+	 *  new flagrate.Pulldown(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Pulldown = flagrate.Pulldown = function _Pulldown(attr, opt) {
+		
+		opt = opt || {};
+		
+		this.label    = opt.label    || '';
+		this.icon     = opt.icon     || null;
+		this.items    = opt.items    || null;
+		this.onSelect = opt.onSelect || function(){};
+		
+		//create
+		var that = new Button(attr, {
+			label   : this.label,
+			icon    : this.icon
+		});
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + '-pulldown');
+		
+		that.onSelect = function(e) {
+			
+			if (that._menu) {
+				that._menu.remove();
+				delete that._menu;
+				return;
+			}
+			
+			var removeMenu = function(e) {
+				
+				document.body.removeEventListener('click', removeMenu);
+				that.parentNode.removeEventListener('click', removeMenu);
+				that.removeEventListener('click', removeMenu);
+				
+				menu.style.opacity = '0';
+				setTimeout(function(){ menu.remove(); }.bind(this), 500);
+				
+				delete that._menu;
+			};
+			
+			var menu = that._menu = new Menu(
+				{
+					'class': flagrate.className + '-pulldown-menu'
+				}, {
+					items   : that.items,
+					onSelect: function() {
+						
+						menu.remove();
+						delete that._menu;
+					}
+				}
+			);
+			
+			menu.style.top  = that.offsetTop + that.getHeight() + 'px';
+			menu.style.left = that.offsetLeft + 'px';
+			
+			that.insert({ after: menu });
+			
+			setTimeout(function() {
+				document.body.addEventListener('click', removeMenu);
+				that.parentNode.addEventListener('click', removeMenu);
+				that.addEventListener('click', removeMenu);
+			}, 0);
+		};
+		
+		new Element('span', { 'class': flagrate.className + '-pulldown-triangle' }).insertTo(that);
+		
+		if (opt.color) that.setColor(opt.color);
+		
+		if (opt.isDisabled) that.disable();
+		
+		return that;
 	};
 	
 	/*?
@@ -1028,6 +1142,7 @@
 		this.values      = opt.values      || [];
 		this.maximum     = opt.maximum     || -1;
 		this.tokenize    = opt.tokenize    || identity;
+		this.onChange    = opt.onChange    || function(){};
 		
 		//create
 		var that = new Element('div', attr);
@@ -1224,6 +1339,7 @@
 					
 					this.values.push(candidate);
 					this._updateTokens();
+					this.onChange();
 					
 					if (a._onSelect) a._onSelect(e);
 				}.bind(this);
@@ -1260,6 +1376,7 @@
 					this._input.value = '';
 					this.values.push(this._candidates[0]);
 					this._updateTokens();
+					this.onChange();
 					
 					if (this._menu) this._menu.remove();
 				}
@@ -1275,6 +1392,7 @@
 					
 					this._input.value = this.values.pop();
 					this._updateTokens();
+					this.onChange();
 					
 					if (this._menu) this._menu.remove();
 				}
@@ -1526,7 +1644,7 @@
 			
 			notify.style.display = 'none';
 			
-			notify.style.position      = 'absolute';
+			notify.style.position      = 'fixed';
 			notify.style[this.hAlign] = hPosition + 'px';
 			notify.style[this.vAlign] = vPosition + 'px';
 			

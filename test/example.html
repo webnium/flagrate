@@ -77,14 +77,12 @@
 						label: 'Menu'
 					},
 					{
-						label: 'Menu 2'
-					},
-					{
-						label: 'Menu 3',
+						label: 'Menu',
 						icon : 'icon.png'
 					},
+					'--',
 					{
-						label     : 'Menu 4',
+						label     : 'Menu',
 						isDisabled: true
 					}
 				]
@@ -96,7 +94,44 @@
 		flagrate.Element.insert(c, '<br>');
 		
 		// Pulldown
-		//todo
+		new flagrate.Pulldown(null, {
+			label: 'Pulldown',
+			items: [
+				{
+					label: 'Pulldown'
+				},
+				{
+					label: 'Pulldown',
+					icon : 'icon.png'
+				},
+				'--',
+				{
+					label     : 'Pulldown',
+					isDisabled: true
+				}
+			]
+		}).insertTo(c);
+		new flagrate.Pulldown(null, { label: 'Pulldown' }).disable().insertTo(c);
+		new flagrate.Pulldown(null, {
+			label: 'Pulldown',
+			icon : 'icon.png',
+			items: [
+				{
+					label: 'Pulldown'
+				},
+				{
+					label: 'Pulldown',
+					icon : 'icon.png'
+				},
+				'--',
+				{
+					label     : 'Pulldown',
+					isDisabled: true
+				}
+			]
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
 		
 		// Toolbar
 		//todo
@@ -111,7 +146,13 @@
 		// Tokenizer
 		new flagrate.Tokenizer(null, { placeholder: 'Tokenizer' }).insertTo(c);
 		new flagrate.Tokenizer(null, { values: ['Token'] }).disable().insertTo(c);
-		new flagrate.Tokenizer(null, { placeholder: 'Tokenizer', icon: 'icon.png' }).insertTo(c);
+		var tokenizer = new flagrate.Tokenizer(null, {
+			placeholder: 'Tokenizer',
+			icon       : 'icon.png',
+			tokenize   : function(word) {
+				return word.toUpperCase();
+			}
+		}).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
