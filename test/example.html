@@ -134,7 +134,19 @@
 		flagrate.Element.insert(c, '<br>');
 		
 		// Toolbar
-		//todo
+		new flagrate.Toolbar(null, {
+			items: [
+				new flagrate.Button(null, { label: 'Button' }),
+				'--',
+				new flagrate.Pulldown(null, { label: 'Pulldown', items: [{ label: 'item' }] }),
+				new flagrate.Button(null, { label: 'Button', icon: 'icon.png' }),
+				'--',
+				{
+					key    : 'hoge',
+					element: new flagrate.TextInput({ placeholder: 'TextInput' }, { icon: 'icon.png' })
+				}
+			]
+		}).insertTo(c);
 		
 		// TextInput
 		new flagrate.TextInput({ placeholder: 'TextInput' }).insertTo(c);

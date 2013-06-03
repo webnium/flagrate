@@ -1032,6 +1032,55 @@
 	};
 	
 	/*?
+	 *  class flagrate.Toolbar
+	**/
+	
+	/*?
+	 *  new flagrate.Toolbar(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Toolbar = flagrate.Toolbar = function _Toolbar(attr, opt) {
+		
+		opt = opt || {};
+		
+		this.items = opt.items || [];
+		
+		//create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-toolbar');
+		
+		that.items.forEach(function(a) {
+			that.push(a);
+		}.bind(that));
+		
+		return that;
+	};
+	
+	Toolbar.prototype = {
+		/*?
+		 *  flagrate.Toolbar#push(item) -> flagrate.Toolbar
+		**/
+		push: function(a) {
+			
+			if (typeof a === 'string') {
+				new Element('hr').insertTo(this);
+			} else if (a instanceof HTMLElement) {
+				this.insert(a);
+			} else {
+				if (a.element) {
+					if (a.key) a.element._key = a.key;
+					this.insert(a.element);
+				}
+			}
+			
+			return this;
+		}
+	};
+	
+	/*?
 	 *  class flagrate.TextInput
 	**/
 	
@@ -1275,12 +1324,13 @@
 			}.bind(this));
 			
 			var vw = this.getWidth();
+			var bw = parseInt(this.getStyle('border-width').replace('px', ''), 10)  || 2;
 			var pl = parseInt(this.getStyle('padding-left').replace('px', ''), 10)  || 4;
 			var pr = parseInt(this.getStyle('padding-right').replace('px', ''), 10) || 4;
 			var tw = this._tokens.getWidth();
 			var tm = parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10) || 2;
 			var im = parseInt(this._input.getStyle('margin-left').replace('px', ''), 10) || 2;
-			var aw = vw - pl - pr - tw - tm - im - 2;
+			var aw = vw - pl - pr - tw - tm - im - (bw * 2);
 			
 			if (aw > 30) {
 				this._input.style.width = aw + 'px';
