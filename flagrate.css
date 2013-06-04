@@ -254,6 +254,10 @@ div.flagrate-toolbar {
 		width           : 1px;
 		height          : 24px;
 		background-color: rgba(0,0,0,0.25); }
+	
+	div.flagrate-toolbar > span {
+		color           : rgba(255,255,255,0.5);
+		padding         : 6px 10px 5px; }
 
 div.flagrate-notify {
 	z-index           : 10000;
