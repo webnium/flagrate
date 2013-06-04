@@ -848,7 +848,8 @@
 		,
 		_onSelectHandler: function(e) {
 			
-			if (this.isDisabled()) return this;
+			if (typeof this.isDisabled === 'function' && this.isDisabled()) return;
+			if (typeof this.isDisabled === 'boolean'  && this.isDisabled) return;
 			
 			//for Firefox
 			if (this.isRemovableByUser && e && e.layerX) {
@@ -873,15 +874,11 @@
 			}
 			
 			this.onSelect(e);
-			
-			return this;
 		}
 		,
 		_onRemoveHandler: function(e) {
 			
 			if (this.isEnabled()) this.remove() && this.onRemove(e);
-			
-			return this;
 		}
 	};
 	
