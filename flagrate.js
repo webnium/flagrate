@@ -928,7 +928,7 @@
 			} else if (typeof a === 'string') {
 				new Element('hr').insertTo(this);
 			} else {
-				new Button(
+				var button = new Button(
 					null,
 					{
 						icon      : a.icon,
@@ -941,9 +941,31 @@
 						}.bind(this)
 					}
 				).insertTo(this);
+				
+				if (a.key) button._key = a.key;
 			}
 			
 			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Menu#getButtonByKey(key) -> Button | null
+		**/
+		getButtonByKey: function(key) {
+			
+			var result = null;
+			
+			var elements = this.childNodes;
+			for (var i = 0; i < elements.length; i++) {
+				if (!elements[i]._key) continue;
+				
+				if (elements[i]._key === key) {
+					result = element[i]._key;
+					break;
+				}
+			}
+			
+			return result;
 		}
 	};
 	
@@ -1075,6 +1097,26 @@
 			
 			return this;
 		}
+		,
+		/*?
+		 *  flagrate.Toolbar#getElementByKey(key) -> Element | null
+		**/
+		getElementByKey: function(key) {
+			
+			var result = null;
+			
+			var elements = this.childNodes;
+			for (var i = 0; i < elements.length; i++) {
+				if (!elements[i]._key) continue;
+				
+				if (elements[i]._key === key) {
+					result = element[i]._key;
+					break;
+				}
+			}
+			
+			return result;
+		}
 	};
 	
 	/*?
@@ -1186,7 +1228,7 @@
 		this.icon        = opt.icon        || null;
 		this.placeholder = opt.placeholder || null;
 		this.values      = opt.values      || [];
-		this.maximum     = opt.maximum     || -1;
+		this.max         = opt.max         || -1;
 		this.tokenize    = opt.tokenize    || identity;
 		this.onChange    = opt.onChange    || function(){};
 		
@@ -1212,10 +1254,10 @@
 		
 		that.addEventListener('click', that._onClickHandler.bind(that));
 		
-		that._input.addEventListener('keyup',   that._onKeyupHandler.bind(that));
-		that._input.addEventListener('keydown', that._onKeydownHandler.bind(that));
-		that._input.addEventListener('focus',   that._onFocusHandler.bind(that));
-		that._input.addEventListener('blur',    that._onBlurHandler.bind(that));
+		that._input.addEventListener('keypress', that._onKeypressHandler.bind(that));
+		that._input.addEventListener('keydown',  that._onKeydownHandler.bind(that));
+		that._input.addEventListener('focus',    that._onFocusHandler.bind(that));
+		that._input.addEventListener('blur',     that._onBlurHandler.bind(that));
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -1404,8 +1446,7 @@
 			this._input.focus();
 		}
 		,
-		_onKeyupHandler: function(e) {
-			this._tokenize();
+		_onKeypressHandler: function(e) {
 		}
 		,
 		_onKeydownHandler: function(e) {
@@ -1444,6 +1485,19 @@
 					if (this._menu) this._menu.remove();
 				}
 			}
+			
+			setTimeout(function() {
+			
+				if (this.max > -1 && this.max <= this.values.length && this._input.value !== '') {
+					e.stopPropagation();
+					
+					this._input.value = '';
+					
+					return;
+				}
+				
+				this._tokenize();
+			}.bind(this), 0);
 		}
 		,
 		_onFocusHandler: function(e) {
@@ -1554,6 +1608,181 @@
 		**/
 		isValid: function() {
 			return this.regexp.test(this.getValue());
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Progress
+	**/
+	
+	/*?
+	 *  new flagrate.Progress(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Progress = flagrate.Progress = function _Progress(attr, opt) {
+		
+		opt = opt || {};
+		
+		this.value = opt.value || 0;
+		this.max   = opt.max   || 100;
+		
+		//create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-progress');
+		
+		that._updateProgress();
+		
+		return that;
+	};
+	
+	Progress.prototype = {
+		/*?
+		 *  flagrate.Progress#getValue() -> Number
+		**/
+		getValue: function() {
+			return this.value;
+		}
+		,
+		/*?
+		 *  flagrate.Progress#setValue(number) -> flagrate.Progress
+		**/
+		setValue: function(number) {
+			
+			if (typeof number !== 'number') return this;
+			
+			this.value = Math.max(0, Math.min(this.max, number));
+			
+			return this._updateProgress();
+		}
+		,
+		_updateProgress: function() {
+			
+			var percentage = Math.max(0, Math.min(100, this.value / this.max * 100));
+			
+			this.update(
+				new Element().setStyle({ width: percentage + '%' })
+			);
+			
+			return this;
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Slider
+	**/
+	
+	/*?
+	 *  new flagrate.Slider(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Slider = flagrate.Slider = function _Slider(attr, opt) {
+		
+		opt = opt || {};
+		
+		//create
+		var that = new Progress(attr, opt);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + '-slider');
+		
+		that.addEventListener('mousedown',  that._onMousedownHandler.bind(that));
+		that.addEventListener('touchstart', that._onTouchstartHandler.bind(that));
+		
+		if (opt.isDisabled) that.disable();
+		
+		return that;
+	};
+	
+	Slider.prototype = {
+		/*?
+		 *  flagrate.Slider#disable() -> flagrate.Slider
+		**/
+		disable: function() {
+			return this.addClassName(flagrate.className + '-slider-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Slider#enable() -> flagrate.Slider
+		**/
+		enable: function() {
+			return this.removeClassName(flagrate.className + '-slider-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Slider#isDisabled() -> Boolean
+		**/
+		isDisabled: function() {
+			return this.hasClassName(flagrate.className + '-slider-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Slider#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-slider-disabled');
+		}
+		,
+		_onMousedownHandler: function(e) {
+			
+			if (!this.isEnabled()) return;
+			
+			e.preventDefault();
+			
+			var x = e.offsetX || e.layerX || 0;
+			
+			this._slide(x, e.clientX);
+		}
+		,
+		_onTouchstartHandler: function(e) {
+			
+			if (!this.isEnabled()) return;
+			
+			e.preventDefault();
+			
+			var x = e.offsetX || e.layerX || 0;
+			
+			this._slide(x, e.clientX);
+		}
+		,
+		_slide: function(x, pos) {
+			
+			var unitWidth  = this.getWidth() / this.max;
+			
+			var onMove = function(e) {
+				
+				e.preventDefault();
+				
+				x   = x + e.clientX - pos;
+				pos = e.clientX;
+				
+				this.setValue(Math.round(x / unitWidth));
+			}.bind(this);
+			
+			var onUp = function(e) {
+				
+				e.preventDefault();
+				
+				document.body.removeEventListener('mousemove', onMove);
+				document.body.removeEventListener('touchmove', onMove);
+				document.body.removeEventListener('mouseup',   onUp);
+				document.body.removeEventListener('touchend',  onUp);
+				
+				if (e.clientX) {
+					x = x + e.clientX - pos;
+					this.setValue(Math.round(x / unitWidth));
+				}
+			}.bind(this);
+			
+			document.body.addEventListener('mousemove', onMove);
+			document.body.addEventListener('touchmove', onMove);
+			document.body.addEventListener('mouseup',   onUp);
+			document.body.addEventListener('touchend',  onUp);
+			
+			this.setValue(Math.round(x / unitWidth));
 		}
 	};
 	

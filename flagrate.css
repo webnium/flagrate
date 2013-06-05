@@ -54,7 +54,8 @@ button.flagrate-button:hover {
 	box-shadow        : inset 0 30px 0 rgba(0,0,0,0.25); }
 
 button.flagrate-button:active {
-	border-color      : rgba(0,0,0,1); }
+	border-color      : rgba(0,0,0,1);
+	box-shadow        : inset 0 30px 0 rgba(0,0,0,0.4); }
 
 button.flagrate-button:focus {
 	outline           : 2px solid rgba(0,0,0,0.2); }
@@ -103,7 +104,8 @@ div.flagrate-menu {
 
 div.flagrate-pulldown-menu {
 	position          : absolute;
-	margin-top        : 4px; }
+	margin-top        : 4px;
+	padding           : 2px 0; }
 	
 	div.flagrate-menu > hr {
 		border          : none;
@@ -185,7 +187,8 @@ div.flagrate-tokenizer.flagrate-icon {
 	
 	div.flagrate-tokenizer > span {
 		display: inline-block;
-		margin : 1px 0 0 2px; }
+		margin : 1px 0 0 2px;
+		vertical-align: top; }
 		
 		div.flagrate-tokenizer > span > button.flagrate-button,
 		div.flagrate-tokenizer > span > button.flagrate-button:hover,
@@ -218,7 +221,8 @@ div.flagrate-tokenizer.flagrate-icon {
 		padding   : 0;
 		margin    : 3px 0 0 2px;
 		border    : none;
-		box-shadow: none; }
+		box-shadow: none;
+		vertical-align: top; }
 	
 	div.flagrate-tokenizer > div.flagrate-menu {
 		position: absolute;
@@ -247,6 +251,9 @@ div.flagrate-toolbar {
 	div.flagrate-toolbar > button {
 		background-color: transparent; }
 	
+	div.flagrate-toolbar > button:focus {
+		outline: none; }
+	
 	div.flagrate-toolbar > button.flagrate-button-disabled {
 		box-shadow      : none;
 		opacity         : 0.5; }
@@ -259,6 +266,40 @@ div.flagrate-toolbar {
 	div.flagrate-toolbar > span {
 		color           : rgba(255,255,255,0.5);
 		padding         : 6px 10px 5px; }
+
+div.flagrate-progress {
+	display           : block;
+	height            : 5px;
+	background-color  : rgba(0,0,0,0.1); }
+	
+	div.flagrate-progress > div {
+		height          : 100%;
+		width           : 0%;
+		background-color: #1a60ed; }
+
+div.flagrate-slider {
+	cursor            : pointer;
+	height            : 10px; }
+
+div.flagrate-slider.flagrate-slider-disabled {
+	cursor            : not-allowed; }
+	
+	div.flagrate-slider.flagrate-slider-disabled > div {
+		background-color  : #888; }
+	
+	div.flagrate-slider > div:after {
+		content         : '';
+		display         : block;
+		position        : absolute;
+		right           : 0;
+		top             : 50%;
+		margin          : -5px -5px 0 0;
+		background-color: #000;
+		width           : 10px;
+		height          : 10px; }
+	
+	div.flagrate-slider.flagrate-slider-disabled > div:after {
+		background-color  : #555; }
 
 div.flagrate-notify {
 	z-index           : 10000;

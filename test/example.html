@@ -147,6 +147,7 @@
 		var tokenizer = new flagrate.Tokenizer(null, {
 			placeholder: 'Tokenizer',
 			icon       : 'icon.png',
+			max        : 2,
 			tokenize   : function(word) {
 				return word.toUpperCase();
 			}
@@ -184,10 +185,29 @@
 		flagrate.Element.insert(c, '<br>');
 		
 		// Progress
-		//todo
+		new flagrate.Element().setStyle({
+			padding        : '20px 50px',
+			width          : '300px',
+			backgroundColor: 'rgba(255,255,255,0.8)'
+		}).insert(
+			new flagrate.Progress(null, { value: 45 }).insertTo(c)
+		).insertTo(c)
 		
 		// Slider
-		//todo
+		new flagrate.Element().setStyle({
+			padding        : '20px 50px',
+			width          : '300px',
+			backgroundColor: 'rgba(255,255,255,0.8)'
+		}).insert(
+			new flagrate.Slider(null, { value: 3, max: 6 }).insertTo(c)
+		).insertTo(c)
+		new flagrate.Element().setStyle({
+			padding        : '20px 50px',
+			width          : '300px',
+			backgroundColor: 'rgba(255,255,255,0.8)'
+		}).insert(
+			new flagrate.Slider(null, { value: 50, isDisabled: true }).insertTo(c)
+		).insertTo(c)
 		
 		// Checkbox
 		//todo
