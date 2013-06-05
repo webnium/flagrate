@@ -80,7 +80,7 @@ button.flagrate-button.flagrate-button-color-orange { background-color  : #faa73
 		color      : rgba(255,255,255,0.25);
 		display    : inline-block;
 		font-size  : 11px;
-		margin-left: 4px;
+		margin-left: 8px;
 		background : transparent; }
 	
 	button.flagrate-button > button.flagrate-button-remove:hover,
@@ -510,7 +510,8 @@ div.flagrate-modal.flagrate-modal-visible {
 				right           : 10px;
 				background      : none;
 				border          : none;
-				color           : #aaa; }
+				color           : #aaa;
+				padding         : 0; }
 			
 			div.flagrate-modal > div > div > button:after {
 				display    : inline-block;

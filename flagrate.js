@@ -744,42 +744,65 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Button(attribute, option)
-	 *  - attribute (Object) - attributes for button element.
+	 *  new flagrate.Button(option) -> flagrate.Button
 	 *  - option (Object) - options.
+	 *  
+	 *  Button.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of `button` element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `color`                    (String): (using flagrate.Button#setColor)
+	 *  * `label`                    (String; default `""`):
+	 *  * `icon`                     (String):
+	 *  * `isFocused`                (Boolean; default `false`):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `isRemovableByUser`        (Boolean; default `false`):
+	 *  * `onSelect`                 (Function):
+	 *  * `onRemove`                 (Function):
 	**/
-	var Button = flagrate.Button = function _Button(attr, opt) {
+	var Button = flagrate.Button = function _Button(opt) {
 		
 		opt = opt || {};
 		
-		this.label             = opt.label             || '';
-		this.icon              = opt.icon              || null;
-		this.onSelect          = opt.onSelect          || function(){};
-		this.onRemove          = opt.onRemove          || function(){};
-		this.isRemovableByUser = opt.isRemovableByUser || false;
+		opt.label             = opt.label             || '';
+		opt.isRemovableByUser = opt.isRemovableByUser || false;
+		
+		this.onSelect = opt.onSelect || function(){};
+		this.onRemove = opt.onRemove || function(){};
+		
+		var attr = opt.attribute || {};
+		
+		attr.id          = opt.id        || null;
+		attr['class']    = opt.className || null;
+		attr.autofocus   = opt.isFocused || false;
 		
 		//create
-		var that = new Element('button', attr).updateText(this.label);
+		var that = new Element('button', attr).updateText(opt.label);
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
 		
 		that.addEventListener('click', that._onSelectHandler.bind(that));
 		
-		if (that.icon) {
+		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + that.icon + ')'
+				backgroundImage: 'url(' + opt.icon + ')'
 			});
 		}
 		
-		if (that.isRemovableByUser) {
+		if (opt.isRemovableByUser) {
 			that._removeButton = new Element('button', {
 				'class': flagrate.className + '-button-remove'
 			}).insertTo(that);
 			that._removeButton.addEventListener('click', that._onRemoveHandler.bind(that));
 		}
 		
+		if (opt.style) that.setStyle(opt.style);
 		if (opt.color) that.setColor(opt.color);
 		
 		if (opt.isDisabled) that.disable();
@@ -879,16 +902,39 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Menu(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Menu(option) -> flagrate.Menu
 	 *  - option (Object) - options.
+	 *  
+	 *  Menu.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `items`                    (Array): of item
+	 *  * `onSelect`                 (Function):
+	 *  
+	 *  ##### item
+	 *  
+	 *  * `key`                      (String):
+	 *  * `label`                    (String; default `""`):
+	 *  * `icon`                     (String):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `onSelect`                 (Function):
 	**/
-	var Menu = flagrate.Menu = function _Menu(attr, opt) {
+	var Menu = flagrate.Menu = function _Menu(opt) {
 		
 		opt = opt || {};
 		
-		this.items    = opt.items    || [];
+		opt.items = opt.items    || [];
+		
 		this.onSelect = opt.onSelect || function(){};
+		
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id;
+		attr['class'] = opt.className;
 		
 		//create
 		var that = new Element('div', attr);
@@ -896,7 +942,7 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-menu');
 		
-		that.items.forEach(function(a) {
+		opt.items.forEach(function(a) {
 			that.push(a);
 		}.bind(that));
 		
@@ -921,7 +967,6 @@
 				new Element('hr').insertTo(this);
 			} else {
 				var button = new Button(
-					null,
 					{
 						icon      : a.icon,
 						label     : a.label,
@@ -966,23 +1011,35 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Pulldown(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Pulldown(option) -> flagrate.Pulldown
 	 *  - option (Object) - options.
+	 *  
+	 *  Pulldown.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of `button` element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `items`                    (Array): of item (see: flagrate.Menu)
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `onSelect`                 (Function):
 	**/
-	var Pulldown = flagrate.Pulldown = function _Pulldown(attr, opt) {
+	var Pulldown = flagrate.Pulldown = function _Pulldown(opt) {
 		
 		opt = opt || {};
 		
-		this.label    = opt.label    || '';
-		this.icon     = opt.icon     || null;
-		this.items    = opt.items    || null;
-		this.onSelect = opt.onSelect || function(){};
+		opt.label = opt.label || '';
+		opt.items = opt.items || null;
+		
+		opt.onSelect = opt.onSelect || function(){};
 		
 		//create
-		var that = new Button(attr, {
-			label   : this.label,
-			icon    : this.icon
+		var that = new Button({
+			attribute: opt.attribute,
+			label    : opt.label,
+			icon     : opt.icon
 		});
 		extendObject(that, this);
 		
@@ -1010,11 +1067,11 @@
 			
 			var menu = that._menu = new Menu(
 				{
-					'class': flagrate.className + '-pulldown-menu'
-				}, {
-					items   : that.items,
-					onSelect: function() {
+					className: flagrate.className + '-pulldown-menu',
+					items    : opt.items,
+					onSelect : function() {
 						
+						opt.onSelect();
 						menu.remove();
 						delete that._menu;
 					}
@@ -1035,6 +1092,7 @@
 		
 		new Element('span', { 'class': flagrate.className + '-pulldown-triangle' }).insertTo(that);
 		
+		if (opt.style) that.setStyle(opt.style);
 		if (opt.color) that.setColor(opt.color);
 		
 		if (opt.isDisabled) that.disable();
@@ -1047,15 +1105,34 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Toolbar(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Toolbar(attribute, option) -> flagrate.Toolbar
 	 *  - option (Object) - options.
+	 *  
+	 *  Toolbar.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `items`                    (Array): of item or String to create border, Element to insert any element.
+	 *  
+	 *  ##### item
+	 *  
+	 *  * `key`                      (String):
+	 *  * `element`                  (Element):
 	**/
-	var Toolbar = flagrate.Toolbar = function _Toolbar(attr, opt) {
+	var Toolbar = flagrate.Toolbar = function _Toolbar(opt) {
 		
 		opt = opt || {};
 		
-		this.items = opt.items || [];
+		opt.items = opt.items || [];
+		
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id;
+		attr['class'] = opt.className;
 		
 		//create
 		var that = new Element('div', attr);
@@ -1063,9 +1140,11 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-toolbar');
 		
-		that.items.forEach(function(a) {
+		opt.items.forEach(function(a) {
 			that.push(a);
 		}.bind(that));
+		
+		if (opt.style) that.setStyle(opt.style);
 		
 		return that;
 	};
@@ -1116,16 +1195,35 @@
 	**/
 	
 	/*?
-	 *  new flagrate.TextInput(attribute, option)
-	 *  - attribute (Object) - attributes for input element.
+	 *  new flagrate.TextInput(option) -> flagrate.TextInput
 	 *  - option (Object) - options.
+	 *  
+	 *  TextInput.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of `input` element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `value`                    (String):
+	 *  * `placeholder`              (String):
+	 *  * `icon`                     (String):
+	 *  * `regexp`                   (RegExp):
+	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var TextInput = flagrate.TextInput = function _TextInput(attr, opt) {
+	var TextInput = flagrate.TextInput = function _TextInput(opt) {
 		
 		opt = opt || {};
 		
-		this.icon   = opt.icon   || null;
 		this.regexp = opt.regexp || null;
+		
+		var attr = opt.attribute || {};
+		
+		attr.id          = opt.id          || null;
+		attr['class']    = opt.className   || null;
+		attr.value       = opt.value       || null;
+		attr.placeholder = opt.placeholder || null;
 		
 		//create
 		var that = new Element('input', attr);
@@ -1133,12 +1231,14 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-textinput');
 		
-		if (that.icon) {
+		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + that.icon + ')'
+				backgroundImage: 'url(' + opt.icon + ')'
 			});
 		}
+		
+		if (opt.style) that.setStyle(opt.style);
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -1202,20 +1302,40 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Tokenizer(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Tokenizer(option) -> flagrate.Tokenizer
 	 *  - option (Object) - options.
+	 *  
+	 *  Tokenizer.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `placeholder`              (String):
+	 *  * `icon`                     (String):
+	 *  * `values`                   (Array; default `[]`):
+	 *  * `max`                      (Number; default `-1`):
+	 *  * `tokenize`                 (Function; default `flagrate.identity`):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `onChange`                 (Function):
 	**/
-	var Tokenizer = flagrate.Tokenizer = function _Tokenizer(attr, opt) {
+	var Tokenizer = flagrate.Tokenizer = function _Tokenizer(opt) {
 		
 		opt = opt || {};
 		
-		this.icon        = opt.icon        || null;
-		this.placeholder = opt.placeholder || null;
-		this.values      = opt.values      || [];
-		this.max         = opt.max         || -1;
-		this.tokenize    = opt.tokenize    || identity;
-		this.onChange    = opt.onChange    || function(){};
+		opt.placeholder = opt.placeholder || null;
+		
+		this.values   = opt.values   || [];
+		this.max      = opt.max      || -1;
+		this.tokenize = opt.tokenize || identity;
+		this.onChange = opt.onChange || function(){};
+		
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id         || null;
+		attr['class'] = opt.className  || null;
 		
 		//create
 		var that = new Element('div', attr);
@@ -1223,15 +1343,15 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-tokenizer');
 		
-		if (that.icon) {
+		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + that.icon + ')'
+				backgroundImage: 'url(' + opt.icon + ')'
 			});
 		}
 		
 		that._tokens = new Element('span').insertTo(that);
-		that._input  = new TextInput({ placeholder: that.placeholder }).insertTo(that);
+		that._input  = new TextInput({ placeholder: opt.placeholder }).insertTo(that);
 		
 		if (that.values.length !== 0) {
 			that._updateTokens();
@@ -1242,6 +1362,8 @@
 		that._input.addEventListener('keydown',  that._onKeydownHandler.bind(that));
 		that._input.addEventListener('focus',    that._onFocusHandler.bind(that));
 		that._input.addEventListener('blur',     that._onBlurHandler.bind(that));
+		
+		if (opt.style) that.setStyle(opt.style);
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -1330,8 +1452,8 @@
 				}
 				
 				new Button(
-					null,
 					{
+						isDisabled       : (this.isEnabled() === false),
 						isRemovableByUser: (this.isEnabled()),
 						onRemove         : function(){ this.removeValue(value); }.bind(this),
 						label            : label
@@ -1381,7 +1503,6 @@
 			this._candidates = candidates;
 			
 			var menu = new Menu(
-				null,
 				{
 					onSelect: function() {
 						menu.remove();
@@ -1515,16 +1636,34 @@
 	**/
 	
 	/*?
-	 *  new flagrate.TextArea(attribute, option)
-	 *  - attribute (Object) - attributes for input element.
+	 *  new flagrate.TextArea(option) -> flagrate.TextArea
 	 *  - option (Object) - options.
+	 *  
+	 *  TextArea.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of `textarea` element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `value`                    (String):
+	 *  * `placeholder`              (String):
+	 *  * `icon`                     (String):
+	 *  * `regexp`                   (RegExp):
+	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var TextArea = flagrate.TextArea = function _TextArea(attr, opt) {
+	var TextArea = flagrate.TextArea = function _TextArea(opt) {
 		
 		opt = opt || {};
 		
-		this.icon   = opt.icon   || null;
 		this.regexp = opt.regexp || null;
+		
+		var attr = opt.attribute || {};
+		
+		attr.id          = opt.id          || null;
+		attr['class']    = opt.className   || null;
+		attr.placeholder = opt.placeholder || null;
 		
 		//create
 		var that = new Element('textarea', attr);
@@ -1532,12 +1671,15 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-textarea');
 		
-		if (that.icon) {
+		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + that.icon + ')'
+				backgroundImage: 'url(' + opt.icon + ')'
 			});
 		}
+		
+		if (opt.value) that.setValue(opt.value);
+		if (opt.style) that.setStyle(opt.style);
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -1601,17 +1743,19 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Checkbox(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Checkbox(option) -> flagrate.Checkbox
 	 *  - option (Object) - options.
 	**/
-	var Checkbox = flagrate.Checkbox = function _Checkbox(attr, opt) {
+	var Checkbox = flagrate.Checkbox = function _Checkbox(opt) {
 		
 		var id = 'flagrate-checkbox-' + (++Checkbox.idCounter).toString(10);
 		
 		opt = opt || {};
 		
-		this.icon   = opt.icon   || null;
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id         || null;
+		attr['class'] = opt.className  || null;
 		
 		//create
 		var that = new Element('label', attr).updateText(opt.label);
@@ -1620,10 +1764,10 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-checkbox');
 		
-		if (that.icon) {
+		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + that.icon + ')'
+				backgroundImage: 'url(' + opt.icon + ')'
 			});
 		}
 		
@@ -1696,17 +1840,19 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Radio(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Radio(option) -> flagrate.Radio
 	 *  - option (Object) - options.
 	**/
-	var Radio = flagrate.Radio = function _Radio(attr, opt) {
+	var Radio = flagrate.Radio = function _Radio(opt) {
 		
 		var id = 'flagrate-radio-' + (++Radio.idCounter).toString(10);
 		
 		opt = opt || {};
 		
-		this.icon   = opt.icon   || null;
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id         || null;
+		attr['class'] = opt.className  || null;
 		
 		//create
 		var that = new Element('label', attr).updateText(opt.label);
@@ -1715,10 +1861,10 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-radio');
 		
-		if (that.icon) {
+		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
 			that.setStyle({
-				backgroundImage: 'url(' + that.icon + ')'
+				backgroundImage: 'url(' + opt.icon + ')'
 			});
 		}
 		
@@ -1791,16 +1937,20 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Progress(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Progress(option) -> flagrate.Progress
 	 *  - option (Object) - options.
 	**/
-	var Progress = flagrate.Progress = function _Progress(attr, opt) {
+	var Progress = flagrate.Progress = function _Progress(opt) {
 		
 		opt = opt || {};
 		
 		this.value = opt.value || 0;
 		this.max   = opt.max   || 100;
+		
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id         || null;
+		attr['class'] = opt.className  || null;
 		
 		//create
 		var that = new Element('div', attr);
@@ -1850,16 +2000,15 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Slider(attribute, option)
-	 *  - attribute (Object) - attributes for container element.
+	 *  new flagrate.Slider(option) -> flagrate.Slider
 	 *  - option (Object) - options.
 	**/
-	var Slider = flagrate.Slider = function _Slider(attr, opt) {
+	var Slider = flagrate.Slider = function _Slider(opt) {
 		
 		opt = opt || {};
 		
 		//create
-		var that = new Progress(attr, opt);
+		var that = new Progress(opt);
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + '-slider');
@@ -2332,7 +2481,7 @@
 		});
 		
 		if (this.disableCloseButton === false) {
-			new Button(null, {
+			new Button({
 				label   : '',
 				onSelect: this.close.bind(this)
 			}).insertTo(this._modal);
@@ -2354,18 +2503,15 @@
 		this.buttons.forEach(function(a) {
 			
 			a.button = new Button({
-				autofocus: a.isFocused || false
-			}, {
-				label   : a.label,
-				icon    : a.icon,
-				onSelect: function(e) {
+				label     : a.label,
+				icon      : a.icon,
+				color     : a.color,
+				isFocuesed: a.isFocused || false,
+				isDisabled: a.isDisabled,
+				onSelect  : function(e) {
 					a.onSelect(e, a.button, this)
 				}.bind(this)
 			});
-			
-			if (a.color) a.button.setColor(a.color);
-			
-			if (a.isDisabled) a.button.disable();
 			
 			this._footer.insert(a.button);
 		}.bind(this));
@@ -2520,5 +2666,76 @@
 			return this;
 		}
 	};
+	
+	/*?
+	 *  class flagrate.Grid
+	**/
+	
+	/*?
+	 *  new flagrate.Grid(option) -> flagrate.Grid
+	 *  - option (Object) - configuration for the grid.
+	 *  
+	 *  Create and initialize the grid.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container.
+	 *  * `className`                (String;  default `"flagrate-grid"`):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `cols`                     (Array; required): of column object.
+	 *  * `rows`                     (Array): of row object.
+	 *  * `multiSelect`              (Boolean; default `false`):
+	 *  * `disableCheckbox`          (Boolean; default `false`):
+	 *  * `disableSelect`            (Boolean; default `false`):
+	 *  * `disableSort`              (Boolean; default `false`):
+	 *  * `disableResize`            (Boolean; default `false`):
+	 *  * `onSelect`                 (Function):
+	 *  * `onDeselect`               (Function):
+	 *  * `onClick`                  (Function):
+	 *  * `onDblClick`               (Function):
+	 *  * `postProcessingOfRow`      (Function):
+	 *  
+	 *  ##### column
+	 *  
+	 *  * `id`                       (String): `id` attribute of `th`
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): styling of `th` (using flagrate.Element.setStyle)
+	 *  * `key`                      (String; required):
+	 *  * `label`                    (String; default `""`):
+	 *  * `icon`                     (String):
+	 *  * `width`                    (Number):
+	 *  
+	 *  ##### row
+	 *  
+	 *  * `id`                       (String): `id` attribute of `tr`
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): styling of `tr` (using flagrate.Element.setStyle)
+	 *  * `cell`                     (Object; default `{}`): of cell object.
+	 *  * `menuItems`                (Array): of Menu items.
+	 *  * `onSelect`                 (Function):
+	 *  * `onDeselect`               (Function):
+	 *  * `onClick`                  (Function):
+	 *  * `onDblClick`               (Function):
+	 *  * `postProcessing`           (Function):
+	 *  
+	 *  ##### cell
+	 *  
+	 *  * `id`                       (String): `id` attribute of `td`
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): styling of `td` (using flagrate.Element.setStyle)
+	 *  * `text`                     (String):
+	 *  * `html`                     (String):
+	 *  * `element`                  (Element):
+	 *  * `onClick`                  (Function):
+	 *  * `onDblClick`               (Function):
+	 *  * `postProcessing`           (Function):
+	**/
+	//<div id="" class="flagrate-grid">
+	//</div>
+	
 	
 })();
