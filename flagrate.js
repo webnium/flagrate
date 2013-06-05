@@ -1239,7 +1239,6 @@
 		
 		that.addEventListener('click', that._onClickHandler.bind(that));
 		
-		that._input.addEventListener('keypress', that._onKeypressHandler.bind(that));
 		that._input.addEventListener('keydown',  that._onKeydownHandler.bind(that));
 		that._input.addEventListener('focus',    that._onFocusHandler.bind(that));
 		that._input.addEventListener('blur',     that._onBlurHandler.bind(that));
@@ -1370,6 +1369,8 @@
 			
 			if (result) this._tokenized(result);
 			
+			this._lastTokenizedValue = this._input.value;
+			
 			return this;
 		}
 		,
@@ -1424,10 +1425,19 @@
 			this._input.focus();
 		}
 		,
-		_onKeypressHandler: function(e) {
-		}
-		,
 		_onKeydownHandler: function(e) {
+			
+			// ENTER:13
+			if (e.keyCode === 13 && this._lastTokenizedValue !== this._input.value) {
+				e.stopPropagation();
+				e.preventDefault();
+				
+				this._lastTokenizedValue = this._input.value;
+				
+				this._tokenize();
+				
+				return;
+			}
 			
 			if (this._candidates && this._candidates.length !== 0) {
 				if (
@@ -1446,6 +1456,10 @@
 					
 					if (this._menu) this._menu.remove();
 				}
+			}
+			
+			if (!this._candidates || this._candidates.length === 0) {
+				
 			}
 			
 			if (this._input.value === '' && this.values.length !== 0) {
