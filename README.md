@@ -7,13 +7,13 @@ Flagrate
 
 Flagrate currently targets the following platforms:
 
-* Microsoft Internet Explorer for Windows, **version 9.0** and higher
-* Mozilla Firefox 20 and higher
-* Apple Safari 6.0.4 and higher
-* Opera 12.15 and higher
-* Chrome 26 and higher
+* Internet Explorer 9+
+* Chrome 26+
+* Firefox 20+
+* Safari 6.0+
+* Opera 12.15+
 
-### Require ###
+### Requirements ###
 
 * **Not required anything!**
 
@@ -26,12 +26,12 @@ To use Flagrate in your application, download the latest release from the
 Flagrate github repository tags (<https://github.com/webnium/flagrate/tags>) and copy 
 `flagrate.js` `flagrate.css` to suitable location. Then include it in your HTML like so:
 
-    <link href="/path/to/flagrate.min.js" rel="stylesheet">
-    <script src="/path/to/flagrate.min.js"></script>
+    <link href="/path/to/flagrate.css" rel="stylesheet">
+    <script src="/path/to/flagrate.js"></script>
 
 Or, you can use official CDN provided by [Webnium](http://webnium.co.jp/):
 
-    <link href="//flagrate.org/flagrate.min.js" rel="stylesheet">
+    <link href="//flagrate.org/flagrate.min.css" rel="stylesheet">
     <script src="//flagrate.org/flagrate.min.js"></script>
 
 Documentation
