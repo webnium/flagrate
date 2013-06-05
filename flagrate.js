@@ -818,13 +818,6 @@
 		}
 		,
 		/*?
-		 *  flagrate.Button#isDisabled() -> Boolean
-		**/
-		isDisabled: function() {
-			return this.hasClassName(flagrate.className + '-button-disabled');
-		}
-		,
-		/*?
 		 *  flagrate.Button#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
@@ -848,8 +841,7 @@
 		,
 		_onSelectHandler: function(e) {
 			
-			if (typeof this.isDisabled === 'function' && this.isDisabled()) return;
-			if (typeof this.isDisabled === 'boolean'  && this.isDisabled) return;
+			if (this.isEnabled() === false) return;
 			
 			//for Firefox
 			if (this.isRemovableByUser && e && e.layerX) {
@@ -1177,13 +1169,6 @@
 		}
 		,
 		/*?
-		 *  flagrate.TextInput#isDisabled() -> Boolean
-		**/
-		isDisabled: function() {
-			return this.hasClassName(flagrate.className + '-textinput-disabled');
-		}
-		,
-		/*?
 		 *  flagrate.TextInput#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
@@ -1285,13 +1270,6 @@
 			this._input.enable();
 			
 			return this._updateTokens();
-		}
-		,
-		/*?
-		 *  flagrate.Tokenizer#isDisabled() -> Boolean
-		**/
-		isDisabled: function() {
-			return this.hasClassName(flagrate.className + '-tokenizer-disabled');
 		}
 		,
 		/*?
@@ -1576,13 +1554,6 @@
 		}
 		,
 		/*?
-		 *  flagrate.TextArea#isDisabled() -> Boolean
-		**/
-		isDisabled: function() {
-			return this.hasClassName(flagrate.className + '-textarea-disabled');
-		}
-		,
-		/*?
 		 *  flagrate.TextArea#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
@@ -1608,6 +1579,196 @@
 		**/
 		isValid: function() {
 			return this.regexp.test(this.getValue());
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Checkbox
+	**/
+	
+	/*?
+	 *  new flagrate.Checkbox(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Checkbox = flagrate.Checkbox = function _Checkbox(attr, opt) {
+		
+		var id = 'flagrate-checkbox-' + (++Checkbox.idCounter).toString(10);
+		
+		opt = opt || {};
+		
+		this.icon   = opt.icon   || null;
+		
+		//create
+		var that = new Element('label', attr).updateText(opt.label);
+		that.writeAttribute('for', id);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-checkbox');
+		
+		if (that.icon) {
+			that.addClassName(flagrate.className + '-icon');
+			that.setStyle({
+				backgroundImage: 'url(' + that.icon + ')'
+			});
+		}
+		
+		that._input = new Element('input', { id: id, type: 'checkbox' });
+		that.insert({ top: new Element() });
+		that.insert({ top: that._input });
+		
+		if (opt.isChecked)  that.check();
+		if (opt.isDisabled) that.disable();
+		
+		return that;
+	};
+	
+	Checkbox.idCounter = 0;
+	
+	Checkbox.prototype = {
+		/*?
+		 *  flagrate.Checkbox#disable() -> flagrate.Checkbox
+		**/
+		disable: function() {
+			
+			this.addClassName(flagrate.className + '-checkbox-disabled');
+			this._input.writeAttribute('disabled', true);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Checkbox#enable() -> flagrate.Checkbox
+		**/
+		enable: function() {
+			
+			this.removeClassName(flagrate.className + '-checkbox-disabled');
+			this._input.writeAttribute('disabled', false);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Checkbox#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-checkbox-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Checkbox#isChecked() -> String
+		**/
+		isChecked: function() {
+			return this._input.readAttribute('checked') === 'checked';
+		}
+		,
+		/*?
+		 *  flagrate.Checkbox#check() -> flagrate.Checkbox
+		**/
+		check: function() {
+			return this._input.writeAttribute('checked', true);
+		}
+		,
+		/*?
+		 *  flagrate.Checkbox#uncheck() -> flagrate.Checkbox
+		**/
+		uncheck: function() {
+			return this._input.writeAttribute('checked', false);
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Radio
+	**/
+	
+	/*?
+	 *  new flagrate.Radio(attribute, option)
+	 *  - attribute (Object) - attributes for container element.
+	 *  - option (Object) - options.
+	**/
+	var Radio = flagrate.Radio = function _Radio(attr, opt) {
+		
+		var id = 'flagrate-radio-' + (++Radio.idCounter).toString(10);
+		
+		opt = opt || {};
+		
+		this.icon   = opt.icon   || null;
+		
+		//create
+		var that = new Element('label', attr).updateText(opt.label);
+		that.writeAttribute('for', id);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-radio');
+		
+		if (that.icon) {
+			that.addClassName(flagrate.className + '-icon');
+			that.setStyle({
+				backgroundImage: 'url(' + that.icon + ')'
+			});
+		}
+		
+		that._input = new Element('input', { id: id, type: 'radio', name: opt.name });
+		that.insert({ top: new Element() });
+		that.insert({ top: that._input });
+		
+		if (opt.isChecked)  that.check();
+		if (opt.isDisabled) that.disable();
+		
+		return that;
+	};
+	
+	Radio.idCounter = 0;
+	
+	Radio.prototype = {
+		/*?
+		 *  flagrate.Radio#disable() -> flagrate.Radio
+		**/
+		disable: function() {
+			
+			this.addClassName(flagrate.className + '-radio-disabled');
+			this._input.writeAttribute('disabled', true);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Radio#enable() -> flagrate.Radio
+		**/
+		enable: function() {
+			
+			this.removeClassName(flagrate.className + '-radio-disabled');
+			this._input.writeAttribute('disabled', false);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Radio#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-radio-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Radio#isChecked() -> String
+		**/
+		isChecked: function() {
+			return this._input.readAttribute('checked') === 'checked';
+		}
+		,
+		/*?
+		 *  flagrate.Radio#check() -> flagrate.Radio
+		**/
+		check: function() {
+			return this._input.writeAttribute('checked', true);
+		}
+		,
+		/*?
+		 *  flagrate.Radio#uncheck() -> flagrate.Radio
+		**/
+		uncheck: function() {
+			return this._input.writeAttribute('checked', false);
 		}
 	};
 	
@@ -1710,13 +1871,6 @@
 		**/
 		enable: function() {
 			return this.removeClassName(flagrate.className + '-slider-disabled');
-		}
-		,
-		/*?
-		 *  flagrate.Slider#isDisabled() -> Boolean
-		**/
-		isDisabled: function() {
-			return this.hasClassName(flagrate.className + '-slider-disabled');
 		}
 		,
 		/*?

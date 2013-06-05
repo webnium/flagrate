@@ -25,6 +25,12 @@
 		div#c > textarea,
 		div#c > .flagrate-tokenizer {
 			display      : inline-block; }
+		
+		div#c > .progress-container > * {
+			margin-top: 20px; }
+		
+		div#c > .progress-container > *:first-child {
+			margin-top: 0; }
 	</style>
 </head>
 <body>
@@ -162,6 +168,45 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Checkbox
+		new flagrate.Checkbox(null, { label: 'Checkbox' }).insertTo(c);
+		new flagrate.Checkbox(null, { label: 'Checkbox', isChecked: true }).insertTo(c);
+		new flagrate.Checkbox(null, { label: 'Checkbox', isChecked: true, isDisabled: true }).insertTo(c);
+		new flagrate.Checkbox(null, { label: 'Checkbox', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Radio
+		new flagrate.Radio(null, { label: 'Radio', name: 'radio' }).insertTo(c);
+		new flagrate.Radio(null, { label: 'Radio', name: 'radio', isChecked: true }).insertTo(c);
+		new flagrate.Radio(null, { label: 'Radio', isChecked: true, isDisabled: true }).insertTo(c);
+		new flagrate.Radio(null, { label: 'Radio', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Progress
+		new flagrate.Element().setStyle({
+			padding        : '20px 50px',
+			width          : '300px',
+			backgroundColor: 'rgba(255,255,255,0.8)'
+		}).insert(
+			new flagrate.Progress(null, { value: 45 })
+		).insertTo(c)
+		
+		// Slider
+		new flagrate.Element(null, { 'class': 'progress-container' }).setStyle({
+			padding        : '20px 50px',
+			width          : '300px',
+			backgroundColor: 'rgba(255,255,255,0.8)'
+		}).insert(
+			new flagrate.Slider(null, { value: 3, max: 6 })
+		).insert(
+			new flagrate.Slider(null, { value: 70, isDisabled: true })
+		).insertTo(c)
+		
+		// Switch
+		//todo
+		
 		// Toolbar
 		new flagrate.Toolbar(null, {
 			items: [
@@ -183,40 +228,6 @@
 		}).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
-		
-		// Progress
-		new flagrate.Element().setStyle({
-			padding        : '20px 50px',
-			width          : '300px',
-			backgroundColor: 'rgba(255,255,255,0.8)'
-		}).insert(
-			new flagrate.Progress(null, { value: 45 }).insertTo(c)
-		).insertTo(c)
-		
-		// Slider
-		new flagrate.Element().setStyle({
-			padding        : '20px 50px',
-			width          : '300px',
-			backgroundColor: 'rgba(255,255,255,0.8)'
-		}).insert(
-			new flagrate.Slider(null, { value: 3, max: 6 }).insertTo(c)
-		).insertTo(c)
-		new flagrate.Element().setStyle({
-			padding        : '20px 50px',
-			width          : '300px',
-			backgroundColor: 'rgba(255,255,255,0.8)'
-		}).insert(
-			new flagrate.Slider(null, { value: 50, isDisabled: true }).insertTo(c)
-		).insertTo(c)
-		
-		// Checkbox
-		//todo
-		
-		// Radio
-		//todo
-		
-		// Switch
-		//todo
 		
 		// Notify
 		var notify = new flagrate.Notify();
