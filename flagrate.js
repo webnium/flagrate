@@ -1,7 +1,7 @@
 /*!
  * Flagrate
  *
- * Copyright (c) 2013 Yuki KAN and Flagrate Contributors
+ * Copyright (c) 2013 Webnium and Flagrate Contributors
  * Licensed under the MIT-License.
  *
  * https://github.com/kanreisa/flagrate
@@ -60,20 +60,22 @@
 	var Element = flagrate.Element = function _Element(tagName, attr) {
 		
 		tagName = tagName || 'div';
-		attr    = attr    || {};
+		attr    = attr    || null;
 		
 		tagName = tagName.toLowerCase();
 		
-		if (Element.cache[tagName] || 'type' in attr) {
+		if (Element.cache[tagName]) {
 			var node = Element.cache[tagName].cloneNode(false);
-		} else {
+		} else if ((attr !== null && 'type' in attr) || tagName === 'select') {
+			var node = document.createElement(tagName);
+		}else {
 			var node = document.createElement(tagName);
 			Element.cache[tagName] = node.cloneNode(false);
 		}
 		
 		extendObject(node, this);
 		
-		return Element.writeAttribute(node, attr);
+		return attr === null ? node : Element.writeAttribute(node, attr);
 	};
 	
 	Element.cache = {};
@@ -1526,7 +1528,9 @@
 				
 				a.onSelect = function(e) {
 					
-					this.values.push(candidate);
+					if (this.max < 0 || this.max > this.values.length) {
+						this.values.push(candidate);
+					}
 					this._updateTokens();
 					this.onChange();
 					
@@ -1571,7 +1575,9 @@
 					e.preventDefault();
 					
 					this._input.value = '';
-					this.values.push(this._candidates[0]);
+					if (this.max < 0 || this.max > this.values.length) {
+						this.values.push(this._candidates[0]);
+					}
 					this._updateTokens();
 					this.onChange();
 					
@@ -2106,6 +2112,7 @@
 	/*?
 	 *  class flagrate.Notify
 	**/
+	// ref: Hypernotifier/1.0 https://github.com/kanreisa/Hypernotifier/blob/792fa7/hypernotifier.js
 	
 	/*?
 	 *  new flagrate.Notify(option) -> flagrate.Notify
@@ -2116,7 +2123,7 @@
 	 *  ##### option
 	 *  
 	 *  * `target`               (Element; default `document.body`):
-	 *  * `className`            (String;  default `"flagrate-notify"`):
+	 *  * `className`            (String):
 	 *  * `disableDesktopNotify` (Boolean; default `false`):
 	 *  * `hAlign`               (String;  default `"right"`; `"right"` | `"left"`):
 	 *  * `vAlign`               (String;  default `"bottom"`; `"top"` | `"bottom"`):
@@ -2131,7 +2138,7 @@
 		opt = opt || {};
 		
 		this.target    = opt.target    || document.body;
-		this.className = opt.className || flagrate.className + ' ' + flagrate.className + '-notify';
+		this.className = opt.className || null;
 		
 		this.disableDesktopNotify = opt.disableDesktopNotify || false;//Notification API(experimental)
 		
@@ -2221,6 +2228,7 @@
 			// </div>
 			//
 			var notify = new Element('div', { 'class': this.className });
+			notify.addClassName(flagrate.className + ' ' + flagrate.className + '-notify');
 			new Element('div', { 'class': 'title' }).insertText(title).insertTo(notify);
 			new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
 			var notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
@@ -2400,6 +2408,7 @@
 	/*?
 	 *  class flagrate.Modal
 	**/
+	// ref: Hypermodal/1.2 https://github.com/kanreisa/Hypermodal/blob/9470a7/hypermodal.css
 	
 	/*?
 	 *  new flagrate.Modal(option) -> flagrate.Modal
@@ -2411,7 +2420,7 @@
 	 *  
 	 *  * `target`                   (Element; default `document.body`):
 	 *  * `id`                       (String):
-	 *  * `className`                (String;  default `"flagrate-modal"`):
+	 *  * `className`                (String):
 	 *  * `title`                    (String):
 	 *  * `subtitle`                 (String):
 	 *  * `text`                     (String):
@@ -2443,7 +2452,7 @@
 		
 		this.target    = opt.target    || document.body;
 		this.id        = opt.id        || null;
-		this.className = opt.className || flagrate.className + ' ' + flagrate.className + '-modal';
+		this.className = opt.className || null;
 		
 		this.title     = opt.title    || '';
 		this.subtitle  = opt.subtitle || '';
@@ -2520,6 +2529,8 @@
 			id     : this.id,
 			'class': this.className
 		});
+		
+		this._base.addClassName(flagrate.className + ' ' + flagrate.className + '-modal');
 		
 		this._obi = new Element('div').update(this._modal).insertTo(this._base);
 		
@@ -2670,6 +2681,7 @@
 	/*?
 	 *  class flagrate.Grid
 	**/
+	// ref: Hypergrid/1.9 https://github.com/kanreisa/Hypergrid/blob/90b032/hypergrid.js
 	
 	/*?
 	 *  new flagrate.Grid(option) -> flagrate.Grid
@@ -2680,23 +2692,26 @@
 	 *  ##### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of container.
-	 *  * `className`                (String;  default `"flagrate-grid"`):
+	 *  * `className`                (String):
 	 *  * `attribute`                (Object):
 	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
-	 *  * `cols`                     (Array; required): of column object.
+	 *  * `cols`                     (Array): of col object.
 	 *  * `rows`                     (Array): of row object.
 	 *  * `multiSelect`              (Boolean; default `false`):
 	 *  * `disableCheckbox`          (Boolean; default `false`):
 	 *  * `disableSelect`            (Boolean; default `false`):
 	 *  * `disableSort`              (Boolean; default `false`):
+	 *  * `disableFilter`            (Boolean; default `false`):
 	 *  * `disableResize`            (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	 *  * `onDeselect`               (Function):
 	 *  * `onClick`                  (Function):
 	 *  * `onDblClick`               (Function):
+	 *  * `onRender`                 (Function):
+	 *  * `onRendered`               (Function):
 	 *  * `postProcessingOfRow`      (Function):
 	 *  
-	 *  ##### column
+	 *  ##### col
 	 *  
 	 *  * `id`                       (String): `id` attribute of `th`
 	 *  * `className`                (String):
@@ -2734,8 +2749,159 @@
 	 *  * `onDblClick`               (Function):
 	 *  * `postProcessing`           (Function):
 	**/
-	//<div id="" class="flagrate-grid">
+	//<div class="flagrate flagrate-grid">
+	//  <div class="flagrate-grid-head">
+	//    <table>
+	//      <thead>
+	//        <tr>
+	//          <th>
+	//          </th>
+	//        </tr>
+	//      </thead>
+	//    </table>
+	//  </div>
+	//  <div class="flagrate-grid-body">
+	//    <table>
+	//      <tbody>
+	//        <tr>
+	//          <td>
+	//          </td>
+	//        </tr>
+	//      </tbody>
+	//    </table>
+	//  </div>
 	//</div>
+	var Grid = flagrate.Grid = function _Grid(opt) {
+		
+		opt = opt || {};
+		
+		this.id                  = opt.id                  || null;
+		this.className           = opt.className           || null;
+		this.attribute           = opt.attribute           || null;
+		this.style               = opt.style               || null;
+		this.cols                = opt.cols                || [];
+		this.rows                = opt.rows                || [];
+		this.multiSelect         = opt.multiSelect         || false;
+		this.disableCheckbox     = opt.disableCheckbox     || false;
+		this.disableSelect       = opt.disableSelect       || false;
+		this.disableSort         = opt.disableSort         || false;
+		this.disableFilter       = opt.disableFilter       || false;
+		this.disableResize       = opt.disableResize       || false;
+		this.onSelect            = opt.onSelect            || null;
+		this.onDeselect          = opt.onDeselect          || null;
+		this.onClick             = opt.onClick             || null;
+		this.onDblClick          = opt.onDblClick          || null;
+		this.onRender            = opt.onRender            || null;
+		this.onRendered          = opt.onRendered          || null;
+		this.postProcessingOfRow = opt.postProcessingOfRow || null;
+		
+		this._id = 'flagrate-grid-' + (++Grid.idCounter).toString(10);
+		
+		return this._create()._requestRender();
+	};
 	
+	Grid.idCounter = 0;
+	
+	Grid.prototype = {
+		/*?
+		 *  flagrate.Grid#insertTo(element) -> flagrate.Grid
+		 *
+		 *  please refer to flagrate.Element.insertTo
+		**/
+		insertTo: function(element) {
+			return this.element.insertTo(element) && this;
+		}
+		,
+		_create: function() {
+			
+			// root container
+			this.element = new Element('div');
+			
+			if (this.id)        this.element.writeAttribute('id', this.id);
+			if (this.className) this.element.writeAttribute('class', this.className);
+			if (this.attribute) this.element.writeAttribute(this.attribute);
+			if (this.style)     this.element.setStyle(this.style);
+			
+			this.element.addClassName(flagrate.className + ' ' + flagrate.className + '-grid');
+			
+			// head container 
+			this._head = new Element('div', { 'class': flagrate.className + '-grid-head' }).insertTo(this.element);
+			this._thead = new Element('thead').insertTo(new Element('table').insertTo(this._head));
+			
+			// body container
+			this._body = new Element('div', { 'class': flagrate.className + '-grid-body' }).insertTo(this.element);
+			this._tbody = new Element('tbody').insertTo(new Element('table').insertTo(this._body));
+			
+			// style container
+			this._style = new Element('style').insertTo(this.element);
+			this._style.type = 'text/css';
+			
+			// head
+			var ths = new Element('tr').insertTo(this._thead);
+			
+			if (this.disableCheckbox === false && this.disableSelect === false && this.multiSelect === true) {
+				new Checkbox().insertTo(new Element('th').insertTo(ths));
+			}
+			
+			this.cols.forEach(function(col, i) {
+				
+				col._id = this._id + '-col-' + i.toString(10);
+				
+				col._th  = new Element('th').insertTo(ths);
+				
+				if (col.id)        col._th.writeAttribute('id', col.id);
+				if (col.className) col._th.writeAttribute('class', col.className);
+				if (col.attribute) col._th.writeAttribute(col.attribute);
+				if (col.style)     col._th.setStyle(col.style);
+				
+				col._th.addClassName(col._id);
+				
+				var width = !!col.width ? (col.width.toString(10) + 'px') : 'auto';
+				this._style.insertText('.' + col._id + '{width:' + width + '}');
+				
+				//if (col.width) col._th.style.width = col.width + 'px';
+				
+				col._div = new Element().insertTo(col._th);
+				
+				if (col.label) col._div.updateText(col.label);
+				
+				if (col.icon) {
+					col._div.addClassName(flagrate.className + '-icon');
+					col._div.setStyle({
+						backgroundImage: 'url(' + col.icon + ')'
+					});
+				}
+			}.bind(this));
+			
+			return this;
+		}
+		,
+		_requestRender: function() {
+			
+			if (this._renderTimer) clearTimeout(this._renderTimer);
+			this._renderTimer = setTimeout(this._render.bind(this), 0);
+			
+			return this;
+		}
+		,
+		_render: function() {
+			
+			if (this.onRender !== null && this.onRender(this) === false) {
+				return this;
+			}
+			
+			this.rows.forEach(function(row, i) {
+				
+				var tr = row._tr || (row._tr = new Element('tr'));
+				tr.insertTo(this._tbody);
+				
+				
+			}.bind(this));
+			
+			if (this.onRendered !== null) this.onRendered(this);
+			
+			return this;
+		}
+	};
 	
 })();

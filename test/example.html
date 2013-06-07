@@ -261,7 +261,48 @@
 		}).insertTo(c);
 		
 		// Grid
-		
+		var grid = new flagrate.Grid({
+			multiSelect: true,
+			cols: [
+				{
+					key  : 'id',
+					label: 'Grid'
+				},
+				{
+					key  : 'name',
+					label: 'Name'
+				},
+				{
+					key  : 'desc',
+					label: 'Description',
+					icon : 'icon.png',
+					width: 200
+				}
+			],
+			rows: [
+				{
+					cell: {
+						id: {
+							text: '0'
+						}
+					}
+				},
+				{
+					cell: {
+						id: {
+							text: '0'
+						}
+					}
+				},
+				{
+					cell: {
+						id: {
+							text: '0'
+						}
+					}
+				}
+			]
+		}).insertTo(c);
 	</script>
 </body>
 </html>
