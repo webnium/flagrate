@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>flagrate</title>
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="robots" content="noarchive">
+	<script type="text/javascript" src="../flagrate.js"></script>
+	<link rel="stylesheet" type="text/css" href="../flagrate.css">
+	<style type="text/css">
+		body {
+			background-color: #e5e4e6;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJUlEQVQYV2N88ODBfwYCQEBAgIFxVCGuUCIteD58+EAwwEE2AQD70iYhFOygFAAAAABJRU5ErkJggg==); }
+		
+		body, input {
+			font-family     : "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ",
+			                  Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; }
+		
+		div#c > * {
+			margin-bottom: 10px;
+			margin-right : 5px; }
+		
+		div#c > input,
+		div#c > textarea,
+		div#c > .flagrate-tokenizer {
+			display      : inline-block; }
+		
+		div#c > .progress-container > * {
+			margin-top: 20px; }
+		
+		div#c > .progress-container > *:first-child {
+			margin-top: 0; }
+	</style>
+</head>
+<body>
+	<div id="c"></div>
+	<script type="text/javascript">
+		var c = document.getElementById('c');
+		
+		// Element tests
+		new flagrate.Element().insertText('<b>text</b>').hide().insertTo(c);
+		new flagrate.Element().insert('<b>html</b>').hide().insertTo(c);
+		new flagrate.Element('div', { id: 'id' }).hide().insertTo(c);
+		
+		// Button
+		new flagrate.Button({ label: 'Button' }).insertTo(c);
+		new flagrate.Button({ label: 'Button', icon: 'icon.png' }).insertTo(c);
+		new flagrate.Button({ label: 'Button', isRemovableByUser: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// disabled Button
+		new flagrate.Button({ label: 'Button' }).disable().insertTo(c);
+		new flagrate.Button({ label: 'Button', icon: 'icon.png' }).disable().insertTo(c);
+		new flagrate.Button({ label: 'Button', isRemovableByUser: true }).disable().insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// colored Button
+		new flagrate.Button({ label: 'Blue'   }).setColor('@blue').insertTo(c);
+		new flagrate.Button({ label: 'Pink'   }).setColor('@pink').insertTo(c);
+		new flagrate.Button({ label: 'Red'    }).setColor('@red').insertTo(c);
+		new flagrate.Button({ label: 'Green'  }).setColor('@green').insertTo(c);
+		new flagrate.Button({ label: 'Orange' }).setColor('@orange').insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// disabled colored Button
+		new flagrate.Button({ label: 'Blue', color: '@blue', isDisabled: true }).insertTo(c);
+		new flagrate.Button({ label: 'Pink', color: '@pink', isDisabled: true }).insertTo(c);
+		new flagrate.Button({ label: 'Red', color: '@red', isDisabled: true }).insertTo(c);
+		new flagrate.Button({ label: 'Green', color: '@green', isDisabled: true }).insertTo(c);
+		new flagrate.Button({ label: 'Orange', color: '@orange', isDisabled: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Menu
+		new flagrate.Menu(
+			{
+				items: [
+					{
+						label: 'Menu'
+					},
+					{
+						label: 'Menu',
+						icon : 'icon.png'
+					},
+					'--',
+					{
+						label     : 'Menu',
+						isDisabled: true
+					}
+				]
+			}
+		).setStyle({
+			display: 'inline-block'
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Pulldown
+		new flagrate.Pulldown({
+			label: 'Pulldown',
+			items: [
+				{
+					label: 'Pulldown'
+				},
+				{
+					label: 'Pulldown',
+					icon : 'icon.png'
+				},
+				'--',
+				{
+					label     : 'Pulldown',
+					isDisabled: true
+				}
+			]
+		}).insertTo(c);
+		new flagrate.Pulldown({ label: 'Pulldown', isDisabled: true }).insertTo(c);
+		new flagrate.Pulldown({
+			label: 'Pulldown',
+			icon : 'icon.png',
+			items: [
+				{
+					label: 'Pulldown'
+				},
+				{
+					label: 'Pulldown',
+					icon : 'icon.png'
+				},
+				'--',
+				{
+					label     : 'Pulldown',
+					isDisabled: true
+				}
+			]
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// TextInput
+		new flagrate.TextInput({ placeholder: 'TextInput' }).insertTo(c);
+		new flagrate.TextInput({ value: 'TextInput', isDisabled: true }).insertTo(c);
+		new flagrate.TextInput({ placeholder: 'TextInput', icon: 'icon.png' }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Tokenizer
+		new flagrate.Tokenizer({ placeholder: 'Tokenizer' }).insertTo(c);
+		new flagrate.Tokenizer({ values: ['Token'], isDisabled: true }).insertTo(c);
+		var tokenizer = new flagrate.Tokenizer({
+			placeholder: 'Tokenizer',
+			icon       : 'icon.png',
+			max        : 2,
+			tokenize   : function(word) {
+				return word.toUpperCase();
+			}
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// TextArea
+		new flagrate.TextArea({ placeholder: 'TextArea' }).insertTo(c);
+		new flagrate.TextArea({ value: 'TextArea', isDisabled: true }).insertTo(c);
+		new flagrate.TextArea({ placeholder: 'TextArea', icon: 'icon.png' }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Checkbox
+		new flagrate.Checkbox({ label: 'Checkbox' }).insertTo(c);
+		new flagrate.Checkbox({ label: 'Checkbox', isChecked: true }).insertTo(c);
+		new flagrate.Checkbox({ label: 'Checkbox', isChecked: true, isDisabled: true }).insertTo(c);
+		new flagrate.Checkbox({ label: 'Checkbox', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Radio
+		new flagrate.Radio({ label: 'Radio', name: 'radio' }).insertTo(c);
+		new flagrate.Radio({ label: 'Radio', name: 'radio', isChecked: true }).insertTo(c);
+		new flagrate.Radio({ label: 'Radio', isChecked: true, isDisabled: true }).insertTo(c);
+		new flagrate.Radio({ label: 'Radio', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Select
+		
+		
+		// Date
+		
+		
+		// Time
+		
+		
+		// Datetime
+		
+		
+		// Progress
+		new flagrate.Element().setStyle({
+			padding        : '20px 50px',
+			width          : '300px',
+			backgroundColor: 'rgba(255,255,255,0.8)'
+		}).insert(
+			new flagrate.Progress({ value: 45 })
+		).insertTo(c)
+		
+		// Slider
+		new flagrate.Element('div', { 'class': 'progress-container' }).setStyle({
+			padding        : '20px 50px',
+			width          : '300px',
+			backgroundColor: 'rgba(255,255,255,0.8)'
+		}).insert(
+			new flagrate.Slider({ value: 3, max: 6 })
+		).insert(
+			new flagrate.Slider({ value: 70, isDisabled: true })
+		).insertTo(c)
+		
+		// Switch
+		//todo
+		
+		// Toolbar
+		new flagrate.Toolbar({
+			items: [
+				new flagrate.Element('span').insertText('Toolbar'),
+				new flagrate.Button({ label: 'Button' }),
+				'--',
+				new flagrate.Pulldown({ label: 'Pulldown', items: [{ label: 'item' }] }),
+				new flagrate.Button({ label: 'Button', icon: 'icon.png' }),
+				'--',
+				{
+					key    : 'hoge',
+					element: new flagrate.TextInput({ placeholder: 'TextInput', icon: 'icon.png' })
+				},
+				new flagrate.Button({ label: 'Button', color: '@green' }),
+				'--',
+				new flagrate.Button({ label: 'Button', isDisabled: true }),
+				new flagrate.Button({ label: 'Button', color: '@blue', isDisabled: true })
+			]
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Notify
+		var notify = new flagrate.Notify();
+		new flagrate.Button({
+			color   : '@orange',
+			label   : 'click to create Notify',
+			onSelect: function() {
+				notify.create({ message: 'message' });
+			}
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Modal
+		var modal = new flagrate.Modal({ title: 'Modal', subtitle: 'subtitle', text: 'text' });
+		new flagrate.Button({
+			color   : '@blue',
+			label   : 'click to create Modal',
+			onSelect: function(){ modal.show(); }
+		}).insertTo(c);
+		
+		// Grid
+		var grid = new flagrate.Grid({
+			multiSelect: true,
+			cols: [
+				{
+					key  : 'id',
+					label: 'Grid'
+				},
+				{
+					key  : 'name',
+					label: 'Name'
+				},
+				{
+					key  : 'desc',
+					label: 'Description',
+					icon : 'icon.png',
+					width: 200
+				}
+			],
+			rows: [
+				{
+					cell: {
+						id: {
+							text: '0'
+						}
+					}
+				},
+				{
+					cell: {
+						id: {
+							text: '0'
+						}
+					}
+				},
+				{
+					cell: {
+						id: {
+							text: '0'
+						}
+					}
+				}
+			]
+		}).insertTo(c);
+	</script>
+</body>
+</html>
