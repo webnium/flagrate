@@ -1,0 +1,24 @@
+machine:
+  node:
+    version: 0.10.0
+
+dependencies:
+  pre:
+    - wget -O selenium-server.jar http://selenium.googlecode.com/files/selenium-server-standalone-2.33.0.jar
+    - nohup bash -c "java -jar selenium-server.jar &"
+    - npm install soda
+    - npm install mocha
+
+test:
+  override:
+    - mocha -R spec
+
+deployment:
+  gh-pages:
+    branch: master
+    commands:
+      - git checkout gh-pages
+      - git config --global user.email "flagrate@webnium.co.jp"
+      - git config --global user.name "Flagrate"
+      - git merge --no-ff -m "Merge branch 'master' into gh-pages by CicleCI" master
+      - git push
