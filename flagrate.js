@@ -898,7 +898,7 @@
 		,
 		_onRemoveHandler: function(e) {
 			
-			if (this.isEnabled()) this.remove() && this.onRemove(e);
+			if (this.isEnabled() && this.remove()) this.onRemove(e);
 		}
 	};
 	
@@ -1461,7 +1461,7 @@
 					{
 						isDisabled       : (this.isEnabled() === false),
 						isRemovableByUser: (this.isEnabled()),
-						onRemove         : function(){ this.removeValue(value); }.bind(this),
+						onRemove         : this._createTokenButtonOnRemoveHandler(this, value),
 						label            : label
 					}
 				).insertTo(this._tokens);
@@ -1485,6 +1485,10 @@
 			}
 			
 			return this;
+		}
+		,
+		_createTokenButtonOnRemoveHandler: function(that, value) {
+			return function() { that.removeValue(value); };
 		}
 		,
 		_tokenize: function(e) {
@@ -1523,24 +1527,17 @@
 			for (var i = 0, l = candidates.length; i < l; i++) {
 				var candidate = candidates[i];
 				
+				var a;
+				
 				if (typeof candidate === 'string') {
-					var a = { label: candidate };
+					a = { label: candidate };
 				} else {
-					var a = candidate;
+					a = candidate;
 				}
 				
 				if (a.onSelect) a._onSelect = a.onSelect;
 				
-				a.onSelect = function(e) {
-					
-					if (this.max < 0 || this.max > this.values.length) {
-						this.values.push(candidate);
-					}
-					this._updateTokens();
-					this.onChange();
-					
-					if (a._onSelect) a._onSelect(e);
-				}.bind(this);
+				a.onSelect = this._createMenuOnSelectHandler(this, candidate, a);
 				
 				menu.push(a);
 			}
@@ -1549,6 +1546,20 @@
 			this._menu = menu;
 			
 			return this;
+		}
+		,
+		_createMenuOnSelectHandler: function(that, candidate, menuItem) {
+			
+			return function(e) {
+				
+				if (that.max < 0 || that.max > that.values.length) {
+					that.values.push(candidate);
+				}
+				that._updateTokens();
+				that.onChange();
+				
+				if (menuItem._onSelect) menuItem._onSelect(e);
+			};
 		}
 		,
 		_onClickHandler: function(e) {
@@ -2830,10 +2841,12 @@
 		**/
 		select: function(a) {
 			
+			var rows;
+			
 			if (a instanceof Array) {
-				var rows = a;
+				rows = a;
 			} else {
-				var rows = [];
+				rows = [];
 				
 				for (var i = 0, l = arguments.length; i < l; i++) {
 					if (typeof arguments[i] === 'number') {
@@ -2845,7 +2858,7 @@
 			}
 			
 			for (var i = 0, l = rows.length; i < l; i++) {
-				var row = rows[i];
+				row = rows[i];
 				
 				row.isSelected = true;
 				
@@ -2867,10 +2880,12 @@
 		**/
 		deselect: function(a) {
 			
+			var rows;
+			
 			if (a instanceof Array) {
-				var rows = a;
+				rows = a;
 			} else {
-				var rows = [];
+				rows = [];
 				
 				for (var i = 0, l = arguments.length; i < l; i++) {
 					if (typeof arguments[i] === 'number') {
@@ -2882,7 +2897,7 @@
 			}
 			
 			for (var i = 0, l = rows.length; i < l; i++) {
-				var row = rows[i];
+				row = rows[i];
 				
 				row.isSelected = false;
 				
@@ -3017,18 +3032,7 @@
 						row._tr.addClassName(flagrate.className + '-grid-row-clickable');
 					}
 					
-					row._tr.onclick = (function(that, row) {
-						
-						return function(e) {
-							
-							if (row.onClick)  row.onClick(e, row);
-							if (that.onClick) that.onClick(e, row);
-							
-							if (that.disableSelect === false) {
-								row.isSelected === true ? that.deselect(row) : that.select(row);
-							}
-						};
-					})(this, row);
+					row._tr.onclick = this._createRowOnClickHandler(this, row);
 				}
 				
 				if (isCheckable) {
@@ -3067,6 +3071,19 @@
 			if (this.onRendered !== null) this.onRendered(this);
 			
 			return this;
+		}
+		,
+		_createRowOnClickHandler: function(that, row) {
+			
+			return function(e) {
+				
+				if (row.onClick)  row.onClick(e, row);
+				if (that.onClick) that.onClick(e, row);
+				
+				if (that.disableSelect === false) {
+					row.isSelected === true ? that.deselect(row) : that.select(row);
+				}
+			};
 		}
 	};
 	
