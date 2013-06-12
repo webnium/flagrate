@@ -567,3 +567,81 @@ div.flagrate-modal.flagrate-modal-visible {
 				div.flagrate-modal > div > div > footer > button {
 					float      : right;
 					margin-left: 5px; }
+
+div.flagrate-grid {
+	overflow        : auto;
+	background-color: #fff; }
+	
+	div.flagrate-grid > div.flagrate-grid-head {
+		 }
+	
+		div.flagrate-grid > div > table {
+			position       : relative;
+			border         : none;
+			border-collapse: collapse;
+			table-layout   : fixed;
+			overflow       : hidden;
+			width          : 100%; }
+				
+				div.flagrate-grid > div > table > thead > tr {
+					background-color: #e9e9e9; }
+				
+				div.flagrate-grid > div > table > tbody > tr:nth-child(even) {
+					background-color: #eee; }
+				
+				div.flagrate-grid > div > table > tbody > tr:hover {
+					background-color: #ddd; }
+				
+				div.flagrate-grid > div > table > tbody > tr:nth-child(even):hover {
+					background-color: #d9d9d9; }
+				
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected {
+					background-color: rgba(26,96,237,0.35); }
+				
+				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected {
+					background-color: rgba(26,96,237,0.40); }
+				
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover {
+					background-color: rgba(26,96,237,0.45); }
+				
+				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected:hover {
+					background-color: rgba(26,96,237,0.50); }
+				
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selectable,
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-clickable {
+					cursor: pointer; }
+					
+					div.flagrate-grid > div > table > thead > tr > th,
+					div.flagrate-grid > div > table > tbody > tr > td {
+						padding       : 0;
+						height        : 30px;
+						text-align    : left;
+						overflow      : hidden;
+						vertical-align: top; }
+					
+					div.flagrate-grid > div > table > thead > tr > th {
+						 }
+					
+					div.flagrate-grid > div > table > tbody > tr > td {
+						 }
+					
+					div.flagrate-grid > div > table > tbody > tr:first-child > td {
+						box-shadow: inset 0 1px 0 rgba(0,0,0,0.25); }
+					
+					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-checkbox,
+					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-checkbox {
+						width: 30px; }
+					
+						div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-checkbox > .flagrate-checkbox,
+						div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-checkbox > .flagrate-checkbox {
+							margin: 5px 0 0 5px; }
+						
+						div.flagrate-grid > div > table > thead > tr > th > div,
+						div.flagrate-grid > div > table > tbody > tr > td > div {
+							margin     : 5px 0 0 5px;
+							line-height: 20px; }
+						
+						div.flagrate-grid > div > table > thead > tr > th > div.flagrate-icon,
+						div.flagrate-grid > div > table > tbody > tr > td > div.flagrate-icon {
+							padding-left       : 20px;
+							background-position: 0 center; }
