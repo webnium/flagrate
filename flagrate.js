@@ -3104,7 +3104,7 @@
 				
 				if (that.disableSelect === false) {
 					if (row.isSelected === true) {
-						that.deselect(row)
+						that.deselect(row);
 					} else {
 						that.select(row);
 					}
