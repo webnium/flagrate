@@ -4,14 +4,16 @@ machine:
 
 dependencies:
   pre:
-    - wget -O selenium-server.jar http://selenium.googlecode.com/files/selenium-server-standalone-2.33.0.jar
-    - nohup bash -c "java -jar selenium-server.jar &"
-    - npm install soda
-    - npm install mocha
+    #- wget -O selenium-server.jar http://selenium.googlecode.com/files/selenium-server-standalone-2.33.0.jar
+    #- nohup bash -c "java -jar selenium-server.jar &"
+    #- npm install soda
+    #- npm install mocha
+    - npm install jslint
 
 test:
   override:
-    - mocha -R spec
+    #- mocha -R spec
+    - jslint flagrate.js
 
 deployment:
   gh-pages:
@@ -31,4 +33,5 @@ deployment:
       - unzip -p yuicompressor.zip yuicompressor-2.4.7/build/* > yuicompressor.jar
       - java -jar yuicompressor.jar --type css flagrate.css > flagrate.min.css
       - git add flagrate.min.css
+      - git commit -a -m "Build `flagrate.min.js` and `flagrate.min.css`"
       - git push
