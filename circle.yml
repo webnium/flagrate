@@ -8,7 +8,7 @@ dependencies:
     #- nohup bash -c "java -jar selenium-server.jar &"
     #- npm install soda
     #- npm install mocha
-    - npm install jslint
+    - sudo npm install -g jslint
 
 test:
   override:
