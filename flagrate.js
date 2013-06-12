@@ -1,3 +1,4 @@
+/* jshint laxcomma: true */
 /*!
  * Flagrate
  *
