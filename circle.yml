@@ -8,12 +8,12 @@ dependencies:
     #- nohup bash -c "java -jar selenium-server.jar &"
     #- npm install soda
     #- npm install mocha
-    - sudo npm install -g jslint
+    - npm install jshint -g
 
 test:
   override:
     #- mocha -R spec
-    - jslint flagrate.js
+    - jshint flagrate.js
 
 deployment:
   gh-pages:
