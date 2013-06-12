@@ -1474,7 +1474,8 @@
 			var tw = this._tokens.getWidth();
 			var tm = parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10) || 2;
 			var im = parseInt(this._input.getStyle('margin-left').replace('px', ''), 10) || 2;
-			var aw = vw - pl - pr - tw - tm - im - (bw * 2);
+			var ip = parseInt(this._input.getStyle('padding-left').replace('px', ''), 10) || 2;
+			var aw = vw - pl - pr - tw - tm - im - ip - (bw * 2);
 			
 			if (aw > 30) {
 				this._input.style.width = aw + 'px';
