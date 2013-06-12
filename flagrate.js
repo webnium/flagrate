@@ -1749,7 +1749,10 @@
 		 *  flagrate.TextArea#setValue(value) -> flagrate.TextArea
 		**/
 		setValue: function(value) {
-			return this.value = value;
+			
+			this.value = value;
+			
+			return this;
 		}
 		,
 		/*?
@@ -2299,7 +2302,7 @@
 					if (isAlive) {
 						closeNotify();
 					}
-				}
+				};
 				
 				closeTimer = setTimeout(onTimeout, timeout * 1000);
 				
@@ -2508,7 +2511,7 @@
 		});
 		
 		if (this.disableCloseButton === false) {
-			new Button({
+			this._closeButton = new Button({
 				label   : '',
 				onSelect: this.close.bind(this)
 			}).insertTo(this._modal);
@@ -2536,9 +2539,7 @@
 				color     : a.color,
 				isFocuesed: a.isFocused || false,
 				isDisabled: a.isDisabled,
-				onSelect  : function(e) {
-					a.onSelect(e, a.button, this)
-				}.bind(this)
+				onSelect  : this._createButtonOnSelectHandler(this, a)
 			});
 			
 			this._footer.insert(a.button);
@@ -2559,10 +2560,24 @@
 		
 		this._onKeydownHandler = function(e) {
 			
-			// ESC:27
-			if (e.keyCode !== 27) return;
+			var active = document.activeElement.tagName;
 			
-			this.close();
+			if (active !== 'BODY') return;
+			
+			e.stopPropagation();
+			e.preventDefault();
+			
+			// TAB:9
+			if (e.keyCode === 9) {
+				if (this._closeButton) return this._closeButton.focus();
+				if (this.buttons[0]) return this.buttons[0].focus();
+			}
+			
+			// ENTER:13
+			if (e.keyCode === 13 && this.buttons[0]) return this.buttons[0].button.click();
+			
+			// ESC:27
+			if (e.keyCode === 27) return this.close();
 		}.bind(this);
 		
 		return this;
@@ -2694,6 +2709,13 @@
 			this.onClose(this, e);
 			
 			return this;
+		}
+		,
+		_createButtonOnSelectHandler: function(that, button) {
+			
+			return function(e) {
+				button.onSelect(e, that);
+			};
 		}
 	};
 	
@@ -2857,8 +2879,8 @@
 				}
 			}
 			
-			for (var i = 0, l = rows.length; i < l; i++) {
-				row = rows[i];
+			for (var j = 0, m = rows.length; j < m; j++) {
+				var row = rows[j];
 				
 				row.isSelected = true;
 				
@@ -2896,8 +2918,8 @@
 				}
 			}
 			
-			for (var i = 0, l = rows.length; i < l; i++) {
-				row = rows[i];
+			for (var j = 0, m = rows.length; j < m; j++) {
+				var row = rows[j];
 				
 				row.isSelected = false;
 				
@@ -3081,7 +3103,11 @@
 				if (that.onClick) that.onClick(e, row);
 				
 				if (that.disableSelect === false) {
-					row.isSelected === true ? that.deselect(row) : that.select(row);
+					if (row.isSelected === true) {
+						that.deselect(row)
+					} else {
+						that.select(row);
+					}
 				}
 			};
 		}
