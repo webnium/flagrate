@@ -21,4 +21,14 @@ deployment:
       - git config --global user.email "flagrate@webnium.co.jp"
       - git config --global user.name "Flagrate"
       - git merge --no-ff -m "Merge branch 'master' into gh-pages by CicleCI" master
+      - git rm --ignore-unmatch flagrate.min.js
+      - wget -O compiler.tar.gz https://closure-compiler.googlecode.com/files/compiler-latest.tar.gz
+      - tar -xzvf compiler.tar.gz compiler.jar
+      - java -jar compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js flagrate.js > flagrate.min.js
+      - git add flagrate.min.js
+      - git rm --ignore-unmatch flagrate.min.css
+      - wget -O yuicompressor.zip https://github.com/downloads/yui/yuicompressor/yuicompressor-2.4.7.zip
+      - unzip -p yuicompressor.zip yuicompressor-2.4.7/build/* > yuicompressor.jar
+      - java -jar yuicompressor.jar --type css flagrate.css > flagrate.min.css
+      - git add flagrate.min.css
       - git push
