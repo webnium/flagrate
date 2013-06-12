@@ -1,3 +1,4 @@
+/* jshint laxcomma: true */
 /*!
  * Flagrate
  *
@@ -64,12 +65,14 @@
 		
 		tagName = tagName.toLowerCase();
 		
+		var node;
+		
 		if (Element.cache[tagName]) {
-			var node = Element.cache[tagName].cloneNode(false);
+			node = Element.cache[tagName].cloneNode(false);
 		} else if ((attr !== null && 'type' in attr) || tagName === 'select') {
-			var node = document.createElement(tagName);
+			node = document.createElement(tagName);
 		}else {
-			var node = document.createElement(tagName);
+			node = document.createElement(tagName);
 			Element.cache[tagName] = node.cloneNode(false);
 		}
 		
@@ -895,7 +898,7 @@
 		,
 		_onRemoveHandler: function(e) {
 			
-			if (this.isEnabled()) this.remove() && this.onRemove(e);
+			if (this.isEnabled() && this.remove()) this.onRemove(e);
 		}
 	};
 	
@@ -944,9 +947,9 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-menu');
 		
-		opt.items.forEach(function(a) {
-			that.push(a);
-		}.bind(that));
+		for (var i = 0, l = opt.items.length; i < l; i++) {
+			that.push(opt.items[i]);
+		}
 		
 		that.addEventListener('click', function(e) {
 			
@@ -1142,9 +1145,9 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-toolbar');
 		
-		opt.items.forEach(function(a) {
-			that.push(a);
-		}.bind(that));
+		for (var i = 0, l = opt.items.length; i < l; i++) {
+			that.push(opt.items[i]);
+		}
 		
 		if (opt.style) that.setStyle(opt.style);
 		
@@ -1443,7 +1446,8 @@
 			
 			this._tokens.update();
 			
-			this.values.forEach(function(value) {
+			for (var i = 0, l = this.values.length; i < l; i++) {
+				var value = this.values[i];
 				
 				var label = '';
 				
@@ -1457,11 +1461,11 @@
 					{
 						isDisabled       : (this.isEnabled() === false),
 						isRemovableByUser: (this.isEnabled()),
-						onRemove         : function(){ this.removeValue(value); }.bind(this),
+						onRemove         : this._createTokenButtonOnRemoveHandler(this, value),
 						label            : label
 					}
 				).insertTo(this._tokens);
-			}.bind(this));
+			}
 			
 			var vw = this.getWidth();
 			var bw = parseInt(this.getStyle('border-width').replace('px', ''), 10)  || 2;
@@ -1481,6 +1485,10 @@
 			}
 			
 			return this;
+		}
+		,
+		_createTokenButtonOnRemoveHandler: function(that, value) {
+			return function() { that.removeValue(value); };
 		}
 		,
 		_tokenize: function(e) {
@@ -1516,34 +1524,42 @@
 			
 			this.insert({ top: menu });
 			
-			candidates.forEach(function(candidate) {
+			for (var i = 0, l = candidates.length; i < l; i++) {
+				var candidate = candidates[i];
+				
+				var a;
 				
 				if (typeof candidate === 'string') {
-					var a = { label: candidate };
+					a = { label: candidate };
 				} else {
-					var a = candidate;
+					a = candidate;
 				}
 				
 				if (a.onSelect) a._onSelect = a.onSelect;
 				
-				a.onSelect = function(e) {
-					
-					if (this.max < 0 || this.max > this.values.length) {
-						this.values.push(candidate);
-					}
-					this._updateTokens();
-					this.onChange();
-					
-					if (a._onSelect) a._onSelect(e);
-				}.bind(this);
+				a.onSelect = this._createMenuOnSelectHandler(this, candidate, a);
 				
 				menu.push(a);
-			}.bind(this));
+			}
 			
 			if (this._menu) this._menu.remove();
 			this._menu = menu;
 			
 			return this;
+		}
+		,
+		_createMenuOnSelectHandler: function(that, candidate, menuItem) {
+			
+			return function(e) {
+				
+				if (that.max < 0 || that.max > that.values.length) {
+					that.values.push(candidate);
+				}
+				that._updateTokens();
+				that.onChange();
+				
+				if (menuItem._onSelect) menuItem._onSelect(e);
+			};
 		}
 		,
 		_onClickHandler: function(e) {
@@ -1733,7 +1749,10 @@
 		 *  flagrate.TextArea#setValue(value) -> flagrate.TextArea
 		**/
 		setValue: function(value) {
-			return this.value = value;
+			
+			this.value = value;
+			
+			return this;
 		}
 		,
 		/*?
@@ -2283,7 +2302,7 @@
 					if (isAlive) {
 						closeNotify();
 					}
-				}
+				};
 				
 				closeTimer = setTimeout(onTimeout, timeout * 1000);
 				
@@ -2388,7 +2407,9 @@
 			var pX = 0;
 			var pY = 0;
 			
-			this.notifies.forEach(function(notify, i) {
+			for (var i = 0, l = this.notifies.length; i < l; i++) {
+				var notify = this.notifies[i];
+				
 				var x = this.vMargin + pX;
 				var y = this.hMargin + pY;
 				
@@ -2401,7 +2422,7 @@
 					pY  = 0;
 					pX += this.spacing + notify.offsetWidth;
 				}
-			}.bind(this));
+			}
 		}
 	};
 	
@@ -2490,7 +2511,7 @@
 		});
 		
 		if (this.disableCloseButton === false) {
-			new Button({
+			this._closeButton = new Button({
 				label   : '',
 				onSelect: this.close.bind(this)
 			}).insertTo(this._modal);
@@ -2509,7 +2530,8 @@
 		
 		this._footer = new Element('footer').insertTo(this._modal);
 		
-		this.buttons.forEach(function(a) {
+		for (var i = 0, l = this.buttons.length; i < l; i++) {
+			var a = this.buttons[i];
 			
 			a.button = new Button({
 				label     : a.label,
@@ -2517,13 +2539,11 @@
 				color     : a.color,
 				isFocuesed: a.isFocused || false,
 				isDisabled: a.isDisabled,
-				onSelect  : function(e) {
-					a.onSelect(e, a.button, this)
-				}.bind(this)
+				onSelect  : this._createButtonOnSelectHandler(this, a)
 			});
 			
 			this._footer.insert(a.button);
-		}.bind(this));
+		}
 		
 		this._base = new Element('div', {
 			id     : this.id,
@@ -2540,10 +2560,24 @@
 		
 		this._onKeydownHandler = function(e) {
 			
-			// ESC:27
-			if (e.keyCode !== 27) return;
+			var active = document.activeElement.tagName;
 			
-			this.close();
+			if (active !== 'BODY') return;
+			
+			e.stopPropagation();
+			e.preventDefault();
+			
+			// TAB:9
+			if (e.keyCode === 9) {
+				if (this._closeButton) return this._closeButton.focus();
+				if (this.buttons[0]) return this.buttons[0].focus();
+			}
+			
+			// ENTER:13
+			if (e.keyCode === 13 && this.buttons[0]) return this.buttons[0].button.click();
+			
+			// ESC:27
+			if (e.keyCode === 27) return this.close();
 		}.bind(this);
 		
 		return this;
@@ -2676,6 +2710,13 @@
 			
 			return this;
 		}
+		,
+		_createButtonOnSelectHandler: function(that, button) {
+			
+			return function(e) {
+				button.onSelect(e, that);
+			};
+		}
 	};
 	
 	/*?
@@ -2697,6 +2738,7 @@
 	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
 	 *  * `cols`                     (Array): of col object.
 	 *  * `rows`                     (Array): of row object.
+	 *  * `headless`                 (Boolean; default `false`):
 	 *  * `multiSelect`              (Boolean; default `false`):
 	 *  * `disableCheckbox`          (Boolean; default `false`):
 	 *  * `disableSelect`            (Boolean; default `false`):
@@ -2730,6 +2772,7 @@
 	 *  * `style`                    (Object): styling of `tr` (using flagrate.Element.setStyle)
 	 *  * `cell`                     (Object; default `{}`): of cell object.
 	 *  * `menuItems`                (Array): of Menu items.
+	 *  * `isSelected`               (Boolean):
 	 *  * `onSelect`                 (Function):
 	 *  * `onDeselect`               (Function):
 	 *  * `onClick`                  (Function):
@@ -2781,6 +2824,7 @@
 		this.style               = opt.style               || null;
 		this.cols                = opt.cols                || [];
 		this.rows                = opt.rows                || [];
+		this.headless            = opt.headless            || false;
 		this.multiSelect         = opt.multiSelect         || false;
 		this.disableCheckbox     = opt.disableCheckbox     || false;
 		this.disableSelect       = opt.disableSelect       || false;
@@ -2812,6 +2856,102 @@
 			return this.element.insertTo(element) && this;
 		}
 		,
+		/*?
+		 *  flagrate.Grid#select(row(s)[, row, row, ...]) -> flagrate.Grid
+		 *
+		 *  select row(s)
+		**/
+		select: function(a) {
+			
+			var rows;
+			
+			if (a instanceof Array) {
+				rows = a;
+			} else {
+				rows = [];
+				
+				for (var i = 0, l = arguments.length; i < l; i++) {
+					if (typeof arguments[i] === 'number') {
+						if (this.rows[arguments[i]]) rows.push(this.rows[arguments[i]]);
+					} else if (typeof a === 'object') {
+						if (this.rows.indexOf(a) !== -1) rows.push(this.rows[this.rows.indexOf(a)]);
+					}
+				}
+			}
+			
+			for (var j = 0, m = rows.length; j < m; j++) {
+				var row = rows[j];
+				
+				row.isSelected = true;
+				
+				if (row._tr.hasClassName(flagrate.className + '-grid-row-selected') === true) continue;
+				
+				row._tr.addClassName(flagrate.className + '-grid-row-selected');
+				
+				if (row.onSelect) row.onSelect(window.event, row);
+				if (this.onSelect) this.onSelect(window.event, row);
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#deselect(row(s)[, row, row, ...]) -> flagrate.Grid
+		 *
+		 *  deselect row(s)
+		**/
+		deselect: function(a) {
+			
+			var rows;
+			
+			if (a instanceof Array) {
+				rows = a;
+			} else {
+				rows = [];
+				
+				for (var i = 0, l = arguments.length; i < l; i++) {
+					if (typeof arguments[i] === 'number') {
+						if (this.rows[arguments[i]]) rows.push(this.rows[arguments[i]]);
+					} else if (typeof a === 'object') {
+						if (this.rows.indexOf(a) !== -1) rows.push(this.rows[this.rows.indexOf(a)]);
+					}
+				}
+			}
+			
+			for (var j = 0, m = rows.length; j < m; j++) {
+				var row = rows[j];
+				
+				row.isSelected = false;
+				
+				if (row._tr.hasClassName(flagrate.className + '-grid-row-selected') === false) continue;
+				
+				row._tr.removeClassName(flagrate.className + '-grid-row-selected');
+				
+				if (row.onDeselect) row.onDeselect(window.event, row);
+				if (this.onDeselect) this.onDeselect(window.event, row);
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#selectAll() -> flagrate.Grid
+		 *
+		 *  select all rows
+		**/
+		selectAll: function() {
+			return this.select(this.rows);
+		}
+		,
+		/*?
+		 *  flagrate.Grid#deselectAll() -> flagrate.Grid
+		 *
+		 *  deselect all rows
+		**/
+		deselectAll: function() {
+			return this.deselect(this.rows);
+		}
+		,
 		_create: function() {
 			
 			// root container
@@ -2823,6 +2963,8 @@
 			if (this.style)     this.element.setStyle(this.style);
 			
 			this.element.addClassName(flagrate.className + ' ' + flagrate.className + '-grid');
+			
+			if (this.headless) this.element.addClassName(flagrate.className + '-grid-headless');
 			
 			// head container 
 			this._head = new Element('div', { 'class': flagrate.className + '-grid-head' }).insertTo(this.element);
@@ -2837,17 +2979,18 @@
 			this._style.type = 'text/css';
 			
 			// head
-			var ths = new Element('tr').insertTo(this._thead);
+			var tr = new Element('tr').insertTo(this._thead);
 			
 			if (this.disableCheckbox === false && this.disableSelect === false && this.multiSelect === true) {
-				new Checkbox().insertTo(new Element('th').insertTo(ths));
+				new Checkbox().insertTo(new Element('th', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(tr));
 			}
 			
-			this.cols.forEach(function(col, i) {
+			for (var i = 0, l = this.cols.length; i < l; i++) {
+				var col = this.cols[i];
 				
 				col._id = this._id + '-col-' + i.toString(10);
 				
-				col._th  = new Element('th').insertTo(ths);
+				col._th  = new Element('th').insertTo(tr);
 				
 				if (col.id)        col._th.writeAttribute('id', col.id);
 				if (col.className) col._th.writeAttribute('class', col.className);
@@ -2871,7 +3014,7 @@
 						backgroundImage: 'url(' + col.icon + ')'
 					});
 				}
-			}.bind(this));
+			}
 			
 			return this;
 		}
@@ -2890,17 +3033,83 @@
 				return this;
 			}
 			
-			this.rows.forEach(function(row, i) {
+			var isCheckable = (this.disableCheckbox === false && this.disableSelect === false && this.multiSelect === true);
+			
+			for (var i = 0, rl = this.rows.length, cl = this.cols.length; i < rl; i++) {
+				var row = this.rows[i];
 				
-				var tr = row._tr || (row._tr = new Element('tr'));
-				tr.insertTo(this._tbody);
+				if (!row._tr) row._tr = new Element('tr');
+				row._tr.insertTo(this._tbody);
 				
+				if (row.id)        row._tr.writeAttribute('id', row.id);
+				if (row.className) row._tr.writeAttribute('class', row.className);
+				if (row.attribute) row._tr.writeAttribute(row.attribute);
+				if (row.style)     row._tr.setStyle(row.style);
 				
-			}.bind(this));
+				if (row.onClick || this.onClick || this.disableSelect === false) {
+					if (this.disableSelect === false) {
+						row._tr.addClassName(flagrate.className + '-grid-row-selectable');
+					}
+					if (row.onClick || this.onClick) {
+						row._tr.addClassName(flagrate.className + '-grid-row-clickable');
+					}
+					
+					row._tr.onclick = this._createRowOnClickHandler(this, row);
+				}
+				
+				if (isCheckable) {
+					new Checkbox().insertTo(new Element('td', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(row._tr));
+				}
+				
+				for (var j = 0; j < cl; j++) {
+					var col  = this.cols[j];
+					var cell = row.cell[col.key] || {};
+					
+					if (!cell._td) cell._td = new Element('td');
+					cell._td.insertTo(row._tr);
+					
+					if (cell.id)        cell._td.writeAttribute('id', cell.id);
+					if (cell.className) cell._td.writeAttribute('class', cell.className);
+					if (cell.attribute) cell._td.writeAttribute(cell.attribute);
+					if (cell.style)     cell._td.setStyle(cell.style);
+					
+					cell._td.addClassName(col._id);
+					
+					cell._div = new Element().insertTo(cell._td);
+					
+					if (cell.text)    cell._div.updateText(cell.text);
+					if (cell.html)    cell._div.update(cell.html);
+					if (cell.element) cell._div.update(cell.element);
+					
+					if (cell.icon) {
+						cell._div.addClassName(flagrate.className + '-icon');
+						cell._div.setStyle({
+							backgroundImage: 'url(' + cell.icon + ')'
+						});
+					}
+				}
+			}
 			
 			if (this.onRendered !== null) this.onRendered(this);
 			
 			return this;
+		}
+		,
+		_createRowOnClickHandler: function(that, row) {
+			
+			return function(e) {
+				
+				if (row.onClick)  row.onClick(e, row);
+				if (that.onClick) that.onClick(e, row);
+				
+				if (that.disableSelect === false) {
+					if (row.isSelected === true) {
+						that.deselect(row);
+					} else {
+						that.select(row);
+					}
+				}
+			};
 		}
 	};
 	

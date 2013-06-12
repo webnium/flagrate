@@ -266,7 +266,8 @@
 			cols: [
 				{
 					key  : 'id',
-					label: 'Grid'
+					label: 'Grid',
+					width: 40
 				},
 				{
 					key  : 'name',
@@ -284,20 +285,32 @@
 					cell: {
 						id: {
 							text: '0'
+						},
+						name: {
+							text: 'text'
 						}
 					}
 				},
 				{
 					cell: {
 						id: {
-							text: '0'
+							text: '1'
+						},
+						name: {
+							text: 'text'
+						},
+						desc: {
+							text: '<b>text</b>'
 						}
 					}
 				},
 				{
 					cell: {
 						id: {
-							text: '0'
+							text: '2'
+						},
+						desc: {
+							html: '<b>html</b>'
 						}
 					}
 				}
