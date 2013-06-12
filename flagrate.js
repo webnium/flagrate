@@ -1778,6 +1778,10 @@
 		
 		opt = opt || {};
 		
+		this.onChange  = opt.onChange  || null;
+		this.onCheck   = opt.onCheck   || null;
+		this.onUncheck = opt.onUncheck || null;
+		
 		var attr = opt.attribute || {};
 		
 		attr.id       = opt.id         || null;
@@ -1800,6 +1804,17 @@
 		that._input = new Element('input', { id: id, type: 'checkbox' });
 		that.insert({ top: new Element() });
 		that.insert({ top: that._input });
+		
+		that._input.addEventListener('change', function(e) {
+			
+			if (that.isChecked()) {
+				if (that.onCheck) that.onCheck(e);
+			} else {
+				if (that.onUncheck) that.onUncheck(e);
+			}
+			
+			if (that.onChange) that.onChange(e);
+		});
 		
 		if (opt.isChecked)  that.check();
 		if (opt.isDisabled) that.disable();
@@ -1840,24 +1855,30 @@
 		}
 		,
 		/*?
-		 *  flagrate.Checkbox#isChecked() -> String
+		 *  flagrate.Checkbox#isChecked() -> Boolean
 		**/
 		isChecked: function() {
-			return this._input.readAttribute('checked') === 'checked';
+			return !!this._input.checked;
 		}
 		,
 		/*?
 		 *  flagrate.Checkbox#check() -> flagrate.Checkbox
 		**/
 		check: function() {
-			return this._input.writeAttribute('checked', true);
+			
+			this._input.checked = true;
+			
+			return this;
 		}
 		,
 		/*?
 		 *  flagrate.Checkbox#uncheck() -> flagrate.Checkbox
 		**/
 		uncheck: function() {
-			return this._input.writeAttribute('checked', false);
+			
+			this._input.checked = false;
+			
+			return this;
 		}
 	};
 	
@@ -2842,6 +2863,8 @@
 		
 		this._id = 'flagrate-grid-' + (++Grid.idCounter).toString(10);
 		
+		this._selectedRows = [];
+		
 		return this._create()._requestRender();
 	};
 	
@@ -2887,11 +2910,17 @@
 				
 				if (row._tr.hasClassName(flagrate.className + '-grid-row-selected') === true) continue;
 				
+				this._selectedRows.push(row);
+				
 				row._tr.addClassName(flagrate.className + '-grid-row-selected');
+				
+				if (row._checkbox) row._checkbox.check();
 				
 				if (row.onSelect) row.onSelect(window.event, row);
 				if (this.onSelect) this.onSelect(window.event, row);
 			}
+			
+			if (this._selectedRows.length !== 0 && this._checkbox) this._checkbox.check();
 			
 			return this;
 		}
@@ -2926,11 +2955,17 @@
 				
 				if (row._tr.hasClassName(flagrate.className + '-grid-row-selected') === false) continue;
 				
+				this._selectedRows.splice(this._selectedRows.indexOf(row), 1);
+				
 				row._tr.removeClassName(flagrate.className + '-grid-row-selected');
+				
+				if (row._checkbox) row._checkbox.uncheck();
 				
 				if (row.onDeselect) row.onDeselect(window.event, row);
 				if (this.onDeselect) this.onDeselect(window.event, row);
 			}
+			
+			if (this._selectedRows.length === 0 && this._checkbox) this._checkbox.uncheck();
 			
 			return this;
 		}
@@ -2951,6 +2986,15 @@
 		**/
 		deselectAll: function() {
 			return this.deselect(this.rows);
+		}
+		,
+		/*?
+		 *  flagrate.Grid#getSelectedRows() -> Array
+		 *
+		 *  get selected rows
+		**/
+		getSelectedRows: function() {
+			return this._selectedRows;
 		}
 		,
 		_create: function() {
@@ -2983,7 +3027,10 @@
 			var tr = new Element('tr').insertTo(this._thead);
 			
 			if (this.disableCheckbox === false && this.disableSelect === false && this.multiSelect === true) {
-				new Checkbox().insertTo(new Element('th', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(tr));
+				this._checkbox = new Checkbox({
+					onCheck  : this.selectAll.bind(this),
+					onUncheck: this.deselectAll.bind(this)
+				}).insertTo(new Element('th', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(tr));
 			}
 			
 			for (var i = 0, l = this.cols.length; i < l; i++) {
@@ -3059,7 +3106,9 @@
 				}
 				
 				if (isCheckable) {
-					new Checkbox().insertTo(new Element('td', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(row._tr));
+					row._checkbox = new Checkbox({
+						onChange: this._createRowOnCheckHandler(this, row)
+					}).insertTo(new Element('td', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(row._tr));
 				}
 				
 				for (var j = 0; j < cl; j++) {
@@ -3102,6 +3151,22 @@
 				
 				if (row.onClick)  row.onClick(e, row);
 				if (that.onClick) that.onClick(e, row);
+				
+				if (that.disableSelect === false) {
+					if (row.isSelected === true) {
+						that.deselect(row);
+					} else {
+						that.select(row);
+					}
+				}
+			};
+		}
+		,
+		_createRowOnCheckHandler: function(that, row) {
+			
+			return function(e) {
+				
+				e.stopPropagation();
 				
 				if (that.disableSelect === false) {
 					if (row.isSelected === true) {
