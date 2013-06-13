@@ -2997,6 +2997,27 @@
 			return this._selectedRows;
 		}
 		,
+		/*?
+		 *  flagrate.Grid#push(row) -> Number
+		 *  - row (Object, Array)
+		 *
+		 *  push row(s)
+		**/
+		push: function(r) {
+			
+			if (r instanceof Array) {
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.rows.push(r);
+				}
+			} else {
+				this.rows.push(r);
+			}
+			
+			this._requestRender();
+			
+			return this.rows.length;
+		}
+		,
 		_create: function() {
 			
 			// root container
