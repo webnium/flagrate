@@ -2785,6 +2785,8 @@
 	 *  * `label`                    (String; default `""`):
 	 *  * `icon`                     (String):
 	 *  * `width`                    (Number):
+	 *  * `disableSort`              (Boolean; default `false`):
+	 *  * `disableResize`            (Boolean; default `false`):
 	 *  
 	 *  ##### row
 	 *  
@@ -2810,6 +2812,7 @@
 	 *  * `text`                     (String):
 	 *  * `html`                     (String):
 	 *  * `element`                  (Element):
+	 *  * `sortKey`                  (Number|String):
 	 *  * `onClick`                  (Function):
 	 *  * `onDblClick`               (Function):
 	 *  * `postProcessing`           (Function):
@@ -3082,6 +3085,14 @@
 					col._div.setStyle({
 						backgroundImage: 'url(' + col.icon + ')'
 					});
+				}
+				
+				if (this.disableResize === false && !col.disableResize) {
+					col._resizeHandle = new Element('div', {
+						'class': flagrate.className + '-grid-col-resize-handle'
+					}).insertTo(this.element);
+					
+					col._resizeHandle.onmousedown = this._createResizeHandleOnMousedownHandler(this, col);
 				}
 			}
 			
