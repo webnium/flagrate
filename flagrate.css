@@ -28,7 +28,7 @@ button.flagrate-button {
 	display           : inline-block;
 	cursor            : pointer;
 	padding           : 4px 10px 3px;
-	border            : 2px solid rgba(0,0,0,0.2);
+	border            : 2px solid rgba(0,0,0,0);
 	box-shadow        : inset 0 0 0 rgba(0,0,0,0);
 	background-color  : #555;
 	color             : rgba(255,255,255,0.8);
@@ -517,7 +517,7 @@ div.flagrate-modal.flagrate-modal-visible {
 		div.flagrate-modal > div > div {
 			position        : absolute;
 			width           : auto;
-			min-width       : 200px;
+			min-width       : 300px;
 			height          : auto;
 			background-color: white;
 			box-shadow      : 0 0 0 1px rgba(0,0,0,0.25), 0 0 0 4px rgba(0,0,0,0.15); }
@@ -555,7 +555,7 @@ div.flagrate-modal.flagrate-modal-visible {
 			/* header */
 			div.flagrate-modal > div > div > hgroup {
 				padding         : 10px 40px 10px 10px;
-				background-color: #f5f5f5; }
+				/* background-color: #f5f5f5; */ }
 				
 				div.flagrate-modal > div > div > hgroup > h1 {
 					font-size  : 16px;
@@ -593,7 +593,7 @@ div.flagrate-grid {
 	background-color: #fff; }
 	
 	div.flagrate-grid > div.flagrate-grid-head {
-		 }
+		border-bottom: 2px solid rgba(0,0,0,0.15); }
 	
 		div.flagrate-grid > div > table {
 			position       : relative;
@@ -644,9 +644,6 @@ div.flagrate-grid {
 					
 					div.flagrate-grid > div > table > tbody > tr > td {
 						 }
-					
-					div.flagrate-grid > div > table > tbody > tr:first-child > td {
-						box-shadow: inset 0 1px 0 rgba(0,0,0,0.25); }
 					
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-checkbox,
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-checkbox {
