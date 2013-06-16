@@ -1602,9 +1602,9 @@
 				}
 			}
 			
-			if (!this._candidates || this._candidates.length === 0) {
-				
-			}
+			//if (!this._candidates || this._candidates.length === 0) {
+			//	
+			//}
 			
 			if (this._input.value === '' && this.values.length !== 0) {
 				if (
