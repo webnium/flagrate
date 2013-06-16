@@ -2107,7 +2107,13 @@
 			
 			e.preventDefault();
 			
-			var x = e.offsetX || e.layerX || 0;
+			var x = 0;
+			
+			if (e.target.offsetLeft && e.touches && e.touches[0]) {
+				x = e.touches[0].clientX - e.target.offsetLeft;
+			} else {
+				x = e.offsetX || e.layerX || 0;
+			}
 			
 			this._slide(x, e.clientX);
 		}
@@ -2120,8 +2126,15 @@
 				
 				e.preventDefault();
 				
-				x   = x + e.clientX - pos;
-				pos = e.clientX;
+				if (e.touches && e.touches[0]) {
+					x   = x + e.touches[0].clientX -pos;
+					pos = e.touches[0].clientX;
+				} else {
+					x   = x + e.clientX - pos;
+					pos = e.clientX;
+				}
+				
+				console.log(e);
 				
 				this.setValue(Math.round(x / unitWidth));
 			}.bind(this);
@@ -2134,6 +2147,11 @@
 				document.body.removeEventListener('touchmove', onMove);
 				document.body.removeEventListener('mouseup',   onUp);
 				document.body.removeEventListener('touchend',  onUp);
+				
+				if (e.touches && e.touches[0]) {
+					x = x + e.touches[0].clientX -pos;
+					this.setValue(Math.round(x / unitWidth));
+				}
 				
 				if (e.clientX) {
 					x = x + e.clientX - pos;
@@ -3207,6 +3225,17 @@
 						that.select(row);
 					}
 				}
+			};
+		}
+		,
+		_createResizeHandleOnMousedownHandler: function(that, col) {
+			
+			return function(e) {
+				
+				e.stopPropagation();
+				e.preventDefault();
+				
+				//
 			};
 		}
 	};
