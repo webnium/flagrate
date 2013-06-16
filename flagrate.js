@@ -2060,8 +2060,9 @@
 		
 		that.addClassName(flagrate.className + '-slider');
 		
-		that.addEventListener('mousedown',  that._onMousedownHandler.bind(that));
-		that.addEventListener('touchstart', that._onTouchstartHandler.bind(that));
+		that.addEventListener('mousedown',     that._onPointerDownHandler.bind(that));
+		that.addEventListener('touchstart',    that._onPointerDownHandler.bind(that));
+		that.addEventListener('MSPointerDown', that._onPointerDownHandler.bind(that));
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -2090,32 +2091,28 @@
 			return !this.hasClassName(flagrate.className + '-slider-disabled');
 		}
 		,
-		_onMousedownHandler: function(e) {
+		_onPointerDownHandler: function(e) {
 			
 			if (!this.isEnabled()) return;
 			
 			e.preventDefault();
 			
-			var x = e.offsetX || e.layerX || 0;
+			var x   = 0;
+			var pos = 0;
 			
-			this._slide(x, e.clientX);
-		}
-		,
-		_onTouchstartHandler: function(e) {
-			
-			if (!this.isEnabled()) return;
-			
-			e.preventDefault();
-			
-			var x = 0;
-			
-			if (e.target.offsetLeft && e.touches && e.touches[0]) {
-				x = e.touches[0].clientX - e.target.offsetLeft;
-			} else {
-				x = e.offsetX || e.layerX || 0;
+			switch (e.type) {
+				case 'mousedown':
+				case 'MSPointerDown':
+					x   = e.offsetX || e.layerX;
+					pos = e.clientX;
+					break;
+				case 'touchstart':
+					x   = e.touches[0].clientX - e.target.offsetLeft;
+					pos = e.touches[0].clientX;
+					break;
 			}
 			
-			this._slide(x, e.clientX);
+			this._slide(x, pos);
 		}
 		,
 		_slide: function(x, pos) {
@@ -2134,8 +2131,6 @@
 					pos = e.clientX;
 				}
 				
-				console.log(e);
-				
 				this.setValue(Math.round(x / unitWidth));
 			}.bind(this);
 			
@@ -2143,10 +2138,13 @@
 				
 				e.preventDefault();
 				
-				document.body.removeEventListener('mousemove', onMove);
-				document.body.removeEventListener('touchmove', onMove);
-				document.body.removeEventListener('mouseup',   onUp);
-				document.body.removeEventListener('touchend',  onUp);
+				document.body.removeEventListener('mousemove',     onMove);
+				document.body.removeEventListener('touchmove',     onMove);
+				document.body.removeEventListener('MSPointerMove', onMove, true);
+				document.body.removeEventListener('mouseup',       onUp);
+				document.body.removeEventListener('touchend',      onUp);
+				document.body.removeEventListener('touchcancel',   onUp);
+				document.body.removeEventListener('MSPointerUp',   onUp, true);
 				
 				if (e.touches && e.touches[0]) {
 					x = x + e.touches[0].clientX -pos;
@@ -2159,10 +2157,13 @@
 				}
 			}.bind(this);
 			
-			document.body.addEventListener('mousemove', onMove);
-			document.body.addEventListener('touchmove', onMove);
-			document.body.addEventListener('mouseup',   onUp);
-			document.body.addEventListener('touchend',  onUp);
+			document.body.addEventListener('mousemove',     onMove);
+			document.body.addEventListener('touchmove',     onMove);
+			document.body.addEventListener('MSPointerMove', onMove, true);
+			document.body.addEventListener('mouseup',       onUp);
+			document.body.addEventListener('touchend',      onUp);
+			document.body.addEventListener('touchcancel',   onUp);
+			document.body.addEventListener('MSPointerUp',   onUp, true);
 			
 			this.setValue(Math.round(x / unitWidth));
 		}
