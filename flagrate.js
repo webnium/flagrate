@@ -2140,11 +2140,11 @@
 				
 				document.body.removeEventListener('mousemove',     onMove);
 				document.body.removeEventListener('touchmove',     onMove);
-				document.body.removeEventListener('MSPointerMove', onMove, true);
+				document.body.removeEventListener('MSPointerMove', onMove);
 				document.body.removeEventListener('mouseup',       onUp);
 				document.body.removeEventListener('touchend',      onUp);
 				document.body.removeEventListener('touchcancel',   onUp);
-				document.body.removeEventListener('MSPointerUp',   onUp, true);
+				document.body.removeEventListener('MSPointerUp',   onUp);
 				
 				if (e.touches && e.touches[0]) {
 					x = x + e.touches[0].clientX -pos;
@@ -2159,11 +2159,11 @@
 			
 			document.body.addEventListener('mousemove',     onMove);
 			document.body.addEventListener('touchmove',     onMove);
-			document.body.addEventListener('MSPointerMove', onMove, true);
+			document.body.addEventListener('MSPointerMove', onMove);
 			document.body.addEventListener('mouseup',       onUp);
 			document.body.addEventListener('touchend',      onUp);
 			document.body.addEventListener('touchcancel',   onUp);
-			document.body.addEventListener('MSPointerUp',   onUp, true);
+			document.body.addEventListener('MSPointerUp',   onUp);
 			
 			this.setValue(Math.round(x / unitWidth));
 		}
@@ -3115,6 +3115,8 @@
 				}
 			}
 			
+			new Element('th').insertTo(tr);
+			
 			return this;
 		}
 		,
@@ -3134,8 +3136,12 @@
 			
 			var isCheckable = (this.disableCheckbox === false && this.disableSelect === false && this.multiSelect === true);
 			
-			for (var i = 0, rl = this.rows.length, cl = this.cols.length; i < rl; i++) {
-				var row = this.rows[i];
+			var i, j, row, col, cell;
+			var rl = this.rows.length;
+			var cl = this.cols.length;
+			
+			for (i = 0; i < rl; i++) {
+				row = this.rows[i];
 				
 				if (!row._tr) row._tr = new Element('tr');
 				row._tr.insertTo(this._tbody);
@@ -3156,15 +3162,17 @@
 					row._tr.onclick = this._createRowOnClickHandler(this, row);
 				}
 				
-				if (isCheckable) {
+				if (isCheckable && !row._checkbox) {
 					row._checkbox = new Checkbox({
 						onChange: this._createRowOnCheckHandler(this, row)
 					}).insertTo(new Element('td', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(row._tr));
 				}
 				
-				for (var j = 0; j < cl; j++) {
-					var col  = this.cols[j];
-					var cell = row.cell[col.key] || {};
+				if (row.isSelected === true) this.select(row);
+				
+				for (j = 0; j < cl; j++) {
+					col  = this.cols[j];
+					cell = row.cell[col.key] || (row.cell[col.key] = {});
 					
 					if (!cell._td) cell._td = new Element('td');
 					cell._td.insertTo(row._tr);
@@ -3176,7 +3184,8 @@
 					
 					cell._td.addClassName(col._id);
 					
-					cell._div = new Element().insertTo(cell._td);
+					if (!cell._div) cell._div = new Element();
+					cell._div.insertTo(cell._td);
 					
 					if (cell.text)    cell._div.updateText(cell.text);
 					if (cell.html)    cell._div.update(cell.html);
@@ -3189,9 +3198,29 @@
 						});
 					}
 				}
+				
+				if (!row._last) row._last = new Element('td');
+				row._last.insertTo(row._tr);
 			}
 			
+			this._updatePositionOfResizeHandles();
+			
 			if (this.onRendered !== null) this.onRendered(this);
+			
+			return this;
+		}
+		,
+		_updatePositionOfResizeHandles: function() {
+			
+			var col;
+			
+			for (var i = 0, l = this.cols.length; i < l; i++) {
+				col = this.cols[i];
+				
+				if (col._resizeHandle) {
+					col._resizeHandle.style.left = (col._th.offsetLeft + col._th.getWidth()) + 'px';
+				}
+			}
 			
 			return this;
 		}
@@ -3233,10 +3262,56 @@
 			
 			return function(e) {
 				
-				e.stopPropagation();
+				//e.stopPropagation();
 				e.preventDefault();
 				
-				//
+				var current = e.clientX;
+				var origin  = current;
+				
+				var onMove = function(e) {
+					
+					e.preventDefault();
+					
+					var delta = e.clientX - current;
+					current += delta;
+					
+					col._resizeHandle.style.left = (parseInt(col._resizeHandle.style.left.replace('px', ''), 10) + delta) + 'px';
+				};
+				
+				var onUp = function(e) {
+					
+					e.preventDefault();
+					
+					document.body.removeEventListener('mousemove', onMove, true);
+					document.body.removeEventListener('mouseup',   onUp, true);
+					
+					var delta = e.clientX - origin;
+					var w     = col._th.getWidth() + delta;
+					w = col.width = w < 0 ? 0 : w;
+					
+					for (var i = 0, l = that.cols.length; i < l; i++) {
+						if (that.cols[i].width) continue;
+						
+						that.cols[i].width = that.cols[i]._th.getWidth();
+						that._style.updateText(
+							that._style.innerHTML.replace(
+								new RegExp('('+ that.cols[i]._id + '{width:)([^}]*)}'),
+								'$1' + that.cols[i].width + 'px}'
+							)
+						);
+					}
+					
+					that._style.updateText(
+						that._style.innerHTML.replace(new RegExp('('+ col._id + '{width:)([^}]*)}'), '$1' + w + 'px}')
+					);
+					
+					that.element.addClassName(flagrate.className + '-grid-resized');
+					
+					that._updatePositionOfResizeHandles();
+				};
+				
+				document.body.addEventListener('mousemove', onMove, true);
+				document.body.addEventListener('mouseup',   onUp, true);
 			};
 		}
 	};
