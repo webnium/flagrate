@@ -593,8 +593,16 @@ div.flagrate-grid {
 	background-color: #fff; }
 	
 	div.flagrate-grid > div.flagrate-grid-head {
+		z-index      : 1;
+		position     : absolute;
+		top          : 0;
+		left         : 0;
 		border-bottom: 2px solid rgba(0,0,0,0.15); }
 	
+	div.flagrate-grid > div.flagrate-grid-body {
+		position     : relative;
+		margin-top   : 32px; }
+		
 		div.flagrate-grid > div > table {
 			position       : relative;
 			border         : none;
@@ -639,6 +647,14 @@ div.flagrate-grid {
 						overflow      : hidden;
 						vertical-align: top; }
 					
+					div.flagrate-grid > div > table > thead > tr > th:last-child,
+					div.flagrate-grid > div > table > tbody > tr > td:last-child {
+						width         : 0px; }
+					
+					div.flagrate-grid.flagrate-grid-resized > div > table > thead > tr > th:last-child,
+					div.flagrate-grid.flagrate-grid-resized > div > table > tbody > tr > td:last-child {
+						width         : auto; }
+					
 					div.flagrate-grid > div > table > thead > tr > th {
 						 }
 					
@@ -674,3 +690,19 @@ div.flagrate-grid {
 						div.flagrate-grid > div > table > tbody > tr > td > div.flagrate-icon {
 							padding-left       : 20px;
 							background-position: 0 center; }
+	
+	div.flagrate-grid > div.flagrate-grid-col-resize-handle {
+		z-index         : 2;
+		position        : absolute;
+		top             : 0;
+		bottom          : 0;
+		width           : 4px;
+		margin-left     : -4px;
+		background-color: rgba(0,0,0,0);
+		cursor          : col-resize; }
+	
+	div.flagrate-grid > div.flagrate-grid-col-resize-handle:hover {
+		background-color: rgba(0,0,0,0.1); }
+	
+	div.flagrate-grid > div.flagrate-grid-col-resize-handle:active {
+		background-color: rgba(26,96,237,0.35); }
