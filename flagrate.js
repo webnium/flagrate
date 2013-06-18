@@ -3201,6 +3201,10 @@
 				
 				if (!row._last) row._last = new Element('td');
 				row._last.insertTo(row._tr);
+				
+				if (row.menuItems) {
+					row._last.addClassName(flagrate.className + '-grid-cell-menu');
+				}
 			}
 			
 			this._updatePositionOfResizeHandles();
