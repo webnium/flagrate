@@ -90,10 +90,10 @@ button.flagrate-button.flagrate-button-color-orange { background-color  : #faa73
 		color      : #fff;
 		outline    : none; }
 	
-	button.flagrate-button > button.flagrate-button-remove:after {
+	button.flagrate-button > button.flagrate-button-remove::after {
 		content    : '\2716'; }
 	
-	button.flagrate-pulldown > span.flagrate-pulldown-triangle:after {
+	button.flagrate-pulldown > span.flagrate-pulldown-triangle::after {
 		content    : '\25bc'; }
 
 div.flagrate-menu {
@@ -300,20 +300,20 @@ label.flagrate-radio.flagrate-icon {
 		background-color: #1a60ed;
 		border-color    : #1a60ed; }
 	
-	label.flagrate-checkbox:hover > div:after,
-	label.flagrate-checkbox > input:checked+div:after {
+	label.flagrate-checkbox:hover > div::after,
+	label.flagrate-checkbox > input:checked+div::after {
 		content         : '\2714'; }
 	
 	label.flagrate-radio:hover > div {
 		background-color: #ddd; }
 	
-	label.flagrate-checkbox:hover > div:after {
+	label.flagrate-checkbox:hover > div::after {
 		color           : #ddd; }
 	
-	label.flagrate-checkbox > input:checked+div:after {
+	label.flagrate-checkbox > input:checked+div::after {
 		color           : #fff; }
 	
-	label.flagrate-checkbox:hover > input:checked+div:after {
+	label.flagrate-checkbox:hover > input:checked+div::after {
 		color           : rgba(255,255,255,0.9); }
 	
 	label.flagrate-checkbox > input:focus+div {
@@ -404,7 +404,7 @@ div.flagrate-slider.flagrate-slider-disabled {
 	div.flagrate-slider.flagrate-slider-disabled > div {
 		background-color  : #888; }
 	
-	div.flagrate-slider > div:after {
+	div.flagrate-slider > div::after {
 		content         : '';
 		display         : block;
 		position        : absolute;
@@ -415,7 +415,7 @@ div.flagrate-slider.flagrate-slider-disabled {
 		width           : 10px;
 		height          : 10px; }
 	
-	div.flagrate-slider.flagrate-slider-disabled > div:after {
+	div.flagrate-slider.flagrate-slider-disabled > div::after {
 		background-color  : #555; }
 
 div.flagrate-notify {
@@ -533,7 +533,7 @@ div.flagrate-modal.flagrate-modal-visible {
 				color           : #aaa;
 				padding         : 0; }
 			
-			div.flagrate-modal > div > div > button:after {
+			div.flagrate-modal > div > div > button::after {
 				display    : inline-block;
 				content    : '\2716';
 				font-size  : 10px;
@@ -576,12 +576,12 @@ div.flagrate-modal.flagrate-modal-visible {
 			div.flagrate-modal > div > div > footer {
 				padding         : 10px; }
 			
-			div.flagrate-modal > div > div > footer:before,
-			div.flagrate-modal > div > div > footer:after {
+			div.flagrate-modal > div > div > footer::before,
+			div.flagrate-modal > div > div > footer::after {
 				content         : "";
 				display         : table; }
 			
-			div.flagrate-modal > div > div > footer:after {
+			div.flagrate-modal > div > div > footer::after {
 				clear           : both; }
 				
 				div.flagrate-modal > div > div > footer > button {
@@ -649,10 +649,10 @@ div.flagrate-grid {
 					
 					div.flagrate-grid > div > table > thead > tr > th:last-child,
 					div.flagrate-grid > div > table > tbody > tr > td:last-child {
-						width         : 0px; }
+						width           : 0px; }
 					
-					div.flagrate-grid.flagrate-grid-resized > div > table > thead > tr > th:last-child,
-					div.flagrate-grid.flagrate-grid-resized > div > table > tbody > tr > td:last-child {
+					div.flagrate-grid.flagrate-grid-fixed > div > table > thead > tr > th:last-child,
+					div.flagrate-grid.flagrate-grid-fixed > div > table > tbody > tr > td:last-child {
 						width           : auto;
 						box-shadow      : inset 1px 0 0 rgba(0,0,0,0.1);
 						background-color: rgba(255,255,255,0.2); }
@@ -685,16 +685,15 @@ div.flagrate-grid {
 					
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu,
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu {
-						overflow        : visible;
-						right           : 0;/* testing */ }
+						overflow        : visible; }
 						
-					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu:after,
-					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu:after {
+					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu::after,
+					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu::after {
 						content         : '\25bc';
-						position        : absolute;
-						right           : 0;
-						top             : 0;
-						bottom          : 0;
+						display         : block;
+						position        : relative;
+						right           : 23px;
+						margin-left     : 0;
 						overflow        : visible;
 						font-size       : 13px;
 						width           : 13px;
@@ -702,13 +701,13 @@ div.flagrate-grid {
 						padding         : 9px 5px 8px 5px;
 						color           : rgba(0,0,0,0.3); }
 						
-					div.flagrate-grid > div > table > thead > tr:hover > th.flagrate-grid-cell-menu:after,
-					div.flagrate-grid > div > table > tbody > tr:hover > td.flagrate-grid-cell-menu:after {
-						background-color: rgba(255,255,255,0.3);
+					div.flagrate-grid > div > table > thead > tr:hover > th.flagrate-grid-cell-menu::after,
+					div.flagrate-grid > div > table > tbody > tr:hover > td.flagrate-grid-cell-menu::after {
+						background-color: rgba(255,255,255,0.5);
 						box-shadow      : -1px 0 0 rgba(0,0,0,0.1); }
 						
-					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu:hover:after,
-					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu:hover:after {
+					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu:hover::after,
+					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu:hover::after {
 						background-color: rgba(255,255,255,0.7);
 						color           : #000;
 						box-shadow      : -1px 0 0 rgba(0,0,0,0.3); }

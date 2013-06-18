@@ -2792,7 +2792,7 @@
 	 *  * `onDblClick`               (Function):
 	 *  * `onRender`                 (Function):
 	 *  * `onRendered`               (Function):
-	 *  * `postProcessingOfRow`      (Function):
+	 *  * `postProcessOfRow`         (Function):
 	 *  
 	 *  ##### col
 	 *  
@@ -2820,7 +2820,7 @@
 	 *  * `onDeselect`               (Function):
 	 *  * `onClick`                  (Function):
 	 *  * `onDblClick`               (Function):
-	 *  * `postProcessing`           (Function):
+	 *  * `postProcess`              (Function):
 	 *  
 	 *  ##### cell
 	 *  
@@ -2834,7 +2834,7 @@
 	 *  * `sortKey`                  (Number|String):
 	 *  * `onClick`                  (Function):
 	 *  * `onDblClick`               (Function):
-	 *  * `postProcessing`           (Function):
+	 *  * `postProcess`              (Function):
 	**/
 	//<div class="flagrate flagrate-grid">
 	//  <div class="flagrate-grid-head">
@@ -2925,16 +2925,18 @@
 				}
 			}
 			
+			if (this.multiSelect === false) this.deselectAll();
+			
 			for (var j = 0, m = rows.length; j < m; j++) {
 				var row = rows[j];
 				
 				row.isSelected = true;
 				
-				if (row._tr.hasClassName(flagrate.className + '-grid-row-selected') === true) continue;
+				if (row._tr && row._tr.hasClassName(flagrate.className + '-grid-row-selected') === true) continue;
 				
 				this._selectedRows.push(row);
 				
-				row._tr.addClassName(flagrate.className + '-grid-row-selected');
+				if (row._tr) row._tr.addClassName(flagrate.className + '-grid-row-selected');
 				
 				if (row._checkbox) row._checkbox.check();
 				
@@ -2975,11 +2977,11 @@
 				
 				row.isSelected = false;
 				
-				if (row._tr.hasClassName(flagrate.className + '-grid-row-selected') === false) continue;
+				if (row._tr && row._tr.hasClassName(flagrate.className + '-grid-row-selected') === false) continue;
 				
 				this._selectedRows.splice(this._selectedRows.indexOf(row), 1);
 				
-				row._tr.removeClassName(flagrate.className + '-grid-row-selected');
+				if (row._tr) row._tr.removeClassName(flagrate.className + '-grid-row-selected');
 				
 				if (row._checkbox) row._checkbox.uncheck();
 				
@@ -3115,7 +3117,10 @@
 				}
 			}
 			
-			new Element('th').insertTo(tr);
+			new Element('th', { 'class': this._id + '-col-last' }).insertTo(tr);
+			this._style.insertText('.' + this._id + '-col-last:after{margin-left:0}');
+			
+			this.element.onscroll = this._createOnScrollHandler(this);
 			
 			return this;
 		}
@@ -3197,17 +3202,27 @@
 							backgroundImage: 'url(' + cell.icon + ')'
 						});
 					}
+					
+					// post-processing
+					if (cell.postProcess) cell.postProcess(cell);
 				}
 				
-				if (!row._last) row._last = new Element('td');
+				if (!row._last) row._last = new Element('td', { 'class': this._id + '-col-last' });
 				row._last.insertTo(row._tr);
 				
 				if (row.menuItems) {
 					row._last.addClassName(flagrate.className + '-grid-cell-menu');
 				}
-			}
+				
+				// post-processing
+				if (row.postProcess) row.postProcess(row);
+				if (this.postProcessOfRow) this.postProcessOfRow(row);
+			}//<--for
 			
-			this._updatePositionOfResizeHandles();
+			if (this.disableResize === false) {
+				this._updateLayoutOfCols();
+				this._updatePositionOfResizeHandles();
+			}
 			
 			if (this.onRendered !== null) this.onRendered(this);
 			
@@ -3227,6 +3242,47 @@
 			}
 			
 			return this;
+		}
+		,
+		_updateLayoutOfCols: function() {
+			
+			var col;
+			
+			for (var i = 0, l = this.cols.length; i < l; i++) {
+				col = this.cols[i];
+				
+				if (col.width) continue;
+				
+				col.width = col._th.getWidth();
+				
+				this._style.updateText(
+					this._style.innerHTML.replace(
+						new RegExp('('+ col._id + '{width:)([^}]*)}'),
+						'$1' + col.width + 'px}'
+					)
+				);
+			}
+			
+			this.element.addClassName(flagrate.className + '-grid-fixed');
+			
+			setTimeout(function() {
+				this._style.updateText(
+					this._style.innerHTML.replace(
+						new RegExp('(' + this._id + '-col-last:after{margin-left:)([^}]*)}'),
+						'$1' + (this.element.getWidth() - this.element.scrollWidth + this.element.scrollLeft) + 'px!important}'
+					)
+				);
+			}.bind(this), 0);
+			
+			return this;
+		}
+		,
+		_createOnScrollHandler: function(that) {
+			
+			return function(e) {
+				
+				if (that.disableResize === false) that._updateLayoutOfCols();
+			};
 		}
 		,
 		_createRowOnClickHandler: function(that, row) {
@@ -3293,24 +3349,11 @@
 					var w     = col._th.getWidth() + delta;
 					w = col.width = w < 0 ? 0 : w;
 					
-					for (var i = 0, l = that.cols.length; i < l; i++) {
-						if (that.cols[i].width) continue;
-						
-						that.cols[i].width = that.cols[i]._th.getWidth();
-						that._style.updateText(
-							that._style.innerHTML.replace(
-								new RegExp('('+ that.cols[i]._id + '{width:)([^}]*)}'),
-								'$1' + that.cols[i].width + 'px}'
-							)
-						);
-					}
-					
 					that._style.updateText(
 						that._style.innerHTML.replace(new RegExp('('+ col._id + '{width:)([^}]*)}'), '$1' + w + 'px}')
 					);
 					
-					that.element.addClassName(flagrate.className + '-grid-resized');
-					
+					that._updateLayoutOfCols();
 					that._updatePositionOfResizeHandles();
 				};
 				
