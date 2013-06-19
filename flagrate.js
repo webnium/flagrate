@@ -2803,6 +2803,7 @@
 	 *  * `key`                      (String; required):
 	 *  * `label`                    (String; default `""`):
 	 *  * `icon`                     (String):
+	 *  * `align`                    (String):
 	 *  * `width`                    (Number):
 	 *  * `disableSort`              (Boolean; default `false`):
 	 *  * `disableResize`            (Boolean; default `false`):
@@ -3095,7 +3096,7 @@
 				var width = !!col.width ? (col.width.toString(10) + 'px') : 'auto';
 				this._style.insertText('.' + col._id + '{width:' + width + '}');
 				
-				//if (col.width) col._th.style.width = col.width + 'px';
+				if (col.align) col._th.style.textAlign = col.align;
 				
 				col._div = new Element().insertTo(col._th);
 				
@@ -3186,6 +3187,8 @@
 					if (cell.className) cell._td.writeAttribute('class', cell.className);
 					if (cell.attribute) cell._td.writeAttribute(cell.attribute);
 					if (cell.style)     cell._td.setStyle(cell.style);
+					
+					if (col.align) cell._td.style.textAlign = col.align;
 					
 					cell._td.addClassName(col._id);
 					
