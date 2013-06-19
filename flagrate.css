@@ -729,6 +729,11 @@ div.flagrate-grid {
 							line-height: 20px;
 							white-space: nowrap; }
 						
+						div.flagrate-grid > div > table > thead > tr > th > div {
+							margin-top      : 6px;
+							font-size       : 11px;
+							font-weight     : normal; }
+						
 						div.flagrate-grid > div > table > thead > tr > th > div.flagrate-icon,
 						div.flagrate-grid > div > table > tbody > tr > td > div.flagrate-icon {
 							padding-left       : 20px;
