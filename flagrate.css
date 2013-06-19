@@ -710,22 +710,22 @@ div.flagrate-grid {
 						width           : 13px;
 						height          : 13px;
 						padding         : 9px 5px 8px 5px;
-						color           : rgba(0,0,0,0.3); }
+						color           : rgba(0,0,0,0.2); }
 						
 					div.flagrate-grid > div > table > thead > tr:hover > th.flagrate-grid-cell-menu::after,
 					div.flagrate-grid > div > table > tbody > tr:hover > td.flagrate-grid-cell-menu::after {
-						background-color: rgba(255,255,255,0.5);
+						background-color: rgba(255,255,255,0.8);
 						box-shadow      : -1px 0 0 rgba(0,0,0,0.1); }
 						
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu:hover::after,
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu:hover::after {
-						background-color: rgba(255,255,255,0.7);
+						background-color: rgba(255,255,255,0.9);
 						color           : #000;
 						box-shadow      : -1px 0 0 rgba(0,0,0,0.3); }
 						
 						div.flagrate-grid > div > table > thead > tr > th > div,
 						div.flagrate-grid > div > table > tbody > tr > td > div {
-							margin     : 5px 0 0 5px;
+							margin     : 5px 5px 0 5px;
 							line-height: 20px;
 							height     : 20px;
 							white-space: nowrap; }
