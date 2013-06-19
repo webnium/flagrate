@@ -715,7 +715,8 @@ div.flagrate-grid {
 						div.flagrate-grid > div > table > thead > tr > th > div,
 						div.flagrate-grid > div > table > tbody > tr > td > div {
 							margin     : 5px 0 0 5px;
-							line-height: 20px; }
+							line-height: 20px;
+							white-space: nowrap; }
 						
 						div.flagrate-grid > div > table > thead > tr > th > div.flagrate-icon,
 						div.flagrate-grid > div > table > tbody > tr > td > div.flagrate-icon {
