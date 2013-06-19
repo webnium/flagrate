@@ -3204,7 +3204,7 @@
 					}
 					
 					// post-processing
-					if (cell.postProcess) cell.postProcess(cell);
+					if (cell.postProcess) cell.postProcess(cell._td);
 				}
 				
 				if (!row._last) row._last = new Element('td', { 'class': this._id + '-col-last' });
@@ -3215,8 +3215,8 @@
 				}
 				
 				// post-processing
-				if (row.postProcess) row.postProcess(row);
-				if (this.postProcessOfRow) this.postProcessOfRow(row);
+				if (row.postProcess) row.postProcess(row._tr);
+				if (this.postProcessOfRow) this.postProcessOfRow(row._tr);
 			}//<--for
 			
 			if (this.disableResize === false) {
