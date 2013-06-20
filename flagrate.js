@@ -1137,13 +1137,13 @@
 				e.preventDefault();
 			}
 			
-			if (this._menu) this.close();
+			if (this.isShowing) this.close();
 			
 			this.isShowing = true;
 			
 			this._menu = new Menu({
 				className: flagrate.className + '-context-menu',
-				items    : opt.items,
+				items    : this.items,
 				onSelect : this.close.bind(this)
 			});
 			
@@ -1163,7 +1163,7 @@
 			this._menu.style.opacity = 1;
 			
 			document.body.addEventListener('click', this.close);
-			document.body.addEventListener('mousedown', this.close);
+			document.body.addEventListener('mouseup', this.close);
 			
 			return this;
 		}.bind(this);
@@ -1171,11 +1171,15 @@
 		this.close = function() {
 			
 			document.body.removeEventListener('click', this.close);
-			document.body.removeEventListener('mousedown', this.close);
+			document.body.removeEventListener('mouseup', this.close);
 			
 			this.isShowing = false;
 			
-			this._menu.remove();
+			var menu = this._menu;
+			setTimeout(function() {
+				if (menu && menu.remove) menu.remove();
+			}, 0);
+			
 			delete this._menu;
 			
 			return this;
