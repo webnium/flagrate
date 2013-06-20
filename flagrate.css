@@ -602,7 +602,7 @@ div.flagrate-grid {
 		position     : absolute;
 		top          : 0;
 		left         : 0;
-		border-bottom: 2px solid rgba(0,0,0,0.1); }
+		border-bottom: 2px solid rgba(255,255,255,0.25); }
 	
 	div.flagrate-grid > div.flagrate-grid-body {
 		position     : relative;
@@ -666,10 +666,10 @@ div.flagrate-grid {
 						box-shadow      : inset 1px 0 0 rgba(0,0,0,0.1);
 						background-color: rgba(255,255,255,0.2); }
 					
-					div.flagrate-grid > div > table > thead > tr > th {
+					div.flagrate-grid:hover > div > table > thead > tr > th {
 						box-shadow      : inset 1px 0 0 rgba(0,0,0,0.2); }
 					
-					div.flagrate-grid > div > table > thead > tr > th:first-child {
+					div.flagrate-grid:hover > div > table > thead > tr > th:first-child {
 						box-shadow      : none; }
 					
 					div.flagrate-grid > div > table > tbody > tr > td {
