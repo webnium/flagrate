@@ -110,7 +110,8 @@ div.flagrate-pulldown-menu {
 
 div.flagrate-context-menu {
 	position          : absolute;
-	margin            : 0; }
+	margin            : 0;
+	border-color      : #555; }
 	
 	div.flagrate-menu > hr {
 		border          : none;
@@ -130,7 +131,7 @@ div.flagrate-context-menu {
 		color           : #222;
 		border          : none;
 		box-shadow      : none;
-		padding         : 4px 24px 3px;
+		padding         : 5px 24px 4px;
 		text-align      : left;
 		outline         : none; }
 	
