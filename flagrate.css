@@ -107,6 +107,10 @@ div.flagrate-pulldown-menu {
 	position          : absolute;
 	margin            : 4px 0 0 0;
 	background-color  : #555; }
+
+div.flagrate-context-menu {
+	position          : absolute;
+	margin            : 0; }
 	
 	div.flagrate-menu > hr {
 		border          : none;
@@ -597,7 +601,7 @@ div.flagrate-grid {
 		position     : absolute;
 		top          : 0;
 		left         : 0;
-		border-bottom: 2px solid rgba(0,0,0,0.7); }
+		border-bottom: 2px solid rgba(0,0,0,0.1); }
 	
 	div.flagrate-grid > div.flagrate-grid-body {
 		position     : relative;
@@ -612,14 +616,13 @@ div.flagrate-grid {
 			width          : 100%; }
 				
 				div.flagrate-grid > div > table > thead > tr {
-					background-color: #555;
-					color           : #ccc; }
+					background-color: #fff;
+					color           : #555; }
 				
 				div.flagrate-grid > div > table > thead > tr:hover {
-					background-color: #555;
-					color           : #fff; }
+					color           : #000; }
 				
-				div.flagrate-grid > div > table > tbody > tr:nth-child(even) {
+				div.flagrate-grid > div > table > tbody > tr:nth-child(odd) {
 					background-color: #eee; }
 				
 				div.flagrate-grid > div > table > tbody > tr:hover {
@@ -668,9 +671,6 @@ div.flagrate-grid {
 					div.flagrate-grid > div > table > thead > tr > th:first-child {
 						box-shadow      : none; }
 					
-					div.flagrate-grid > div > table > thead > tr > th:last-child {
-						box-shadow      : inset 1px 0 0 rgba(0,0,0,0.4) !important; }
-					
 					div.flagrate-grid > div > table > tbody > tr > td {
 						 }
 					
@@ -715,7 +715,7 @@ div.flagrate-grid {
 					div.flagrate-grid > div > table > thead > tr:hover > th.flagrate-grid-cell-menu::after,
 					div.flagrate-grid > div > table > tbody > tr:hover > td.flagrate-grid-cell-menu::after {
 						background-color: rgba(255,255,255,0.8);
-						box-shadow      : -1px 0 0 rgba(0,0,0,0.1); }
+						box-shadow      : -1px 0 0 rgba(0,0,0,0.2); }
 						
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu:hover::after,
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu:hover::after {
