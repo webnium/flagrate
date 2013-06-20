@@ -673,6 +673,30 @@ div.flagrate-grid {
 					div.flagrate-grid:hover > div > table > thead > tr > th:first-child {
 						box-shadow      : none; }
 					
+					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sortable:hover {
+						background-color: #eee;
+						cursor          : pointer; }
+					
+					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-asc,
+					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-desc {
+						color           : rgba(26,96,237,1); }
+					
+						div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-asc > div::after,
+						div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-desc > div::after {
+							display    : inline-block;
+							position   : absolute;
+							top        : 0;
+							left       : 50%;
+							margin-top : -11px;
+							margin-left: -4px;
+							font-size  : 10px; }
+						
+						div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-asc > div::after {
+							content    : '\25b2'; }
+						
+						div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-desc > div::after {
+							content    : '\25bc'; }
+					
 					div.flagrate-grid > div > table > tbody > tr > td {
 						 }
 					

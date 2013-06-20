@@ -2935,7 +2935,7 @@
 	 *  * `text`                     (String):
 	 *  * `html`                     (String):
 	 *  * `element`                  (Element):
-	 *  * `sortKey`                  (Number|String):
+	 *  * `sortAlt`                  (Number|String):
 	 *  * `onClick`                  (Function):
 	 *  * `onDblClick`               (Function):
 	 *  * `postProcess`              (Function):
@@ -3126,6 +3126,55 @@
 		}
 		,
 		/*?
+		 *  flagrate.Grid#sort(key, isAsc) -> flagrate.Grid
+		 *  - key   (String)
+		 *  - isAsc (Boolean)
+		 *
+		 *  sort rows by key
+		**/
+		sort: function(key, isAsc) {
+			
+			this.rows.sort(function(a, b) {
+				
+				var A = 0;
+				var B = 0;
+				
+				if (a.cell[key]) A = a.cell[key].sortAlt || a.cell[key].text || a.cell[key].html || a.cell[key]._div && a.cell[key]._div.innerHTML || 0;
+				if (b.cell[key]) B = b.cell[key].sortAlt || b.cell[key].text || b.cell[key].html || b.cell[key]._div && b.cell[key]._div.innerHTML || 0;
+				
+				return (A > B) ? 1 : -1;
+			});
+			
+			if (!isAsc) this.rows.reverse();
+			
+			for (var i = 0, l = this.cols.length; i < l; i++) {
+				if (this.cols[i].key === key) {
+					if (this.cols[i]._th) {
+						if (isAsc) {
+							this.cols[i]._th.addClassName(flagrate.className + '-grid-col-sorted-asc');
+							this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-desc');
+						} else {
+							this.cols[i]._th.addClassName(flagrate.className + '-grid-col-sorted-desc');
+							this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-asc');
+						}
+					}
+					
+					this.cols[i].isSorted = true;
+					this.cols[i].isAsc    = !!isAsc;
+				} else {
+					if (this.cols[i].isSorted && this.cols[i]._th) this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-asc').removeClassName(flagrate.className + '-grid-col-sorted-desc');
+					
+					this.cols[i].isSorted = false;
+					this.cols[i].isAsc    = null;
+				}
+			}
+			
+			this._requestRender();
+			
+			return this;
+		}
+		,
+		/*?
 		 *  flagrate.Grid#push(row) -> Number
 		 *  - row (Object, Array)
 		 *
@@ -3219,6 +3268,11 @@
 					
 					col._resizeHandle.onmousedown = this._createResizeHandleOnMousedownHandler(this, col);
 				}
+				
+				if (this.disableSort === false && !col.disableSort) {
+					col._th.addClassName(flagrate.className + '-grid-col-sortable');
+					col._th.onclick = this._createColOnClickHandler(this, col);
+				}
 			}
 			
 			new Element('th', { 'class': this._id + '-col-last' }).insertTo(tr);
@@ -3271,6 +3325,10 @@
 					row._tr.onclick = this._createRowOnClickHandler(this, row);
 				}
 				
+				if (row.onDblClick || this.onDblClick) {
+					row._tr.ondblclick = this._createRowOnDblClickHandler(this, row);
+				}
+				
 				if (isCheckable && !row._checkbox) {
 					row._checkbox = new Checkbox({
 						onChange: this._createRowOnCheckHandler(this, row)
@@ -3307,6 +3365,16 @@
 						cell._div.setStyle({
 							backgroundImage: 'url(' + cell.icon + ')'
 						});
+					}
+					
+					if (cell.onClick) {
+						cell._td.addClassName(flagrate.className + '-grid-cell-clickable');
+						
+						cell._td.onclick = this._createCellOnClickHandler(this, cell);
+					}
+					
+					if (cell.onDblClick) {
+						cell._td.ondblclick = this._createCellOnDblClickHandler(this, cell);
 					}
 					
 					// post-processing
@@ -3400,6 +3468,14 @@
 			};
 		}
 		,
+		_createColOnClickHandler: function(that, col) {
+			
+			return function(e) {
+				
+				that.sort(col.key, !col.isAsc);
+			};
+		}
+		,
 		_createRowOnClickHandler: function(that, row) {
 			
 			return function(e) {
@@ -3414,6 +3490,31 @@
 						that.select(row);
 					}
 				}
+			};
+		}
+		,
+		_createRowOnDblClickHandler: function(that, row) {
+			
+			return function(e) {
+				
+				if (row.onDblClick)  row.onDblClick(e, row);
+				if (that.onDblClick) that.onDblClick(e, row);
+			};
+		}
+		,
+		_createCellOnClickHandler: function(that, cell) {
+			
+			return function(e) {
+				
+				if (cell.onClick) cell.onClick(e, cell);
+			};
+		}
+		,
+		_createCellOnDblClickHandler: function(that, cell) {
+			
+			return function(e) {
+				
+				if (cell.onDblClick) cell.onDblClick(e, cell);
 			};
 		}
 		,
