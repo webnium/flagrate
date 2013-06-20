@@ -109,6 +109,7 @@ div.flagrate-pulldown-menu {
 	background-color  : #555; }
 
 div.flagrate-context-menu {
+	z-index           : 99999999;
 	position          : absolute;
 	margin            : 0;
 	border-color      : #555; }
