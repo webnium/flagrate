@@ -561,7 +561,7 @@
 				element.removeAttribute(k);
 			} else if (value === true) {
 				element.setAttribute(k, k);
-			} else {
+			} else if (typeof value !== 'undefined') {
 				element.setAttribute(k, value);
 			}
 		}
@@ -1103,6 +1103,105 @@
 		if (opt.isDisabled) that.disable();
 		
 		return that;
+	};
+	
+	/*?
+	 *  class flagrate.ContextMenu
+	**/
+	
+	/*?
+	 *  new flagrate.ContextMenu(option) -> flagrate.ContextMenu
+	 *  - option (Object) - options.
+	 *  
+	 *  ContextMenu.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `target`                   (Element):
+	 *  * `items`                    (Array): of item (see: flagrate.Menu)
+	**/
+	var ContextMenu = flagrate.ContextMenu = function _ContextMenu(opt) {
+		
+		opt = opt || {};
+		
+		this.target = opt.target || document.body;
+		this.items  = opt.items  || null;
+		
+		this.isShowing = false;
+		
+		this.open = function(e) {
+			
+			e = e || window.event || {};
+			
+			if (e.preventDefault) {
+				e.preventDefault();
+			}
+			
+			if (this._menu) this.close();
+			
+			this.isShowing = true;
+			
+			this._menu = new Menu({
+				className: flagrate.className + '-context-menu',
+				items    : opt.items,
+				onSelect : this.close.bind(this)
+			});
+			
+			var x = (e.clientX || 0) + document.body.scrollLeft;
+			var y = (e.clientY || 0) + document.body.scrollTop;
+			
+			this._menu.style.opacity = 0;
+			
+			this._menu.insertTo(document.body);
+			
+			if (x + this._menu.getWidth() > Element.getWidth(document.body)) x = x - this._menu.getWidth();
+			
+			if (y + this._menu.getHeight() > Element.getHeight(document.body)) y = y - this._menu.getHeight();
+			
+			this._menu.style.top     = y + 'px';
+			this._menu.style.left    = x + 'px';
+			this._menu.style.opacity = 1;
+			
+			document.body.addEventListener('click', this.close);
+			document.body.addEventListener('mousedown', this.close);
+			
+			return this;
+		}.bind(this);
+		
+		this.close = function() {
+			
+			document.body.removeEventListener('click', this.close);
+			document.body.removeEventListener('mousedown', this.close);
+			
+			this.isShowing = false;
+			
+			this._menu.remove();
+			delete this._menu;
+			
+			return this;
+		}.bind(this);
+		
+		this.target.addEventListener('contextmenu', this.open);
+		
+		return this;
+	};
+	
+	ContextMenu.prototype = {
+		/*?
+		 *  flagrate.ContextMenu#visible() -> Boolean
+		**/
+		visible: function() {
+			return this.isShowing;
+		}
+		,
+		/*?
+		 *  flagrate.ContextMenu#remove() -> flagrate.ContextMenu
+		**/
+		remove: function() {
+			if (this._menu) this.close();
+			
+			this.target.removeEventListener('contextmenu', this.open);
+		}
 	};
 	
 	/*?
@@ -3215,6 +3314,15 @@
 				
 				if (row.menuItems) {
 					row._last.addClassName(flagrate.className + '-grid-cell-menu');
+					
+					//row
+					if (row._menu) row._menu.remove();
+					row._menu = new ContextMenu({
+						target: row._tr,
+						items : row.menuItems
+					});
+					
+					row._last.onclick = this._createLastRowOnClickHandler(this, row);
 				}
 				
 				// post-processing
@@ -3318,6 +3426,16 @@
 						that.select(row);
 					}
 				}
+			};
+		}
+		,
+		_createLastRowOnClickHandler: function(that, row) {
+			
+			return function(e) {
+				
+				e.stopPropagation();
+				
+				if (row._menu) row._menu.open();
 			};
 		}
 		,
