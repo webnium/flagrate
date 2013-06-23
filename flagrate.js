@@ -3175,6 +3175,27 @@
 		}
 		,
 		/*?
+		 *  flagrate.Grid#unshift(row) -> Number
+		 *  - row (Object, Array)
+		 *
+		 *  unshift row(s)
+		**/
+		unshift: function(r) {
+			
+			if (r instanceof Array) {
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.rows.unshift(r);
+				}
+			} else {
+				this.rows.unshift(r);
+			}
+			
+			this._requestRender();
+			
+			return this.rows.length;
+		}
+		,
+		/*?
 		 *  flagrate.Grid#push(row) -> Number
 		 *  - row (Object, Array)
 		 *
@@ -3193,6 +3214,104 @@
 			this._requestRender();
 			
 			return this.rows.length;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#shift(count) -> Object|Array
+		 *  - count (Number; default `1`)
+		 *
+		 *  shift row(s)
+		**/
+		shift: function(c) {
+			
+			c = c || 1;
+			
+			var removes = [];
+			
+			for (var i = 0, l = this.rows.length; i < l && i < c; i++) {
+				removes.push(this.rows.shift());
+			}
+			
+			this._requestRender();
+			
+			return c === 1 ? removes[0] : removes;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#pop(count) -> Object|Array
+		 *  - count (Number; default `1`)
+		 *
+		 *  pop row(s)
+		**/
+		pop: function(c) {
+			
+			c = c || 1;
+			
+			var removes = [];
+			
+			for (var i = 0, l = this.rows.length; i < l && i < c; i++) {
+				removes.push(this.rows.pop());
+			}
+			
+			this._requestRender();
+			
+			return c === 1 ? removes[0] : removes;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#splice(index, howMany, row) -> Array
+		 *  - index   (Number) - Index at which to start changing the flagrate.Grid#rows.
+		 *  - howMany (Number) - An integer indicating the number of old flagrate.Grid#rows to remove.
+		 *  - row     (Object, Array) - The row(s) to add to the flagrate.Grid#rows.
+		 *
+		 *  Changes the content of a rows, adding new row(s) while removing old rows.
+		**/
+		splice: function(index, c, r) {
+			
+			c = c || index - this.rows.length;
+			
+			var removes = this.rows.splice(index, c);
+			
+			if (r instanceof Array === false) r = [r];
+			
+			for (var i = 0, l = r.length; i < l; i++) {
+				this.rows.splice(index + i, 0, r[i]);
+			}
+			
+			this._requestRender();
+			
+			return removes;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#indexOf(row[, fromIndex]) -> Number
+		 *  - row     (Object) - row to locate in the flagrate.Grid.
+		 *  - index   (Number; default `0`) - The index to start the search at.
+		 *
+		 *  Returns the index at which a given row can be found in the flagrate.Grid#rows, or -1 if it is not present.
+		**/
+		indexOf: function(r, index) {
+			return this.rows.indexOf(r, index);
+		}
+		,
+		/*?
+		 *  flagrate.Grid#delete(row) -> Object|Array
+		 *  - row (Object, Array) - row to locate in the flagrate.Grid.
+		 *
+		 *  delete row(s).
+		**/
+		'delete': function(r) {
+			
+			var removes = [];
+			
+			if (r instanceof Array === false) r = [r];
+			
+			for (var i = 0, l = r.length; i < l; i++) {
+				var index = this.indexOf(r[i]);
+				if (index !== -1) removes.push(this.splice(index, 1));
+			}
+			
+			return removes;
 		}
 		,
 		_create: function() {
@@ -3302,6 +3421,8 @@
 			var i, j, row, col, cell;
 			var rl = this.rows.length;
 			var cl = this.cols.length;
+			
+			this._tbody.update();
 			
 			for (i = 0; i < rl; i++) {
 				row = this.rows[i];
