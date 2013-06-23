@@ -1147,16 +1147,16 @@
 				onSelect : this.close.bind(this)
 			});
 			
-			var x = (e.clientX || 0) + document.body.scrollLeft;
-			var y = (e.clientY || 0) + document.body.scrollTop;
+			var x = e.clientX || 0;
+			var y = e.clientY || 0;
 			
 			this._menu.style.opacity = 0;
 			
 			this._menu.insertTo(document.body);
 			
-			if (x + this._menu.getWidth() > Element.getWidth(document.body)) x = x - this._menu.getWidth();
+			if (x + this._menu.getWidth() > window.innerWidth) x = x - this._menu.getWidth();
 			
-			if (y + this._menu.getHeight() > Element.getHeight(document.body)) y = y - this._menu.getHeight();
+			if (y + this._menu.getHeight() > window.innerHeight) y = y - this._menu.getHeight();
 			
 			this._menu.style.top     = y + 'px';
 			this._menu.style.left    = x + 'px';
@@ -1164,6 +1164,7 @@
 			
 			document.body.addEventListener('click', this.close);
 			document.body.addEventListener('mouseup', this.close);
+			document.body.addEventListener('mousewheel', this.close);
 			
 			return this;
 		}.bind(this);
@@ -1172,6 +1173,7 @@
 			
 			document.body.removeEventListener('click', this.close);
 			document.body.removeEventListener('mouseup', this.close);
+			document.body.removeEventListener('mousewheel', this.close);
 			
 			this.isShowing = false;
 			

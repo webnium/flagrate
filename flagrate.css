@@ -110,7 +110,7 @@ div.flagrate-pulldown-menu {
 
 div.flagrate-context-menu {
 	z-index           : 99999999;
-	position          : absolute;
+	position          : fixed;
 	margin            : 0;
 	border-color      : #555; }
 	
