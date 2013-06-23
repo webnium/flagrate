@@ -100,7 +100,7 @@ div.flagrate-menu {
 	z-index           : 2;
 	display           : block;
 	border            : 2px solid #444;
-	padding           : 2px 0;
+	padding           : 4px 0;
 	background-color  : #fff; }
 
 div.flagrate-pulldown-menu {
@@ -118,7 +118,7 @@ div.flagrate-context-menu {
 		border          : none;
 		height          : 1px;
 		background-color: #bbb;
-		margin          : 2px 2px; }
+		margin          : 4px 2px; }
 	
 	div.flagrate-pulldown-menu > hr {
 		background-color: #444; }
@@ -132,9 +132,12 @@ div.flagrate-context-menu {
 		color           : #222;
 		border          : none;
 		box-shadow      : none;
-		padding         : 5px 24px 4px;
+		padding         : 5px 30px 4px;
 		text-align      : left;
 		outline         : none; }
+	
+	div.flagrate-menu > button.flagrate-button.flagrate-icon {
+		background-position: 8px center; }
 	
 	div.flagrate-pulldown-menu > button.flagrate-button,
 	div.flagrate-pulldown-menu > button.flagrate-button:hover,
