@@ -1,4 +1,4 @@
-Flagrate
+Flagrate [![Build Status](https://circleci.com/gh/webnium/flagrate/tree/master.png?circle-token=1e62d579c1775441e9f8a70ecf02ac3255b80a5e)](#)
 ========
 
 #### A pure JavaScript class-object UI library for building RIA using techniques such as DHTML and DOM scripting. ####
@@ -29,10 +29,13 @@ Flagrate github repository tags (<https://github.com/webnium/flagrate/tags>) and
     <link href="/path/to/flagrate.css" rel="stylesheet">
     <script src="/path/to/flagrate.js"></script>
 
-Or, you can use official CDN provided by [Webnium](http://webnium.co.jp/):
+Or, **you can use official CDN** provided by [Webnium](http://webnium.co.jp/):
 
     <link href="//flagrate.org/flagrate.min.css" rel="stylesheet">
     <script src="//flagrate.org/flagrate.min.js"></script>
+
+#### ([CDN status](http://stats.pingdom.com/z2isnrsvidf5/874134))
+[![Status banner](https://share.pingdom.com/banners/36f90d37)](http://stats.pingdom.com/z2isnrsvidf5/874134)
 
 Documentation
 -------------
