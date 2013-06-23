@@ -33,5 +33,5 @@ deployment:
       - unzip -p yuicompressor.zip yuicompressor-2.4.7/build/* > yuicompressor.jar
       - java -jar yuicompressor.jar --type css flagrate.css > flagrate.min.css
       - git add flagrate.min.css
-      - git commit -a -m "Build 'flagrate.min.js' and 'flagrate.min.css'"
-      - git push
+      - git commit -a -m "Build 'flagrate.min.js' and 'flagrate.min.css'" || true
+      - git push || true
