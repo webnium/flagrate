@@ -2862,8 +2862,8 @@
 			return function(e) {
 				try {
 					button.onSelect(e, that);
-				} catch (e) {
-					throw new Error('flagrate.Modal: ' + e);
+				} catch (err) {
+					throw new Error('flagrate.Modal: ' + err);
 				}
 			};
 		}
