@@ -2858,7 +2858,11 @@
 		_createButtonOnSelectHandler: function(that, button) {
 			
 			return function(e) {
-				button.onSelect(e, that);
+				try {
+					button.onSelect(e, that);
+				} catch (e) {
+					throw new Error('flagrate.Modal: ' + e);
+				}
 			};
 		}
 	};
