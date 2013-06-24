@@ -1207,7 +1207,7 @@
 		this.open = function(target) {
 			
 			var e = window.event || {};
-			var t = e.target || this.target || document.body;
+			var t = this.target || e.target || document.body;
 			
 			if (target instanceof HTMLElement) t = target;
 			
