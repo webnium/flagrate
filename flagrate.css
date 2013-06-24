@@ -166,6 +166,48 @@ div.flagrate-context-menu {
 	div.flagrate-menu > button.flagrate-button-disabled:active {
 		color           : #aaa; }
 
+div.flagrate-popover {
+	z-index           : 99999999;
+	position          : fixed;
+	margin            : 0;
+	padding           : 10px;
+	max-width         : 320px;
+	background-color  : rgba(0,0,0,0.8);
+	color             : white;
+	word-break        : break-all;
+	white-space       : normal;
+	margin            : 10px 0;
+	padding           : 10px;
+	width             : auto;
+	height            : auto;
+	/*-webkit-transition: opacity 0.2s ease 0.25s;
+	-moz-transition   : opacity 0.2s ease 0.25s;
+	-ms-transition    : opacity 0.2s ease 0.25s;
+	-o-transition     : opacity 0.2s ease 0.25s;
+	transition        : opacity 0.2s ease 0.25s;*/ }
+
+div.flagrate-popover::before {
+	position        : absolute;
+	left            : 50%;
+	margin-left     : -7px;
+	display         : inline-block;
+	content         : ''; }
+
+div.flagrate-popover.flagrate-popover-tail-top::before {
+	top             : -7px;
+	border-right    : 7px solid transparent;
+	border-bottom   : 7px solid rgba(0,0,0,0.8);
+	border-left     : 7px solid transparent; }
+
+div.flagrate-popover.flagrate-popover-tail-bottom::before {
+	bottom          : -7px;
+	border-top      : 7px solid rgba(0,0,0,0.8);
+	border-right    : 7px solid transparent;
+	border-left     : 7px solid transparent; }
+	
+	div.flagrate-popover img {
+		max-width: 100%; }
+
 input.flagrate-textinput,
 textarea.flagrate-textarea,
 div.flagrate-tokenizer {

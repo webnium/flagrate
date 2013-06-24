@@ -11,7 +11,9 @@
 	<style type="text/css">
 		body {
 			background-color: #e5e4e6;
-			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJUlEQVQYV2N88ODBfwYCQEBAgIFxVCGuUCIteD58+EAwwEE2AQD70iYhFOygFAAAAABJRU5ErkJggg==); }
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJUlEQVQYV2N88ODBfwYCQEBAgIFxVCGuUCIteD58+EAwwEE2AQD70iYhFOygFAAAAABJRU5ErkJggg==);
+			padding: 0;
+			margin : 10px; }
 		
 		body, input {
 			font-family     : "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ",
@@ -240,8 +242,43 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Popover
+		var popoverHoverBtn = new flagrate.Button({
+			color   : '@red',
+			label   : 'hover to open Popover'
+		}).insertTo(c);
+		
+		var popover = new flagrate.Popover({
+			target: popoverHoverBtn,
+			text  : 'Popover'
+		});
+		
+		new flagrate.Button({
+			color   : '@red',
+			label   : '#open',
+			onSelect: function() {
+				popover.open(popoverTargetBtn);
+			}
+		}).insertTo(c);
+		
+		new flagrate.Button({
+			color   : '@red',
+			label   : '#close',
+			onSelect: function() {
+				popover.close();
+			}
+		}).insertTo(c);
+		
+		var popoverTargetBtn = new flagrate.Button({
+			label   : 'target',
+			isDisabled: true
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Notify
 		var notify = new flagrate.Notify();
+		
 		new flagrate.Button({
 			color   : '@orange',
 			label   : 'click to create Notify',
@@ -254,6 +291,7 @@
 		
 		// Modal
 		var modal = new flagrate.Modal({ title: 'Modal', subtitle: 'subtitle', text: 'text' });
+		
 		new flagrate.Button({
 			color   : '@blue',
 			label   : 'click to create Modal',
