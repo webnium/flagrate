@@ -3247,7 +3247,7 @@
 					if (typeof arguments[i] === 'number') {
 						if (this.rows[arguments[i]]) rows.push(this.rows[arguments[i]]);
 					} else if (typeof a === 'object') {
-						if (this.rows.indexOf(a) !== -1) rows.push(this.rows[this.rows.indexOf(a)]);
+						rows.push(a);
 					}
 				}
 			}
@@ -3294,7 +3294,7 @@
 					if (typeof arguments[i] === 'number') {
 						if (this.rows[arguments[i]]) rows.push(this.rows[arguments[i]]);
 					} else if (typeof a === 'object') {
-						if (this.rows.indexOf(a) !== -1) rows.push(this.rows[this.rows.indexOf(a)]);
+						rows.push(a);
 					}
 				}
 			}
