@@ -220,6 +220,24 @@
 		}
 		,
 		/*?
+		 *  flagrate.Element#cumulativeOffset() -> Object
+		 *
+		 *  please refer to flagrate.Element.cumulativeOffset
+		**/
+		cumulativeOffset: function() {
+			return Element.cumulativeOffset(this);
+		}
+		,
+		/*?
+		 *  flagrate.Element#cumulativeScrollOffset() -> Object
+		 *
+		 *  please refer to flagrate.Element.cumulativeScrollOffset
+		**/
+		cumulativeScrollOffset: function() {
+			return Element.cumulativeScrollOffset(this);
+		}
+		,
+		/*?
 		 *  flagrate.Element#hasClassName(className) -> Boolean
 		 *
 		 *  please refer to flagrate.Element.hasClassName
@@ -632,6 +650,56 @@
 	Element.getWidth = function(element) {
 		
 		return Element.getDimensions(element).width;
+	};
+	
+	/*?
+	 *  flagrate.Element.cumulativeOffset(element) -> Object
+	 *  - element (Element) - instance of Element.
+	 *  
+	 *  This method is similar to http://api.prototypejs.org/dom/Element/cumulativeOffset/
+	**/
+	Element.cumulativeOffset = function(element) {
+		
+		var t = 0, l = 0;
+		if (element.parentNode) {
+			do {
+				t      += element.offsetTop  || 0;
+				l      += element.offsetLeft || 0;
+				element = element.offsetParent;
+			} while (element);
+		}
+		
+		var offset = {
+			top : t,
+			left: l
+		};
+		
+		return offset;
+	};
+	
+	/*?
+	 *  flagrate.Element.cumulativeScrollOffset(element) -> Object
+	 *  - element (Element) - instance of Element.
+	 *  
+	 *  This method is similar to http://api.prototypejs.org/dom/Element/cumulativeScrollOffset/
+	**/
+	Element.cumulativeScrollOffset = function(element) {
+		
+		var t = 0, l = 0;
+		if (element.parentNode) {
+			do {
+				t      += element.offsetTop  || 0;
+				l      += element.offsetLeft || 0;
+				element = element.parentNode;
+			} while (element);
+		}
+		
+		var offset = {
+			top : t,
+			left: l
+		};
+		
+		return offset;
 	};
 	
 	/*?
@@ -1106,6 +1174,149 @@
 	};
 	
 	/*?
+	 *  class flagrate.Popover
+	**/
+	
+	/*?
+	 *  new flagrate.Popover(option) -> flagrate.Popover
+	 *  - option (Object) - options.
+	 *  
+	 *  Popover.
+	 *  
+	 *  ##### option
+	 *  
+	 *  * `target`                   (Element):
+	 *  * `text`                     (String):
+	 *  * `html`                     (String):
+	 *  * `element`                  (Element):
+	**/
+	var Popover = flagrate.Popover = function _Popover(opt) {
+		
+		opt = opt || {};
+		
+		this.target = opt.target  || null;
+		var text    = opt.text    || null;
+		var html    = opt.html    || null;
+		var element = opt.element || null;
+		
+		this.isShowing = false;
+		
+		/*?
+		 *  flagrate.Popover#open() -> flagrate.Popover
+		**/
+		this.open = function(target) {
+			
+			var e = window.event || {};
+			var t = e.target || this.target || document.body;
+			
+			if (target instanceof HTMLElement) t = target;
+			
+			if (this.isShowing) this.close();
+			
+			this.isShowing = true;
+			
+			this._div = new Element('div', {
+				'class': flagrate.className + ' ' + flagrate.className + '-popover'
+			});
+			
+			if (text)    this._div.updateText(text);
+			if (html)    this._div.update(html);
+			if (element) this._div.update(element);
+			
+			this._div.style.opacity = 0;
+			this._div.insertTo(document.body);
+			
+			var tOffset  = Element.cumulativeOffset(t);
+			var tScrollT = document.body.scrollTop;
+			var tScrollL = document.body.scrollLeft;
+			var tWidth   = Element.getWidth(t);
+			var tHeight  = Element.getHeight(t);
+			var width    = this._div.getWidth();
+			var height   = this._div.getHeight();
+			
+			var x = tOffset.left - tScrollL + (tWidth / 2) - (width / 2);
+			var y = tOffset.top - tScrollT + tHeight;
+			
+			var xa = 'left';
+			var ya = 'top';
+			
+			if (y + height > window.innerHeight) {
+				ya = 'bottom';
+				y  = window.innerHeight - y + tHeight;
+			}
+			
+			this._div.addClassName(flagrate.className + '-popover-tail-' + ya);
+			
+			this._div.style[xa]     = x + 'px';
+			this._div.style[ya]     = y + 'px';
+			this._div.style.opacity = 1;
+			
+			if (e.type && e.type === 'mouseover') {
+				document.body.addEventListener('click', this.close);
+				document.body.addEventListener('mouseout', this.close);
+			}
+			
+			document.body.addEventListener('mouseup', this.close);
+			document.body.addEventListener('mousewheel', this.close);
+			
+			var stopper = function(e) {
+				e.stopPropagation();
+				if (e.type === 'mousewheel') e.preventDefault();
+			};
+			
+			this._div.addEventListener('click', stopper);
+			this._div.addEventListener('mouseup', stopper);
+			this._div.addEventListener('mousewheel', stopper);
+			
+			return this;
+		}.bind(this);
+		
+		/*?
+		 *  flagrate.Popover#close() -> flagrate.Popover
+		**/
+		this.close = function() {
+			
+			document.body.removeEventListener('click', this.close);
+			document.body.removeEventListener('mouseup', this.close);
+			document.body.removeEventListener('mouseout', this.close);
+			document.body.removeEventListener('mousewheel', this.close);
+			
+			this.isShowing = false;
+			
+			var div = this._div;
+			setTimeout(function() {
+				if (div && div.remove) div.remove();
+			}, 0);
+			
+			delete this._div;
+			
+			return this;
+		}.bind(this);
+		
+		if (this.target !== null) this.target.addEventListener('mouseover', this.open);
+		
+		return this;
+	};
+	
+	Popover.prototype = {
+		/*?
+		 *  flagrate.Popover#visible() -> Boolean
+		**/
+		visible: function() {
+			return this.isShowing;
+		}
+		,
+		/*?
+		 *  flagrate.Popover#remove() -> flagrate.Popover
+		**/
+		remove: function() {
+			if (this._div) this.close();
+			
+			if (this.target !== null) this.target.removeEventListener('mouseover', this.open);
+		}
+	};
+	
+	/*?
 	 *  class flagrate.ContextMenu
 	**/
 	
@@ -1124,14 +1335,17 @@
 		
 		opt = opt || {};
 		
-		this.target = opt.target || document.body;
+		this.target = opt.target || null;
 		this.items  = opt.items  || null;
 		
 		this.isShowing = false;
 		
-		this.open = function(e) {
+		/*?
+		 *  flagrate.ContextMenu#open() -> flagrate.ContextMenu
+		**/
+		this.open = function() {
 			
-			e = e || window.event || {};
+			var e = window.event || {};
 			
 			if (e.preventDefault) {
 				e.preventDefault();
@@ -1169,6 +1383,9 @@
 			return this;
 		}.bind(this);
 		
+		/*?
+		 *  flagrate.ContextMenu#close() -> flagrate.ContextMenu
+		**/
 		this.close = function() {
 			
 			document.body.removeEventListener('click', this.close);
@@ -1187,7 +1404,7 @@
 			return this;
 		}.bind(this);
 		
-		this.target.addEventListener('contextmenu', this.open);
+		if (this.target !== null) this.target.addEventListener('contextmenu', this.open);
 		
 		return this;
 	};
@@ -1206,7 +1423,7 @@
 		remove: function() {
 			if (this._menu) this.close();
 			
-			this.target.removeEventListener('contextmenu', this.open);
+			if (this.target !== null) this.target.removeEventListener('contextmenu', this.open);
 		}
 	};
 	
