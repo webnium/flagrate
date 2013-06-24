@@ -3491,7 +3491,7 @@
 		**/
 		splice: function(index, c, r) {
 			
-			c = c || index - this.rows.length;
+			c = c || this.rows.length - index;
 			
 			var removes = this.rows.splice(index, c);
 			
