@@ -686,13 +686,11 @@
 	Element.cumulativeScrollOffset = function(element) {
 		
 		var t = 0, l = 0;
-		if (element.parentNode) {
-			do {
-				t      += element.offsetTop  || 0;
-				l      += element.offsetLeft || 0;
-				element = element.parentNode;
-			} while (element);
-		}
+		do {
+			t      += element.scrollTop  || 0;
+			l      += element.scrollLeft || 0;
+			element = element.parentNode;
+		} while (element);
 		
 		var offset = {
 			top : t,
@@ -1227,15 +1225,14 @@
 			this._div.insertTo(document.body);
 			
 			var tOffset  = Element.cumulativeOffset(t);
-			var tScrollT = document.body.scrollTop;
-			var tScrollL = document.body.scrollLeft;
+			var tScroll  = Element.cumulativeScrollOffset(t);
 			var tWidth   = Element.getWidth(t);
 			var tHeight  = Element.getHeight(t);
 			var width    = this._div.getWidth();
 			var height   = this._div.getHeight();
 			
-			var x = tOffset.left - tScrollL + (tWidth / 2) - (width / 2);
-			var y = tOffset.top - tScrollT + tHeight;
+			var x = tOffset.left - tScroll.left + (tWidth / 2) - (width / 2);
+			var y = tOffset.top - tScroll.top + tHeight;
 			
 			var xa = 'left';
 			var ya = 'top';
