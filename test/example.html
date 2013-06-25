@@ -335,7 +335,8 @@
 							text: 'text'
 						},
 						num: {
-							text: '1'
+							sortAlt: 1,
+							text   : '1'
 						}
 					},
 					menuItems: [
@@ -357,7 +358,8 @@
 							text: '<b>text</b>'
 						},
 						num: {
-							text: '2'
+							sortAlt: 22,
+							text   : '22'
 						}
 					},
 					menuItems: [
@@ -384,20 +386,13 @@
 							html: '<b>html</b>'
 						},
 						num: {
-							text: '3'
+							sortAlt: 3,
+							text   : '3'
 						}
 					}
 				}
 			]
 		}).insertTo(c);
-		
-		setTimeout(function() {
-			grid.push({
-				cell: {
-					name: {text: 'test'}
-				}
-			});
-		}, 1000);
 	</script>
 </body>
 </html>
