@@ -3713,17 +3713,17 @@
 			
 			var isCheckable = (this.disableCheckbox === false && this.disableSelect === false && this.multiSelect === true);
 			
-			var i, j, row, col, cell;
+			var i, j, row, col, cell, pl, pages, from, to;
 			var rl = this.rows.length;
 			var cl = this.cols.length;
 			
 			if (this.pagination) {
-				var pl    = 0;
-				var pages = Math.ceil(rl / this.numberOfRowsPerPage);
+				pl    = 0;
+				pages = Math.ceil(rl / this.numberOfRowsPerPage);
 				if (pages <= this.pagePosition) this.pagePosition = pages - 1;
-				if (this.pagePosition <= 0) this.pagePosition = 0
-				var from  = this.pagePosition * this.numberOfRowsPerPage;
-				var to    = from + this.numberOfRowsPerPage;
+				if (this.pagePosition <= 0) this.pagePosition = 0;
+				from  = this.pagePosition * this.numberOfRowsPerPage;
+				to    = from + this.numberOfRowsPerPage;
 			}
 			
 			this._tbody.update();
