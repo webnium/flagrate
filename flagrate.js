@@ -1505,7 +1505,7 @@
 				if (!elements[i]._key) continue;
 				
 				if (elements[i]._key === key) {
-					result = element[i]._key;
+					result = elements[i];
 					break;
 				}
 			}
@@ -3102,6 +3102,9 @@
 	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
 	 *  * `cols`                     (Array): of col object.
 	 *  * `rows`                     (Array): of row object.
+	 *  * `pagination`               (Boolean; default `false`):
+	 *  * `numberOfRowsPerPage`      (Number; default `20`): pagination.
+	 *  * `fill`                     (Boolean; default `false`):
 	 *  * `headless`                 (Boolean; default `false`):
 	 *  * `multiSelect`              (Boolean; default `false`):
 	 *  * `disableCheckbox`          (Boolean; default `false`):
@@ -3192,6 +3195,8 @@
 		this.style               = opt.style               || null;
 		this.cols                = opt.cols                || [];
 		this.rows                = opt.rows                || [];
+		this.pagination          = opt.pagination          || false;
+		this.fill                = opt.fill                || false;
 		this.headless            = opt.headless            || false;
 		this.multiSelect         = opt.multiSelect         || false;
 		this.disableCheckbox     = opt.disableCheckbox     || false;
@@ -3210,6 +3215,11 @@
 		this._id = 'flagrate-grid-' + (++Grid.idCounter).toString(10);
 		
 		this._selectedRows = [];
+		
+		if (this.pagination) {
+			this.numberOfRowsPerPage = opt.numberOfRowsPerPage || 20;
+			this.pagePosition = 0;
+		}
 		
 		return this._create()._requestRender();
 	};
@@ -3615,9 +3625,74 @@
 			}
 			
 			new Element('th', { 'class': this._id + '-col-last' }).insertTo(tr);
-			this._style.insertText('.' + this._id + '-col-last:after{margin-left:0}');
+			this._style.insertText('.' + this._id + '-col-last:after{right:0}');
 			
-			this.element.onscroll = this._createOnScrollHandler(this);
+			// pagination (testing)
+			if (this.pagination) {
+				this.element.addClassName(flagrate.className + '-grid-pagination');
+				// pager container 
+				this._pager = new Toolbar({
+					className: flagrate.className + '-grid-pager',
+					items: [
+						{
+							key    : 'rn',
+							element: new Element('span').insertText('-')
+						},
+						{
+							key    : 'first',
+							element: new Button({
+								className: flagrate.className + '-grid-pager-first',
+								onSelect : function() {
+									this.pagePosition = 0;
+									this._requestRender();
+								}.bind(this)
+							})
+						},
+						{
+							key    : 'prev',
+							element: new Button({
+								className: flagrate.className + '-grid-pager-prev',
+								onSelect : function() {
+									--this.pagePosition;
+									this._requestRender();
+								}.bind(this)
+							})
+						},
+						{
+							key    : 'num',
+							element: new Element('span', { 'class': flagrate.className + '-grid-pager-num' }).insertText('-')
+						},
+						{
+							key    : 'next',
+							element: new Button({
+								className: flagrate.className + '-grid-pager-next',
+								onSelect : function() {
+									++this.pagePosition;
+									this._requestRender();
+								}.bind(this)
+							})
+						},
+						{
+							key    : 'last',
+							element: new Button({
+								className: flagrate.className + '-grid-pager-last',
+								onSelect : function() {
+									this.pagePosition = Math.floor(this.rows.length / this.numberOfRowsPerPage);
+									this._requestRender();
+								}.bind(this)
+							})
+						}
+					]
+				}).insertTo(this.element);
+			}
+			
+			if (this.fill) {
+				this.element.addClassName(flagrate.className + '-grid-fill');
+				
+				this._body.onscroll = this._createBodyOnScrollHandler(this);
+			} else {
+				this.element.onscroll = this._createOnScrollHandler(this);
+			}
 			
 			return this;
 		}
@@ -3642,13 +3717,21 @@
 			var rl = this.rows.length;
 			var cl = this.cols.length;
 			
+			if (this.pagination) {
+				var pl    = 0;
+				var pages = Math.ceil(rl / this.numberOfRowsPerPage);
+				if (pages <= this.pagePosition) this.pagePosition = pages - 1;
+				if (this.pagePosition <= 0) this.pagePosition = 0
+				var from  = this.pagePosition * this.numberOfRowsPerPage;
+				var to    = from + this.numberOfRowsPerPage;
+			}
+			
 			this._tbody.update();
 			
 			for (i = 0; i < rl; i++) {
 				row = this.rows[i];
 				
 				if (!row._tr) row._tr = new Element('tr');
-				row._tr.insertTo(this._tbody);
 				
 				if (row.id)        row._tr.writeAttribute('id', row.id);
 				if (row.className) row._tr.writeAttribute('class', row.className);
@@ -3725,6 +3808,11 @@
 				if (!row._last) row._last = new Element('td', { 'class': this._id + '-col-last' });
 				row._last.insertTo(row._tr);
 				
+				if (this.pagination) {
+					if (i < from || i >= to) continue;
+					++pl;
+				}
+				
 				if (row.menuItems) {
 					row._last.addClassName(flagrate.className + '-grid-cell-menu');
 					
@@ -3738,12 +3826,24 @@
 					row._last.onclick = this._createLastRowOnClickHandler(this, row);
 				}
 				
+				row._tr.insertTo(this._tbody);
+				
 				// post-processing
 				if (row.postProcess) row.postProcess(row._tr);
 				if (this.postProcessOfRow) this.postProcessOfRow(row._tr);
 			}//<--for
 			
+			if (this.pagination) {
+				this._pager.getElementByKey('rn').updateText((from + 1) + ' - ' + (from + pl) + ' / ' + rl);
+				this._pager.getElementByKey('num').updateText((this.pagePosition + 1) + ' / ' + pages);
+			}
+			
 			if (this.disableResize === false) {
+				if (this.fill) {
+					this._head.style.right = (this._body.offsetWidth - this._body.clientWidth) + 'px';
+					this._head.scrollLeft = this._body.scrollLeft;
+				}
+				
 				this._updateLayoutOfCols();
 				this._updatePositionOfResizeHandles();
 			}
@@ -3755,13 +3855,15 @@
 		,
 		_updatePositionOfResizeHandles: function() {
 			
+			var adj = this.fill ? -this._body.scrollLeft : 0;
+			
 			var col;
 			
 			for (var i = 0, l = this.cols.length; i < l; i++) {
 				col = this.cols[i];
 				
 				if (col._resizeHandle) {
-					col._resizeHandle.style.left = (col._th.offsetLeft + col._th.getWidth()) + 'px';
+					col._resizeHandle.style.left = (col._th.offsetLeft + col._th.getWidth() + adj) + 'px';
 				}
 			}
 			
@@ -3790,10 +3892,12 @@
 			this.element.addClassName(flagrate.className + '-grid-fixed');
 			
 			setTimeout(function() {
+				
+				var base = this.fill ? this._body : this.element;
 				this._style.updateText(
 					this._style.innerHTML.replace(
-						new RegExp('(' + this._id + '-col-last:after{margin-left:)([^}]*)}'),
-						'$1' + (this.element.getWidth() - this.element.scrollWidth + this.element.scrollLeft) + 'px!important}'
+						new RegExp('(' + this._id + '-col-last:after{right:)([^}]*)}'),
+						'$1' + (base.scrollWidth - base.clientWidth - base.scrollLeft) + 'px!important}'
 					)
 				);
 			}.bind(this), 0);
@@ -3806,6 +3910,20 @@
 			return function(e) {
 				
 				if (that.disableResize === false) that._updateLayoutOfCols();
+			};
+		}
+		,
+		_createBodyOnScrollHandler: function(that) {
+			
+			return function(e) {
+				
+				that._head.style.right = (that._body.offsetWidth - that._body.clientWidth) + 'px';
+				that._head.scrollLeft = that._body.scrollLeft;
+				
+				if (that.disableResize === false) {
+					that._updateLayoutOfCols();
+					that._updatePositionOfResizeHandles();
+				}
 			};
 		}
 		,

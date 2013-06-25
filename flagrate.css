@@ -644,17 +644,43 @@ div.flagrate-modal.flagrate-modal-visible {
 div.flagrate-grid {
 	overflow        : auto;
 	background-color: #fff; }
+
+div.flagrate-grid.flagrate-grid-fill {
+	width           : 100%;
+	height          : 100%;
+	overflow        : hidden; }
 	
 	div.flagrate-grid > div.flagrate-grid-head {
 		z-index      : 1;
-		position     : absolute;
-		top          : 0;
-		left         : 0;
+		position     : relative;
 		border-bottom: 2px solid rgba(255,255,255,0.25); }
 	
+	div.flagrate-grid.flagrate-grid-headless > div.flagrate-grid-head {
+		display      : none; }
+	
+	div.flagrate-grid.flagrate-grid-fill > div.flagrate-grid-head {
+		position     : absolute;
+		top          : 0;
+		right        : 0;
+		left         : 0;
+		overflow     : hidden; }
+	
 	div.flagrate-grid > div.flagrate-grid-body {
-		position     : relative;
-		margin-top   : 32px; }
+		position     : relative; }
+	
+	div.flagrate-grid.flagrate-grid-fill > div.flagrate-grid-body {
+		position     : absolute;
+		top          : 34px;
+		right        : 0;
+		bottom       : 0;
+		left         : 0;
+		overflow     : auto; }
+	
+	div.flagrate-grid.flagrate-grid-fill.flagrate-grid-headless > div.flagrate-grid-body {
+		top          : 0; }
+	
+	div.flagrate-grid.flagrate-grid-fill.flagrate-grid-pagination > div.flagrate-grid-body {
+		bottom       : 32px; }
 		
 		div.flagrate-grid > div > table {
 			position       : relative;
@@ -670,6 +696,9 @@ div.flagrate-grid {
 				
 				div.flagrate-grid > div > table > thead > tr:hover {
 					color           : #000; }
+				
+				div.flagrate-grid > div > table > tbody > tr {
+					position        : relative; }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(odd) {
 					background-color: #eee; }
@@ -745,7 +774,7 @@ div.flagrate-grid {
 							content    : '\25bc'; }
 					
 					div.flagrate-grid > div > table > tbody > tr > td {
-						 }
+						position: static; }
 					
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-checkbox,
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-checkbox {
@@ -775,8 +804,8 @@ div.flagrate-grid {
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu::after {
 						content         : '\25bc';
 						display         : block;
-						position        : relative;
-						right           : 23px;
+						position        : absolute;
+						right           : 0;
 						margin-left     : 0;
 						overflow        : visible;
 						font-size       : 13px;
@@ -828,3 +857,40 @@ div.flagrate-grid {
 	
 	div.flagrate-grid > div.flagrate-grid-col-resize-handle:active {
 		background-color: rgba(26,96,237,0.35); }
+	
+	div.flagrate-grid > div.flagrate-grid-pager {
+		position        : relative;
+		display         : block;
+		background-color: #fff;
+		text-align      : right; }
+	
+	div.flagrate-grid.flagrate-grid-fill > div.flagrate-grid-pager {
+		z-index         : 3;
+		position        : absolute;
+		right           : 0;
+		bottom          : 0;
+		left            : 0; }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > * {
+			margin-left   : 2px; }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > span {
+			color: #555;
+			padding         : 6px 5px 5px; }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > button {
+			color: rgba(26,96,237,1); }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > button.flagrate-grid-pager-first::before {
+			content: '\3008'; }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > button.flagrate-grid-pager-prev::before {
+			content: '\25c0'; }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > button.flagrate-grid-pager-next::before {
+			content: '\25b6'; }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > button.flagrate-grid-pager-last::before {
+			content: '\3009'; }
+		
+		div.flagrate-grid > div.flagrate-grid-pager > span.flagrate-grid-pager-num { }
