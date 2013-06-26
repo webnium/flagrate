@@ -3369,8 +3369,8 @@
 				var A = 0;
 				var B = 0;
 				
-				if (a.cell[key]) A = a.cell[key].sortAlt || a.cell[key].text || a.cell[key].html || a.cell[key]._div && a.cell[key]._div.innerHTML || 0;
-				if (b.cell[key]) B = b.cell[key].sortAlt || b.cell[key].text || b.cell[key].html || b.cell[key]._div && b.cell[key]._div.innerHTML || 0;
+				if (a.cell[key]) A = a.cell[key].sortAlt || a.cell[key].text || a.cell[key].html || a.cell[key].element && a.cell[key].element.innerHTML || a.cell[key]._div && a.cell[key]._div.innerHTML || 0;
+				if (b.cell[key]) B = b.cell[key].sortAlt || b.cell[key].text || b.cell[key].html || b.cell[key].element && b.cell[key].element.innerHTML || b.cell[key]._div && b.cell[key]._div.innerHTML || 0;
 				
 				return (A > B) ? 1 : -1;
 			});
@@ -3729,9 +3729,16 @@
 			this._tbody.update();
 			
 			for (i = 0; i < rl; i++) {
+				if (this.pagination) {
+					if (i < from) continue;
+					if (i >= to)  break;
+					++pl;
+				}
+				
 				row = this.rows[i];
 				
 				if (!row._tr) row._tr = new Element('tr');
+				row._tr.insertTo(this._tbody);
 				
 				if (row.id)        row._tr.writeAttribute('id', row.id);
 				if (row.className) row._tr.writeAttribute('class', row.className);
@@ -3808,11 +3815,7 @@
 				if (!row._last) row._last = new Element('td', { 'class': this._id + '-col-last' });
 				row._last.insertTo(row._tr);
 				
-				if (this.pagination) {
-					if (i < from || i >= to) continue;
-					++pl;
-				}
-				
+				// menu
 				if (row.menuItems) {
 					row._last.addClassName(flagrate.className + '-grid-cell-menu');
 					
@@ -3825,8 +3828,6 @@
 					
 					row._last.onclick = this._createLastRowOnClickHandler(this, row);
 				}
-				
-				row._tr.insertTo(this._tbody);
 				
 				// post-processing
 				if (row.postProcess) row.postProcess(row._tr);
