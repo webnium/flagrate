@@ -2910,6 +2910,8 @@
 			'class': this.className
 		});
 		
+		if (this.target !== document.body) this._base.style.position = 'absolute';
+		
 		this._base.addClassName(flagrate.className + ' ' + flagrate.className + '-modal');
 		
 		this._obi = new Element('div').update(this._modal).insertTo(this._base);
