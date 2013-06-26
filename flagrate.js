@@ -1340,9 +1340,9 @@
 		/*?
 		 *  flagrate.ContextMenu#open() -> flagrate.ContextMenu
 		**/
-		this.open = function() {
+		this.open = function(e) {
 			
-			var e = window.event || {};
+			var e = e || window.event || {};
 			
 			if (e.preventDefault) {
 				e.preventDefault();
