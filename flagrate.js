@@ -24,11 +24,6 @@
 		return a;
 	};
 	
-	// deep copy a object
-	var cloneObject = flagrate.objectCloner = function _cloneObject(object) {
-		return JSON.parse(JSON.stringify(object));
-	};
-	
 	// extend object
 	var extendObject = flagrate.extendObject = function _extendObject(b, a) {
 		for (var k in a) b[k] = a[k];
@@ -289,6 +284,15 @@
 		**/
 		setStyle: function(style) {
 			return Element.setStyle(this, style);
+		}
+		,
+		/*?
+		 *  flagrate.Element#fire(eventName[, property]) -> flagrate.Element
+		 *
+		 *  please refer to flagrate.Element.fire
+		**/
+		fire: function(name, property) {
+			return Element.fire(this, name, property);
 		}
 	};
 	
@@ -790,6 +794,24 @@
 		for (var p in style) {
 			element.style[(p === 'float' || p === 'cssFloat') ? ((typeof element.style.styleFloat === 'undefined') ? 'cssFloat' : 'styleFloat') : p] = style[p];
 		}
+		
+		return element;
+	};
+	
+	/*?
+	 *  flagrate.Element.fire(element, eventName[, property]) -> Element
+	 *  - element (Element) - instance of Element.
+	 *  - name (String) - name of event.
+	 *  - property (Object) -
+	 *  
+	 *  Fires a custom event. (this class method is testing)
+	**/
+	Element.fire = function(element, name, property) {
+		
+		var event = document.createEvent('HTMLEvents');
+		event.initEvent(name, true, true);
+		if (property) extendObject(event, property);
+		element.dispatchEvent(event);
 		
 		return element;
 	};
@@ -1644,6 +1666,10 @@
 	 *  * `tokenize`                 (Function; default `flagrate.identity`):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
+	 *
+	 *  ##### Event
+	 *
+	 *  * `update`: when the tokens/values is updated.
 	**/
 	var Tokenizer = flagrate.Tokenizer = function _Tokenizer(opt) {
 		
@@ -1803,6 +1829,8 @@
 			} else {
 				this._input.style.width = '100%';
 			}
+			
+			this.fire('update');
 			
 			return this;
 		}
@@ -2368,6 +2396,10 @@
 	/*?
 	 *  new flagrate.Slider(option) -> flagrate.Slider
 	 *  - option (Object) - options.
+	 *
+	 *  ##### Event
+	 *
+	 *  * `update`: when the value is updated by user.
 	**/
 	var Slider = flagrate.Slider = function _Slider(opt) {
 		
@@ -2451,6 +2483,7 @@
 				}
 				
 				this.setValue(Math.round(x / unitWidth));
+				this.fire('update');
 			}.bind(this);
 			
 			var onUp = function(e) {
@@ -2468,11 +2501,13 @@
 				if (e.touches && e.touches[0]) {
 					x = x + e.touches[0].clientX -pos;
 					this.setValue(Math.round(x / unitWidth));
+					this.fire('update');
 				}
 				
 				if (e.clientX) {
 					x = x + e.clientX - pos;
 					this.setValue(Math.round(x / unitWidth));
+					this.fire('update');
 				}
 			}.bind(this);
 			
@@ -2485,6 +2520,7 @@
 			document.body.addEventListener('MSPointerUp',   onUp);
 			
 			this.setValue(Math.round(x / unitWidth));
+			this.fire('update');
 		}
 	};
 	
