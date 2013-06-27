@@ -436,6 +436,11 @@ div.flagrate-toolbar {
 	
 	div.flagrate-toolbar > div.flagrate-pulldown-menu {
 		margin-left     : 0; }
+	
+	div.flagrate-toolbar > div.flagrate-progress {
+		display         : inline-block;
+		width           : 100px;
+		margin          : 7px 0 7px 10px; }
 
 div.flagrate-progress {
 	display           : block;
