@@ -804,7 +804,7 @@
 	 *  - name (String) - name of event.
 	 *  - property (Object) -
 	 *  
-	 *  Fires a custom event. (this class method is testing)
+	 *  Fires a custom event.
 	**/
 	Element.fire = function(element, name, property) {
 		
