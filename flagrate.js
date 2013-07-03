@@ -35,7 +35,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Element([tagName = "div", attribute]) -> flagrate.Element
+	 *  flagrate.createElement([tagName = "div", attribute])
+	 *  new flagrate.Element([tagName = "div", attribute])
 	 *  - tagName (String) - The name of the HTML element to create.
 	 *  - attribute (Object) - An optional group of attribute/value pairs to set on the element.
 	 *  
@@ -51,9 +52,13 @@
 	 *      x.appendChild(a);
 	 *      
 	 *      // The new way:
-	 *      var a = new flagrate.Element('a', { 'class': 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
+	 *      var a = flagrate.createElement('a', { 'class': 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
 	**/
-	var Element = flagrate.Element = function _Element(tagName, attr) {
+	flagrate.createElement = function(a, b) {
+		return new Element(a, b);
+	};
+	
+	var Element = flagrate.Element = function flagrateElement(tagName, attr) {
 		
 		tagName = tagName || 'div';
 		attr    = attr    || null;
@@ -837,7 +842,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Button(option) -> flagrate.Button
+	 *  flagrate.createButton(option)
+	 *  new flagrate.Button(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  Button.
@@ -857,7 +863,11 @@
 	 *  * `onSelect`                 (Function):
 	 *  * `onRemove`                 (Function):
 	**/
-	var Button = flagrate.Button = function _Button(opt) {
+	flagrate.createButton = function(a) {
+		return new Button(a);
+	};
+	
+	var Button = flagrate.Button = function flagrateButton(opt) {
 		
 		opt = opt || {};
 		
@@ -995,7 +1005,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Menu(option) -> flagrate.Menu
+	 *  flagrate.createMenu(option)
+	 *  new flagrate.Menu(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  Menu.
@@ -1016,7 +1027,11 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	var Menu = flagrate.Menu = function _Menu(opt) {
+	flagrate.createMenu = function(a) {
+		return new Menu(a);
+	};
+	
+	var Menu = flagrate.Menu = function flagrateMenu(opt) {
 		
 		opt = opt || {};
 		
@@ -1104,7 +1119,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Pulldown(option) -> flagrate.Pulldown
+	 *  flagrate.createPulldown(option)
+	 *  new flagrate.Pulldown(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  Pulldown.
@@ -1119,7 +1135,11 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	var Pulldown = flagrate.Pulldown = function _Pulldown(opt) {
+	flagrate.createPulldown = function(a) {
+		return new Pulldown(a);
+	};
+	
+	var Pulldown = flagrate.Pulldown = function flagratePulldown(opt) {
 		
 		opt = opt || {};
 		
@@ -1198,7 +1218,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Popover(option) -> flagrate.Popover
+	 *  flagrate.createPopover(option)
+	 *  new flagrate.Popover(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  Popover.
@@ -1210,7 +1231,11 @@
 	 *  * `html`                     (String):
 	 *  * `element`                  (Element):
 	**/
-	var Popover = flagrate.Popover = function _Popover(opt) {
+	flagrate.createPopover = function(a) {
+		return new Popover(a);
+	};
+	
+	var Popover = flagrate.Popover = function flagratePopover(opt) {
 		
 		opt = opt || {};
 		
@@ -1340,7 +1365,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.ContextMenu(option) -> flagrate.ContextMenu
+	 *  flagrate.createContextMenu(option)
+	 *  new flagrate.ContextMenu(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  ContextMenu.
@@ -1350,7 +1376,11 @@
 	 *  * `target`                   (Element):
 	 *  * `items`                    (Array): of item (see: flagrate.Menu)
 	**/
-	var ContextMenu = flagrate.ContextMenu = function _ContextMenu(opt) {
+	flagrate.createContextMenu = function(a) {
+		return new ContextMenu(a);
+	};
+	
+	var ContextMenu = flagrate.ContextMenu = function flagrateContextMenu(opt) {
 		
 		opt = opt || {};
 		
@@ -1451,7 +1481,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Toolbar(attribute, option) -> flagrate.Toolbar
+	 *  flagrate.createToolbar(option)
+	 *  new flagrate.Toolbar(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  Toolbar.
@@ -1469,7 +1500,11 @@
 	 *  * `key`                      (String):
 	 *  * `element`                  (Element):
 	**/
-	var Toolbar = flagrate.Toolbar = function _Toolbar(opt) {
+	flagrate.createToolbar = function(a) {
+		return new Toolbar(a);
+	};
+	
+	var Toolbar = flagrate.Toolbar = function flagrateToolbar(opt) {
 		
 		opt = opt || {};
 		
@@ -1541,7 +1576,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.TextInput(option) -> flagrate.TextInput
+	 *  flagrate.createTextInput(option)
+	 *  new flagrate.TextInput(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  TextInput.
@@ -1558,7 +1594,11 @@
 	 *  * `regexp`                   (RegExp):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var TextInput = flagrate.TextInput = function _TextInput(opt) {
+	flagrate.createTextInput = function(a) {
+		return new TextInput(a);
+	};
+	
+	var TextInput = flagrate.TextInput = function flagrateTextInput(opt) {
 		
 		opt = opt || {};
 		
@@ -1648,7 +1688,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Tokenizer(option) -> flagrate.Tokenizer
+	 *  flagrate.createTokenizer(option)
+	 *  new flagrate.Tokenizer(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  Tokenizer.
@@ -1671,7 +1712,11 @@
 	 *
 	 *  * `update`: when the tokens/values is updated.
 	**/
-	var Tokenizer = flagrate.Tokenizer = function _Tokenizer(opt) {
+	flagrate.createTokenizer = function(a) {
+		return new Tokenizer(a);
+	};
+	
+	var Tokenizer = flagrate.Tokenizer = function flagrateTokenizer(opt) {
 		
 		opt = opt || {};
 		
@@ -2006,7 +2051,8 @@
 	**/
 	
 	/*?
-	 *  new flagrate.TextArea(option) -> flagrate.TextArea
+	 *  flagrate.createTextArea(option)
+	 *  new flagrate.TextArea(option)
 	 *  - option (Object) - options.
 	 *  
 	 *  TextArea.
@@ -2023,7 +2069,11 @@
 	 *  * `regexp`                   (RegExp):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var TextArea = flagrate.TextArea = function _TextArea(opt) {
+	flagrate.createTextArea = function(a) {
+		return new TextArea(a);
+	};
+	
+	var TextArea = flagrate.TextArea = function flagrateTextArea(opt) {
 		
 		opt = opt || {};
 		
@@ -2116,10 +2166,15 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Checkbox(option) -> flagrate.Checkbox
+	 *  flagrate.createCheckbox(option)
+	 *  new flagrate.Checkbox(option)
 	 *  - option (Object) - options.
 	**/
-	var Checkbox = flagrate.Checkbox = function _Checkbox(opt) {
+	flagrate.createCheckbox = function(a) {
+		return new Checkbox(a);
+	};
+	
+	var Checkbox = flagrate.Checkbox = function flagrateCheckbox(opt) {
 		
 		var id = 'flagrate-checkbox-' + (++Checkbox.idCounter).toString(10);
 		
@@ -2234,10 +2289,15 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Radio(option) -> flagrate.Radio
+	 *  flagrate.createRadio(option)
+	 *  new flagrate.Radio(option)
 	 *  - option (Object) - options.
 	**/
-	var Radio = flagrate.Radio = function _Radio(opt) {
+	flagrate.createRadio = function(a) {
+		return new Radio(a);
+	};
+	
+	var Radio = flagrate.Radio = function flagrateRadio(opt) {
 		
 		var id = 'flagrate-radio-' + (++Radio.idCounter).toString(10);
 		
@@ -2331,10 +2391,15 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Progress(option) -> flagrate.Progress
+	 *  flagrate.createProgress(option)
+	 *  new flagrate.Progress(option)
 	 *  - option (Object) - options.
 	**/
-	var Progress = flagrate.Progress = function _Progress(opt) {
+	flagrate.createProgress = function(a) {
+		return new Progress(a);
+	};
+	
+	var Progress = flagrate.Progress = function flagrateProgress(opt) {
 		
 		opt = opt || {};
 		
@@ -2394,14 +2459,19 @@
 	**/
 	
 	/*?
-	 *  new flagrate.Slider(option) -> flagrate.Slider
+	 *  flagrate.createSlider(option)
+	 *  new flagrate.Slider(option)
 	 *  - option (Object) - options.
 	 *
 	 *  ##### Event
 	 *
 	 *  * `update`: when the value is updated by user.
 	**/
-	var Slider = flagrate.Slider = function _Slider(opt) {
+	flagrate.createSlider = function(a) {
+		return new Slider(a);
+	};
+	
+	var Slider = flagrate.Slider = function flagrateSlider(opt) {
 		
 		opt = opt || {};
 		
@@ -2530,7 +2600,8 @@
 	// ref: Hypernotifier/1.0 https://github.com/kanreisa/Hypernotifier/blob/792fa7/hypernotifier.js
 	
 	/*?
-	 *  new flagrate.Notify(option) -> flagrate.Notify
+	 *  flagrate.createNotify(option)
+	 *  new flagrate.Notify(option)
 	 *  - option (Object) - configuration for the notifications.
 	 *  
 	 *  Initialize the notifications.
@@ -2548,7 +2619,11 @@
 	 *  * `timeout`              (Number;  default `5`):
 	 *  * `title`                (String;  default `"Notify"`):
 	**/
-	var Notify = flagrate.Notify = function _Notify(opt) {
+	flagrate.createNotify = function(a) {
+		return new Notify(a);
+	};
+	
+	var Notify = flagrate.Notify = function flagrateNotify(opt) {
 		
 		opt = opt || {};
 		
@@ -2828,7 +2903,8 @@
 	// ref: Hypermodal/1.2 https://github.com/kanreisa/Hypermodal/blob/9470a7/hypermodal.css
 	
 	/*?
-	 *  new flagrate.Modal(option) -> flagrate.Modal
+	 *  flagrate.createModal(option)
+	 *  new flagrate.Modal(option)
 	 *  - option (Object) - configuration for the modal.
 	 *  
 	 *  Create and initialize the modal.
@@ -2863,7 +2939,11 @@
 	 *  * `isFocused`                (Boolean; default `false`):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var Modal = flagrate.Modal = function _Modal(opt) {
+	flagrate.createModal = function(a) {
+		return new Modal(a);
+	};
+	
+	var Modal = flagrate.Modal = function flagrateModal(opt) {
 		
 		opt = opt || {};
 		
@@ -3127,7 +3207,8 @@
 	// ref: Hypergrid/1.9 https://github.com/kanreisa/Hypergrid/blob/90b032/hypergrid.js
 	
 	/*?
-	 *  new flagrate.Grid(option) -> flagrate.Grid
+	 *  flagrate.createGrid(option)
+	 *  new flagrate.Grid(option)
 	 *  - option (Object) - configuration for the grid.
 	 *  
 	 *  Create and initialize the grid.
@@ -3201,29 +3282,11 @@
 	 *  * `onDblClick`               (Function):
 	 *  * `postProcess`              (Function):
 	**/
-	//<div class="flagrate flagrate-grid">
-	//  <div class="flagrate-grid-head">
-	//    <table>
-	//      <thead>
-	//        <tr>
-	//          <th>
-	//          </th>
-	//        </tr>
-	//      </thead>
-	//    </table>
-	//  </div>
-	//  <div class="flagrate-grid-body">
-	//    <table>
-	//      <tbody>
-	//        <tr>
-	//          <td>
-	//          </td>
-	//        </tr>
-	//      </tbody>
-	//    </table>
-	//  </div>
-	//</div>
-	var Grid = flagrate.Grid = function _Grid(opt) {
+	flagrate.createGrid = function(a) {
+		return new Grid(a);
+	};
+	
+	var Grid = flagrate.Grid = function flagrateGrid(opt) {
 		
 		opt = opt || {};
 		
