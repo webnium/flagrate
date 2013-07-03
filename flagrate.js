@@ -2397,7 +2397,7 @@
 	**/
 	flagrate.createProgress = function(a) {
 		return new Progress(a);
-	}
+	};
 	
 	var Progress = flagrate.Progress = function flagrateProgress(opt) {
 		
