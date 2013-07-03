@@ -821,14 +821,15 @@ div.flagrate-grid.flagrate-grid-fill {
 						
 					div.flagrate-grid > div > table > thead > tr:hover > th.flagrate-grid-cell-menu::after,
 					div.flagrate-grid > div > table > tbody > tr:hover > td.flagrate-grid-cell-menu::after {
-						background-color: rgba(255,255,255,0.8);
-						box-shadow      : -1px 0 0 rgba(0,0,0,0.2); }
+						background-color: rgba(0,0,0,0.2);
+						color           : #ccc;
+						box-shadow      : -1px 0 0 rgba(0,0,0,0.3); }
 						
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu:hover::after,
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu:hover::after {
-						background-color: rgba(255,255,255,0.9);
-						color           : #000;
-						box-shadow      : -1px 0 0 rgba(0,0,0,0.3); }
+						background-color: rgba(0,0,0,0.3);
+						color           : #fff;
+						box-shadow      : -1px 0 0 rgba(0,0,0,0.4); }
 						
 						div.flagrate-grid > div > table > thead > tr > th > div,
 						div.flagrate-grid > div > table > tbody > tr > td > div {
