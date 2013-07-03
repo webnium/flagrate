@@ -5,7 +5,8 @@
  * Copyright (c) 2013 Webnium and Flagrate Contributors
  * Licensed under the MIT-License.
  *
- * https://github.com/kanreisa/flagrate
+ * https://flagrate.org/
+ * https://github.com/webnium/flagrate
 **/
 (function _flagrate() {
 	
