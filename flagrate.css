@@ -213,7 +213,7 @@ div.flagrate-popover.flagrate-popover-tail-bottom::before {
 input.flagrate-textinput,
 textarea.flagrate-textarea,
 div.flagrate-tokenizer {
-	display           : block;
+	display           : inline-block;
 	border            : 2px solid rgba(0,0,0,0.35); 
 	background-color  : #fff;
 	padding           : 4px 8px 3px;
