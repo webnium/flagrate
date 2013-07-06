@@ -42,7 +42,7 @@
 	 *  - attribute (Object) - An optional group of attribute/value pairs to set on the element.
 	 *  
 	 *  Creates an HTML element with `tagName` as the tag name, optionally with the given attributes.
-	 *
+	 *  
 	 *  ##### Example
 	 *  
 	 *      // The old way:
@@ -520,10 +520,8 @@
 	/*?
 	 *  flagrate.Element.wrap(element, wrapper[, attribute]) -> Element
 	 *  - element (Element) - 
-	 *  - wrapper (Element|String) - An element to wrap `element` inside, or
-	 *    else a string representing the tag name of an element to be created.
-	 *  - attribute (Object) - A set of attributes to apply to the wrapper
-	 *    element. Refer to the flagrate.Element constructor for usage.
+	 *  - wrapper (Element|String) - An element to wrap `element` inside, or else a string representing the tag name of an element to be created.
+	 *  - attribute (Object) - A set of attributes to apply to the wrapper element. Refer to the flagrate.Element constructor for usage.
 	 *  
 	 *  Wraps an element inside another, then returns the wrapper.
 	 *  
@@ -3339,7 +3337,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#select(row(s)[, row, row, ...]) -> flagrate.Grid
+		 *  flagrate.Grid#select(row) -> flagrate.Grid
 		 *
 		 *  select row(s)
 		**/
@@ -3386,7 +3384,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#deselect(row(s)[, row, row, ...]) -> flagrate.Grid
+		 *  flagrate.Grid#deselect(row) -> flagrate.Grid
 		 *
 		 *  deselect row(s)
 		**/
