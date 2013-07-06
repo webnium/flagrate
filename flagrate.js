@@ -3506,7 +3506,7 @@
 		,
 		/*?
 		 *  flagrate.Grid#unshift(row) -> Number
-		 *  - row (Object, Array)
+		 *  - row (Object|Array)
 		 *
 		 *  unshift row(s)
 		**/
@@ -3527,7 +3527,7 @@
 		,
 		/*?
 		 *  flagrate.Grid#push(row) -> Number
-		 *  - row (Object, Array)
+		 *  - row (Object|Array)
 		 *
 		 *  push row(s)
 		**/
@@ -3547,8 +3547,8 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#shift(count) -> Object|Array
-		 *  - count (Number; default `1`)
+		 *  flagrate.Grid#shift([count = 1]) -> Object|Array
+		 *  - count (Number)
 		 *
 		 *  shift row(s)
 		**/
@@ -3568,8 +3568,8 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#pop(count) -> Object|Array
-		 *  - count (Number; default `1`)
+		 *  flagrate.Grid#pop([count = 1]) -> Object|Array
+		 *  - count (Number)
 		 *
 		 *  pop row(s)
 		**/
@@ -3592,7 +3592,7 @@
 		 *  flagrate.Grid#splice(index, howMany, row) -> Array
 		 *  - index   (Number) - Index at which to start changing the flagrate.Grid#rows.
 		 *  - howMany (Number) - An integer indicating the number of old flagrate.Grid#rows to remove.
-		 *  - row     (Object, Array) - The row(s) to add to the flagrate.Grid#rows.
+		 *  - row     (Object|Array) - The row(s) to add to the flagrate.Grid#rows.
 		 *
 		 *  Changes the content of a rows, adding new row(s) while removing old rows.
 		**/
@@ -3614,9 +3614,9 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#indexOf(row[, fromIndex]) -> Number
-		 *  - row     (Object) - row to locate in the flagrate.Grid.
-		 *  - index   (Number; default `0`) - The index to start the search at.
+		 *  flagrate.Grid#indexOf(row[, fromIndex = 0]) -> Number
+		 *  - row       (Object) - row to locate in the flagrate.Grid.
+		 *  - fromIndex (Number) - The index to start the search at.
 		 *
 		 *  Returns the index at which a given row can be found in the flagrate.Grid#rows, or -1 if it is not present.
 		**/
@@ -3626,7 +3626,7 @@
 		,
 		/*?
 		 *  flagrate.Grid#delete(row) -> Object|Array
-		 *  - row (Object, Array) - row to locate in the flagrate.Grid.
+		 *  - row (Object|Array) - row to locate in the flagrate.Grid.
 		 *
 		 *  delete row(s).
 		**/
