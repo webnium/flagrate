@@ -33,6 +33,24 @@
 	
 	/*?
 	 *  class flagrate.Element
+	 *  
+	 *  The flagrate.Element object provides a variety of powerful DOM methods for interacting
+	 *   with DOM elements.
+	 *  
+	 *  #### Example
+	 *  
+	 *      var preview = flagrate.createElement().insertTo(x);
+	 *      preview.addEventListener('updated', function(e) {
+	 *        console.log('fired custom event', e);
+	 *      });
+	 *      
+	 *      var input = document.getElementById('textInput');
+	 *      input.addEventListener('change', function() {
+	 *        preview.updateText(input.value);
+	 *        preview.fire('updated');
+	 *      });
+	 *  
+	 *  This is similar to Prototype [Element](http://api.prototypejs.org/dom/Element/) object.
 	**/
 	
 	/*?
@@ -43,7 +61,7 @@
 	 *  
 	 *  Creates an HTML element with `tagName` as the tag name, optionally with the given attributes.
 	 *  
-	 *  ##### Example
+	 *  #### Example
 	 *  
 	 *      // The old way:
 	 *      var a = document.createElement('a');
@@ -838,6 +856,20 @@
 	
 	/*?
 	 *  class flagrate.Button
+	 *  
+	 *  #### example
+	 *  
+	 *      var button = flagrate.createButton({
+	 *        label   : 'foo',
+	 *        onSelect: function() {
+	 *          alert('hey');
+	 *        }
+	 *      }).insertTo(x);
+	 *  
+	 *  #### element structure
+	 *  
+	 *      <button class="flagrate flagrate-button">foo</button>
+	 *  
 	**/
 	
 	/*?
@@ -847,7 +879,7 @@
 	 *  
 	 *  Button.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of `button` element.
 	 *  * `className`                (String):
@@ -1010,7 +1042,7 @@
 	 *  
 	 *  Menu.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of container element.
 	 *  * `className`                (String):
@@ -1018,7 +1050,7 @@
 	 *  * `items`                    (Array): of item
 	 *  * `onSelect`                 (Function):
 	 *  
-	 *  ##### item
+	 *  #### item
 	 *  
 	 *  * `key`                      (String):
 	 *  * `label`                    (String; default `""`):
@@ -1124,7 +1156,7 @@
 	 *  
 	 *  Pulldown.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of `button` element.
 	 *  * `className`                (String):
@@ -1223,7 +1255,7 @@
 	 *  
 	 *  Popover.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `target`                   (Element):
 	 *  * `text`                     (String):
@@ -1370,7 +1402,7 @@
 	 *  
 	 *  ContextMenu.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `target`                   (Element):
 	 *  * `items`                    (Array): of item (see: flagrate.Menu)
@@ -1486,7 +1518,7 @@
 	 *  
 	 *  Toolbar.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of container element.
 	 *  * `className`                (String):
@@ -1494,7 +1526,7 @@
 	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
 	 *  * `items`                    (Array): of item or String to create border, Element to insert any element.
 	 *  
-	 *  ##### item
+	 *  #### item
 	 *  
 	 *  * `key`                      (String):
 	 *  * `element`                  (Element):
@@ -1581,7 +1613,7 @@
 	 *  
 	 *  TextInput.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of `input` element.
 	 *  * `className`                (String):
@@ -1693,7 +1725,7 @@
 	 *  
 	 *  Tokenizer.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of container element.
 	 *  * `className`                (String):
@@ -1707,7 +1739,7 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
 	 *
-	 *  ##### Event
+	 *  #### Event
 	 *
 	 *  * `update`: when the tokens/values is updated.
 	**/
@@ -2056,7 +2088,7 @@
 	 *  
 	 *  TextArea.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of `textarea` element.
 	 *  * `className`                (String):
@@ -2462,7 +2494,7 @@
 	 *  new flagrate.Slider(option)
 	 *  - option (Object) - options.
 	 *
-	 *  ##### Event
+	 *  #### Event
 	 *
 	 *  * `update`: when the value is updated by user.
 	**/
@@ -2605,7 +2637,7 @@
 	 *  
 	 *  Initialize the notifications.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `target`               (Element; default `document.body`):
 	 *  * `className`            (String):
@@ -2675,7 +2707,7 @@
 		 *  
 		 *  Create and show the notification.
 		 *  
-		 *  ##### option
+		 *  #### option
 		 *  
 		 *  * `title`   (String; default `"Notify"`):
 		 *  * `text`    (String; required):
@@ -2908,7 +2940,7 @@
 	 *  
 	 *  Create and initialize the modal.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `target`                   (Element; default `document.body`):
 	 *  * `id`                       (String):
@@ -2928,7 +2960,7 @@
 	 *  * `disableCloseByMask`       (Boolean; default `false`):
 	 *  * `disableCloseByEsc`        (Boolean; default `false`):
 	 *  
-	 *  ##### button
+	 *  #### button
 	 *  
 	 *  * `key`                      (String):
 	 *  * `label`                    (String; required):
@@ -3212,7 +3244,7 @@
 	 *  
 	 *  Create and initialize the grid.
 	 *  
-	 *  ##### option
+	 *  #### option
 	 *  
 	 *  * `id`                       (String): `id` attribute of container.
 	 *  * `className`                (String):
@@ -3238,7 +3270,7 @@
 	 *  * `onRendered`               (Function):
 	 *  * `postProcessOfRow`         (Function):
 	 *  
-	 *  ##### col
+	 *  #### col
 	 *  
 	 *  * `id`                       (String): `id` attribute of `th`
 	 *  * `className`                (String):
@@ -3252,7 +3284,7 @@
 	 *  * `disableSort`              (Boolean; default `false`):
 	 *  * `disableResize`            (Boolean; default `false`):
 	 *  
-	 *  ##### row
+	 *  #### row
 	 *  
 	 *  * `id`                       (String): `id` attribute of `tr`
 	 *  * `className`                (String):
@@ -3267,7 +3299,7 @@
 	 *  * `onDblClick`               (Function):
 	 *  * `postProcess`              (Function):
 	 *  
-	 *  ##### cell
+	 *  #### cell
 	 *  
 	 *  * `id`                       (String): `id` attribute of `td`
 	 *  * `className`                (String):
