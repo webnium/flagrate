@@ -42,6 +42,6 @@ deployment:
       - mkdir doc
       - flagdoc --scripts=flagrate.js --readme=README.md --output=doc/ --source-link-prefix=https://github.com/webnium/flagrate/blob/master/
       - git add doc
-      - git commit -a -m "Build API Documentation" || true
+      - git commit -a -m "Build API documentation" || true
       
       - git push || true
