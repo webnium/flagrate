@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>flagrate.Pulldown - Flagrate API documentation</title>
+	<title>flagrate.Element.extend - Flagrate API documentation</title>
 	<meta name="robots" content="noarchive">
 	<meta name="generator" content="flagdoc">
 	<script type="text/javascript" src="https://flagrate.org/flagrate.min.js"></script>
@@ -359,50 +359,29 @@
 	
 	<div class="content">
 		<ul class="breadcrumbs">
-			<li><a href="./">Top</a></li><li>flagrate.Pulldown</li>
+			<li><a href="./">Top</a></li><li><a href="flagrate.Element.html">flagrate.Element</a></li><li>extend</li>
 		</ul>
 		
 		<div class="title">
-			<small>class</small>
-			<h2>flagrate.Pulldown</h2>
+			<small>class-method</small>
+			<h2>flagrate.Element.extend</h2>
 		</div>
 		
 		<div class="source-link">
-			<a href="https://github.com/webnium/flagrate/blob/master/flagrate.js#L1210">View source: flagrate.js#1210 &rarr;</a>
+			<a href="https://github.com/webnium/flagrate/blob/master/flagrate.js#L846">View source: flagrate.js#846 &rarr;</a>
 		</div>
 		
 		<div class="syntax">
-			<pre><code class="ebnf"></code></pre>
+			<pre><code class="ebnf"><span class="key">flagrate.Element.extend</span>(<span class="arguments">element</span>) &rarr; <span class="return"><span class="object-flagrate.Element"><a href="flagrate.Element.html" title="flagrate.Element (class)">flagrate.Element</a></span></span></code></pre>
 			<ul class="arguments">
-				
+				<li><code class="argument-name">element</code> (<code class="object-Element">Element</code>) – instance of Element.</li>
 			</ul>
 		</div>
 		
 		<div class="description">
-			<h4>Example</h4>
-<pre><code><span class="keyword">var</span> menu = <a href="flagrate.createPulldown.html" title="flagrate.createPulldown (constructor)">flagrate.createPulldown</a>({
-  label: <span class="string">'foo'</span>,
-  items: [
-    {
-      label: <span class="string">'bar'</span>
-    }
-  ]
-}).insertTo(x);</code></pre>
-<h4>Structure</h4>
-<pre><code>&lt;button class=<span class="string">"flagrate flagrate-button flagrate-pulldown"</span>&gt;
-  <span class="string">"foo"</span>
-  &lt;span class=<span class="string">"flagrate-pulldown-triangle"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
-<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"flagrate-pulldown-menu flagrate flagrate-menu"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"flagrate flagrate-button"</span>&gt;</span>bar<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span></code></pre>
-<p>menu <code>div</code> are created with <a href="flagrate.Menu.html" title="flagrate.Menu (class)">flagrate.Menu</a></p>
-<h4>Inheritances</h4>
-<ul>
-<li><a href="flagrate.Button.html" title="flagrate.Button (class)">flagrate.Button</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement">HTMLButtonElement</a> (MDN)</li>
-</ul>
-<hr><div class="constructor"><h3>Constructor</h3><ul class="api-list"><li class="type-constructor"><a href="flagrate.createPulldown.html" title="flagrate.createPulldown (constructor)">createPulldown</a></ul><div style="clear:both;"></div></div>
+			<p>Extends the given <code>element</code> instance.</p>
+<p><strong>Caution</strong> This method will add <a href="flagrate.Element.html" title="flagrate.Element (class)">flagrate.Element</a> instance methods to given element instance.</p>
+
 		</div>
 		
 		<div class="footer">
@@ -414,8 +393,8 @@
 		var ebnf = document.getElementsByClassName('ebnf')[0];
 		if (ebnf.innerHTML === '') document.getElementsByClassName('syntax')[0].style.display = 'none';
 		
-		var classKey   = 'flagrate.Pulldown';
-		var currentKey = 'flagrate.Pulldown';
+		var classKey   = 'flagrate.Element';
+		var currentKey = 'flagrate.Element.extend';
 		
 		var apiList = document.getElementById('api-list');
 		var li      = apiList.firstChild.getElementsByClassName('type-class');
