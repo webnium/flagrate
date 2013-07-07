@@ -198,6 +198,15 @@
 		}
 		,
 		/*?
+		 *  flagrate.Element#wrap(element) -> flagrate.Element
+		 *
+		 *  please refer to flagrate.Element.wrap
+		**/
+		wrap: function(element) {
+			return Element.wrap(this, element);
+		}
+		,
+		/*?
 		 *  flagrate.Element#readAttribute(attributeName) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.readAttribute
@@ -848,7 +857,7 @@
 	 *  
 	 *  Extends the given `element` instance.
 	 *  
-	 *  **Caution** This method will add flagrate.Element instance methods to given element instance.
+	 *  **Caution**: This method will add flagrate.Element instance methods to given element instance.
 	**/
 	Element.extend = function(element) {
 		
