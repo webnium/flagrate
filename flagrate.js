@@ -50,7 +50,9 @@
 	 *        preview.fire('updated');
 	 *      });
 	 *  
-	 *  This is similar to Prototype [Element](http://api.prototypejs.org/dom/Element/) object.
+	 *  #### Inheritance
+	 *  
+	 *  * [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) (MDN)
 	**/
 	
 	/*?
@@ -857,19 +859,24 @@
 	/*?
 	 *  class flagrate.Button
 	 *  
-	 *  #### example
+	 *  #### Example
 	 *  
 	 *      var button = flagrate.createButton({
 	 *        label   : 'foo',
+	 *        icon    : 'icon.png',
 	 *        onSelect: function() {
 	 *          alert('hey');
 	 *        }
 	 *      }).insertTo(x);
 	 *  
-	 *  #### element structure
+	 *  #### Structure
 	 *  
-	 *      <button class="flagrate flagrate-button">foo</button>
+	 *      <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">foo</button>
 	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Element
+	 *  * [HTMLButtonElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement) (MDN)
 	**/
 	
 	/*?
@@ -1033,6 +1040,41 @@
 	
 	/*?
 	 *  class flagrate.Menu
+	 *  
+	 *  #### Example
+	 *
+	 *      var menu = flagrate.createMenu({
+	 *        items: [
+	 *          {
+	 *            label: 'foo'
+	 *          },
+	 *          {
+	 *            label: 'bar',
+	 *            icon : 'icon.png'
+	 *          },
+	 *          '--',
+	 *          {
+	 *            label: 'disabled button',
+	 *            isDisabled: true
+	 *          }
+	 *        ]
+	 *      }).insertTo(x);
+	 *  
+	 *  #### Structure
+	 *  
+	 *      <div class="flagrate flagrate-menu">
+	 *        <button class="flagrate flagrate-button">foo</button>
+	 *        <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
+	 *        <hr>
+	 *        <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *      </div>
+	 *  
+	 *  `button` elements are created with flagrate.Button
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Element
+	 *  * [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement) (MDN)
 	**/
 	
 	/*?
@@ -1147,6 +1189,34 @@
 	
 	/*?
 	 *  class flagrate.Pulldown
+	 *  
+	 *  #### Example
+	 *
+	 *      var menu = flagrate.createPulldown({
+	 *        label: 'foo',
+	 *        items: [
+	 *          {
+	 *            label: 'bar'
+	 *          }
+	 *        ]
+	 *      }).insertTo(x);
+	 *  
+	 *  #### Structure
+	 *  
+	 *      <button class="flagrate flagrate-button flagrate-pulldown">
+	 *        "foo"
+	 *        <span class="flagrate-pulldown-triangle"></span>
+	 *      </button>
+	 *      <div class="flagrate-pulldown-menu flagrate flagrate-menu">
+	 *        <button class="flagrate flagrate-button">bar</button>
+	 *      </div>
+	 *  
+	 *  menu `div` are created with flagrate.Menu
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Button
+	 *  * [HTMLButtonElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement) (MDN)
 	**/
 	
 	/*?
