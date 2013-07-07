@@ -198,6 +198,15 @@
 		}
 		,
 		/*?
+		 *  flagrate.Element#wrap(element) -> flagrate.Element
+		 *
+		 *  please refer to flagrate.Element.wrap
+		**/
+		wrap: function(element) {
+			return Element.wrap(this, element);
+		}
+		,
+		/*?
 		 *  flagrate.Element#readAttribute(attributeName) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.readAttribute
@@ -848,7 +857,7 @@
 	 *  
 	 *  Extends the given `element` instance.
 	 *  
-	 *  **Caution** This method will add flagrate.Element instance methods to given element instance.
+	 *  **Caution**: This method will add flagrate.Element instance methods to given element instance.
 	**/
 	Element.extend = function(element) {
 		
@@ -1331,153 +1340,6 @@
 		if (opt.isDisabled) that.disable();
 		
 		return that;
-	};
-	
-	/*?
-	 *  class flagrate.Popover
-	**/
-	
-	/*?
-	 *  flagrate.createPopover(option)
-	 *  new flagrate.Popover(option)
-	 *  - option (Object) - options.
-	 *  
-	 *  Popover.
-	 *  
-	 *  #### option
-	 *  
-	 *  * `target`                   (Element):
-	 *  * `text`                     (String):
-	 *  * `html`                     (String):
-	 *  * `element`                  (Element):
-	**/
-	flagrate.createPopover = function(a) {
-		return new Popover(a);
-	};
-	
-	var Popover = flagrate.Popover = function flagratePopover(opt) {
-		
-		opt = opt || {};
-		
-		this.target = opt.target  || null;
-		var text    = opt.text    || null;
-		var html    = opt.html    || null;
-		var element = opt.element || null;
-		
-		this.isShowing = false;
-		
-		/*?
-		 *  flagrate.Popover#open() -> flagrate.Popover
-		**/
-		this.open = function(target) {
-			
-			var e = window.event || {};
-			var t = this.target || e.target || document.body;
-			
-			if (target instanceof HTMLElement) t = target;
-			
-			if (this.isShowing) this.close();
-			
-			this.isShowing = true;
-			
-			this._div = new Element('div', {
-				'class': flagrate.className + ' ' + flagrate.className + '-popover'
-			});
-			
-			if (text)    this._div.updateText(text);
-			if (html)    this._div.update(html);
-			if (element) this._div.update(element);
-			
-			this._div.style.opacity = 0;
-			this._div.insertTo(document.body);
-			
-			var tOffset  = Element.cumulativeOffset(t);
-			var tScroll  = Element.cumulativeScrollOffset(t);
-			var tWidth   = Element.getWidth(t);
-			var tHeight  = Element.getHeight(t);
-			var width    = this._div.getWidth();
-			var height   = this._div.getHeight();
-			
-			var x = tOffset.left - tScroll.left + (tWidth / 2) - (width / 2);
-			var y = tOffset.top - tScroll.top + tHeight;
-			
-			var xa = 'left';
-			var ya = 'top';
-			
-			if (y + height > window.innerHeight) {
-				ya = 'bottom';
-				y  = window.innerHeight - y + tHeight;
-			}
-			
-			this._div.addClassName(flagrate.className + '-popover-tail-' + ya);
-			
-			this._div.style[xa]     = x + 'px';
-			this._div.style[ya]     = y + 'px';
-			this._div.style.opacity = 1;
-			
-			if (e.type && e.type === 'mouseover') {
-				document.body.addEventListener('click', this.close);
-				document.body.addEventListener('mouseout', this.close);
-			}
-			
-			document.body.addEventListener('mouseup', this.close);
-			document.body.addEventListener('mousewheel', this.close);
-			
-			var stopper = function(e) {
-				e.stopPropagation();
-				if (e.type === 'mousewheel') e.preventDefault();
-			};
-			
-			this._div.addEventListener('click', stopper);
-			this._div.addEventListener('mouseup', stopper);
-			this._div.addEventListener('mousewheel', stopper);
-			
-			return this;
-		}.bind(this);
-		
-		/*?
-		 *  flagrate.Popover#close() -> flagrate.Popover
-		**/
-		this.close = function() {
-			
-			document.body.removeEventListener('click', this.close);
-			document.body.removeEventListener('mouseup', this.close);
-			document.body.removeEventListener('mouseout', this.close);
-			document.body.removeEventListener('mousewheel', this.close);
-			
-			this.isShowing = false;
-			
-			var div = this._div;
-			setTimeout(function() {
-				if (div && div.remove) div.remove();
-			}, 0);
-			
-			delete this._div;
-			
-			return this;
-		}.bind(this);
-		
-		if (this.target !== null) this.target.addEventListener('mouseover', this.open);
-		
-		return this;
-	};
-	
-	Popover.prototype = {
-		/*?
-		 *  flagrate.Popover#visible() -> Boolean
-		**/
-		visible: function() {
-			return this.isShowing;
-		}
-		,
-		/*?
-		 *  flagrate.Popover#remove() -> flagrate.Popover
-		**/
-		remove: function() {
-			if (this._div) this.close();
-			
-			if (this.target !== null) this.target.removeEventListener('mouseover', this.open);
-		}
 	};
 	
 	/*?
@@ -2711,6 +2573,153 @@
 			
 			this.setValue(Math.round(x / unitWidth));
 			this.fire('update');
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Popover
+	**/
+	
+	/*?
+	 *  flagrate.createPopover(option)
+	 *  new flagrate.Popover(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  Popover.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `target`                   (Element):
+	 *  * `text`                     (String):
+	 *  * `html`                     (String):
+	 *  * `element`                  (Element):
+	**/
+	flagrate.createPopover = function(a) {
+		return new Popover(a);
+	};
+	
+	var Popover = flagrate.Popover = function flagratePopover(opt) {
+		
+		opt = opt || {};
+		
+		this.target = opt.target  || null;
+		var text    = opt.text    || null;
+		var html    = opt.html    || null;
+		var element = opt.element || null;
+		
+		this.isShowing = false;
+		
+		/*?
+		 *  flagrate.Popover#open() -> flagrate.Popover
+		**/
+		this.open = function(target) {
+			
+			var e = window.event || {};
+			var t = this.target || e.target || document.body;
+			
+			if (target instanceof HTMLElement) t = target;
+			
+			if (this.isShowing) this.close();
+			
+			this.isShowing = true;
+			
+			this._div = new Element('div', {
+				'class': flagrate.className + ' ' + flagrate.className + '-popover'
+			});
+			
+			if (text)    this._div.updateText(text);
+			if (html)    this._div.update(html);
+			if (element) this._div.update(element);
+			
+			this._div.style.opacity = 0;
+			this._div.insertTo(document.body);
+			
+			var tOffset  = Element.cumulativeOffset(t);
+			var tScroll  = Element.cumulativeScrollOffset(t);
+			var tWidth   = Element.getWidth(t);
+			var tHeight  = Element.getHeight(t);
+			var width    = this._div.getWidth();
+			var height   = this._div.getHeight();
+			
+			var x = tOffset.left - tScroll.left + (tWidth / 2) - (width / 2);
+			var y = tOffset.top - tScroll.top + tHeight;
+			
+			var xa = 'left';
+			var ya = 'top';
+			
+			if (y + height > window.innerHeight) {
+				ya = 'bottom';
+				y  = window.innerHeight - y + tHeight;
+			}
+			
+			this._div.addClassName(flagrate.className + '-popover-tail-' + ya);
+			
+			this._div.style[xa]     = x + 'px';
+			this._div.style[ya]     = y + 'px';
+			this._div.style.opacity = 1;
+			
+			if (e.type && e.type === 'mouseover') {
+				document.body.addEventListener('click', this.close);
+				document.body.addEventListener('mouseout', this.close);
+			}
+			
+			document.body.addEventListener('mouseup', this.close);
+			document.body.addEventListener('mousewheel', this.close);
+			
+			var stopper = function(e) {
+				e.stopPropagation();
+				if (e.type === 'mousewheel') e.preventDefault();
+			};
+			
+			this._div.addEventListener('click', stopper);
+			this._div.addEventListener('mouseup', stopper);
+			this._div.addEventListener('mousewheel', stopper);
+			
+			return this;
+		}.bind(this);
+		
+		/*?
+		 *  flagrate.Popover#close() -> flagrate.Popover
+		**/
+		this.close = function() {
+			
+			document.body.removeEventListener('click', this.close);
+			document.body.removeEventListener('mouseup', this.close);
+			document.body.removeEventListener('mouseout', this.close);
+			document.body.removeEventListener('mousewheel', this.close);
+			
+			this.isShowing = false;
+			
+			var div = this._div;
+			setTimeout(function() {
+				if (div && div.remove) div.remove();
+			}, 0);
+			
+			delete this._div;
+			
+			return this;
+		}.bind(this);
+		
+		if (this.target !== null) this.target.addEventListener('mouseover', this.open);
+		
+		return this;
+	};
+	
+	Popover.prototype = {
+		/*?
+		 *  flagrate.Popover#visible() -> Boolean
+		**/
+		visible: function() {
+			return this.isShowing;
+		}
+		,
+		/*?
+		 *  flagrate.Popover#remove() -> flagrate.Popover
+		**/
+		remove: function() {
+			if (this._div) this.close();
+			
+			if (this.target !== null) this.target.removeEventListener('mouseover', this.open);
 		}
 	};
 	
