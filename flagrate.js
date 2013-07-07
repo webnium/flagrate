@@ -2623,48 +2623,35 @@
 			
 			this.isShowing = true;
 			
-			this._div = new Element('div', {
+			var d = this._div = new Element('div', {
 				'class': flagrate.className + ' ' + flagrate.className + '-popover'
 			});
 			
-			if (text)    this._div.updateText(text);
-			if (html)    this._div.update(html);
-			if (element) this._div.update(element);
+			if (text)    d.updateText(text);
+			if (html)    d.update(html);
+			if (element) d.update(element);
 			
-			this._div.style.opacity = 0;
-			this._div.insertTo(document.body);
+			d.style.opacity = 0;
+			d.insertTo(document.body);
 			
-			var tOffset  = Element.cumulativeOffset(t);
-			var tScroll  = Element.cumulativeScrollOffset(t);
-			var tWidth   = Element.getWidth(t);
-			var tHeight  = Element.getHeight(t);
-			var width    = this._div.getWidth();
-			var height   = this._div.getHeight();
+			Popover._updatePosition(t, d);
 			
-			var x = tOffset.left - tScroll.left + (tWidth / 2) - (width / 2);
-			var y = tOffset.top - tScroll.top + tHeight;
-			
-			var xa = 'left';
-			var ya = 'top';
-			
-			if (y + height > window.innerHeight) {
-				ya = 'bottom';
-				y  = window.innerHeight - y + tHeight;
-			}
-			
-			this._div.addClassName(flagrate.className + '-popover-tail-' + ya);
-			
-			this._div.style[xa]     = x + 'px';
-			this._div.style[ya]     = y + 'px';
 			this._div.style.opacity = 1;
 			
 			if (e.type && e.type === 'mouseover') {
 				document.body.addEventListener('click', this.close);
 				document.body.addEventListener('mouseout', this.close);
+				document.body.addEventListener('mouseup', this.close);
+				document.body.addEventListener('mousewheel', this.close);
 			}
 			
-			document.body.addEventListener('mouseup', this.close);
-			document.body.addEventListener('mousewheel', this.close);
+			var positioning = function _positioning() {
+				
+				Popover._updatePosition(t, d);
+				
+				this._positioningTimer = setTimeout(positioning, 30);
+			}.bind(this);
+			this._positioningTimer = setTimeout(positioning, 30);
 			
 			var stopper = function(e) {
 				e.stopPropagation();
@@ -2682,6 +2669,8 @@
 		 *  flagrate.Popover#close() -> flagrate.Popover
 		**/
 		this.close = function() {
+			
+			clearTimeout(this._positioningTimer);
 			
 			document.body.removeEventListener('click', this.close);
 			document.body.removeEventListener('mouseup', this.close);
@@ -2721,6 +2710,35 @@
 			
 			if (this.target !== null) this.target.removeEventListener('mouseover', this.open);
 		}
+	};
+	
+	Popover._updatePosition = function(target, div) {
+		
+		var tOffset  = Element.cumulativeOffset(target);
+		var tScroll  = Element.cumulativeScrollOffset(target);
+		var tWidth   = Element.getWidth(target);
+		var tHeight  = Element.getHeight(target);
+		var width    = div.getWidth();
+		var height   = div.getHeight();
+		
+		var x = tOffset.left - tScroll.left + (tWidth / 2) - (width / 2);
+		var y = tOffset.top - tScroll.top + tHeight;
+		
+		if (y + height > window.innerHeight) {
+			y  = window.innerHeight - y + tHeight;
+			
+			div.removeClassName(flagrate.className + '-popover-tail-top');
+			div.addClassName(flagrate.className + '-popover-tail-bottom');
+			div.style.top    = '';
+			div.style.bottom = y + 'px';
+		} else {
+			div.removeClassName(flagrate.className + '-popover-tail-bottom');
+			div.addClassName(flagrate.className + '-popover-tail-top');
+			div.style.top    = y + 'px';
+			div.style.bottom = '';
+		}
+		
+		div.style.left = x + 'px';
 	};
 	
 	/*?
