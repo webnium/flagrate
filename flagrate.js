@@ -105,6 +105,8 @@
 	Element.cache = {};
 	
 	Element.prototype = {
+		_flagrated: true
+		,
 		/*?
 		 *  flagrate.Element#visible() -> Boolean
 		 *
@@ -836,6 +838,23 @@
 		event.initEvent(name, true, true);
 		if (property) extendObject(event, property);
 		element.dispatchEvent(event);
+		
+		return element;
+	};
+	
+	/*?
+	 *  flagrate.Element.extend(element) -> flagrate.Element
+	 *  - element (Element) - instance of Element.
+	 *  
+	 *  Extends the given `element` instance.
+	 *  
+	 *  **Caution** This method will add flagrate.Element instance methods to given element instance.
+	**/
+	Element.extend = function(element) {
+		
+		if (element._flagrated) return element;
+		
+		extendObject(element, Element.prototype);
 		
 		return element;
 	};
