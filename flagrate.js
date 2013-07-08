@@ -2954,6 +2954,7 @@
 				this._modal = new Modal({
 					disableCloseByMask: true,
 					disableCloseButton: true,
+					disableCloseByEsc : true,
 					className         : flagrate.className + '-tutorial',
 					title             : step.title,
 					text              : step.text,
