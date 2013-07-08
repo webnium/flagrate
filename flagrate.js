@@ -3068,15 +3068,24 @@
 			this.desktopNotifyType = null;
 			
 			/*- Check supported -*/
-			if (typeof window.webkitNotifications !== 'undefined') {
+			if (typeof window.Notification !== 'undefined' && window.Notification.permission) {
+				this.desktopNotifyType = 'w3c';
+			} else if (typeof window.webkitNotifications !== 'undefined') {
 				this.desktopNotifyType = 'webkit';
-			}
-			
-			if (this.desktopNotifyType === null) {
+			} else {
 				this.disableDesktopNotify = true;
 			}
 			
 			/*- Get Permissions -*/
+			if ((this.desktopNotifyType === 'w3c') && (window.Notification.permission === 'default')) {
+				this.create({
+					text   : 'Click here to activate desktop notifications...',
+					onClick: function() {
+						window.Notification.requestPermission();
+					}.bind(this)
+				});
+			}
+			
 			if ((this.desktopNotifyType === 'webkit') && (window.webkitNotifications.checkPermission() === 1)) {
 				this.create({
 					text   : 'Click here to activate desktop notifications...',
@@ -3253,6 +3262,18 @@
 			var closeTimer;
 			
 			/*- Create a desktop notification -*/
+			if (type === 'w3c') {
+				console.log('test');
+				/*- Get Permissions -*/
+				if (window.Notification.permission !== 'granted') {
+					return false;
+				}
+				
+				notify = new window.Notification(title, {
+					body: message
+				});
+			}
+			
 			if (type === 'webkit') {
 				/*- Get Permissions -*/
 				if (window.webkitNotifications.checkPermission() !== 0) {
@@ -3295,7 +3316,7 @@
 			};
 			
 			/*- Show notify -*/
-			notify.show();
+			if (notify.show) notify.show();
 			
 			return true;
 		}
