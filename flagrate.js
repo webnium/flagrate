@@ -3036,16 +3036,17 @@
 	 *  
 	 *  #### option
 	 *  
-	 *  * `target`               (Element; default `document.body`):
-	 *  * `className`            (String):
-	 *  * `disableDesktopNotify` (Boolean; default `false`):
-	 *  * `hAlign`               (String;  default `"right"`; `"right"` | `"left"`):
-	 *  * `vAlign`               (String;  default `"bottom"`; `"top"` | `"bottom"`):
-	 *  * `hMargin`              (Number;  default `10`):
-	 *  * `vMargin`              (Number;  default `10`):
-	 *  * `spacing`              (Number;  default `10`):
-	 *  * `timeout`              (Number;  default `5`):
-	 *  * `title`                (String;  default `"Notify"`):
+	 *  * `target`                (Element; default `document.body`):
+	 *  * `className`             (String):
+	 *  * `disableDesktopNotify`  (Boolean; default `false`):
+	 *  * `disableFocusDetection` (Boolean; default `false`): 
+	 *  * `hAlign`                (String;  default `"right"`; `"right"` | `"left"`):
+	 *  * `vAlign`                (String;  default `"bottom"`; `"top"` | `"bottom"`):
+	 *  * `hMargin`               (Number;  default `10`):
+	 *  * `vMargin`               (Number;  default `10`):
+	 *  * `spacing`               (Number;  default `10`):
+	 *  * `timeout`               (Number;  default `5`):
+	 *  * `title`                 (String;  default `"Notify"`):
 	**/
 	flagrate.createNotify = function(a) {
 		return new Notify(a);
@@ -3058,7 +3059,8 @@
 		this.target    = opt.target    || document.body;
 		this.className = opt.className || null;
 		
-		this.disableDesktopNotify = opt.disableDesktopNotify || false;//Notification API(experimental)
+		this.disableDesktopNotify  = opt.disableDesktopNotify  || false;//Notification API(experimental)
+		this.disableFocusDetection = opt.disableFocusDetection || false;
 		
 		this.hAlign  = opt.hAlign  || 'right';
 		this.vAlign  = opt.vAlign  || 'bottom';
@@ -3118,8 +3120,14 @@
 			
 			/*- Desktop notify -*/
 			if (this.disableDesktopNotify === false) {
-				if (this.createDesktopNotify(opt) === true) {
-					return this;
+				if (
+					this.disableFocusDetection === false &&
+					(document.hasFocus && document.hasFocus() === false) ||
+					!document.hasFocus
+				) {
+					if (this.createDesktopNotify(opt) === true) {
+						return this;
+					}
 				}
 			}
 			
