@@ -2602,13 +2602,15 @@
 		this.isShowing = false;
 		
 		/*?
-		 *  flagrate.Popover#open() -> flagrate.Popover
+		 *  flagrate.Popover#open([target]) -> flagrate.Popover
+		 *  - target (Element) - for targeting to force
 		**/
 		this.open = function(target) {
 			
 			var e = window.event || {};
 			var t = this.target || e.target || document.body;
 			
+			if (target instanceof Event)       e = target;
 			if (target instanceof HTMLElement) t = target;
 			
 			if (this.isShowing) this.close();
@@ -2638,6 +2640,7 @@
 				document.body.addEventListener('mouseup', this.close);
 				document.body.addEventListener('mousewheel', this.close);
 			}
+			console.log(e.type);
 			
 			var positioning = function _positioning() {
 				
@@ -3015,6 +3018,32 @@
 	
 	/*?
 	 *  class flagrate.Notify
+	 *  
+	 *  The flagrate.Notify object provides a notification UI.
+	 *  also, supports **Desktop Notifications**.
+	 *  
+	 *  #### Example
+	 *  
+	 *      // create and initialize a Notify instance
+	 *      var notify = flagrate.createNotify({
+	 *        title: 'Somehow Web App'
+	 *      });
+	 *      
+	 *      // create notify
+	 *      notify.create({ text: 'Hello' });
+	 *      
+	 *      setTimeout(function() {
+	 *        notify.create({
+	 *          text   : 'Hey, are you awake?',
+	 *          onClick: function() {
+	 *            notify.create({ text: 'Aaaah' });
+	 *          }
+	 *        });
+	 *      }, 1000 * 30);
+	 *  
+	 *  #### Related
+	 *  
+	 *  * [Web Notifications](http://www.w3.org/TR/notifications/) (W3C)
 	**/
 	// ref: Hypernotifier/1.0 https://github.com/kanreisa/Hypernotifier/blob/792fa7/hypernotifier.js
 	
@@ -3068,15 +3097,24 @@
 			this.desktopNotifyType = null;
 			
 			/*- Check supported -*/
-			if (typeof window.webkitNotifications !== 'undefined') {
+			if (typeof window.Notification !== 'undefined' && window.Notification.permission) {
+				this.desktopNotifyType = 'w3c';
+			} else if (typeof window.webkitNotifications !== 'undefined') {
 				this.desktopNotifyType = 'webkit';
-			}
-			
-			if (this.desktopNotifyType === null) {
+			} else {
 				this.disableDesktopNotify = true;
 			}
 			
 			/*- Get Permissions -*/
+			if ((this.desktopNotifyType === 'w3c') && (window.Notification.permission === 'default')) {
+				this.create({
+					text   : 'Click here to activate desktop notifications...',
+					onClick: function() {
+						window.Notification.requestPermission();
+					}.bind(this)
+				});
+			}
+			
 			if ((this.desktopNotifyType === 'webkit') && (window.webkitNotifications.checkPermission() === 1)) {
 				this.create({
 					text   : 'Click here to activate desktop notifications...',
@@ -3253,6 +3291,18 @@
 			var closeTimer;
 			
 			/*- Create a desktop notification -*/
+			if (type === 'w3c') {
+				console.log('test');
+				/*- Get Permissions -*/
+				if (window.Notification.permission !== 'granted') {
+					return false;
+				}
+				
+				notify = new window.Notification(title, {
+					body: message
+				});
+			}
+			
 			if (type === 'webkit') {
 				/*- Get Permissions -*/
 				if (window.webkitNotifications.checkPermission() !== 0) {
@@ -3295,7 +3345,7 @@
 			};
 			
 			/*- Show notify -*/
-			notify.show();
+			if (notify.show) notify.show();
 			
 			return true;
 		}
@@ -3323,6 +3373,16 @@
 			}
 		}
 	};
+	/*?
+	 *  flagrate.Notify#disableFocusDetection -> Boolean
+	 *  flagrate.Notify#hAlign -> String
+	 *  flagrate.Notify#vAlign -> String
+	 *  flagrate.Notify#hMargin -> Number
+	 *  flagrate.Notify#vMargin -> Number
+	 *  flagrate.Notify#spacing -> Number
+	 *  flagrate.Notify#timeout -> Number
+	 *  flagrate.Notify#title -> String
+	**/
 	
 	/*?
 	 *  class flagrate.Modal
