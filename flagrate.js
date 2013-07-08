@@ -2589,10 +2589,11 @@
 	 *  
 	 *  #### option
 	 *  
-	 *  * `target`                   (Element):
-	 *  * `text`                     (String):
-	 *  * `html`                     (String):
-	 *  * `element`                  (Element):
+	 *  * `target`    (Element):
+	 *  * `text`      (String):
+	 *  * `html`      (String):
+	 *  * `element`   (Element):
+	 *  * `className` (String):
 	**/
 	flagrate.createPopover = function(a) {
 		return new Popover(a);
@@ -2626,6 +2627,8 @@
 			var d = this._div = new Element('div', {
 				'class': flagrate.className + ' ' + flagrate.className + '-popover'
 			});
+			
+			if (opt.className) d.addClassName(opt.className);
 			
 			if (text)    d.updateText(text);
 			if (html)    d.update(html);
