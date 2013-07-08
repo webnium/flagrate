@@ -210,6 +210,34 @@ div.flagrate-popover.flagrate-popover-tail-bottom::before {
 	div.flagrate-popover img {
 		max-width: 100%; }
 
+div.flagrate-popover.flagrate-tutorial {}
+	
+	div.flagrate-popover.flagrate-tutorial > div {}
+		
+		div.flagrate-popover.flagrate-tutorial > div > div {
+			margin-top   : 10px;
+			margin-bottom: 15px;
+			min-width    : 200px;
+			text-align   : center; }
+		
+		div.flagrate-popover.flagrate-tutorial > div > footer {}
+			
+			div.flagrate-popover.flagrate-tutorial > div > footer > button {
+				float      : right;
+				margin-left: 5px; }
+
+div.flagrate-tutorial button.flagrate-tutorial-button-finish::before {
+	content: '\2714'; }
+
+div.flagrate-tutorial button.flagrate-tutorial-button-prev::before {
+	content: '\25c0'; }
+
+div.flagrate-tutorial button.flagrate-tutorial-button-next::before {
+	content: '\25b6'; }
+
+div.flagrate-tutorial button.flagrate-tutorial-button-abort::before {
+	content: '\2716'; }
+
 input.flagrate-textinput,
 textarea.flagrate-textarea,
 div.flagrate-tokenizer {

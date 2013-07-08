@@ -2589,10 +2589,11 @@
 	 *  
 	 *  #### option
 	 *  
-	 *  * `target`                   (Element):
-	 *  * `text`                     (String):
-	 *  * `html`                     (String):
-	 *  * `element`                  (Element):
+	 *  * `target`    (Element):
+	 *  * `text`      (String):
+	 *  * `html`      (String):
+	 *  * `element`   (Element):
+	 *  * `className` (String):
 	**/
 	flagrate.createPopover = function(a) {
 		return new Popover(a);
@@ -2626,6 +2627,8 @@
 			var d = this._div = new Element('div', {
 				'class': flagrate.className + ' ' + flagrate.className + '-popover'
 			});
+			
+			if (opt.className) d.addClassName(opt.className);
 			
 			if (text)    d.updateText(text);
 			if (html)    d.update(html);
@@ -2759,11 +2762,10 @@
 	 *  * `onFinish`           (Function): callback when finish.
 	 *  * `onAbort`            (Function): callback when abort.
 	 *  * `onClose`            (Function): callback when close.
-	 *  * `disableKeyboard`    (Boolean; default `false`): Disable the keyboard shortcuts.
 	 *  
 	 *  #### step
 	 *  
-	 *  * `target`             (Element): Element to target. If target is undefined, will creates flagrate.Modal.
+	 *  * `target`             (Element|String): Element to target. If target is undefined or not found, will creates flagrate.Modal.
 	 *  * `title`              (String): Title for this step.
 	 *  * `text`               (String): Descriptive text for this step.
 	 *  * `onStep`             (Function): Triggered whenever a step is started.
@@ -2857,9 +2859,13 @@
 		**/
 		prev: function() {
 			
-			if (this.index > 0) --this.index;
+			this._afterStep(function() {
+				
+				if (this.index > 0) --this.index;
+				this._main();
+			}.bind(this));
 			
-			return this._main();
+			return this;
 		}
 		,
 		/*?
@@ -2867,9 +2873,13 @@
 		**/
 		next: function() {
 			
-			if ((this.index + 1) < this.steps.length) ++this.index;
+			this._afterStep(function() {
+				
+				if ((this.index + 1) < this.steps.length) ++this.index;
+				this._main();
+			}.bind(this));
 			
-			return this._main();
+			return this;
 		}
 		,
 		_main: function() {
@@ -2900,15 +2910,15 @@
 			
 			if ((this.index + 1) >= this.steps.length) {
 				buttons.push({
-					label   : 'Finish',
-					onSelect: function() {
+					className: flagrate.className + '-tutorial-button-finish',
+					onSelect : function() {
 						this._afterStep(this.finish.bind(this));
 					}.bind(this)
 				});
 			} else {
 				buttons.push({
-					label   : 'Next',
-					onSelect: function() {
+					className: flagrate.className + '-tutorial-button-next',
+					onSelect : function() {
 						this._afterStep(this.next.bind(this));
 					}.bind(this)
 				});
@@ -2916,7 +2926,7 @@
 			
 			if (this.index > 0) {
 				buttons.push({
-					label   : 'Prev',
+					className: flagrate.className + '-tutorial-button-prev',
 					onSelect: function() {
 						this._afterStep(this.prev.bind(this));
 					}.bind(this)
@@ -2925,7 +2935,7 @@
 			
 			if ((this.index + 1) < this.steps.length) {
 				buttons.push({
-					label   : 'Abort',
+					className: flagrate.className + '-tutorial-button-abort',
 					onSelect: function() {
 						this._afterStep(this.abort.bind(this));
 					}.bind(this)
@@ -2934,7 +2944,14 @@
 			
 			buttons[0].color = '@blue';
 			
-			if (step.target) {
+			var target;
+			if (step.target && typeof step.target === 'string') {
+				target = document.querySelector(step.target);
+			} else {
+				target = step.target;
+			}
+			
+			if (target) {
 				var container = new Element();
 				
 				new Element().insertText(step.text).insertTo(container);
@@ -2949,11 +2966,12 @@
 					element  : container
 				});
 				
-				this._popover.open(step.target);
+				this._popover.open(target);
 			} else {
 				this._modal = new Modal({
 					disableCloseByMask: true,
 					disableCloseButton: true,
+					disableCloseByEsc : true,
 					className         : flagrate.className + '-tutorial',
 					title             : step.title,
 					text              : step.text,
@@ -3348,6 +3366,7 @@
 	 *  * `onSelect`                 (Function):
 	 *  * `isFocused`                (Boolean; default `false`):
 	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `className`                (String):
 	**/
 	flagrate.createModal = function(a) {
 		return new Modal(a);
@@ -3420,6 +3439,7 @@
 			var a = this.buttons[i];
 			
 			a.button = new Button({
+				className : a.className,
 				label     : a.label,
 				icon      : a.icon,
 				color     : a.color,
