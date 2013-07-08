@@ -2640,7 +2640,6 @@
 				document.body.addEventListener('mouseup', this.close);
 				document.body.addEventListener('mousewheel', this.close);
 			}
-			console.log(e.type);
 			
 			var positioning = function _positioning() {
 				
