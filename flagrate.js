@@ -2742,6 +2742,269 @@
 	};
 	
 	/*?
+	 *  class flagrate.Tutorial
+	**/
+	
+	/*?
+	 *  flagrate.createTutorial(option)
+	 *  new flagrate.Tutorial(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  Creates new tutorial.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `steps`              (Array; required): Array of **step** object.
+	 *  * `count`              (Number; default `0`): current count of step.
+	 *  * `onFinish`           (Function): callback when finish.
+	 *  * `onAbort`            (Function): callback when abort.
+	 *  * `onClose`            (Function): callback when close.
+	 *  * `disableKeyboard`    (Boolean; default `false`): Disable the keyboard shortcuts.
+	 *  
+	 *  #### step
+	 *  
+	 *  * `target`             (Element): Element to target. If target is undefined, will creates flagrate.Modal.
+	 *  * `title`              (String): Title for this step.
+	 *  * `text`               (String): Descriptive text for this step.
+	 *  * `onStep`             (Function): Triggered whenever a step is started.
+	 *  * `onBeforeStep`       (Function): Triggered at before starting of this step.
+	 *  * `onAfterStep`        (Function): Triggered at after of this step.
+	 *  
+	 *  ##### onBeforeStep / onAfterStep
+	 *  
+	 *      // async callback
+	 *      function(done) {// if expects callback, will waits for it.
+	 *        setTimeout(done, 1000);
+	 *      }
+	 *      
+	 *      // sync
+	 *      function() {
+	 *        // ...
+	 *      }
+	**/
+	flagrate.createTutorial = function(a) {
+		return new Tutorial(a);
+	};
+	
+	var Tutorial = flagrate.Tutorial = function flagrateTutorial(opt) {
+		
+		opt = opt || {};
+		
+		this.steps    = opt.steps    || [];
+		this.index    = opt.index    || 0;
+		this.onFinish = opt.onFinish || function(){};
+		this.onAbort  = opt.onAbort  || function(){};
+		this.onClose  = opt.onClose  || function(){};
+	};
+	
+	Tutorial.prototype = {
+		/*?
+		 *  flagrate.Tutorial#visible() -> Boolean
+		**/
+		visible: function() {
+			return !!this._popover || !!this._modal || !!this._inStep;
+		}
+		,
+		/*?
+		 *  flagrate.Tutorial#open() -> flagrate.Tutorial
+		**/
+		open: function() {
+			
+			if (this.visible() === false) {
+				this._main();
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Tutorial#close() -> flagrate.Tutorial
+		**/
+		close: function() {
+			
+			if (this.visible() === true) {
+				this._afterStep(this.onClose.bind(this));
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Tutorial#abort() -> flagrate.Tutorial
+		**/
+		abort: function() {
+			
+			if (this.visible() === true) {
+				this._afterStep(this.onAbort.bind(this));
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Tutorial#finish() -> flagrate.Tutorial
+		**/
+		finish: function() {
+			
+			this._afterStep(this.onFinish.bind(this));
+			this.index = 0;
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Tutorial#prev() -> flagrate.Tutorial
+		**/
+		prev: function() {
+			
+			if (this.index > 0) --this.index;
+			
+			return this._main();
+		}
+		,
+		/*?
+		 *  flagrate.Tutorial#next() -> flagrate.Tutorial
+		**/
+		next: function() {
+			
+			if ((this.index + 1) < this.steps.length) ++this.index;
+			
+			return this._main();
+		}
+		,
+		_main: function() {
+			
+			this._inStep = true;
+			
+			var step = this.steps[this.index];
+			
+			if (step.onBeforeStep) {
+				if (step.onBeforeStep.length) {
+					step.onBeforeStep(this._step.bind(this));
+					return this;
+				} else {
+					step.onBeforeStep();
+				}
+			}
+			
+			this._step();
+			
+			return this;
+		}
+		,
+		_step: function() {
+			
+			var step = this.steps[this.index];
+			
+			var buttons = [];
+			
+			if ((this.index + 1) >= this.steps.length) {
+				buttons.push({
+					label   : 'Finish',
+					onSelect: function() {
+						this._afterStep(this.finish.bind(this));
+					}.bind(this)
+				});
+			} else {
+				buttons.push({
+					label   : 'Next',
+					onSelect: function() {
+						this._afterStep(this.next.bind(this));
+					}.bind(this)
+				});
+			}
+			
+			if (this.index > 0) {
+				buttons.push({
+					label   : 'Prev',
+					onSelect: function() {
+						this._afterStep(this.prev.bind(this));
+					}.bind(this)
+				});
+			}
+			
+			if ((this.index + 1) < this.steps.length) {
+				buttons.push({
+					label   : 'Abort',
+					onSelect: function() {
+						this._afterStep(this.abort.bind(this));
+					}.bind(this)
+				});
+			}
+			
+			buttons[0].color = '@blue';
+			
+			if (step.target) {
+				var container = new Element();
+				
+				new Element().insertText(step.text).insertTo(container);
+				
+				var buttonContainer = new Element('footer').insertTo(container);
+				buttons.forEach(function(button) {
+					new Button(button).insertTo(buttonContainer);
+				});
+				
+				this._popover = new Popover({
+					className: flagrate.className + '-tutorial',
+					element  : container
+				});
+				
+				this._popover.open(step.target);
+			} else {
+				this._modal = new Modal({
+					disableCloseByMask: true,
+					disableCloseButton: true,
+					className         : flagrate.className + '-tutorial',
+					title             : step.title,
+					text              : step.text,
+					buttons           : buttons
+				});
+				
+				this._modal.show();
+			}
+			
+			if (step.onStep) step.onStep();
+			
+			return this;
+		}
+		,
+		_afterStep: function(done) {
+			
+			this._inStep = false;
+			
+			var pp = false;
+			
+			if (this._popover) {
+				pp = true;
+				this._popover.remove();
+				delete this._popover;
+			}
+			if (this._modal) {
+				pp = true;
+				this._modal.close();
+				delete this._modal;
+			}
+			
+			if (pp === true) {
+				var step = this.steps[this.index];
+				
+				if (step.onAfterStep) {
+					if (step.onAfterStep.length) {
+						step.onAfterStep(done);
+						return this;
+					} else {
+						step.onAfterStep();
+					}
+				}
+			}
+			
+			done();
+			
+			return this;
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Notify
 	**/
 	// ref: Hypernotifier/1.0 https://github.com/kanreisa/Hypernotifier/blob/792fa7/hypernotifier.js
