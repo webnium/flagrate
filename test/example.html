@@ -55,20 +55,24 @@
 		flagrate.Element.insert(c, '<br>');
 		
 		// colored Button
-		flagrate.createButton({ label: 'Blue'   }).setColor('@blue').insertTo(c);
-		flagrate.createButton({ label: 'Pink'   }).setColor('@pink').insertTo(c);
-		flagrate.createButton({ label: 'Red'    }).setColor('@red').insertTo(c);
-		flagrate.createButton({ label: 'Green'  }).setColor('@green').insertTo(c);
-		flagrate.createButton({ label: 'Orange' }).setColor('@orange').insertTo(c);
+		flagrate.createButton({ label: 'Blue'     }).setColor('@blue').insertTo(c);
+		flagrate.createButton({ label: 'LightBlue'}).setColor('@lightblue').insertTo(c);
+		flagrate.createButton({ label: 'Red'      }).setColor('@red').insertTo(c);
+		flagrate.createButton({ label: 'Green'    }).setColor('@green').insertTo(c);
+		flagrate.createButton({ label: 'Orange'   }).setColor('@orange').insertTo(c);
+		flagrate.createButton({ label: 'Pink'     }).setColor('@pink').insertTo(c);
+		flagrate.createButton({ label: 'Inverse'  }).setColor('@inverse').insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
 		// disabled colored Button
 		flagrate.createButton({ label: 'Blue', color: '@blue', isDisabled: true }).insertTo(c);
-		flagrate.createButton({ label: 'Pink', color: '@pink', isDisabled: true }).insertTo(c);
+		flagrate.createButton({ label: 'LightBlue', color: '@lightblue', isDisabled: true}).insertTo(c);
 		flagrate.createButton({ label: 'Red', color: '@red', isDisabled: true }).insertTo(c);
 		flagrate.createButton({ label: 'Green', color: '@green', isDisabled: true }).insertTo(c);
 		flagrate.createButton({ label: 'Orange', color: '@orange', isDisabled: true }).insertTo(c);
+		flagrate.createButton({ label: 'Pink', color: '@pink', isDisabled: true }).insertTo(c);
+		flagrate.createButton({ label: 'Inverse', color: '@inverse', isDisabled: true }).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
@@ -317,8 +321,8 @@
 		
 		flagrate.createButton({
 			color   : '@blue',
-			label   : 'click to create Modal',
-			onSelect: function(){ modal.show(); }
+			label   : 'click to open Modal',
+			onSelect: function(){ modal.open(); }
 		}).insertTo(c);
 		
 		// Grid

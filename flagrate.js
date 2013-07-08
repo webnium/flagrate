@@ -2942,7 +2942,7 @@
 				});
 			}
 			
-			buttons[0].color = '@blue';
+			buttons[0].color = '@primary';
 			
 			var target;
 			if (step.target && typeof step.target === 'string') {
@@ -2978,7 +2978,7 @@
 					buttons           : buttons
 				});
 				
-				this._modal.show();
+				this._modal.open();
 			}
 			
 			if (step.onStep) step.onStep();
@@ -3401,7 +3401,7 @@
 			this.buttons = [
 				{
 					label    : 'OK',
-					color    : '@blue',
+					color    : '@primary',
 					onSelect : this.close.bind(this),
 					isFocused: true
 				}
@@ -3427,6 +3427,9 @@
 		new Element('small').insertText(this.subtitle).insertTo(this._header);
 		
 		this._content = new Element('div').insertTo(this._modal);
+		/*?
+		 *  flagrate.Modal#content -> flagrate.Element
+		**/
 		this.content  = new Element('div').insertTo(this._content);
 		
 		if (this.text    !== '') this.content.insertText(this.text);
@@ -3502,11 +3505,11 @@
 		}
 		,
 		/*?
-		 *  flagrate.Modal#show() -> flagrate.Modal
+		 *  flagrate.Modal#open() -> flagrate.Modal
 		 *  
-		 *  Show the modal.
+		 *  Open the modal.
 		**/
-		show: function _show() {
+		open: function _show() {
 			
 			if (this.visible() === true) return this;
 			
@@ -3584,6 +3587,11 @@
 			if (this.disableCloseByEsc === false) window.addEventListener('keydown', this._onKeydownHandler);
 			
 			return this;
+		}
+		,
+		// DEPRECATED
+		show: function _show() {
+			return this.open();
 		}
 		,
 		/*?
