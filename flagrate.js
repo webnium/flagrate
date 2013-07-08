@@ -2739,6 +2739,35 @@
 	
 	/*?
 	 *  class flagrate.Tutorial
+	 *  
+	 *  The flagrate.Tutorial object provides a tutorial UI.
+	 *  
+	 *  #### Example
+	 *  
+	 *      // create
+	 *      var tutorial = flagrate.createTutorial({
+	 *        steps: [
+	 *          {
+	 *            target: '#tutorial-step1',// using selector string
+	 *            text  : 'step1'
+	 *          },
+	 *          {
+	 *            target: '#tutorial-step2',
+	 *            text  : 'step2',
+	 *          },
+	 *          {
+	 *            target: element,
+	 *            text  : 'step3'
+	 *          },
+	 *          {
+	 *            title : 'Finish',
+	 *            text  : 'Good luck!'
+	 *          }
+	 *        ]
+	 *      });
+	 *      
+	 *      // open
+	 *      tutorial.open();
 	**/
 	
 	/*?
