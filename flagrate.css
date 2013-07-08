@@ -580,6 +580,7 @@ div.flagrate-modal {
 	bottom            : 0;
 	left              : 0;
 	overflow          : hidden;
+	color             : black;
 	background-color  : transparent;
 	
 	-webkit-transition: all 0.1s ease 0.1s;
@@ -587,6 +588,9 @@ div.flagrate-modal {
 	-ms-transition    : all 0.1s ease 0.1s;
 	-o-transition     : all 0.1s ease 0.1s;
 	transition        : all 0.1s ease 0.1s; }
+
+div.flagrate-modal.flagrate-tutorial {
+	color             : white; }
 
 div.flagrate-modal.flagrate-modal-visible {
 	background-color  : rgba(0,0,0,0.4); }
@@ -605,6 +609,9 @@ div.flagrate-modal.flagrate-modal-visible {
 		-o-transition     : opacity 0.2s ease;
 		transition        : opacity 0.2s ease; }
 	
+	div.flagrate-modal.flagrate-tutorial > div {
+		background-color  : rgba(0,0,0,0.5); }
+	
 	div.flagrate-modal.flagrate-modal-visible > div {
 		opacity           : 1; }
 		
@@ -615,6 +622,10 @@ div.flagrate-modal.flagrate-modal-visible {
 			height          : auto;
 			background-color: white;
 			box-shadow      : 0 0 0 1px rgba(0,0,0,0.25), 0 0 0 4px rgba(0,0,0,0.15); }
+		
+		div.flagrate-modal.flagrate-tutorial > div > div {
+			background-color: transparent;
+			box-shadow      : none; }
 			
 			/* close button */
 			div.flagrate-modal > div > div > button {
