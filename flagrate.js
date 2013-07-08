@@ -3015,6 +3015,32 @@
 	
 	/*?
 	 *  class flagrate.Notify
+	 *  
+	 *  The flagrate.Notify object provides a notification UI.
+	 *  also, supports **Desktop Notifications**.
+	 *  
+	 *  #### Example
+	 *  
+	 *      // create and initialize a Notify instance
+	 *      var notify = flagrate.createNotify({
+	 *        title: 'Somehow Web App'
+	 *      });
+	 *      
+	 *      // create notify
+	 *      notify.create({ text: 'Hello' });
+	 *      
+	 *      setTimeout(function() {
+	 *        notify.create({
+	 *          text   : 'Hey, are you awake?',
+	 *          onClick: function() {
+	 *            notify.create({ text: 'Aaaah' });
+	 *          }
+	 *        });
+	 *      }, 1000 * 30);
+	 *  
+	 *  #### Related
+	 *  
+	 *  * [Web Notifications](http://www.w3.org/TR/notifications/) (W3C)
 	**/
 	// ref: Hypernotifier/1.0 https://github.com/kanreisa/Hypernotifier/blob/792fa7/hypernotifier.js
 	
@@ -3344,6 +3370,16 @@
 			}
 		}
 	};
+	/*?
+	 *  flagrate.Notify#disableFocusDetection -> Boolean
+	 *  flagrate.Notify#hAlign -> String
+	 *  flagrate.Notify#vAlign -> String
+	 *  flagrate.Notify#hMargin -> Number
+	 *  flagrate.Notify#vMargin -> Number
+	 *  flagrate.Notify#spacing -> Number
+	 *  flagrate.Notify#timeout -> Number
+	 *  flagrate.Notify#title -> String
+	**/
 	
 	/*?
 	 *  class flagrate.Modal
