@@ -2942,7 +2942,7 @@
 				});
 			}
 			
-			buttons[0].color = '@blue';
+			buttons[0].color = '@primary';
 			
 			var target;
 			if (step.target && typeof step.target === 'string') {
@@ -3401,7 +3401,7 @@
 			this.buttons = [
 				{
 					label    : 'OK',
-					color    : '@blue',
+					color    : '@primary',
 					onSelect : this.close.bind(this),
 					isFocused: true
 				}
