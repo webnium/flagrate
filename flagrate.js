@@ -2978,7 +2978,7 @@
 					buttons           : buttons
 				});
 				
-				this._modal.show();
+				this._modal.open();
 			}
 			
 			if (step.onStep) step.onStep();
@@ -3502,11 +3502,11 @@
 		}
 		,
 		/*?
-		 *  flagrate.Modal#show() -> flagrate.Modal
+		 *  flagrate.Modal#open() -> flagrate.Modal
 		 *  
-		 *  Show the modal.
+		 *  Open the modal.
 		**/
-		show: function _show() {
+		open: function _show() {
 			
 			if (this.visible() === true) return this;
 			
@@ -3584,6 +3584,11 @@
 			if (this.disableCloseByEsc === false) window.addEventListener('keydown', this._onKeydownHandler);
 			
 			return this;
+		}
+		,
+		// DEPRECATED
+		show: function _show() {
+			return this.open();
 		}
 		,
 		/*?
