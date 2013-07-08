@@ -271,6 +271,30 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Tutorial
+		var tutorial = flagrate.createTutorial({
+			steps: [
+				{
+					title : 'Hello',
+					text  : "Let's begin"
+				},
+				{
+					target: popoverTargetBtn,
+					text  : 'This is target button'
+				}
+			]
+		});
+		
+		flagrate.createButton({
+			color   : '@green',
+			label   : 'click to open Tutorial',
+			onSelect: function() {
+				tutorial.open();
+			}
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Notify
 		var notify = flagrate.createNotify();
 		
