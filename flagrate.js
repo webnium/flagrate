@@ -2602,13 +2602,15 @@
 		this.isShowing = false;
 		
 		/*?
-		 *  flagrate.Popover#open() -> flagrate.Popover
+		 *  flagrate.Popover#open([target]) -> flagrate.Popover
+		 *  - target (Element) - for targeting to force
 		**/
 		this.open = function(target) {
 			
 			var e = window.event || {};
 			var t = this.target || e.target || document.body;
 			
+			if (target instanceof Event)       e = target;
 			if (target instanceof HTMLElement) t = target;
 			
 			if (this.isShowing) this.close();
@@ -2638,6 +2640,7 @@
 				document.body.addEventListener('mouseup', this.close);
 				document.body.addEventListener('mousewheel', this.close);
 			}
+			console.log(e.type);
 			
 			var positioning = function _positioning() {
 				
