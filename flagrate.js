@@ -3427,6 +3427,9 @@
 		new Element('small').insertText(this.subtitle).insertTo(this._header);
 		
 		this._content = new Element('div').insertTo(this._modal);
+		/*?
+		 *  flagrate.Modal#content -> flagrate.Element
+		**/
 		this.content  = new Element('div').insertTo(this._content);
 		
 		if (this.text    !== '') this.content.insertText(this.text);
