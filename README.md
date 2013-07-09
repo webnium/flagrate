@@ -9,7 +9,7 @@ Flagrate currently targets the following platforms:
 
 * Internet Explorer 9+
 * Chrome 26+
-* Firefox 20+
+* Firefox 22+
 * Safari 6.0+
 * Opera 12.15+
 
