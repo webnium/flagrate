@@ -1,5 +1,6 @@
 .flagrate,
-.flagrate * {
+.flagrate > *,
+.flagrate-grid * {
 	position          : relative;
 	margin            : 0;
 	padding           : 0;
@@ -661,6 +662,10 @@ div.flagrate-modal.flagrate-modal-visible {
 			div.flagrate-modal > div > div > hgroup {
 				padding         : 10px 40px 10px 10px;
 				/* background-color: #f5f5f5; */ }
+				
+				div.flagrate-modal > div > div > hgroup * {
+					margin     : 0;
+					padding    : 0; }
 				
 				div.flagrate-modal > div > div > hgroup > h1 {
 					font-size  : 16px;
