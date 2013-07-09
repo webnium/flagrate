@@ -628,23 +628,33 @@ div.flagrate-modal.flagrate-modal-visible {
 		
 		@media screen and (max-width: 320px){
 		div.flagrate-modal.flagrate-sizing-flex > div > div {
-			min-width       : 100%;
-			max-width       : 100%; }
+			min-width       : inherit;
+			max-width       : inherit; }
 		}
 		
-		@media screen and (min-width: 800px){
+		@media screen and (min-width: 400px){
 		div.flagrate-modal.flagrate-sizing-flex > div > div {
-			max-width       : 80%; }
+			max-width       : 90%; }
 		}
 		
-		@media screen and (min-width: 1000px){
+		@media screen and (min-width: 640px){
 		div.flagrate-modal.flagrate-sizing-flex > div > div {
 			max-width       : 70%; }
 		}
 		
-		@media screen and (min-width: 1200px){
+		@media screen and (min-width: 800px){
+		div.flagrate-modal.flagrate-sizing-flex > div > div {
+			max-width       : 65%; }
+		}
+		
+		@media screen and (min-width: 1000px){
 		div.flagrate-modal.flagrate-sizing-flex > div > div {
 			max-width       : 60%; }
+		}
+		
+		@media screen and (min-width: 1200px){
+		div.flagrate-modal.flagrate-sizing-flex > div > div {
+			max-width       : 55%; }
 		}
 		
 		@media screen and (min-width: 1400px){
@@ -693,7 +703,8 @@ div.flagrate-modal.flagrate-modal-visible {
 				
 				div.flagrate-modal > div > div > hgroup * {
 					margin     : 0;
-					padding    : 0; }
+					padding    : 0;
+					word-break : break-all; }
 				
 				div.flagrate-modal > div > div > hgroup > h1 {
 					font-size  : 16px;
