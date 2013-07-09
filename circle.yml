@@ -38,9 +38,9 @@ deployment:
       - git add flagrate.min.css
       - git commit -a -m "Build 'flagrate.min.js' and 'flagrate.min.css'" || true
       
-      - git rm -r --ignore-unmatch doc
-      - mkdir doc
-      - flagdoc --scripts=flagrate.js --readme=README.md --output=doc/ --source-link-prefix=https://github.com/webnium/flagrate/blob/master/
+      - git rm -r --ignore-unmatch api
+      - mkdir api
+      - flagdoc --scripts=flagrate.js --readme=README.md --output=api/ --source-link-prefix=https://github.com/webnium/flagrate/blob/master/
       - git add doc
       - git commit -a -m "Build API documentation" || true
       
