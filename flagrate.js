@@ -3468,10 +3468,10 @@
 		this.className = opt.className || null;
 		
 		this.title     = opt.title    || '';
-		this.subtitle  = opt.subtitle || '';
+		this.subtitle  = opt.subtitle || opt.description || '';
 		this.text      = opt.text     || '';
 		this.html      = opt.html     || '';
-		this.element   = opt.element  || null;
+		this.element   = opt.element  || opt.content || null;
 		this.href      = opt.href     || '';
 		this.buttons   = opt.buttons  || [];
 		this.sizing    = opt.sizing   || 'flex';
@@ -3538,6 +3538,10 @@
 				onSelect  : this._createButtonOnSelectHandler(this, a)
 			});
 			
+			a.disable  = a.button.disable;
+			a.enable   = a.button.enable;
+			a.setColor = a.button.setColor;
+			
 			this._footer.insert(a.button);
 		}
 		
@@ -3572,7 +3576,7 @@
 			// TAB:9
 			if (e.keyCode === 9) {
 				if (this._closeButton) return this._closeButton.focus();
-				if (this.buttons[0]) return this.buttons[0].focus();
+				if (this.buttons[0]) return this.buttons[0].button.focus();
 			}
 			
 			// ENTER:13
@@ -3634,11 +3638,11 @@
 				
 					if (this.sizing === 'flex') {
 						if (baseWidth - 20 <= modalWidth) {
-							this._modal.style.left        = '10px';
-							this._content.style.width     = baseWidth - 20 + 'px';
+							this._modal.style.left        = '0';
+							this._content.style.width     = baseWidth + 'px';
 							this._content.style.overflowX = 'auto';
 						} else {
-							this._modal.style.left        = (baseWidth / 2) - (modalWidth / 2) + 'px';
+							this._modal.style.left        = Math.floor((baseWidth / 2) - (modalWidth / 2)) + 'px';
 							this._content.style.width     = '';
 							this._content.style.overflowX = 'visible';
 						}
@@ -3685,6 +3689,11 @@
 			return this.open();
 		}
 		,
+		// DEPRECATED
+		render: function _render() {
+			return this.open();
+		}
+		,
 		/*?
 		 *  flagrate.Modal#close() -> flagrate.Modal
 		 *  
@@ -3722,7 +3731,8 @@
 			
 			return function(e) {
 				try {
-					button.onSelect(e, that);
+					if (button.onSelect) button.onSelect(e, that);
+					if (button.onClick)  button.onClick(e, that);// DEPRECATED
 				} catch (err) {
 					throw new Error('flagrate.Modal: ' + err);
 				}
