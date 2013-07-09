@@ -41,7 +41,7 @@ deployment:
       - git rm -r --ignore-unmatch api
       - mkdir api
       - flagdoc --scripts=flagrate.js --readme=README.md --output=api/ --source-link-prefix=https://github.com/webnium/flagrate/blob/master/
-      - git add doc
+      - git add api
       - git commit -a -m "Build API documentation" || true
       
       - git push || true
