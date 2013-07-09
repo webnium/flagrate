@@ -15,21 +15,21 @@ Flagrate currently targets the following platforms:
 
 ### Requirements ###
 
-* **Not required anything!**
+* **Nothing is required**
 
-You can use with jQuery or Prototype, or your favorite framework if you needed!
+You can use Flagrate with jQuery, Prototype, or your favorite framework if needed!
 
 Using Flagrate
 --------------
 
 To use Flagrate in your application, download the latest release from the
 Flagrate github repository tags (<https://github.com/webnium/flagrate/tags>) and copy 
-`flagrate.js` `flagrate.css` to suitable location. Then include it in your HTML like so:
+`flagrate.js` `flagrate.css` to a suitable location. Then include it in your HTML like so:
 
     <link href="/path/to/flagrate.css" rel="stylesheet">
     <script src="/path/to/flagrate.js"></script>
 
-Or, **you can use official CDN** provided by [Webnium](http://webnium.co.jp/):
+Or, **you can use the official CDN** provided [Webnium](https://webnium.co.jp/):
 
     <link href="//flagrate.org/flagrate.min.css" rel="stylesheet">
     <script src="//flagrate.org/flagrate.min.js"></script>
