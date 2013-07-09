@@ -3538,9 +3538,9 @@
 				onSelect  : this._createButtonOnSelectHandler(this, a)
 			});
 			
-			a.disable  = a.button.disable;
-			a.enable   = a.button.enable;
-			a.setColor = a.button.setColor;
+			a.disable  = a.button.disable.bind(a.button);
+			a.enable   = a.button.enable.bind(a.button);
+			a.setColor = a.button.setColor.bind(a.button);
 			
 			this._footer.insert(a.button);
 		}
