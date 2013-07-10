@@ -1227,13 +1227,6 @@
 	 *  
 	 *  #### Structure
 	 *  
-	 *      <div class="flagrate flagrate-menu">
-	 *        <button class="flagrate flagrate-button">foo</button>
-	 *        <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
-	 *        <hr>
-	 *        <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
-	 *      </div>
-	 *  
 	 *  <div class="example-container">
 	 *    <div class="flagrate flagrate-menu">
 	 *      <button class="flagrate flagrate-button">foo</button>
@@ -1242,6 +1235,13 @@
 	 *      <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
 	 *    </div>
 	 *  </div>
+	 *  
+	 *      <div class="flagrate flagrate-menu">
+	 *        <button class="flagrate flagrate-button">foo</button>
+	 *        <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
+	 *        <hr>
+	 *        <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *      </div>
 	 *  
 	 *  `button` elements are created with flagrate.Button
 	 *  
