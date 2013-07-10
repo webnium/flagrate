@@ -1176,7 +1176,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Buttons#getButtonByKey(key) -> Button | null
+		 *  flagrate.Buttons#getButtonByKey(key) -> flagrate.Button | null
 		**/
 		getButtonByKey: function(key) {
 			
@@ -1341,7 +1341,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Menu#getButtonByKey(key) -> Button | null
+		 *  flagrate.Menu#getButtonByKey(key) -> flagrate.Button | null
 		**/
 		getButtonByKey: Buttons.prototype.getButtonByKey
 		,
