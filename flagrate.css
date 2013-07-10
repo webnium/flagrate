@@ -111,7 +111,7 @@ div.flagrate-buttons {
 
 div.flagrate-menu {
 	z-index           : 2;
-	display           : block;
+	display           : inline-block;
 	border            : 1px solid #444;
 	padding           : 4px 0;
 	background-color  : #fff; }

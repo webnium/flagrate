@@ -1236,6 +1236,15 @@
 	 *        <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
 	 *      </div>
 	 *  
+	 *  <div class="example-container">
+	 *    <div class="flagrate flagrate-menu">
+	 *      <button class="flagrate flagrate-button">foo</button>
+	 *      <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
+	 *      <hr>
+	 *      <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *    </div>
+	 *  </div>
+	 *  
 	 *  `button` elements are created with flagrate.Button
 	 *  
 	 *  #### Inheritances
@@ -1336,22 +1345,12 @@
 		/*?
 		 *  flagrate.Menu#getButtonByKey(key) -> Button | null
 		**/
-		getButtonByKey: function(key) {
-			
-			var result = null;
-			
-			var elements = this.childNodes;
-			for (var i = 0; i < elements.length; i++) {
-				if (!elements[i]._key) continue;
-				
-				if (elements[i]._key === key) {
-					result = element[i]._key;
-					break;
-				}
-			}
-			
-			return result;
-		}
+		getButtonByKey: Buttons.prototype.getButtonByKey
+		,
+		/*?
+		 *  flagrate.Menu#getButtons() -> Array
+		**/
+		getButtons: Buttons.prototype.getButtons
 	};
 	
 	/*?
