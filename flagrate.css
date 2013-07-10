@@ -105,9 +105,16 @@ button.flagrate-button.flagrate-button-color-inverse { background-color: #eee; c
 	button.flagrate-pulldown > span.flagrate-pulldown-triangle::after {
 		content    : '\25bc'; }
 
+div.flagrate-buttons {
+	display           : inline-block;
+	padding           : 0; }
+	
+	div.flagrate-buttons > button.flagrate-button {
+		margin        : 0; }
+
 div.flagrate-menu {
 	z-index           : 2;
-	display           : block;
+	display           : inline-block;
 	border            : 1px solid #444;
 	padding           : 4px 0;
 	background-color  : #fff; }
