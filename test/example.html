@@ -76,6 +76,30 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Buttons
+		flagrate.createButtons(
+			{
+				items: [
+					{
+						label: 'Buttons'
+					},
+					{
+						label: 'foo'
+					},
+					{
+						label: 'bar'
+					},
+					{
+						label     : 'delete',
+						isDisabled: true,
+						color     : '@red'
+					}
+				]
+			}
+		).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Menu
 		flagrate.createMenu(
 			{

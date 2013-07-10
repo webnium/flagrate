@@ -1058,6 +1058,154 @@
 	};
 	
 	/*?
+	 *  class flagrate.Buttons
+	 *  
+	 *  #### Example
+	 *  
+	 *      var button = flagrate.createButtons({
+	 *        items: [
+	 *          { label: 'Left' },
+	 *          { label: 'Middle' },
+	 *          { label: 'Right' }
+	 *        ]
+	 *      }).insertTo(x);
+	 *  
+	 *  #### Structure
+	 *  
+	 *  <div class="example-container">
+	 *    <div class="flagrate flagrate-buttons">
+	 *      <button class="flagrate flagrate-button">Left</button>
+	 *      <button class="flagrate flagrate-button">Middle</button>
+	 *      <button class="flagrate flagrate-button">Right</button>
+	 *    </div>
+	 *  </div>
+	 *  
+	 *      <div class="flagrate flagrate-buttons">
+	 *        <button class="flagrate flagrate-button">Left</button>
+	 *        <button class="flagrate flagrate-button">Middle</button>
+	 *        <button class="flagrate flagrate-button">Right</button>
+	 *      </div>
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Element
+	 *  * [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement) (MDN)
+	**/
+	
+	/*?
+	 *  flagrate.createButtons(option)
+	 *  new flagrate.Buttons(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  Button group.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `items`                    (Array): of item
+	 *  * `onSelect`                 (Function):
+	 *  
+	 *  #### item
+	 *  
+	 *  * `key`                      (String):
+	 *  * `label`                    (String; default `""`):
+	 *  * `icon`                     (String):
+	 *  * `color`                    (String):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `onSelect`                 (Function):
+	**/
+	flagrate.createButtons = function(a) {
+		return new Buttons(a);
+	};
+	
+	var Buttons = flagrate.Buttons = function flagrateButtons(opt) {
+		
+		opt = opt || {};
+		
+		opt.items = opt.items || [];
+		
+		this.onSelect = opt.onSelect || function(){};
+		
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id;
+		attr['class'] = opt.className;
+		
+		//create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-buttons');
+		
+		for (var i = 0, l = opt.items.length; i < l; i++) {
+			that.push(opt.items[i]);
+		}
+		
+		that.addEventListener('click', function(e) {
+			
+			e.stopPropagation();
+			e.preventDefault();
+		});
+		
+		return that;
+	};
+	
+	Buttons.prototype = {
+		/*?
+		 *  flagrate.Buttons#push(item) -> flagrate.Buttons
+		**/
+		push: function(a) {
+			
+			var button = new Button(
+				{
+					icon      : a.icon,
+					label     : a.label,
+					isDisabled: a.isDisabled,
+					color     : a.color,
+					onSelect  : function(e) {
+						
+						if (a.onSelect) a.onSelect(e);
+						this.onSelect(e);
+					}.bind(this)
+				}
+			).insertTo(this);
+			
+			if (a.key) button._key = a.key;
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Buttons#getButtonByKey(key) -> Button | null
+		**/
+		getButtonByKey: function(key) {
+			
+			var result = null;
+			
+			var elements = this.childNodes;
+			for (var i = 0; i < elements.length; i++) {
+				if (!elements[i]._key) continue;
+				
+				if (elements[i]._key === key) {
+					result = element[i]._key;
+					break;
+				}
+			}
+			
+			return result;
+		}
+		,
+		/*?
+		 *  flagrate.Buttons#getButtons() -> Array
+		**/
+		getButtons: function() {
+			return this.childNodes || [];
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Menu
 	 *  
 	 *  #### Example
