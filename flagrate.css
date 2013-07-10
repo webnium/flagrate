@@ -108,6 +108,9 @@ button.flagrate-button.flagrate-button-color-inverse { background-color: #eee; c
 div.flagrate-buttons {
 	display           : inline-block;
 	padding           : 0; }
+	
+	div.flagrate-buttons > button.flagrate-button {
+		margin        : 0; }
 
 div.flagrate-menu {
 	z-index           : 2;
