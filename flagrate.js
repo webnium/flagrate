@@ -1074,9 +1074,7 @@
 	 *  
 	 *  <div class="example-container">
 	 *    <div class="flagrate flagrate-buttons">
-	 *      <button class="flagrate flagrate-button">Left</button>
-	 *      <button class="flagrate flagrate-button">Middle</button>
-	 *      <button class="flagrate flagrate-button">Right</button>
+	 *      <button class="flagrate flagrate-button">Left</button><button class="flagrate flagrate-button">Middle</button><button class="flagrate flagrate-button">Right</button>
 	 *    </div>
 	 *  </div>
 	 *  
