@@ -1933,9 +1933,9 @@
 		}
 		,
 		/*?
-		 *  flagrate.Tokenizer#removeAllValues() -> flagrate.Tokenizer
+		 *  flagrate.Tokenizer#removeValues() -> flagrate.Tokenizer
 		**/
-		removeAllValues: function() {
+		removeValues: function() {
 			
 			this.values = [];
 			
