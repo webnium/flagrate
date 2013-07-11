@@ -2523,7 +2523,9 @@
 	 *  
 	 *  #### Structure
 	 *  
-	 *  <button class="flagrate flagrate-button flagrate-switch"></button>
+	 *  <div class="example-container">
+	 *    <button class="flagrate flagrate-button flagrate-switch"></button>
+	 *  </div>
 	 *  
 	 *      <button class="flagrate flagrate-button flagrate-switch"></button>
 	 *  
