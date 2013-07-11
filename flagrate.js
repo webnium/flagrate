@@ -2590,7 +2590,7 @@
 		**/
 		switchOn: function() {
 			
-			this.dataset.flagrateSwitchStatus = 'on'
+			this.dataset.flagrateSwitchStatus = 'on';
 			
 			return this.fire('on').fire('change');
 		}
@@ -2600,7 +2600,7 @@
 		**/
 		switchOff: function() {
 			
-			this.dataset.flagrateSwitchStatus = 'off'
+			this.dataset.flagrateSwitchStatus = 'off';
 			
 			return this.fire('off').fire('change');
 		}
