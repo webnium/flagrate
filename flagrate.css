@@ -439,6 +439,43 @@ label.flagrate-radio.flagrate-icon {
 	label.flagrate-radio.flagrate-radio-disabled > input:checked:active+div {
 		border-color    : rgba(255,255,255,0.3); }
 
+button.flagrate-switch,
+button.flagrate-switch:disabled {
+	display         : inline-block;
+	padding         : 0;
+	width           : 60px;
+	height          : 20px;
+	box-shadow      : inset 0 0 0 1px #fff;
+	border-color    : #777;
+	background-color: #777; }
+
+button.flagrate-switch:disabled {
+	opacity         : 0.4; }
+
+button.flagrate-switch::after {
+	position        : absolute;
+	content         : '';
+	display         : block;
+	width           : 15px;
+	height          : 20px;
+	left            : -2px;
+	top             : -2px;
+	background-color: #000;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition   : all 0.2s ease;
+	-ms-transition    : all 0.2s ease;
+	-o-transition     : all 0.2s ease;
+	transition        : all 0.2s ease; }
+
+button.flagrate-switch[data-flagrate-switch-status="on"] {
+	background-color: #1a60ed; }
+
+button.flagrate-switch[data-flagrate-switch-status="on"]::after {
+	left            : 43px; }
+
+button.flagrate-switch:hover {
+	box-shadow      : inset 0 0 0 1px #fff; }
+
 div.flagrate-toolbar {
 	display         : inline-block;
 	padding         : 5px;
