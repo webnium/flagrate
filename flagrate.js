@@ -2505,6 +2505,115 @@
 	};
 	
 	/*?
+	 *  class flagrate.Switch
+	 *  
+	 *  #### Example
+	 *
+	 *      var sw = flagrate.createSwitch().insertTo(x);
+	 *      
+	 *      sw.addEventListener('on', function() {
+	 *        console.log('on');
+	 *      });
+	 *      sw.addEventListener('off', function() {
+	 *        console.log('off');
+	 *      });
+	 *      sw.addEventListener('change', function(e) {
+	 *        console.log(e.target.isOn());
+	 *      });
+	 *  
+	 *  #### Structure
+	 *  
+	 *  <button class="flagrate flagrate-button flagrate-switch"></button>
+	 *  
+	 *      <button class="flagrate flagrate-button flagrate-switch"></button>
+	 *  
+	 *  #### Events
+	 *  
+	 *  * `on`: when the switch is turned on.
+	 *  * `off`: when the switch is turned off.
+	 *  * `change`: when the on/off status is changed.
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Button
+	 *  * [HTMLButtonElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement) (MDN)
+	**/
+	
+	/*?
+	 *  flagrate.createSwitch(option)
+	 *  new flagrate.Switch(option)
+	 *  - option (Object) - options.
+	**/
+	flagrate.createSwitch = function(a) {
+		return new Switch(a);
+	};
+	
+	var Switch = flagrate.Switch = function flagrateSwitch(opt) {
+		
+		opt = opt || {};
+		
+		//create
+		var that = new Button({
+			id        : opt.id,
+			className : opt.className,
+			attribute : opt.attribute,
+			style     : opt.style,
+			isFocused : opt.isFocused,
+			isDisabled: opt.isDisabled
+		});
+		extendObject(that, this);
+		
+		that.onSelect = that.toggleSwitch.bind(that);
+		
+		that.addClassName(flagrate.className + '-switch');
+		
+		that.dataset.flagrateSwitchStatus = opt.isOn ? 'on' : 'off';
+		
+		return that;
+	};
+	
+	Switch.prototype = {
+		/*?
+		 *  flagrate.Switch#isEnabled() -> flagrate.Switch
+		 *  flagrate.Switch#enable() -> flagrate.Switch
+		 *  flagrate.Switch#disable() -> flagrate.Switch
+		**/
+		/*?
+		 *  flagrate.Switch#isOn() -> Boolean
+		**/
+		isOn: function() {
+			return this.dataset.flagrateSwitchStatus === 'on';
+		}
+		,
+		/*?
+		 *  flagrate.Switch#switchOn() -> flagrate.Switch
+		**/
+		switchOn: function() {
+			
+			this.dataset.flagrateSwitchStatus = 'on';
+			
+			return this.fire('on').fire('change');
+		}
+		,
+		/*?
+		 *  flagrate.Switch#switchOff() -> flagrate.Switch
+		**/
+		switchOff: function() {
+			
+			this.dataset.flagrateSwitchStatus = 'off';
+			
+			return this.fire('off').fire('change');
+		}
+		,
+		/*?
+		 *  flagrate.Switch#toggleSwitch() -> flagrate.Switch
+		**/
+		toggleSwitch: function() {
+			return this.isOn() ? this.switchOff() : this.switchOn();
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Progress
 	**/
 	
