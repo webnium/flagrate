@@ -1803,6 +1803,10 @@
 	
 	/*?
 	 *  class flagrate.Tokenizer
+	 *
+	 *  #### Event
+	 *
+	 *  * `change`: when the tokens/values is changed.
 	**/
 	
 	/*?
@@ -1825,10 +1829,6 @@
 	 *  * `tokenize`                 (Function; default `flagrate.identity`):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
-	 *
-	 *  #### Event
-	 *
-	 *  * `update`: when the tokens/values is updated.
 	**/
 	flagrate.createTokenizer = function(a) {
 		return new Tokenizer(a);
@@ -1993,7 +1993,7 @@
 				this._input.style.width = '100%';
 			}
 			
-			this.fire('update');
+			this.fire('change');
 			
 			return this;
 		}
@@ -2617,6 +2617,15 @@
 	
 	/*?
 	 *  class flagrate.Progress
+	 *
+	 *  #### Event
+	 *
+	 *  * `change`: when the value is changed.
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Element
+	 *  * [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement) (MDN)
 	**/
 	
 	/*?
@@ -2668,6 +2677,8 @@
 			
 			this.value = Math.max(0, Math.min(this.max, number));
 			
+			this.fire('change');
+			
 			return this._updateProgress();
 		}
 		,
@@ -2685,16 +2696,21 @@
 	
 	/*?
 	 *  class flagrate.Slider
+	 *
+	 *  #### Events
+	 *
+	 *  * `change`: when the value is changed. (by flagrate.Progress)
+	 *  * `slide` : when the slide by user.
+	 *  
+	 *  #### Inheritance
+	 *  
+	 *  * flagrate.Progress
 	**/
 	
 	/*?
 	 *  flagrate.createSlider(option)
 	 *  new flagrate.Slider(option)
 	 *  - option (Object) - options.
-	 *
-	 *  #### Event
-	 *
-	 *  * `update`: when the value is updated by user.
 	**/
 	flagrate.createSlider = function(a) {
 		return new Slider(a);
@@ -2782,7 +2798,7 @@
 				}
 				
 				this.setValue(Math.round(x / unitWidth));
-				this.fire('update');
+				this.fire('slide');
 			}.bind(this);
 			
 			var onUp = function(e) {
@@ -2800,13 +2816,13 @@
 				if (e.touches && e.touches[0]) {
 					x = x + e.touches[0].clientX -pos;
 					this.setValue(Math.round(x / unitWidth));
-					this.fire('update');
+					this.fire('slide');
 				}
 				
 				if (e.clientX) {
 					x = x + e.clientX - pos;
 					this.setValue(Math.round(x / unitWidth));
-					this.fire('update');
+					this.fire('slide');
 				}
 			}.bind(this);
 			
@@ -2819,7 +2835,7 @@
 			document.body.addEventListener('MSPointerUp',   onUp);
 			
 			this.setValue(Math.round(x / unitWidth));
-			this.fire('update');
+			this.fire('slide');
 		}
 	};
 	
