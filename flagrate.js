@@ -1187,7 +1187,7 @@
 				if (!elements[i]._key) continue;
 				
 				if (elements[i]._key === key) {
-					result = element[i]._key;
+					result = elements[i];
 					break;
 				}
 			}
