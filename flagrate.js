@@ -1187,7 +1187,7 @@
 				if (!elements[i]._key) continue;
 				
 				if (elements[i]._key === key) {
-					result = element[i]._key;
+					result = elements[i];
 					break;
 				}
 			}
@@ -3997,6 +3997,33 @@
 			this.onClose(this, e);
 			
 			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Modal#getButtonByKey(key) -> flagrate.Button | null
+		**/
+		getButtonByKey: function(key) {
+			
+			var result = null;
+			
+			var buttons = this.buttons;
+			for (var i = 0; i < buttons.length; i++) {
+				if (!buttons[i].key) continue;
+				
+				if (buttons[i].key === key) {
+					result = buttons[i].button;
+					break;
+				}
+			}
+			
+			return result;
+		}
+		,
+		/*?
+		 *  flagrate.Modal#getButtons() -> Array
+		**/
+		getButtons: function() {
+			return this.buttons || [];
 		}
 		,
 		_createButtonOnSelectHandler: function(that, button) {
