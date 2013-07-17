@@ -2858,6 +2858,7 @@
 	 *  * `style`         (Object): (using flagrate.Element.setStyle)
 	 *  * `tabs`          (Array): Array of **tab** object.
 	 *  * `selectedIndex` (Number):
+	 *  * `fill`          (Boolean; default `false`):
 	 *  * `onSelect`      (Function): Triggered whenever select the tab.
 	 *  
 	 *  #### tab
@@ -2888,6 +2889,10 @@
 		
 		attr.id       = opt.id;
 		attr['class'] = flagrate.className + ' ' + flagrate.className + '-tab';
+		
+		if (opt.fill) {
+			attr['class'] += ' ' + flagrate.className + '-tab-fill';
+		}
 		
 		// create
 		var that = new Element('div', attr);
@@ -3027,7 +3032,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Tab#splice(index, howMany[, tab]) -> Array
+		 *  flagrate.Tab#splice(index[, howMany, tab]) -> Array
 		 *  - index   (Number) - Index at which to start changing the flagrate.Tab#tabs.
 		 *  - howMany (Number) - An integer indicating the number of old flagrate.Tab#tabs to remove.
 		 *  - tab     (Object|Array) - The row(s) to add to the flagrate.Tab#tabs.
@@ -3040,10 +3045,12 @@
 			
 			var removes = this.tabs.splice(index, c);
 			
-			if (t instanceof Array === false) t = [t];
-			
-			for (var i = 0, l = t.length; i < l; i++) {
-				this.tabs.splice(index + i, 0, t[i]);
+			if (t) {
+				if (t instanceof Array === false) t = [t];
+				
+				for (var i = 0, l = t.length; i < l; i++) {
+					this.tabs.splice(index + i, 0, t[i]);
+				}
 			}
 			
 			this._render();
