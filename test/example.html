@@ -267,6 +267,27 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Tab
+		flagrate.createTab({
+			tabs: [
+				{
+					label: 'Tab',
+					text : 'tab'
+				},
+				{
+					label: 'Tab 2',
+					icon : 'icon.png',
+					html : '<b>tab 2</b>'
+				},
+				{
+					label  : 'Tab 3',
+					element: flagrate.createButton({ label: 'hoge' })
+				}
+			]
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Popover
 		var popoverHoverBtn = flagrate.createButton({
 			color   : '@red',

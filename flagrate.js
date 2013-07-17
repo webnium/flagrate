@@ -2840,6 +2840,304 @@
 	};
 	
 	/*?
+	 *  class flagrate.Tab
+	**/
+	
+	/*?
+	 *  flagrate.createTab(option)
+	 *  new flagrate.Tab(option)
+	 *  - option (Object) - option.
+	 *  
+	 *  Create and initialize the tab.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`            (String): `id` attribute of container.
+	 *  * `className`     (String):
+	 *  * `attribute`     (Object):
+	 *  * `style`         (Object): (using flagrate.Element.setStyle)
+	 *  * `tabs`          (Array): Array of **tab** object.
+	 *  * `selectedIndex` (Number):
+	 *  * `onSelect`      (Function): Triggered whenever select the tab.
+	 *  
+	 *  #### tab
+	 *  
+	 *  * `key`           (String):
+	 *  * `label`         (String):
+	 *  * `icon`          (String):
+	 *  * `text`          (String):
+	 *  * `html`          (String):
+	 *  * `element`       (Element):
+	 *  * `onSelect`      (Function):
+	**/
+	flagrate.createTab = function(a) {
+		return new Tab(a);
+	};
+	
+	var Tab = flagrate.Tab = function flagrateTab(opt) {
+		
+		opt = opt || {};
+		
+		/*?
+		 *  flagrate.Tab#tabs -> Array
+		 *  This is readonly property for array of tab.
+		**/
+		this.tabs = opt.tabs || [];
+		
+		var attr = opt.attribute || [];
+		
+		attr.id       = opt.id;
+		attr['class'] = flagrate.className + ' ' + flagrate.className + '-tab';
+		
+		// create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		if (opt.className) that.addClassName(opt.className);
+		if (opt.style)     that.setStyle(opt.style);
+		
+		/*?
+		 *  flagrate.Tab#selectedIndex -> Number
+		 *  This is readonly property for index of selected tab.
+		**/
+		that.selectedIndex = opt.selectedIndex || 0;
+		
+		that._create()._render();
+		
+		if (that.tabs.length > 0) that.select(that.selectedIndex);
+		
+		return that;
+	};
+	
+	Tab.prototype = {
+		/*?
+		 *  flagrate.Tab#select(tab) -> flagrate.Tab
+		 *  - tab (Object|String|Number) - Object: tab object, String: key of tab, Number: index of tab.
+		 *  
+		 *  select the tab.
+		**/
+		select: function(a) {
+			
+			var index = (typeof a === 'number') ? a : this.indexOf(a);
+			
+			if (index === -1) return this;
+			
+			if (this.tabs[this.selectedIndex]._button) {
+				this.tabs[this.selectedIndex]._button.removeClassName(flagrate.className + '-tab-selected');
+			}
+			
+			this.selectedIndex = index;
+			
+			var tab = this.tabs[index];
+			
+			tab._button.addClassName(flagrate.className + '-tab-selected');
+			
+			if (tab.text)    this._body.updateText(tab.text);
+			if (tab.html)    this._body.update(tab.html);
+			if (tab.element) this._body.update(tab.element);
+			
+			if (tab.onSelect) tab.onSelect(window.event, tab);
+			if (this.onSelect) this.onSelect(window.event, tab);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#unshift(tab) -> Number
+		 *  - tab (Object|Array)
+		 *  
+		 *  unshift the tab.
+		**/
+		unshift: function(r) {
+			
+			if (r instanceof Array) {
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.tabs.unshift(r);
+				}
+			} else {
+				this.tabs.unshift(r);
+			}
+			
+			this._render();
+			
+			return this.tabs.length;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#push(tab) -> Number
+		 *  - tab (Object|Array)
+		 *  
+		 *  push the tab.
+		**/
+		push: function(r) {
+			
+			if (r instanceof Array) {
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.tabs.push(r);
+				}
+			} else {
+				this.tabs.push(r);
+			}
+			
+			this._render();
+			
+			return this.tabs.length;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#shift([count = 1]) -> Object|Array
+		 *  - count (Number)
+		 *  
+		 *  shift the tab.
+		**/
+		shift: function(c) {
+			
+			c = c || 1;
+			
+			var removes = [];
+			
+			for (var i = 0, l = this.tabs.length; i < l && i < c; i++) {
+				removes.push(this.tabs.shift());
+			}
+			
+			this._render();
+			
+			return c === 1 ? removes[0] : removes;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#pop([count = 1]) -> Object|Array
+		 *  - count (Number)
+		 *  
+		 *  pop the tab.
+		**/
+		pop: function(c) {
+			
+			c = c || 1;
+			
+			var removes = [];
+			
+			for (var i = 0, l = this.tabs.length; i < l && i < c; i++) {
+				removes.push(this.tabs.pop());
+			}
+			
+			this._render();
+			
+			return c === 1 ? removes[0] : removes;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#splice(index, howMany[, tab]) -> Array
+		 *  - index   (Number) - Index at which to start changing the flagrate.Tab#tabs.
+		 *  - howMany (Number) - An integer indicating the number of old flagrate.Tab#tabs to remove.
+		 *  - tab     (Object|Array) - The row(s) to add to the flagrate.Tab#tabs.
+		 *  
+		 *  Changes the content of a tabs, adding new tab(s) while removing old tab(s).
+		**/
+		splice: function(index, c, t) {
+			
+			c = c || this.tabs.length - index;
+			
+			var removes = this.tabs.splice(index, c);
+			
+			if (t instanceof Array === false) t = [t];
+			
+			for (var i = 0, l = t.length; i < l; i++) {
+				this.tabs.splice(index + i, 0, t[i]);
+			}
+			
+			this._render();
+			
+			return removes;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#delete(tab) -> Object|Array
+		 *  - tab (Array|Object|String|Number) - tab to locate in the flagrate.Tab#tabs.
+		 *
+		 *  delete tab(s).
+		**/
+		'delete': function(a) {
+			
+			var removes = [];
+			var bulk    = false;
+			
+			if (a instanceof Array === false) {
+				a    = [a];
+				bulk = true;
+			}
+			
+			for (var i = 0, l = a.length; i < l; i++) {
+				var index = (typeof a[i] === 'number') ? a[i] : this.indexOf(a[i]);
+				if (index !== -1) removes.push(this.splice(index, 1));
+			}
+			
+			return bulk ? removes : removes[0];
+		}
+		,
+		/*?
+		 *  flagrate.Tab#indexOf(tab) -> Number
+		 *  - tab (Object|String) - tab to locate in the flagrate.Tab#tabs.
+		**/
+		indexOf: function(a) {
+			
+			if (typeof a === 'string') {
+				var index = -1;
+				
+				for (var i = 0, l = this.tabs.length; i < l; i++) {
+					if (this.tabs[i].key === a) {
+						index = i;
+						break;
+					}
+				}
+				
+				return index;
+			} else {
+				return this.tabs.indexOf(a);
+			}
+		}
+		,
+		_create: function() {
+			
+			this._head = new Element('div', { 'class': flagrate.className + '-tab-head' }).insertTo(this);
+			this._body = new Element('div', { 'class': flagrate.className + '-tab-body' }).insertTo(this);
+			
+			return this;
+		}
+		,
+		_render: function() {
+			
+			this._head.update();
+			
+			for (var i = 0, l = this.tabs.length, tab; i < l; i++) {
+				tab = this.tabs[i];
+				
+				if (!tab._button) {
+					tab._button = new Button(
+						{
+							icon    : tab.icon,
+							label   : tab.label,
+							onSelect: this._createOnSelectHandler(this, tab)
+						}
+					);
+				}
+				
+				tab._button.insertTo(this._head);
+			}
+			
+			return this;
+		}
+		,
+		_createOnSelectHandler: function(that, tab) {
+			
+			return function(e) {
+				
+				that.select(tab);
+			};
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Popover
 	**/
 	
