@@ -182,6 +182,31 @@ div.flagrate-context-menu {
 	div.flagrate-menu > button.flagrate-button-disabled:active {
 		color           : #aaa; }
 
+div.flagrate-tab { }
+	
+	div.flagrate-tab > div.flagrate-tab-head {
+		 }
+		
+		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button {
+			background-color: #eee;
+			color           : #777;
+			box-shadow      : none;
+			border-color    : transparent; }
+		
+		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:hover,
+		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:focus {
+			background-color: #ddd;
+			color           : #555; }
+		
+		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button.flagrate-tab-selected {
+			background-color: #fff;
+			color           : #000;
+			cursor          : default; }
+	
+	div.flagrate-tab > div.flagrate-tab-body {
+		background-color: #fff;
+		padding         : 10px; }
+
 div.flagrate-popover {
 	z-index           : 99999999;
 	position          : fixed;
