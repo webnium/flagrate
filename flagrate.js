@@ -3027,7 +3027,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Tab#splice(index, [howMany, tab]) -> Array
+		 *  flagrate.Tab#splice(index[, howMany, tab]) -> Array
 		 *  - index   (Number) - Index at which to start changing the flagrate.Tab#tabs.
 		 *  - howMany (Number) - An integer indicating the number of old flagrate.Tab#tabs to remove.
 		 *  - tab     (Object|Array) - The row(s) to add to the flagrate.Tab#tabs.

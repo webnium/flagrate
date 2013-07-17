@@ -196,7 +196,8 @@ div.flagrate-tab { }
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:hover,
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:focus {
 			background-color: #ddd;
-			color           : #555; }
+			color           : #555;
+			outline         : none; }
 		
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button.flagrate-tab-selected {
 			background-color: #fff;
