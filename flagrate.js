@@ -4726,7 +4726,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#splice(index, howMany, row) -> Array
+		 *  flagrate.Grid#splice(index[, howMany, row]) -> Array
 		 *  - index   (Number) - Index at which to start changing the flagrate.Grid#rows.
 		 *  - howMany (Number) - An integer indicating the number of old flagrate.Grid#rows to remove.
 		 *  - row     (Object|Array) - The row(s) to add to the flagrate.Grid#rows.
@@ -4739,10 +4739,12 @@
 			
 			var removes = this.rows.splice(index, c);
 			
-			if (r instanceof Array === false) r = [r];
-			
-			for (var i = 0, l = r.length; i < l; i++) {
-				this.rows.splice(index + i, 0, r[i]);
+			if (r) {
+				if (r instanceof Array === false) r = [r];
+				
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.rows.splice(index + i, 0, r[i]);
+				}
 			}
 			
 			this._requestRender();
@@ -4770,15 +4772,19 @@
 		'delete': function(r) {
 			
 			var removes = [];
+			var bulk    = false;
 			
-			if (r instanceof Array === false) r = [r];
+			if (r instanceof Array === false) {
+				r    = [r];
+				bulk = true;
+			}
 			
 			for (var i = 0, l = r.length; i < l; i++) {
 				var index = this.indexOf(r[i]);
 				if (index !== -1) removes.push(this.splice(index, 1));
 			}
 			
-			return removes;
+			return bulk ? removes : removes[0];
 		}
 		,
 		_create: function() {
