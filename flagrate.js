@@ -2858,6 +2858,7 @@
 	 *  * `style`         (Object): (using flagrate.Element.setStyle)
 	 *  * `tabs`          (Array): Array of **tab** object.
 	 *  * `selectedIndex` (Number):
+	 *  * `fill`          (Boolean; default `false`):
 	 *  * `onSelect`      (Function): Triggered whenever select the tab.
 	 *  
 	 *  #### tab
@@ -2888,6 +2889,10 @@
 		
 		attr.id       = opt.id;
 		attr['class'] = flagrate.className + ' ' + flagrate.className + '-tab';
+		
+		if (opt.fill) {
+			attr['class'] += ' ' + flagrate.className + '-tab-fill';
+		}
 		
 		// create
 		var that = new Element('div', attr);
