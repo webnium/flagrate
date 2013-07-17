@@ -3385,7 +3385,7 @@
 		opt = opt || {};
 		
 		this.steps    = opt.steps    || [];
-		this.index    = opt.index    || 0;
+		this.index    = opt.count    || 0;
 		this.onFinish = opt.onFinish || function(){};
 		this.onAbort  = opt.onAbort  || function(){};
 		this.onClose  = opt.onClose  || function(){};
