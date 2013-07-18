@@ -315,6 +315,24 @@
 		}
 		,
 		/*?
+		 *  flagrate.Element#on(eventName, listener[, useCapture = false]) -> flagrate.Element
+		 *
+		 *  please refer to flagrate.Element.on
+		**/
+		on: function(name, listener, useCapture) {
+			return Element.on(this, name, listener, useCapture);
+		}
+		,
+		/*?
+		 *  flagrate.Element#off(eventName, listener[, useCapture = false]) -> flagrate.Element
+		 *
+		 *  please refer to flagrate.Element.off
+		**/
+		off: function(name, listener) {
+			return Element.off(this, name, listener, useCapture);
+		}
+		,
+		/*?
 		 *  flagrate.Element#fire(eventName[, property]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.fire
@@ -323,6 +341,12 @@
 			return Element.fire(this, name, property);
 		}
 	};
+	
+	/*?
+	 *  flagrate.Element#emit(eventName[, property]) -> flagrate.Element
+	 *  Alias of: flagrate.Element#fire
+	**/
+	Element.prototype.emit = Element.prototype.fire;
 	
 	/*?
 	 *  flagrate.Element.visible(element) -> Boolean
@@ -825,9 +849,41 @@
 	};
 	
 	/*?
+	 *  flagrate.Element.on(element, eventName, listener[, useCapture = false]) -> Element
+	 *  - element (Element) - instance of Element.
+	 *  - eventName (String) - name of event.
+	 *  - listener (Function) - The function to call when the event occurs.
+	 *  - useCapture (Boolean) -
+	 *  
+	 *  Registers an event handler on a DOM element.
+	**/
+	Element.on = function(element, name, listener, useCapture) {
+		
+		element.addEventListener(name, listener, useCapture || false);
+		
+		return element;
+	};
+	
+	/*?
+	 *  flagrate.Element.off(element, eventName, listener[, useCapture = false]) -> Element
+	 *  - element (Element) - instance of Element.
+	 *  - eventName (String) - name of event.
+	 *  - listener (Function) - The function to call when the event occurs.
+	 *  - useCapture (Boolean) -
+	 *  
+	 *  Registers an event handler on a DOM element.
+	**/
+	Element.off = function(element, name, listener, useCapture) {
+		
+		element.removeEventListener(name, listener, useCapture || false);
+		
+		return element;
+	};
+	
+	/*?
 	 *  flagrate.Element.fire(element, eventName[, property]) -> Element
 	 *  - element (Element) - instance of Element.
-	 *  - name (String) - name of event.
+	 *  - eventName (String) - name of event.
 	 *  - property (Object) -
 	 *  
 	 *  Fires a custom event.
@@ -841,6 +897,12 @@
 		
 		return element;
 	};
+	
+	/*?
+	 *  flagrate.Element.emit(element, eventName[, property]) -> Element
+	 *  Alias of: flagrate.Element.fire
+	**/
+	Element.emit = Element.fire;
 	
 	/*?
 	 *  flagrate.Element.extend(element) -> flagrate.Element
