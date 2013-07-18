@@ -40,12 +40,12 @@
 	 *  #### Example
 	 *  
 	 *      var preview = flagrate.createElement().insertTo(x);
-	 *      preview.addEventListener('updated', function(e) {
+	 *      preview.on('updated', function(e) {
 	 *        console.log('fired custom event', e);
 	 *      });
 	 *      
-	 *      var input = document.getElementById('textInput');
-	 *      input.addEventListener('change', function() {
+	 *      var input = flagrate.createTextInput().insertTo(x);
+	 *      input.on('change', function() {
 	 *        preview.updateText(input.value);
 	 *        preview.fire('updated');
 	 *      });
@@ -1008,7 +1008,7 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
 		
-		that.addEventListener('click', that._onSelectHandler.bind(that));
+		that.on('click', that._onSelectHandler.bind(that));
 		
 		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
@@ -1021,7 +1021,7 @@
 			that._removeButton = new Element('button', {
 				'class': flagrate.className + '-button-remove'
 			}).insertTo(that);
-			that._removeButton.addEventListener('click', that._onRemoveHandler.bind(that));
+			that._removeButton.on('click', that._onRemoveHandler.bind(that));
 		}
 		
 		if (opt.style) that.setStyle(opt.style);
@@ -1203,7 +1203,7 @@
 			that.push(opt.items[i]);
 		}
 		
-		that.addEventListener('click', function(e) {
+		that.on('click', function(e) {
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -1363,7 +1363,7 @@
 			that.push(opt.items[i]);
 		}
 		
-		that.addEventListener('click', function(e) {
+		that.on('click', function(e) {
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -1497,7 +1497,7 @@
 				
 				document.body.removeEventListener('click', removeMenu);
 				that.parentNode.removeEventListener('click', removeMenu);
-				that.removeEventListener('click', removeMenu);
+				that.off('click', removeMenu);
 				
 				menu.style.opacity = '0';
 				setTimeout(function(){ menu.remove(); }.bind(this), 500);
@@ -1526,7 +1526,7 @@
 			setTimeout(function() {
 				document.body.addEventListener('click', removeMenu);
 				that.parentNode.addEventListener('click', removeMenu);
-				that.addEventListener('click', removeMenu);
+				that.on('click', removeMenu);
 			}, 0);
 		};
 		
@@ -1932,11 +1932,11 @@
 			that._updateTokens();
 		}
 		
-		that.addEventListener('click', that._onClickHandler.bind(that));
+		that.on('click', that._onClickHandler.bind(that));
 		
-		that._input.addEventListener('keydown',  that._onKeydownHandler.bind(that));
-		that._input.addEventListener('focus',    that._onFocusHandler.bind(that));
-		that._input.addEventListener('blur',     that._onBlurHandler.bind(that));
+		that._input.on('keydown',  that._onKeydownHandler.bind(that));
+		that._input.on('focus',    that._onFocusHandler.bind(that));
+		that._input.on('blur',     that._onBlurHandler.bind(that));
 		
 		if (opt.style) that.setStyle(opt.style);
 		
@@ -2387,7 +2387,7 @@
 		that.insert({ top: new Element() });
 		that.insert({ top: that._input });
 		
-		that._input.addEventListener('change', function(e) {
+		that._input.on('change', function(e) {
 			
 			if (that.isChecked()) {
 				if (that.onCheck) that.onCheck(e);
@@ -2573,13 +2573,13 @@
 	 *
 	 *      var sw = flagrate.createSwitch().insertTo(x);
 	 *      
-	 *      sw.addEventListener('on', function() {
+	 *      sw.on('on', function() {
 	 *        console.log('on');
 	 *      });
-	 *      sw.addEventListener('off', function() {
+	 *      sw.on('off', function() {
 	 *        console.log('off');
 	 *      });
-	 *      sw.addEventListener('change', function(e) {
+	 *      sw.on('change', function(e) {
 	 *        console.log(e.target.isOn());
 	 *      });
 	 *  
@@ -2788,9 +2788,9 @@
 		
 		that.addClassName(flagrate.className + '-slider');
 		
-		that.addEventListener('mousedown',     that._onPointerDownHandler.bind(that));
-		that.addEventListener('touchstart',    that._onPointerDownHandler.bind(that));
-		that.addEventListener('MSPointerDown', that._onPointerDownHandler.bind(that));
+		that.on('mousedown',     that._onPointerDownHandler.bind(that));
+		that.on('touchstart',    that._onPointerDownHandler.bind(that));
+		that.on('MSPointerDown', that._onPointerDownHandler.bind(that));
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -3293,9 +3293,9 @@
 				if (e.type === 'mousewheel') e.preventDefault();
 			};
 			
-			this._div.addEventListener('click', stopper);
-			this._div.addEventListener('mouseup', stopper);
-			this._div.addEventListener('mousewheel', stopper);
+			this._div.on('click', stopper);
+			this._div.on('mouseup', stopper);
+			this._div.on('mousewheel', stopper);
 			
 			return this;
 		}.bind(this);
@@ -3855,7 +3855,7 @@
 			new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
 			var notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
 			
-			notifyClose.addEventListener('click', function(e) {
+			notifyClose.on('click', function(e) {
 				
 				e.stopPropagation();
 				e.preventDefault();
@@ -3873,13 +3873,13 @@
 			
 			/*- onClick event -*/
 			if (onClick === null) {
-				notify.addEventListener('click', function(e) {
+				notify.on('click', function(e) {
 					
 					closeNotify();
 				});
 			} else {
 				notify.style.cursor = 'pointer';
-				notify.addEventListener('click', function(e) {
+				notify.on('click', function(e) {
 					
 					e.stopPropagation();
 					e.preventDefault();
@@ -3910,7 +3910,7 @@
 				closeTimer = setTimeout(onTimeout, timeout * 1000);
 				
 				//Clear timeout
-				notify.addEventListener('mouseover', function() {
+				notify.on('mouseover', function() {
 					
 					clearTimeout(closeTimer);
 					closeTimer = setTimeout(onTimeout, timeout * 1000);
@@ -3991,12 +3991,12 @@
 			
 			/*- onClick event -*/
 			if (onClick === null) {
-				notify.addEventListener('click', function(e) {
+				notify.on('click', function(e) {
 					
 					notify.cancel();
 				});
 			} else {
-				notify.addEventListener('click', function(e) {
+				notify.on('click', function(e) {
 					
 					onClick();
 					notify.cancel();
@@ -4136,7 +4136,7 @@
 		
 		//create
 		this._modal = new Element('div');
-		this._modal.addEventListener('click', function(e) {
+		this._modal.on('click', function(e) {
 			
 			e.stopPropagation();
 		});
@@ -4200,7 +4200,7 @@
 		this._obi = new Element('div').update(this._modal).insertTo(this._base);
 		
 		if (this.disableCloseByMask === false) {
-			this._base.addEventListener('click', this.close.bind(this));
+			this._base.on('click', this.close.bind(this));
 		}
 		
 		this._onKeydownHandler = function(e) {
