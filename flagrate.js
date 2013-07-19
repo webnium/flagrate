@@ -328,7 +328,7 @@
 		 *
 		 *  please refer to flagrate.Element.off
 		**/
-		off: function(name, listener) {
+		off: function(name, listener, useCapture) {
 			return Element.off(this, name, listener, useCapture);
 		}
 		,
@@ -3991,12 +3991,12 @@
 			
 			/*- onClick event -*/
 			if (onClick === null) {
-				notify.on('click', function(e) {
+				notify.addEventListener('click', function(e) {
 					
 					notify.cancel();
 				});
 			} else {
-				notify.on('click', function(e) {
+				notify.addEventListener('click', function(e) {
 					
 					onClick();
 					notify.cancel();
