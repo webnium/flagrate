@@ -328,7 +328,7 @@
 		 *
 		 *  please refer to flagrate.Element.off
 		**/
-		off: function(name, listener) {
+		off: function(name, listener, useCapture) {
 			return Element.off(this, name, listener, useCapture);
 		}
 		,
