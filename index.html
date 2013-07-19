@@ -4,28 +4,24 @@
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	
-	<title>Flagrate</title>
+	<title>Flagrate: A JavaScript UI library.</title>
 	
 	<meta name="description" content="A pure JavaScript class-object UI library for building RIA using techniques such as DHTML and DOM scripting.">
 	
 	<meta name="keywords" content="flagrate">
 	<meta name="robots" content="index,follow">
 	
-	<!--
-	
-	<meta property="og:title"            content="Flagrate : A pure JavaScript class-object UI library.">
+	<meta property="og:title"            content="Flagrate: A JavaScript UI library.">
 	<meta property="og:description"      content="A pure JavaScript class-object UI library for building RIA using techniques such as DHTML and DOM scripting.">
 	<meta property="og:site_name"        content="Flagrate">
 	<meta property="og:type"             content="website">
 	<meta property="og:url"              content="https://flagrate.org/">
-	<meta property="og:image"            content="http://flagrate.org/images/ogp.png">
-	<meta property="og:image:secure_url" content="https://flagrate.org/images/ogp.png">
+	<meta property="og:image"            content="http://flagrate.org/resources/ogp.png">
+	<meta property="og:image:secure_url" content="https://flagrate.org/resources/ogp.png">
 	<meta property="og:image:type"       content="image/png">
 	<meta property="og:image:width"      content="1024">
 	<meta property="og:image:height"     content="1024">
 	<meta property="og:locale"           content="en_US">
-	
-	-->
 	
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="./favicon.ico">
 	<link rel="canonical" href="https://flagrate.org/">
@@ -34,8 +30,180 @@
 	
 	<link href="./flagrate.min.css" rel="stylesheet">
 	<script src="./flagrate.min.js"></script>
+	
+	<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+	<script>
+		document.addEventListener('load', function() {
+			setClass_prettyprint(); 
+			prettyPrint();
+		});
+	</script>
+	
+	<link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+	<style type="text/css">
+		body {
+			padding-top: 20px;
+			padding-bottom: 40px; }
+		
+		.container-narrow {
+			margin   : 0 auto;
+			max-width: 1000px; }
+		
+		.container-narrow > hr {
+			margin: 20px 0; }
+		
+		.masthead ul.nav {
+			padding-top: 20px; }
+		
+		.poster {
+			background: no-repeat center center url(./resources/poster.svg);
+			height     : 40px;
+			padding-top: 260px;
+			text-align : center; }
+			
+			/* Textual links in masthead */
+			.poster-links {
+				margin: 0;
+				list-style: none; }
+				
+				.poster-links li {
+					display: inline;
+					padding: 0 10px;
+					color: rgba(0,0,0,.35); }
+		
+		.social {
+			text-align: center; }
+			
+			.social-buttons {
+				margin: 0;
+				list-style: none; }
+				
+				.social-buttons li {
+					display: inline;
+					padding: 0 5px;
+					color: rgba(0,0,0,.35); }
+		
+		.footer {
+			text-align: center; }
+			
+			.footer ul.footer-links {
+				margin: 0 0 10px;
+				list-style: none; }
+				
+				.footer ul.footer-links > li {
+					display: inline;
+					padding: 0 2px;
+					color  : rgba(0,0,0,.35); }
+	</style>
 </head>
 <body>
-	coming soon.
+	<div class="container-narrow">
+	
+		<div class="masthead">
+			<img class="pull-right" src="./resources/head.svg">
+			<ul class="nav nav-pills">
+				<li class="active"><a href="#">Home</a></li>
+				<li><a href="./getting-started.html">Getting started</a></li>
+				<li><a href="./api/">API</a></li>
+			</ul>
+		</div>
+	
+		<hr>
+	
+		<div class="poster">
+			<ul class="poster-links">
+				<li>
+					<a href="http://github.com/webnium/flagrate/">GitHub</a>
+				</li>
+				<li>
+					<a href="./getting-started.html#examples">Examples</a>
+				</li>
+				<li>
+					Preview Release
+				</li>
+			</ul>
+		</div>
+		
+		<hr>
+		
+		<div class="social">
+			<ul class="social-buttons">
+				<li>
+					<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=webnium&amp;repo=flagrate&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>
+				</li>
+				<li>
+					<iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/follow_button.html#id=twitter-widget-1&amp;lang=en&amp;screen_name=flagratejs&amp;show_count=true&amp;show_screen_name=true&amp;size=m" class="twitter-follow-button twitter-follow-button" title="Twitter Follow Button" data-twttr-rendered="true" style="width: 140px; height: 20px;"></iframe>
+				</li>
+				<li>
+					<iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html#count=horizontal&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=https%3A%2F%2Fflagrate.org%2F&amp;related=mdo%3ACreator%20of%20Twitter%20Bootstrap&amp;size=m&amp;text=Flagrate&amp;url=https%3A%2F%2Fflagrate.org%2F&amp;via=flagratejs" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 100px; height: 20px;"></iframe>
+				</li>
+				<li>
+					<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fflagrate.org%2F&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font=arial&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=239129829438266" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:20px;" allowTransparency="true"></iframe>
+				</li>
+			</ul>
+		</div>
+		
+		<hr>
+		
+		<div class="row-fluid marketing">
+			<div class="span4">
+				<h4>High Performance</h4>
+				<p></p>
+			</div>
+			<div class="span4">
+				<h4>Object-Oriented</h4>
+				<p>
+					Write the good code. More robust programming.
+					<pre class="prettyprint lang-js">
+var modal = flagrate.createModal({
+  title  : 'Hey',
+  text   : 'I want to eat pilaf...!'
+});
+
+modal.open();</pre>
+					<pre class="prettyprint lang-js">
+// These are equivalent. Do you want to use the new yet?
+var notify = flagrate.createNotify();
+var notify = new flagrate.Notify();</pre>
+				</p>
+			</div>
+			<div class="span4">
+				<h4>Pure JavaScript</h4>
+				<p>
+					No dependencies, No pollution.<br>Works with any web framework.
+					<pre class="prettyprint lang-js">
+var popover = flagrate.createPopover({
+  text: 'Yay!'
+});
+
+// Pure
+popover.open(document.getElementById('x'));
+// jQuery
+popover.open($('#x')[0]);
+// Prototype.js
+popover.open($('x'));</pre>
+				</p>
+			</div>
+		</div>
+	
+	  <hr>
+	
+	  <div class="footer">
+		<p>
+			Designed by <a href="https://webnium.co.jp/">Webnium</a> in Tokyo, <a href="https://twitter.com/kanreisa/">Yuki</a>.<br>
+			Code licensed under <a href="https://github.com/webnium/flagrate/blob/master/LICENSE">MIT License</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+		</p>
+		<ul class="footer-links">
+			<li><a href="http://blog.flagrate.org/">Blog</a></li>
+			<li>&sdot;</li>
+			<li><a href="https://github.com/webnium/flagrate/issues?state=open">Issues</a></li>
+			<li>&sdot;</li>
+			<li><a href="https://github.com/webnium/flagrate/wiki/CHANGELOG">Changelog</a></li>
+		</ul>
+		<img src="./resources/webnium.svg">
+		<p>&copy; <a href="https://webnium.co.jp/">webnium,Inc.</a></p>
+	  </div>
+	
+	</div> <!-- /container -->
 </body>
 </html>
