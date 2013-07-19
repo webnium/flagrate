@@ -76,6 +76,30 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Buttons
+		flagrate.createButtons(
+			{
+				items: [
+					{
+						label: 'Buttons'
+					},
+					{
+						label: 'foo'
+					},
+					{
+						label: 'bar'
+					},
+					{
+						label     : 'delete',
+						isDisabled: true,
+						color     : '@red'
+					}
+				]
+			}
+		).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Menu
 		flagrate.createMenu(
 			{
@@ -94,9 +118,7 @@
 					}
 				]
 			}
-		).setStyle({
-			display: 'inline-block'
-		}).insertTo(c);
+		).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
@@ -184,6 +206,13 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Switch
+		flagrate.createSwitch().insertTo(c);
+		flagrate.createSwitch({ isOn: true }).insertTo(c);
+		flagrate.createSwitch({ isOn: true, isDisabled: true }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Select
 		
 		
@@ -216,9 +245,6 @@
 			flagrate.createSlider({ value: 70, isDisabled: true })
 		).insertTo(c)
 		
-		// Switch
-		//todo
-		
 		// Toolbar
 		flagrate.createToolbar({
 			items: [
@@ -236,6 +262,27 @@
 				'--',
 				flagrate.createButton({ label: 'Button', isDisabled: true }),
 				flagrate.createButton({ label: 'Button', color: '@blue', isDisabled: true })
+			]
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		// Tab
+		flagrate.createTab({
+			tabs: [
+				{
+					label: 'Tab',
+					text : 'tab'
+				},
+				{
+					label: 'Tab 2',
+					icon : 'icon.png',
+					html : '<b>tab 2</b>'
+				},
+				{
+					label  : 'Tab 3',
+					element: flagrate.createButton({ label: 'hoge' })
+				}
 			]
 		}).insertTo(c);
 		

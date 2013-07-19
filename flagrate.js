@@ -40,12 +40,12 @@
 	 *  #### Example
 	 *  
 	 *      var preview = flagrate.createElement().insertTo(x);
-	 *      preview.addEventListener('updated', function(e) {
+	 *      preview.on('updated', function(e) {
 	 *        console.log('fired custom event', e);
 	 *      });
 	 *      
-	 *      var input = document.getElementById('textInput');
-	 *      input.addEventListener('change', function() {
+	 *      var input = flagrate.createTextInput().insertTo(x);
+	 *      input.on('change', function() {
 	 *        preview.updateText(input.value);
 	 *        preview.fire('updated');
 	 *      });
@@ -315,6 +315,24 @@
 		}
 		,
 		/*?
+		 *  flagrate.Element#on(eventName, listener[, useCapture = false]) -> flagrate.Element
+		 *
+		 *  please refer to flagrate.Element.on
+		**/
+		on: function(name, listener, useCapture) {
+			return Element.on(this, name, listener, useCapture);
+		}
+		,
+		/*?
+		 *  flagrate.Element#off(eventName, listener[, useCapture = false]) -> flagrate.Element
+		 *
+		 *  please refer to flagrate.Element.off
+		**/
+		off: function(name, listener, useCapture) {
+			return Element.off(this, name, listener, useCapture);
+		}
+		,
+		/*?
 		 *  flagrate.Element#fire(eventName[, property]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.fire
@@ -323,6 +341,12 @@
 			return Element.fire(this, name, property);
 		}
 	};
+	
+	/*?
+	 *  flagrate.Element#emit(eventName[, property]) -> flagrate.Element
+	 *  Alias of: flagrate.Element#fire
+	**/
+	Element.prototype.emit = Element.prototype.fire;
 	
 	/*?
 	 *  flagrate.Element.visible(element) -> Boolean
@@ -825,9 +849,41 @@
 	};
 	
 	/*?
+	 *  flagrate.Element.on(element, eventName, listener[, useCapture = false]) -> Element
+	 *  - element (Element) - instance of Element.
+	 *  - eventName (String) - name of event.
+	 *  - listener (Function) - The function to call when the event occurs.
+	 *  - useCapture (Boolean) -
+	 *  
+	 *  Registers an event handler on a DOM element.
+	**/
+	Element.on = function(element, name, listener, useCapture) {
+		
+		element.addEventListener(name, listener, useCapture || false);
+		
+		return element;
+	};
+	
+	/*?
+	 *  flagrate.Element.off(element, eventName, listener[, useCapture = false]) -> Element
+	 *  - element (Element) - instance of Element.
+	 *  - eventName (String) - name of event.
+	 *  - listener (Function) - The function to call when the event occurs.
+	 *  - useCapture (Boolean) -
+	 *  
+	 *  Registers an event handler on a DOM element.
+	**/
+	Element.off = function(element, name, listener, useCapture) {
+		
+		element.removeEventListener(name, listener, useCapture || false);
+		
+		return element;
+	};
+	
+	/*?
 	 *  flagrate.Element.fire(element, eventName[, property]) -> Element
 	 *  - element (Element) - instance of Element.
-	 *  - name (String) - name of event.
+	 *  - eventName (String) - name of event.
 	 *  - property (Object) -
 	 *  
 	 *  Fires a custom event.
@@ -841,6 +897,12 @@
 		
 		return element;
 	};
+	
+	/*?
+	 *  flagrate.Element.emit(element, eventName[, property]) -> Element
+	 *  Alias of: flagrate.Element.fire
+	**/
+	Element.emit = Element.fire;
 	
 	/*?
 	 *  flagrate.Element.extend(element) -> flagrate.Element
@@ -946,7 +1008,7 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
 		
-		that.addEventListener('click', that._onSelectHandler.bind(that));
+		that.on('click', that._onSelectHandler.bind(that));
 		
 		if (opt.icon) {
 			that.addClassName(flagrate.className + '-icon');
@@ -959,7 +1021,7 @@
 			that._removeButton = new Element('button', {
 				'class': flagrate.className + '-button-remove'
 			}).insertTo(that);
-			that._removeButton.addEventListener('click', that._onRemoveHandler.bind(that));
+			that._removeButton.on('click', that._onRemoveHandler.bind(that));
 		}
 		
 		if (opt.style) that.setStyle(opt.style);
@@ -1058,6 +1120,152 @@
 	};
 	
 	/*?
+	 *  class flagrate.Buttons
+	 *  
+	 *  #### Example
+	 *  
+	 *      var button = flagrate.createButtons({
+	 *        items: [
+	 *          { label: 'Left' },
+	 *          { label: 'Middle' },
+	 *          { label: 'Right' }
+	 *        ]
+	 *      }).insertTo(x);
+	 *  
+	 *  #### Structure
+	 *  
+	 *  <div class="example-container">
+	 *    <div class="flagrate flagrate-buttons">
+	 *      <button class="flagrate flagrate-button">Left</button><button class="flagrate flagrate-button">Middle</button><button class="flagrate flagrate-button">Right</button>
+	 *    </div>
+	 *  </div>
+	 *  
+	 *      <div class="flagrate flagrate-buttons">
+	 *        <button class="flagrate flagrate-button">Left</button>
+	 *        <button class="flagrate flagrate-button">Middle</button>
+	 *        <button class="flagrate flagrate-button">Right</button>
+	 *      </div>
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Element
+	 *  * [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement) (MDN)
+	**/
+	
+	/*?
+	 *  flagrate.createButtons(option)
+	 *  new flagrate.Buttons(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  Button group.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `items`                    (Array): of item
+	 *  * `onSelect`                 (Function):
+	 *  
+	 *  #### item
+	 *  
+	 *  * `key`                      (String):
+	 *  * `label`                    (String; default `""`):
+	 *  * `icon`                     (String):
+	 *  * `color`                    (String):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `onSelect`                 (Function):
+	**/
+	flagrate.createButtons = function(a) {
+		return new Buttons(a);
+	};
+	
+	var Buttons = flagrate.Buttons = function flagrateButtons(opt) {
+		
+		opt = opt || {};
+		
+		opt.items = opt.items || [];
+		
+		this.onSelect = opt.onSelect || function(){};
+		
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id;
+		attr['class'] = opt.className;
+		
+		//create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-buttons');
+		
+		for (var i = 0, l = opt.items.length; i < l; i++) {
+			that.push(opt.items[i]);
+		}
+		
+		that.on('click', function(e) {
+			
+			e.stopPropagation();
+			e.preventDefault();
+		});
+		
+		return that;
+	};
+	
+	Buttons.prototype = {
+		/*?
+		 *  flagrate.Buttons#push(item) -> flagrate.Buttons
+		**/
+		push: function(a) {
+			
+			var button = new Button(
+				{
+					icon      : a.icon,
+					label     : a.label,
+					isDisabled: a.isDisabled,
+					color     : a.color,
+					onSelect  : function(e) {
+						
+						if (a.onSelect) a.onSelect(e);
+						this.onSelect(e);
+					}.bind(this)
+				}
+			).insertTo(this);
+			
+			if (a.key) button._key = a.key;
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Buttons#getButtonByKey(key) -> flagrate.Button | null
+		**/
+		getButtonByKey: function(key) {
+			
+			var result = null;
+			
+			var elements = this.childNodes;
+			for (var i = 0; i < elements.length; i++) {
+				if (!elements[i]._key) continue;
+				
+				if (elements[i]._key === key) {
+					result = elements[i];
+					break;
+				}
+			}
+			
+			return result;
+		}
+		,
+		/*?
+		 *  flagrate.Buttons#getButtons() -> Array
+		**/
+		getButtons: function() {
+			return this.childNodes || [];
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Menu
 	 *  
 	 *  #### Example
@@ -1080,6 +1288,15 @@
 	 *      }).insertTo(x);
 	 *  
 	 *  #### Structure
+	 *  
+	 *  <div class="example-container">
+	 *    <div class="flagrate flagrate-menu">
+	 *      <button class="flagrate flagrate-button">foo</button>
+	 *      <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
+	 *      <hr>
+	 *      <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *    </div>
+	 *  </div>
 	 *  
 	 *      <div class="flagrate flagrate-menu">
 	 *        <button class="flagrate flagrate-button">foo</button>
@@ -1146,7 +1363,7 @@
 			that.push(opt.items[i]);
 		}
 		
-		that.addEventListener('click', function(e) {
+		that.on('click', function(e) {
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -1186,24 +1403,14 @@
 		}
 		,
 		/*?
-		 *  flagrate.Menu#getButtonByKey(key) -> Button | null
+		 *  flagrate.Menu#getButtonByKey(key) -> flagrate.Button | null
 		**/
-		getButtonByKey: function(key) {
-			
-			var result = null;
-			
-			var elements = this.childNodes;
-			for (var i = 0; i < elements.length; i++) {
-				if (!elements[i]._key) continue;
-				
-				if (elements[i]._key === key) {
-					result = element[i]._key;
-					break;
-				}
-			}
-			
-			return result;
-		}
+		getButtonByKey: Buttons.prototype.getButtonByKey
+		,
+		/*?
+		 *  flagrate.Menu#getButtons() -> Array
+		**/
+		getButtons: Buttons.prototype.getButtons
 	};
 	
 	/*?
@@ -1290,7 +1497,7 @@
 				
 				document.body.removeEventListener('click', removeMenu);
 				that.parentNode.removeEventListener('click', removeMenu);
-				that.removeEventListener('click', removeMenu);
+				that.off('click', removeMenu);
 				
 				menu.style.opacity = '0';
 				setTimeout(function(){ menu.remove(); }.bind(this), 500);
@@ -1319,7 +1526,7 @@
 			setTimeout(function() {
 				document.body.addEventListener('click', removeMenu);
 				that.parentNode.addEventListener('click', removeMenu);
-				that.addEventListener('click', removeMenu);
+				that.on('click', removeMenu);
 			}, 0);
 		};
 		
@@ -1658,6 +1865,10 @@
 	
 	/*?
 	 *  class flagrate.Tokenizer
+	 *
+	 *  #### Event
+	 *
+	 *  * `change`: when the tokens/values is changed.
 	**/
 	
 	/*?
@@ -1680,10 +1891,6 @@
 	 *  * `tokenize`                 (Function; default `flagrate.identity`):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
-	 *
-	 *  #### Event
-	 *
-	 *  * `update`: when the tokens/values is updated.
 	**/
 	flagrate.createTokenizer = function(a) {
 		return new Tokenizer(a);
@@ -1725,11 +1932,11 @@
 			that._updateTokens();
 		}
 		
-		that.addEventListener('click', that._onClickHandler.bind(that));
+		that.on('click', that._onClickHandler.bind(that));
 		
-		that._input.addEventListener('keydown',  that._onKeydownHandler.bind(that));
-		that._input.addEventListener('focus',    that._onFocusHandler.bind(that));
-		that._input.addEventListener('blur',     that._onBlurHandler.bind(that));
+		that._input.on('keydown',  that._onKeydownHandler.bind(that));
+		that._input.on('focus',    that._onFocusHandler.bind(that));
+		that._input.on('blur',     that._onBlurHandler.bind(that));
 		
 		if (opt.style) that.setStyle(opt.style);
 		
@@ -1786,9 +1993,9 @@
 		}
 		,
 		/*?
-		 *  flagrate.Tokenizer#removeAllValues() -> flagrate.Tokenizer
+		 *  flagrate.Tokenizer#removeValues() -> flagrate.Tokenizer
 		**/
-		removeAllValues: function() {
+		removeValues: function() {
 			
 			this.values = [];
 			
@@ -1848,7 +2055,7 @@
 				this._input.style.width = '100%';
 			}
 			
-			this.fire('update');
+			this.fire('change');
 			
 			return this;
 		}
@@ -2180,7 +2387,7 @@
 		that.insert({ top: new Element() });
 		that.insert({ top: that._input });
 		
-		that._input.addEventListener('change', function(e) {
+		that._input.on('change', function(e) {
 			
 			if (that.isChecked()) {
 				if (that.onCheck) that.onCheck(e);
@@ -2360,7 +2567,127 @@
 	};
 	
 	/*?
+	 *  class flagrate.Switch
+	 *  
+	 *  #### Example
+	 *
+	 *      var sw = flagrate.createSwitch().insertTo(x);
+	 *      
+	 *      sw.on('on', function() {
+	 *        console.log('on');
+	 *      });
+	 *      sw.on('off', function() {
+	 *        console.log('off');
+	 *      });
+	 *      sw.on('change', function(e) {
+	 *        console.log(e.target.isOn());
+	 *      });
+	 *  
+	 *  #### Structure
+	 *  
+	 *  <div class="example-container">
+	 *    <button class="flagrate flagrate-button flagrate-switch"></button>
+	 *  </div>
+	 *  
+	 *      <button class="flagrate flagrate-button flagrate-switch"></button>
+	 *  
+	 *  #### Events
+	 *  
+	 *  * `on`: when the switch is turned on.
+	 *  * `off`: when the switch is turned off.
+	 *  * `change`: when the on/off status is changed.
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Button
+	 *  * [HTMLButtonElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement) (MDN)
+	**/
+	
+	/*?
+	 *  flagrate.createSwitch(option)
+	 *  new flagrate.Switch(option)
+	 *  - option (Object) - options.
+	**/
+	flagrate.createSwitch = function(a) {
+		return new Switch(a);
+	};
+	
+	var Switch = flagrate.Switch = function flagrateSwitch(opt) {
+		
+		opt = opt || {};
+		
+		//create
+		var that = new Button({
+			id        : opt.id,
+			className : opt.className,
+			attribute : opt.attribute,
+			style     : opt.style,
+			isFocused : opt.isFocused,
+			isDisabled: opt.isDisabled
+		});
+		extendObject(that, this);
+		
+		that.onSelect = that.toggleSwitch.bind(that);
+		
+		that.addClassName(flagrate.className + '-switch');
+		
+		that.dataset.flagrateSwitchStatus = opt.isOn ? 'on' : 'off';
+		
+		return that;
+	};
+	
+	Switch.prototype = {
+		/*?
+		 *  flagrate.Switch#isEnabled() -> flagrate.Switch
+		 *  flagrate.Switch#enable() -> flagrate.Switch
+		 *  flagrate.Switch#disable() -> flagrate.Switch
+		**/
+		/*?
+		 *  flagrate.Switch#isOn() -> Boolean
+		**/
+		isOn: function() {
+			return this.dataset.flagrateSwitchStatus === 'on';
+		}
+		,
+		/*?
+		 *  flagrate.Switch#switchOn() -> flagrate.Switch
+		**/
+		switchOn: function() {
+			
+			this.dataset.flagrateSwitchStatus = 'on';
+			
+			return this.fire('on').fire('change');
+		}
+		,
+		/*?
+		 *  flagrate.Switch#switchOff() -> flagrate.Switch
+		**/
+		switchOff: function() {
+			
+			this.dataset.flagrateSwitchStatus = 'off';
+			
+			return this.fire('off').fire('change');
+		}
+		,
+		/*?
+		 *  flagrate.Switch#toggleSwitch() -> flagrate.Switch
+		**/
+		toggleSwitch: function() {
+			return this.isOn() ? this.switchOff() : this.switchOn();
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Progress
+	 *
+	 *  #### Event
+	 *
+	 *  * `change`: when the value is changed.
+	 *  
+	 *  #### Inheritances
+	 *  
+	 *  * flagrate.Element
+	 *  * [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement) (MDN)
 	**/
 	
 	/*?
@@ -2412,6 +2739,8 @@
 			
 			this.value = Math.max(0, Math.min(this.max, number));
 			
+			this.fire('change');
+			
 			return this._updateProgress();
 		}
 		,
@@ -2429,16 +2758,21 @@
 	
 	/*?
 	 *  class flagrate.Slider
+	 *
+	 *  #### Events
+	 *
+	 *  * `change`: when the value is changed. (by flagrate.Progress)
+	 *  * `slide` : when the slide by user.
+	 *  
+	 *  #### Inheritance
+	 *  
+	 *  * flagrate.Progress
 	**/
 	
 	/*?
 	 *  flagrate.createSlider(option)
 	 *  new flagrate.Slider(option)
 	 *  - option (Object) - options.
-	 *
-	 *  #### Event
-	 *
-	 *  * `update`: when the value is updated by user.
 	**/
 	flagrate.createSlider = function(a) {
 		return new Slider(a);
@@ -2454,9 +2788,9 @@
 		
 		that.addClassName(flagrate.className + '-slider');
 		
-		that.addEventListener('mousedown',     that._onPointerDownHandler.bind(that));
-		that.addEventListener('touchstart',    that._onPointerDownHandler.bind(that));
-		that.addEventListener('MSPointerDown', that._onPointerDownHandler.bind(that));
+		that.on('mousedown',     that._onPointerDownHandler.bind(that));
+		that.on('touchstart',    that._onPointerDownHandler.bind(that));
+		that.on('MSPointerDown', that._onPointerDownHandler.bind(that));
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -2526,7 +2860,7 @@
 				}
 				
 				this.setValue(Math.round(x / unitWidth));
-				this.fire('update');
+				this.fire('slide');
 			}.bind(this);
 			
 			var onUp = function(e) {
@@ -2544,13 +2878,13 @@
 				if (e.touches && e.touches[0]) {
 					x = x + e.touches[0].clientX -pos;
 					this.setValue(Math.round(x / unitWidth));
-					this.fire('update');
+					this.fire('slide');
 				}
 				
 				if (e.clientX) {
 					x = x + e.clientX - pos;
 					this.setValue(Math.round(x / unitWidth));
-					this.fire('update');
+					this.fire('slide');
 				}
 			}.bind(this);
 			
@@ -2563,7 +2897,312 @@
 			document.body.addEventListener('MSPointerUp',   onUp);
 			
 			this.setValue(Math.round(x / unitWidth));
-			this.fire('update');
+			this.fire('slide');
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Tab
+	**/
+	
+	/*?
+	 *  flagrate.createTab(option)
+	 *  new flagrate.Tab(option)
+	 *  - option (Object) - option.
+	 *  
+	 *  Create and initialize the tab.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`            (String): `id` attribute of container.
+	 *  * `className`     (String):
+	 *  * `attribute`     (Object):
+	 *  * `style`         (Object): (using flagrate.Element.setStyle)
+	 *  * `tabs`          (Array): Array of **tab** object.
+	 *  * `selectedIndex` (Number):
+	 *  * `fill`          (Boolean; default `false`):
+	 *  * `onSelect`      (Function): Triggered whenever select the tab.
+	 *  
+	 *  #### tab
+	 *  
+	 *  * `key`           (String):
+	 *  * `label`         (String):
+	 *  * `icon`          (String):
+	 *  * `text`          (String):
+	 *  * `html`          (String):
+	 *  * `element`       (Element):
+	 *  * `onSelect`      (Function):
+	**/
+	flagrate.createTab = function(a) {
+		return new Tab(a);
+	};
+	
+	var Tab = flagrate.Tab = function flagrateTab(opt) {
+		
+		opt = opt || {};
+		
+		/*?
+		 *  flagrate.Tab#tabs -> Array
+		 *  This is readonly property for array of tab.
+		**/
+		this.tabs = opt.tabs || [];
+		
+		var attr = opt.attribute || [];
+		
+		attr.id       = opt.id;
+		attr['class'] = flagrate.className + ' ' + flagrate.className + '-tab';
+		
+		if (opt.fill) {
+			attr['class'] += ' ' + flagrate.className + '-tab-fill';
+		}
+		
+		// create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		if (opt.className) that.addClassName(opt.className);
+		if (opt.style)     that.setStyle(opt.style);
+		
+		/*?
+		 *  flagrate.Tab#selectedIndex -> Number
+		 *  This is readonly property for index of selected tab.
+		**/
+		that.selectedIndex = opt.selectedIndex || 0;
+		
+		that._create()._render();
+		
+		if (that.tabs.length > 0) that.select(that.selectedIndex);
+		
+		return that;
+	};
+	
+	Tab.prototype = {
+		/*?
+		 *  flagrate.Tab#select(tab) -> flagrate.Tab
+		 *  - tab (Object|String|Number) - Object: tab object, String: key of tab, Number: index of tab.
+		 *  
+		 *  select the tab.
+		**/
+		select: function(a) {
+			
+			var index = (typeof a === 'number') ? a : this.indexOf(a);
+			
+			if (index === -1) return this;
+			
+			if (this.tabs[this.selectedIndex]._button) {
+				this.tabs[this.selectedIndex]._button.removeClassName(flagrate.className + '-tab-selected');
+			}
+			
+			this.selectedIndex = index;
+			
+			var tab = this.tabs[index];
+			
+			tab._button.addClassName(flagrate.className + '-tab-selected');
+			
+			if (tab.text)    this._body.updateText(tab.text);
+			if (tab.html)    this._body.update(tab.html);
+			if (tab.element) this._body.update(tab.element);
+			
+			if (tab.onSelect) tab.onSelect(window.event, tab);
+			if (this.onSelect) this.onSelect(window.event, tab);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#unshift(tab) -> Number
+		 *  - tab (Object|Array)
+		 *  
+		 *  unshift the tab.
+		**/
+		unshift: function(r) {
+			
+			if (r instanceof Array) {
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.tabs.unshift(r);
+				}
+			} else {
+				this.tabs.unshift(r);
+			}
+			
+			this._render();
+			
+			return this.tabs.length;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#push(tab) -> Number
+		 *  - tab (Object|Array)
+		 *  
+		 *  push the tab.
+		**/
+		push: function(r) {
+			
+			if (r instanceof Array) {
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.tabs.push(r);
+				}
+			} else {
+				this.tabs.push(r);
+			}
+			
+			this._render();
+			
+			return this.tabs.length;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#shift([count = 1]) -> Object|Array
+		 *  - count (Number)
+		 *  
+		 *  shift the tab.
+		**/
+		shift: function(c) {
+			
+			c = c || 1;
+			
+			var removes = [];
+			
+			for (var i = 0, l = this.tabs.length; i < l && i < c; i++) {
+				removes.push(this.tabs.shift());
+			}
+			
+			this._render();
+			
+			return c === 1 ? removes[0] : removes;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#pop([count = 1]) -> Object|Array
+		 *  - count (Number)
+		 *  
+		 *  pop the tab.
+		**/
+		pop: function(c) {
+			
+			c = c || 1;
+			
+			var removes = [];
+			
+			for (var i = 0, l = this.tabs.length; i < l && i < c; i++) {
+				removes.push(this.tabs.pop());
+			}
+			
+			this._render();
+			
+			return c === 1 ? removes[0] : removes;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#splice(index[, howMany, tab]) -> Array
+		 *  - index   (Number) - Index at which to start changing the flagrate.Tab#tabs.
+		 *  - howMany (Number) - An integer indicating the number of old flagrate.Tab#tabs to remove.
+		 *  - tab     (Object|Array) - The row(s) to add to the flagrate.Tab#tabs.
+		 *  
+		 *  Changes the content of a tabs, adding new tab(s) while removing old tab(s).
+		**/
+		splice: function(index, c, t) {
+			
+			c = c || this.tabs.length - index;
+			
+			var removes = this.tabs.splice(index, c);
+			
+			if (t) {
+				if (t instanceof Array === false) t = [t];
+				
+				for (var i = 0, l = t.length; i < l; i++) {
+					this.tabs.splice(index + i, 0, t[i]);
+				}
+			}
+			
+			this._render();
+			
+			return removes;
+		}
+		,
+		/*?
+		 *  flagrate.Tab#delete(tab) -> Object|Array
+		 *  - tab (Array|Object|String|Number) - tab to locate in the flagrate.Tab#tabs.
+		 *
+		 *  delete tab(s).
+		**/
+		'delete': function(a) {
+			
+			var removes = [];
+			var bulk    = false;
+			
+			if (a instanceof Array === false) {
+				a    = [a];
+				bulk = true;
+			}
+			
+			for (var i = 0, l = a.length; i < l; i++) {
+				var index = (typeof a[i] === 'number') ? a[i] : this.indexOf(a[i]);
+				if (index !== -1) removes.push(this.splice(index, 1));
+			}
+			
+			return bulk ? removes : removes[0];
+		}
+		,
+		/*?
+		 *  flagrate.Tab#indexOf(tab) -> Number
+		 *  - tab (Object|String) - tab to locate in the flagrate.Tab#tabs.
+		**/
+		indexOf: function(a) {
+			
+			if (typeof a === 'string') {
+				var index = -1;
+				
+				for (var i = 0, l = this.tabs.length; i < l; i++) {
+					if (this.tabs[i].key === a) {
+						index = i;
+						break;
+					}
+				}
+				
+				return index;
+			} else {
+				return this.tabs.indexOf(a);
+			}
+		}
+		,
+		_create: function() {
+			
+			this._head = new Element('div', { 'class': flagrate.className + '-tab-head' }).insertTo(this);
+			this._body = new Element('div', { 'class': flagrate.className + '-tab-body' }).insertTo(this);
+			
+			return this;
+		}
+		,
+		_render: function() {
+			
+			this._head.update();
+			
+			for (var i = 0, l = this.tabs.length, tab; i < l; i++) {
+				tab = this.tabs[i];
+				
+				if (!tab._button) {
+					tab._button = new Button(
+						{
+							icon    : tab.icon,
+							label   : tab.label,
+							onSelect: this._createOnSelectHandler(this, tab)
+						}
+					);
+				}
+				
+				tab._button.insertTo(this._head);
+			}
+			
+			return this;
+		}
+		,
+		_createOnSelectHandler: function(that, tab) {
+			
+			return function(e) {
+				
+				that.select(tab);
+			};
 		}
 	};
 	
@@ -2654,9 +3293,9 @@
 				if (e.type === 'mousewheel') e.preventDefault();
 			};
 			
-			this._div.addEventListener('click', stopper);
-			this._div.addEventListener('mouseup', stopper);
-			this._div.addEventListener('mousewheel', stopper);
+			this._div.on('click', stopper);
+			this._div.on('mouseup', stopper);
+			this._div.on('mousewheel', stopper);
 			
 			return this;
 		}.bind(this);
@@ -2815,7 +3454,7 @@
 		opt = opt || {};
 		
 		this.steps    = opt.steps    || [];
-		this.index    = opt.index    || 0;
+		this.index    = opt.count    || 0;
 		this.onFinish = opt.onFinish || function(){};
 		this.onAbort  = opt.onAbort  || function(){};
 		this.onClose  = opt.onClose  || function(){};
@@ -3216,7 +3855,7 @@
 			new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
 			var notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
 			
-			notifyClose.addEventListener('click', function(e) {
+			notifyClose.on('click', function(e) {
 				
 				e.stopPropagation();
 				e.preventDefault();
@@ -3234,13 +3873,13 @@
 			
 			/*- onClick event -*/
 			if (onClick === null) {
-				notify.addEventListener('click', function(e) {
+				notify.on('click', function(e) {
 					
 					closeNotify();
 				});
 			} else {
 				notify.style.cursor = 'pointer';
-				notify.addEventListener('click', function(e) {
+				notify.on('click', function(e) {
 					
 					e.stopPropagation();
 					e.preventDefault();
@@ -3271,7 +3910,7 @@
 				closeTimer = setTimeout(onTimeout, timeout * 1000);
 				
 				//Clear timeout
-				notify.addEventListener('mouseover', function() {
+				notify.on('mouseover', function() {
 					
 					clearTimeout(closeTimer);
 					closeTimer = setTimeout(onTimeout, timeout * 1000);
@@ -3497,7 +4136,7 @@
 		
 		//create
 		this._modal = new Element('div');
-		this._modal.addEventListener('click', function(e) {
+		this._modal.on('click', function(e) {
 			
 			e.stopPropagation();
 		});
@@ -3561,7 +4200,7 @@
 		this._obi = new Element('div').update(this._modal).insertTo(this._base);
 		
 		if (this.disableCloseByMask === false) {
-			this._base.addEventListener('click', this.close.bind(this));
+			this._base.on('click', this.close.bind(this));
 		}
 		
 		this._onKeydownHandler = function(e) {
@@ -3725,6 +4364,33 @@
 			this.onClose(this, e);
 			
 			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Modal#getButtonByKey(key) -> flagrate.Button | null
+		**/
+		getButtonByKey: function(key) {
+			
+			var result = null;
+			
+			var buttons = this.buttons;
+			for (var i = 0; i < buttons.length; i++) {
+				if (!buttons[i].key) continue;
+				
+				if (buttons[i].key === key) {
+					result = buttons[i].button;
+					break;
+				}
+			}
+			
+			return result;
+		}
+		,
+		/*?
+		 *  flagrate.Modal#getButtons() -> Array
+		**/
+		getButtons: function() {
+			return this.buttons || [];
 		}
 		,
 		_createButtonOnSelectHandler: function(that, button) {
@@ -4129,7 +4795,7 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#splice(index, howMany, row) -> Array
+		 *  flagrate.Grid#splice(index[, howMany, row]) -> Array
 		 *  - index   (Number) - Index at which to start changing the flagrate.Grid#rows.
 		 *  - howMany (Number) - An integer indicating the number of old flagrate.Grid#rows to remove.
 		 *  - row     (Object|Array) - The row(s) to add to the flagrate.Grid#rows.
@@ -4142,10 +4808,12 @@
 			
 			var removes = this.rows.splice(index, c);
 			
-			if (r instanceof Array === false) r = [r];
-			
-			for (var i = 0, l = r.length; i < l; i++) {
-				this.rows.splice(index + i, 0, r[i]);
+			if (r) {
+				if (r instanceof Array === false) r = [r];
+				
+				for (var i = 0, l = r.length; i < l; i++) {
+					this.rows.splice(index + i, 0, r[i]);
+				}
 			}
 			
 			this._requestRender();
@@ -4173,15 +4841,19 @@
 		'delete': function(r) {
 			
 			var removes = [];
+			var bulk    = false;
 			
-			if (r instanceof Array === false) r = [r];
+			if (r instanceof Array === false) {
+				r    = [r];
+				bulk = true;
+			}
 			
 			for (var i = 0, l = r.length; i < l; i++) {
 				var index = this.indexOf(r[i]);
 				if (index !== -1) removes.push(this.splice(index, 1));
 			}
 			
-			return removes;
+			return bulk ? removes : removes[0];
 		}
 		,
 		_create: function() {

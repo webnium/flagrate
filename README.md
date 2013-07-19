@@ -1,7 +1,7 @@
 Flagrate [![Build Status](https://circleci.com/gh/webnium/flagrate/tree/master.png?circle-token=1e62d579c1775441e9f8a70ecf02ac3255b80a5e)](#)
 ========
 
-#### A pure JavaScript class-object UI library for building RIA using techniques such as DHTML and DOM scripting. ####
+#### A pure JavaScript class-object UI library. ####
 
 ### Targeted platforms ###
 
