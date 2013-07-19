@@ -3991,12 +3991,12 @@
 			
 			/*- onClick event -*/
 			if (onClick === null) {
-				notify.on('click', function(e) {
+				notify.addEventListener('click', function(e) {
 					
 					notify.cancel();
 				});
 			} else {
-				notify.on('click', function(e) {
+				notify.addEventListener('click', function(e) {
 					
 					onClick();
 					notify.cancel();
