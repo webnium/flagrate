@@ -953,6 +953,10 @@
 	 *  #### Structure
 	 *  
 	 *      <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">foo</button>
+	 *
+	 *  #### Event
+	 *
+	 *  * `select`:
 	 *  
 	 *  #### Inheritances
 	 *  
@@ -998,34 +1002,30 @@
 		
 		var attr = opt.attribute || {};
 		
-		attr.id          = opt.id        || null;
-		attr['class']    = opt.className || null;
-		attr.autofocus   = opt.isFocused || false;
+		if (opt.id)        attr.id = opt.id;
+		if (opt.isFocused) attr.autofocus = true;
 		
 		//create
-		var that = new Element('button', attr).updateText(opt.label);
+		var that = new Element('button', attr);
 		extendObject(that, this);
 		
+		that._label = new Element('span').updateText(opt.label).insertTo(that);
+		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
+		if (opt.className) that.addClassName(opt.className);
 		
-		that.on('click', that._onSelectHandler.bind(that));
-		
-		if (opt.icon) {
-			that.addClassName(flagrate.className + '-icon');
-			that.setStyle({
-				backgroundImage: 'url(' + opt.icon + ')'
-			});
-		}
+		that.on('click', that._onSelectHandler.bind(that), true);
 		
 		if (opt.isRemovableByUser) {
 			that._removeButton = new Element('button', {
 				'class': flagrate.className + '-button-remove'
 			}).insertTo(that);
-			that._removeButton.on('click', that._onRemoveHandler.bind(that));
+			that._removeButton.on('click', that._onRemoveHandler.bind(that), true);
 		}
 		
 		if (opt.style) that.setStyle(opt.style);
 		if (opt.color) that.setColor(opt.color);
+		if (opt.icon)  that.setIcon(opt.icon);
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -1070,7 +1070,16 @@
 		}
 		,
 		/*?
+		 *  flagrate.Button#setLabel(text) -> flagrate.Button
+		 *  - text (String) - label string.
+		**/
+		setLabel: function(text) {
+			return this._label.updateText(text);
+		}
+		,
+		/*?
 		 *  flagrate.Button#setColor(color) -> flagrate.Button
+		 *  - color (String) - please see below.
 		**/
 		setColor: function(color) {
 			
@@ -1082,6 +1091,23 @@
 			}
 			
 			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Button#setIcon([url]) -> flagrate.Button
+		 *  - url (String) - URL of icon image.
+		**/
+		setIcon: function(url) {
+			
+			if (url) {
+				return this.addClassName(flagrate.className + '-icon').setStyle({
+					backgroundImage: 'url(' + url + ')'
+				});
+			} else {
+				return this.removeClassName(flagrate.className + '-icon').setStyle({
+					backgroundImage: 'none'
+				});
+			}
 		}
 		,
 		_onSelectHandler: function(e) {
@@ -1110,7 +1136,10 @@
 				}
 			}
 			
-			this.onSelect(e);
+			e.targetButton = this;
+			
+			this.onSelect(e, this);
+			this.fire('select', { targetButton: this });
 		}
 		,
 		_onRemoveHandler: function(e) {
@@ -1350,14 +1379,14 @@
 		
 		var attr = opt.attribute || {};
 		
-		attr.id       = opt.id;
-		attr['class'] = opt.className;
+		if (opt.id) attr.id = opt.id;
 		
 		//create
 		var that = new Element('div', attr);
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-menu');
+		if (opt.className) that.addClassName(opt.className);
 		
 		for (var i = 0, l = opt.items.length; i < l; i++) {
 			that.push(opt.items[i]);
@@ -1475,15 +1504,20 @@
 		
 		opt.onSelect = opt.onSelect || function(){};
 		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) attr.id = opt.id;
+		
 		//create
 		var that = new Button({
-			attribute: opt.attribute,
+			attribute: attr,
 			label    : opt.label,
 			icon     : opt.icon
 		});
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + '-pulldown');
+		if (opt.className) that.addClassName(opt.className);
 		
 		that.onSelect = function(e) {
 			
@@ -2338,6 +2372,155 @@
 		**/
 		isValid: function() {
 			return this.regexp.test(this.getValue());
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Select
+	 *
+	 *  #### Event
+	 *
+	 *  * `change`:
+	**/
+	
+	/*?
+	 *  flagrate.createSelect(option)
+	 *  new flagrate.Select(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  Select.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `items`                    (Array):
+	 *  * `listView`                 (Boolean; default `false`):
+	 *  * `multiple`                 (Boolean; default `false`):
+	 *  * `max`                      (Number; default `-1`):
+	 *  * `selectedIndex`            (Number):
+	 *  * `selectedIndexes`          (Array): array of Number.
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `onChange`                 (Function):
+	**/
+	flagrate.createSelect = function(a) {
+		return new Select(a);
+	};
+	
+	var Select = flagrate.Select = function flagrateSelect(opt) {
+		
+		opt = opt || {};
+		
+		this.items    = opt.items    || [];
+		this.listView = opt.listView || false;
+		this.multiple = opt.multiple || false;
+		this.max      = opt.max      || -1;
+		this.onChange = opt.onChange || function(){};
+		
+		if (this.multiple) {
+			this.selectedIndexes = opt.selectedIndexes || [];
+			this.values          = [];
+		} else {
+			this.selectedIndex = opt.selectedIndex || -1;
+			this.value         = null;
+		}
+		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) attr.id = opt.id;
+		
+		/*?
+		 *  flagrate.Select#isPulldown -> Boolean
+		 *  readonly property.
+		**/
+		this.isPulldown = (!this.listView && !this.multiple);
+		
+		//create
+		var that;
+		if (this.isPulldown) {
+			that = new Pulldown({
+				attribute: attr,
+				label    : '-',
+				items    : (function() {
+					
+					var items = [];
+					
+					var createOnSelectHandler = function(i) {
+						
+						return function() {
+							that.select(i);
+						};
+					};
+					
+					for (var i = 0, l = this.items.length; i < l; i++) {
+						items.push({
+							label   : this.items[i].label,
+							icon    : this.items[i].icon,
+							onSelect: createOnSelectHandler(i)
+						});
+					}
+					
+					return items;
+				}.bind(this))()
+			});
+		} else {
+			that = new Element('div', attr);
+			that.addClassName(flagrate.className);
+		}
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + '-select');
+		if (opt.className) that.addClassName(opt.className);
+		
+		that.on('click', that._onClickHandler.bind(that));
+		
+		if (opt.style) that.setStyle(opt.style);
+		
+		if (opt.isDisabled) that.disable();
+		
+		if (that.multiple) {
+			that.selectedIndexes.forEach(function(index) {
+				that.select(index);
+			});
+		} else {
+			if (that.selectedIndex > -1) {
+				that.select(that.selectedIndex);
+			}
+		}
+		
+		return that;
+	};
+	
+	Select.prototype = {
+		/*?
+		 *  flagrate.Select#select(item) -> flagrate.Select
+		 *  - item (Number) - Index number of item.
+		**/
+		select: function(index) {
+			
+			if (this.items.length <= index) return this;
+			
+			if (this.multiple) {
+				this.selectedIndexes.push(index);
+			} else {
+				this.selectedIndex = index;
+			}
+			
+			if (this.isPulldown) {
+				this.setLabel(this.items[index].label);
+				this.setIcon(this.items[index].icon);
+			}
+			
+			return this;
+		}
+		,
+		_onClickHandler: function(e) {
+			
+			
+			
+			return this;
 		}
 	};
 	

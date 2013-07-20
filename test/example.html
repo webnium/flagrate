@@ -190,6 +190,27 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// Select
+		flagrate.createSelect({
+			items: [
+				{
+					label: 'Select',
+					value: 'hoge'
+				},
+				{
+					label: 'Select 2',
+					icon : 'icon.png',
+					value: 'huga'
+				},
+				{
+					label: 'Select 3',
+					value: 123
+				}
+			]
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Checkbox
 		flagrate.createCheckbox({ label: 'Checkbox' }).insertTo(c);
 		flagrate.createCheckbox({ label: 'Checkbox', isChecked: true }).insertTo(c);
@@ -212,9 +233,6 @@
 		flagrate.createSwitch({ isOn: true, isDisabled: true }).insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
-		
-		// Select
-		
 		
 		// Date
 		
