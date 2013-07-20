@@ -1047,7 +1047,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-button-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
 			
 			return this;
@@ -1058,7 +1058,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-button-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
 			
 			return this;
@@ -1068,7 +1068,7 @@
 		 *  flagrate.Button#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-button-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -1325,7 +1325,7 @@
 	 *      <button class="flagrate flagrate-button">foo</button>
 	 *      <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
 	 *      <hr>
-	 *      <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *      <button class="flagrate flagrate-button flagrate-disabled" disabled="disabled">disabled button</button>
 	 *    </div>
 	 *  </div>
 	 *  
@@ -1333,7 +1333,7 @@
 	 *        <button class="flagrate flagrate-button">foo</button>
 	 *        <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
 	 *        <hr>
-	 *        <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *        <button class="flagrate flagrate-button flagrate-disabled" disabled="disabled">disabled button</button>
 	 *      </div>
 	 *  
 	 *  `button` elements are created with flagrate.Button
@@ -1853,7 +1853,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-textinput-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
 			
 			return this;
@@ -1864,7 +1864,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-textinput-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
 			
 			return this;
@@ -1874,7 +1874,7 @@
 		 *  flagrate.TextInput#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-textinput-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -1987,7 +1987,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-tokenizer-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this._input.disable();
 			
 			return this._updateTokens();
@@ -1998,7 +1998,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-tokenizer-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this._input.enable();
 			
 			return this._updateTokens();
@@ -2008,7 +2008,7 @@
 		 *  flagrate.Tokenizer#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-tokenizer-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2328,7 +2328,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-textarea-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
 			
 			return this;
@@ -2339,7 +2339,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-textarea-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
 			
 			return this;
@@ -2349,7 +2349,7 @@
 		 *  flagrate.TextArea#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-textarea-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2518,6 +2518,20 @@
 			return this;
 		}
 		,
+		/*?
+		 *  flagrate.Select#disable() -> flagrate.Select
+		**/
+		disable: function() {
+			
+			if (this.isPulldown) {
+				this.addClassName(flagrate.className + '-disabled');
+			} else {
+				this.addClassName(flagrate.className + '-disabled');
+			}
+			
+			return this;
+		}
+		,
 		_onClickHandler: function(e) {
 			
 			
@@ -2597,7 +2611,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-checkbox-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', true);
 			
 			return this;
@@ -2608,7 +2622,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-checkbox-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', false);
 			
 			return this;
@@ -2618,7 +2632,7 @@
 		 *  flagrate.Checkbox#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-checkbox-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2705,7 +2719,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-radio-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', true);
 			
 			return this;
@@ -2716,7 +2730,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-radio-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', false);
 			
 			return this;
@@ -2726,7 +2740,7 @@
 		 *  flagrate.Radio#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-radio-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2987,21 +3001,21 @@
 		 *  flagrate.Slider#disable() -> flagrate.Slider
 		**/
 		disable: function() {
-			return this.addClassName(flagrate.className + '-slider-disabled');
+			return this.addClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Slider#enable() -> flagrate.Slider
 		**/
 		enable: function() {
-			return this.removeClassName(flagrate.className + '-slider-disabled');
+			return this.removeClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Slider#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-slider-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		_onPointerDownHandler: function(e) {
