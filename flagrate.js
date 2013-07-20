@@ -428,13 +428,14 @@
 	**/
 	Element.update = function(element, content) {
 		
+		var i = element.childNodes.length;
+		while (i--) flagrate.Element.remove(element.childNodes[i]);
+		
 		if (!content) {
-			element.innerHTML = '';
 			return element;
 		}
 		
 		if (content instanceof HTMLElement) {
-			element.innerHTML = '';
 			element.appendChild(content);
 			return element;
 		}
@@ -455,8 +456,10 @@
 	**/
 	Element.updateText = function(element, content) {
 		
+		var i = element.childNodes.length;
+		while (i--) flagrate.Element.remove(element.childNodes[i]);
+		
 		if (!content) {
-			element.innerHTML = '';
 			return element;
 		}
 		
@@ -468,7 +471,6 @@
 			content = content.toString(10);
 		}
 		
-		element.innerHTML = '';
 		element.appendChild(document.createTextNode(content));
 		
 		return element;
