@@ -2523,13 +2523,30 @@
 		**/
 		disable: function() {
 			
-			if (this.isPulldown) {
-				this.addClassName(flagrate.className + '-disabled');
-			} else {
-				this.addClassName(flagrate.className + '-disabled');
-			}
+			this.addClassName(flagrate.className + '-disabled');
+			
+			if (this.isPulldown) this.writeAttribute('disabled', true);
 			
 			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#enable() -> flagrate.Select
+		**/
+		enable: function() {
+			
+			this.removeClassName(flagrate.className + '-disabled');
+			
+			if (this.isPulldown) this.writeAttribute('disabled', false);
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		_onClickHandler: function(e) {
