@@ -183,7 +183,7 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// TextArea
+		// TextArea 
 		flagrate.createTextArea({ placeholder: 'TextArea' }).insertTo(c);
 		flagrate.createTextArea({ value: 'TextArea', isDisabled: true }).insertTo(c);
 		flagrate.createTextArea({ placeholder: 'TextArea', icon: 'icon.png' }).insertTo(c);
@@ -217,6 +217,9 @@
 				}
 			]
 		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		flagrate.createSelect({
 			multiple: true,
 			items: [
