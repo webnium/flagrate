@@ -26,7 +26,7 @@ button.flagrate::-moz-focus-inner {
 	background-position: 5px center; }
 
 .flagrate.flagrate-disabled,
-.flagrate.flagrate-disabled > * {
+.flagrate.flagrate-disabled * {
 	cursor: not-allowed !important; }
 
 button.flagrate-button {
@@ -118,6 +118,9 @@ button.flagrate-button.flagrate-button-color-inverse { background-color: #eee; c
 	
 	button.flagrate-pulldown > span.flagrate-pulldown-triangle::after {
 		content    : '\25bc'; }
+
+button.flagrate-pulldown {
+	text-align: right; }
 
 div.flagrate-buttons {
 	display           : inline-block;
@@ -398,48 +401,60 @@ div.flagrate-tokenizer.flagrate-icon {
 		top       : 100%;
 		margin-top: -2px; }
 
-button.flagrate-pulldown.flagrate-select {
-	background-color: #fff;
-	color           : #555;
-	border-color    : rgba(0,0,0,0.35); }
-
-button.flagrate-pulldown.flagrate-select:focus,
-button.flagrate-pulldown.flagrate-select:hover {
-	border-color: rgba(0,0,0,1);
-	color       : rgba(0,0,0,1); }
-
-button.flagrate-pulldown.flagrate-select.flagrate-disabled {
-	border-color      : rgba(0,0,0,0.2);
-	background-color  : #e5e5e5;
-	color             : #555; }
+div.flagrate-select {
+	display         : inline-block;
+	max-width       : 240px; }
 	
-	button.flagrate-pulldown.flagrate-select > span.flagrate-pulldown-triangle {
-		color: rgba(0,0,0,0.25); }
+	div.flagrate-select > button.flagrate-pulldown {
+		display         : block;
+		width           : 100%;
+		background-color: #fff;
+		color           : #555;
+		border-color    : rgba(0,0,0,0.35); }
 	
-	button.flagrate-pulldown.flagrate-select > span.flagrate-pulldown-triangle:hover,
-	button.flagrate-pulldown.flagrate-select > span.flagrate-pulldown-triangle:focus,
-	button.flagrate-pulldown.flagrate-select:hover > span.flagrate-pulldown-triangle,
-	button.flagrate-pulldown.flagrate-select:focus > span.flagrate-pulldown-triangle {
-		color: #000; }
+	div.flagrate-select > button.flagrate-pulldown:focus,
+	div.flagrate-select > button.flagrate-pulldown:hover {
+		border-color: rgba(0,0,0,1);
+		color       : rgba(0,0,0,1); }
 	
-	button.flagrate-pulldown.flagrate-select.flagrate-disabled > span.flagrate-pulldown-triangle {
-		color: rgba(0,0,0,0.25); }
-
-button.flagrate-pulldown.flagrate-select+div.flagrate-pulldown-menu {
-	background-color: #fff; }
+	div.flagrate-select > button.flagrate-pulldown.flagrate-disabled {
+		border-color      : rgba(0,0,0,0.2);
+		background-color  : #e5e5e5;
+		color             : #555; }
+		
+		div.flagrate-select > button.flagrate-pulldown > span.flagrate-pulldown-triangle {
+			color: rgba(0,0,0,0.25); }
+		
+		div.flagrate-select > button.flagrate-pulldown > span.flagrate-pulldown-triangle:hover,
+		div.flagrate-select > button.flagrate-pulldown > span.flagrate-pulldown-triangle:focus,
+		div.flagrate-select > button.flagrate-pulldown:hover > span.flagrate-pulldown-triangle,
+		div.flagrate-select > button.flagrate-pulldown:focus > span.flagrate-pulldown-triangle {
+			color: #000; }
+		
+		div.flagrate-select > button.flagrate-pulldown.flagrate-disabled > span.flagrate-pulldown-triangle {
+			color: rgba(0,0,0,0.25); }
 	
-	button.flagrate-pulldown.flagrate-select+div.flagrate-pulldown-menu > button.flagrate-button,
-	button.flagrate-pulldown.flagrate-select+div.flagrate-pulldown-menu > button.flagrate-button:hover,
-	button.flagrate-pulldown.flagrate-select+div.flagrate-pulldown-menu > button.flagrate-button:focus {
-		color           : #222; }
+	div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu {
+		background-color: #fff; }
+		
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:hover,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:focus {
+			color           : #222; }
+		
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:hover,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:focus {
+			background-color: #eee; }
+		
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:active {
+			color           : #000;
+			background-color: #ddd; }
 	
-	button.flagrate-pulldown.flagrate-select+div.flagrate-pulldown-menu > button.flagrate-button:hover,
-	button.flagrate-pulldown.flagrate-select+div.flagrate-pulldown-menu > button.flagrate-button:focus {
-		background-color: #eee; }
-	
-	button.flagrate-pulldown.flagrate-select+div.flagrate-pulldown-menu > button.flagrate-button:active {
-		color           : #000;
-		background-color: #ddd; }
+	div.flagrate-select > div.flagrate-grid {
+		border: 2px solid rgba(0,0,0,0.35); }
+		
+		div.flagrate-select > div.flagrate-grid > div.flagrate-grid-body {
+			max-height: 100px; }
 
 label.flagrate-checkbox,
 label.flagrate-radio {
@@ -935,25 +950,32 @@ div.flagrate-grid.flagrate-grid-fill {
 				div.flagrate-grid > div > table > thead > tr:hover {
 					color           : #000; }
 				
-				div.flagrate-grid > div > table > tbody > tr {
-					position        : relative; }
+				div.flagrate-grid > div > table > tbody > tr,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr {
+					position        : relative;
+					background-color: #fff; }
 				
-				div.flagrate-grid > div > table > tbody > tr:nth-child(odd) {
+				div.flagrate-grid > div > table > tbody > tr:nth-child(odd),
+				div.flagrate-grid.flagrate-disabled > div > table > tbody > tr,
+				div.flagrate-select > div.flagrate-grid.flagrate-disabled > div > table > tbody > tr {
 					background-color: #eee; }
 				
-				div.flagrate-grid > div > table > tbody > tr:hover {
+				div.flagrate-grid > div > table > tbody > tr:hover,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr:hover {
 					background-color: #ddd; }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(even):hover {
 					background-color: #d9d9d9; }
 				
-				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected {
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected {
 					background-color: rgba(26,96,237,0.35); }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected {
 					background-color: rgba(26,96,237,0.40); }
 				
-				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover {
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover {
 					background-color: rgba(26,96,237,0.45); }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected:hover {

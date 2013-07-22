@@ -2440,10 +2440,9 @@
 		this.isPulldown = (!this.listView && !this.multiple);
 		
 		//create
-		var that;
+		var that = new Element('div', attr);
 		if (this.isPulldown) {
-			that = new Pulldown({
-				attribute: attr,
+			that._pulldown = new Pulldown({
 				label    : '-',
 				items    : (function() {
 					
@@ -2466,14 +2465,46 @@
 					
 					return items;
 				}.bind(this))()
-			});
+			}).insertTo(that);
 		} else {
-			that = new Element('div', attr);
-			that.addClassName(flagrate.className);
+			that._grid = new Grid({
+				headless   : true,
+				multiSelect: this.multiple,
+				cols: [
+					{
+						key  : 'label'
+					}
+				],
+				rows: (function() {
+					
+					var rows = [];
+					
+					var createOnSelectHandler = function(i) {
+						
+						return function() {
+							that.select(i);
+						};
+					};
+					
+					for (var i = 0, l = this.items.length; i < l; i++) {
+						rows.push({
+							cell: {
+								label: {
+									text: this.items[i].label,
+									icon: this.items[i].icon
+								}
+							},
+							onSelect: createOnSelectHandler(i)
+						});
+					}
+					
+					return rows;
+				}.bind(this))()
+			}).insertTo(that);
 		}
 		extendObject(that, this);
 		
-		that.addClassName(flagrate.className + '-select');
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-select');
 		if (opt.className) that.addClassName(opt.className);
 		
 		that.on('click', that._onClickHandler.bind(that));
@@ -2511,8 +2542,8 @@
 			}
 			
 			if (this.isPulldown) {
-				this.setLabel(this.items[index].label);
-				this.setIcon(this.items[index].icon);
+				this._pulldown.setLabel(this.items[index].label);
+				this._pulldown.setIcon(this.items[index].icon);
 			}
 			
 			return this;
@@ -2525,7 +2556,11 @@
 			
 			this.addClassName(flagrate.className + '-disabled');
 			
-			if (this.isPulldown) this.writeAttribute('disabled', true);
+			if (this.isPulldown) {
+				this._pulldown.disable();
+			} else {
+				this._grid.disable();
+			}
 			
 			return this;
 		}
@@ -2537,7 +2572,11 @@
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			
-			if (this.isPulldown) this.writeAttribute('disabled', false);
+			if (this.isPulldown) {
+				this._pulldown.enable();
+			} else {
+				this._grid.enable();
+			}
 			
 			return this;
 		}
@@ -2604,6 +2643,8 @@
 		that.insert({ top: that._input });
 		
 		that._input.on('change', function(e) {
+			
+			e.targetCheckbox = that;
 			
 			if (that.isChecked()) {
 				if (that.onCheck) that.onCheck(e);
@@ -4743,6 +4784,11 @@
 			this.pagePosition = 0;
 		}
 		
+		if (this.headless) {
+			this.disableSort   = true;
+			this.disableResize = true;
+		}
+		
 		return this._create()._requestRender();
 	};
 	
@@ -5070,6 +5116,33 @@
 			}
 			
 			return bulk ? removes : removes[0];
+		}
+		,
+		/*?
+		 *  flagrate.Grid#disable() -> flagrate.Grid
+		**/
+		disable: function() {
+			
+			this.element.addClassName(flagrate.className + '-disabled');
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#enable() -> flagrate.Grid
+		**/
+		enable: function() {
+			
+			this.element.removeClassName(flagrate.className + '-disabled');
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.element.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		_create: function() {
@@ -5468,6 +5541,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (row.onClick)  row.onClick(e, row);
 				if (that.onClick) that.onClick(e, row);
 				
@@ -5485,6 +5560,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (row.onDblClick)  row.onDblClick(e, row);
 				if (that.onDblClick) that.onDblClick(e, row);
 			};
@@ -5494,6 +5571,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (cell.onClick) cell.onClick(e, cell);
 			};
 		}
@@ -5502,6 +5581,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (cell.onDblClick) cell.onDblClick(e, cell);
 			};
 		}
@@ -5509,6 +5590,11 @@
 		_createRowOnCheckHandler: function(that, row) {
 			
 			return function(e) {
+				
+				if (that.isEnabled() === false) {
+					e.targetCheckbox.uncheck();
+					return;
+				}
 				
 				e.stopPropagation();
 				
@@ -5525,6 +5611,8 @@
 		_createLastRowOnClickHandler: function(that, row) {
 			
 			return function(e) {
+				
+				if (that.isEnabled() === false) return;
 				
 				e.stopPropagation();
 				
