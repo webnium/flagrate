@@ -221,6 +221,46 @@
 		flagrate.Element.insert(c, '<br>');
 		
 		flagrate.createSelect({
+			listView: true,
+			items: [
+				{
+					label: 'Select',
+					value: 'hoge'
+				},
+				{
+					label: 'Select 2',
+					icon : 'icon.png',
+					value: 'huga'
+				},
+				{
+					label: 'Select 3',
+					value: 123
+				}
+			]
+		}).insertTo(c);
+		flagrate.createSelect({
+			listView  : true,
+			isDisabled: true,
+			items: [
+				{
+					label: 'Select',
+					value: 'hoge'
+				},
+				{
+					label: 'Select 2',
+					icon : 'icon.png',
+					value: 'huga'
+				},
+				{
+					label: 'Select 3',
+					value: 123
+				}
+			]
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
+		flagrate.createSelect({
 			multiple: true,
 			items: [
 				{
