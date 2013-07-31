@@ -1117,7 +1117,7 @@
 			if (this.isEnabled() === false) return;
 			
 			//for Firefox
-			if (this.isRemovableByUser && e && e.layerX) {
+			if (this._removeButton && e && e.layerX) {
 				var bw = this.getWidth();
 				var bh = this.getHeight();
 				var bp = parseInt(this.getStyle('padding-right').replace('px', ''), 10);
