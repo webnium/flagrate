@@ -25,25 +25,34 @@ button.flagrate::-moz-focus-inner {
 	background-repeat  : no-repeat;
 	background-position: 5px center; }
 
+.flagrate.flagrate-disabled,
+.flagrate.flagrate-disabled * {
+	cursor: not-allowed !important; }
+
 button.flagrate-button {
-	display           : inline-block;
-	cursor            : pointer;
-	padding           : 4px 10px 3px;
-	border            : 2px solid rgba(0,0,0,0);
-	box-shadow        : inset 0 0 0 rgba(0,0,0,0);
-	background-color  : #555;
-	color             : rgba(255,255,255,0.8);
-	font-family       : inherit;
-	font-size         : 12px;
-	font-weight       : normal;
-	line-height       : 17px;
-	white-space       : nowrap;
+	display            : inline-block;
+	cursor             : pointer;
+	padding            : 4px 10px 3px;
+	border             : 2px solid rgba(0,0,0,0);
+	box-shadow         : inset 0 0 0 rgba(0,0,0,0);
+	background-repeat  : no-repeat;
+	background-position: 5px center;
+	background-color   : #555;
+	color              : rgba(255,255,255,0.8);
+	font-family        : inherit;
+	font-size          : 12px;
+	font-weight        : normal;
+	line-height        : 17px;
+	white-space        : nowrap;
 	
 	-webkit-transition: all 0.3s ease;
 	-moz-transition   : all 0.3s ease;
 	-ms-transition    : all 0.3s ease;
 	-o-transition     : all 0.3s ease;
 	transition        : all 0.3s ease; }
+	
+	button.flagrate-button > span {
+		font-size         : inherit; }
 
 button.flagrate-button.flagrate-icon {
 	padding-left      : 24px; }
@@ -61,8 +70,7 @@ button.flagrate-button:active {
 button.flagrate-button:focus {
 	outline           : 2px solid rgba(0,0,0,0.2); }
 
-button.flagrate-button.flagrate-button-disabled {
-	cursor            : not-allowed;
+button.flagrate-button.flagrate-disabled {
 	color             : rgba(255,255,255,0.5);
 	border-color      : rgba(255,255,255,0.2);
 	box-shadow        : inset 0 30px 0 rgba(255,255,255,0.2);
@@ -99,11 +107,20 @@ button.flagrate-button.flagrate-button-color-inverse { background-color: #eee; c
 		color      : #fff;
 		outline    : none; }
 	
+	button.flagrate-button.flagrate-disabled > button.flagrate-button-remove:hover,
+	button.flagrate-button.flagrate-disabled > button.flagrate-button-remove:focus,
+	button.flagrate-pulldown.flagrate-disabled:hover > span.flagrate-pulldown-triangle,
+	button.flagrate-pulldown.flagrate-disabled:focus > span.flagrate-pulldown-triangle {
+		color      : rgba(255,255,255,0.25); }
+	
 	button.flagrate-button > button.flagrate-button-remove::after {
 		content    : '\2716'; }
 	
 	button.flagrate-pulldown > span.flagrate-pulldown-triangle::after {
 		content    : '\25bc'; }
+
+button.flagrate-pulldown {
+	text-align: right; }
 
 div.flagrate-buttons {
 	display           : inline-block;
@@ -176,10 +193,10 @@ div.flagrate-context-menu {
 		color           : #fff;
 		background-color: #333; }
 	
-	div.flagrate-menu > button.flagrate-button-disabled,
-	div.flagrate-menu > button.flagrate-button-disabled:hover,
-	div.flagrate-menu > button.flagrate-button-disabled:focus,
-	div.flagrate-menu > button.flagrate-button-disabled:active {
+	div.flagrate-menu > button.flagrate-disabled,
+	div.flagrate-menu > button.flagrate-disabled:hover,
+	div.flagrate-menu > button.flagrate-disabled:focus,
+	div.flagrate-menu > button.flagrate-disabled:active {
 		color           : #aaa; }
 
 div.flagrate-tab { }
@@ -328,14 +345,13 @@ div.flagrate-tokenizer {
 	padding           : 0px 4px 3px 2px;
 	width             : 230px; }
 
-input.flagrate-textinput-disabled,
-textarea.flagrate-textarea-disabled,
-div.flagrate-tokenizer-disabled,
-div.flagrate-tokenizer-disabled:hover {
+input.flagrate-disabled,
+textarea.flagrate-disabled,
+div.flagrate-disabled,
+div.flagrate-disabled:hover {
 	border-color      : rgba(0,0,0,0.2);
 	background-color  : #e5e5e5;
-	color             : #555;
-	cursor            : not-allowed; }
+	color             : #555; }
 
 div.flagrate-tokenizer.flagrate-icon {
 	padding-left      : 22px;
@@ -385,6 +401,61 @@ div.flagrate-tokenizer.flagrate-icon {
 		top       : 100%;
 		margin-top: -2px; }
 
+div.flagrate-select {
+	display         : inline-block;
+	max-width       : 240px; }
+	
+	div.flagrate-select > button.flagrate-pulldown {
+		display         : block;
+		width           : 100%;
+		background-color: #fff;
+		color           : #555;
+		border-color    : rgba(0,0,0,0.35); }
+	
+	div.flagrate-select > button.flagrate-pulldown:focus,
+	div.flagrate-select > button.flagrate-pulldown:hover {
+		border-color: rgba(0,0,0,1);
+		color       : rgba(0,0,0,1); }
+	
+	div.flagrate-select > button.flagrate-pulldown.flagrate-disabled {
+		border-color      : rgba(0,0,0,0.2);
+		background-color  : #e5e5e5;
+		color             : #555; }
+		
+		div.flagrate-select > button.flagrate-pulldown > span.flagrate-pulldown-triangle {
+			color: rgba(0,0,0,0.25); }
+		
+		div.flagrate-select > button.flagrate-pulldown > span.flagrate-pulldown-triangle:hover,
+		div.flagrate-select > button.flagrate-pulldown > span.flagrate-pulldown-triangle:focus,
+		div.flagrate-select > button.flagrate-pulldown:hover > span.flagrate-pulldown-triangle,
+		div.flagrate-select > button.flagrate-pulldown:focus > span.flagrate-pulldown-triangle {
+			color: #000; }
+		
+		div.flagrate-select > button.flagrate-pulldown.flagrate-disabled > span.flagrate-pulldown-triangle {
+			color: rgba(0,0,0,0.25); }
+	
+	div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu {
+		background-color: #fff; }
+		
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:hover,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:focus {
+			color           : #222; }
+		
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:hover,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:focus {
+			background-color: #eee; }
+		
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:active {
+			color           : #000;
+			background-color: #ddd; }
+	
+	div.flagrate-select > div.flagrate-grid {
+		border: 2px solid rgba(0,0,0,0.35); }
+		
+		div.flagrate-select > div.flagrate-grid > div.flagrate-grid-body {
+			max-height: 100px; }
+
 label.flagrate-checkbox,
 label.flagrate-radio {
 	display            : inline-block;
@@ -395,9 +466,8 @@ label.flagrate-radio {
 	padding            : 0 10px 0 25px;
 	cursor             : pointer; }
 
-label.flagrate-checkbox.flagrate-checkbox-disabled,
-label.flagrate-radio.flagrate-radio-disabled {
-	cursor             : not-allowed;
+label.flagrate-checkbox.flagrate-disabled,
+label.flagrate-radio.flagrate-disabled {
 	color              : #777; }
 
 label.flagrate-checkbox.flagrate-icon,
@@ -466,20 +536,20 @@ label.flagrate-radio.flagrate-icon {
 	label.flagrate-radio > input:active+div {
 		border-color    : #000; }
 	
-	label.flagrate-checkbox.flagrate-checkbox-disabled > div,
-	label.flagrate-checkbox.flagrate-checkbox-disabled > input:active+div {
+	label.flagrate-checkbox.flagrate-disabled > div,
+	label.flagrate-checkbox.flagrate-disabled > input:active+div {
 		box-shadow      : inset 0 0 0 10px rgba(255,255,255,0.3);
 		border-color    : #999; }
 	
-	label.flagrate-radio.flagrate-radio-disabled > div,
-	label.flagrate-radio.flagrate-radio-disabled > input:active+div {
+	label.flagrate-radio.flagrate-disabled > div,
+	label.flagrate-radio.flagrate-disabled > input:active+div {
 		box-shadow      : inset 0 0 0 3px #fff, inset 0 0 0 10px rgba(255,255,255,0.3);
 		border-color    : #999; }
 	
-	label.flagrate-checkbox.flagrate-checkbox-disabled > input:checked+div,
-	label.flagrate-checkbox.flagrate-checkbox-disabled > input:checked:active+div,
-	label.flagrate-radio.flagrate-radio-disabled > input:checked+div,
-	label.flagrate-radio.flagrate-radio-disabled > input:checked:active+div {
+	label.flagrate-checkbox.flagrate-disabled > input:checked+div,
+	label.flagrate-checkbox.flagrate-disabled > input:checked:active+div,
+	label.flagrate-radio.flagrate-disabled > input:checked+div,
+	label.flagrate-radio.flagrate-disabled > input:checked:active+div {
 		border-color    : rgba(255,255,255,0.3); }
 
 button.flagrate-switch,
@@ -546,7 +616,7 @@ div.flagrate-toolbar {
 	div.flagrate-toolbar > button:focus {
 		outline: none; }
 	
-	div.flagrate-toolbar > button.flagrate-button-disabled {
+	div.flagrate-toolbar > button.flagrate-disabled {
 		box-shadow      : none;
 		opacity         : 0.5; }
 	
@@ -581,10 +651,9 @@ div.flagrate-slider {
 	cursor            : pointer;
 	height            : 10px; }
 
-div.flagrate-slider.flagrate-slider-disabled {
-	cursor            : not-allowed; }
+div.flagrate-slider.flagrate-disabled { }
 	
-	div.flagrate-slider.flagrate-slider-disabled > div {
+	div.flagrate-slider.flagrate-disabled > div {
 		background-color  : #888; }
 	
 	div.flagrate-slider > div::after {
@@ -598,7 +667,7 @@ div.flagrate-slider.flagrate-slider-disabled {
 		width           : 10px;
 		height          : 10px; }
 	
-	div.flagrate-slider.flagrate-slider-disabled > div::after {
+	div.flagrate-slider.flagrate-disabled > div::after {
 		background-color  : #555; }
 
 div.flagrate-notify {
@@ -881,25 +950,32 @@ div.flagrate-grid.flagrate-grid-fill {
 				div.flagrate-grid > div > table > thead > tr:hover {
 					color           : #000; }
 				
-				div.flagrate-grid > div > table > tbody > tr {
-					position        : relative; }
+				div.flagrate-grid > div > table > tbody > tr,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr {
+					position        : relative;
+					background-color: #fff; }
 				
-				div.flagrate-grid > div > table > tbody > tr:nth-child(odd) {
+				div.flagrate-grid > div > table > tbody > tr:nth-child(odd),
+				div.flagrate-grid.flagrate-disabled > div > table > tbody > tr,
+				div.flagrate-select > div.flagrate-grid.flagrate-disabled > div > table > tbody > tr {
 					background-color: #eee; }
 				
-				div.flagrate-grid > div > table > tbody > tr:hover {
+				div.flagrate-grid > div > table > tbody > tr:hover,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr:hover {
 					background-color: #ddd; }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(even):hover {
 					background-color: #d9d9d9; }
 				
-				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected {
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected {
 					background-color: rgba(26,96,237,0.35); }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected {
 					background-color: rgba(26,96,237,0.40); }
 				
-				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover {
+				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover,
+				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover {
 					background-color: rgba(26,96,237,0.45); }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected:hover {

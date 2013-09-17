@@ -428,13 +428,14 @@
 	**/
 	Element.update = function(element, content) {
 		
+		var i = element.childNodes.length;
+		while (i--) flagrate.Element.remove(element.childNodes[i]);
+		
 		if (!content) {
-			element.innerHTML = '';
 			return element;
 		}
 		
 		if (content instanceof HTMLElement) {
-			element.innerHTML = '';
 			element.appendChild(content);
 			return element;
 		}
@@ -455,8 +456,10 @@
 	**/
 	Element.updateText = function(element, content) {
 		
+		var i = element.childNodes.length;
+		while (i--) flagrate.Element.remove(element.childNodes[i]);
+		
 		if (!content) {
-			element.innerHTML = '';
 			return element;
 		}
 		
@@ -468,7 +471,6 @@
 			content = content.toString(10);
 		}
 		
-		element.innerHTML = '';
 		element.appendChild(document.createTextNode(content));
 		
 		return element;
@@ -953,6 +955,10 @@
 	 *  #### Structure
 	 *  
 	 *      <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">foo</button>
+	 *
+	 *  #### Event
+	 *
+	 *  * `select`:
 	 *  
 	 *  #### Inheritances
 	 *  
@@ -998,34 +1004,30 @@
 		
 		var attr = opt.attribute || {};
 		
-		attr.id          = opt.id        || null;
-		attr['class']    = opt.className || null;
-		attr.autofocus   = opt.isFocused || false;
+		if (opt.id)        attr.id = opt.id;
+		if (opt.isFocused) attr.autofocus = true;
 		
 		//create
-		var that = new Element('button', attr).updateText(opt.label);
+		var that = new Element('button', attr);
 		extendObject(that, this);
 		
+		that._label = new Element('span').updateText(opt.label).insertTo(that);
+		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
+		if (opt.className) that.addClassName(opt.className);
 		
-		that.on('click', that._onSelectHandler.bind(that));
-		
-		if (opt.icon) {
-			that.addClassName(flagrate.className + '-icon');
-			that.setStyle({
-				backgroundImage: 'url(' + opt.icon + ')'
-			});
-		}
+		that.on('click', that._onSelectHandler.bind(that), true);
 		
 		if (opt.isRemovableByUser) {
 			that._removeButton = new Element('button', {
 				'class': flagrate.className + '-button-remove'
 			}).insertTo(that);
-			that._removeButton.on('click', that._onRemoveHandler.bind(that));
+			that._removeButton.on('click', that._onRemoveHandler.bind(that), true);
 		}
 		
 		if (opt.style) that.setStyle(opt.style);
 		if (opt.color) that.setColor(opt.color);
+		if (opt.icon)  that.setIcon(opt.icon);
 		
 		if (opt.isDisabled) that.disable();
 		
@@ -1045,7 +1047,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-button-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
 			
 			return this;
@@ -1056,7 +1058,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-button-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
 			
 			return this;
@@ -1066,11 +1068,20 @@
 		 *  flagrate.Button#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-button-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.Button#setLabel(text) -> flagrate.Button
+		 *  - text (String) - label string.
+		**/
+		setLabel: function(text) {
+			return this._label.updateText(text);
 		}
 		,
 		/*?
 		 *  flagrate.Button#setColor(color) -> flagrate.Button
+		 *  - color (String) - please see below.
 		**/
 		setColor: function(color) {
 			
@@ -1084,12 +1095,29 @@
 			return this;
 		}
 		,
+		/*?
+		 *  flagrate.Button#setIcon([url]) -> flagrate.Button
+		 *  - url (String) - URL of icon image.
+		**/
+		setIcon: function(url) {
+			
+			if (url) {
+				return this.addClassName(flagrate.className + '-icon').setStyle({
+					backgroundImage: 'url(' + url + ')'
+				});
+			} else {
+				return this.removeClassName(flagrate.className + '-icon').setStyle({
+					backgroundImage: 'none'
+				});
+			}
+		}
+		,
 		_onSelectHandler: function(e) {
 			
 			if (this.isEnabled() === false) return;
 			
 			//for Firefox
-			if (this.isRemovableByUser && e && e.layerX) {
+			if (this._removeButton && e && e.layerX) {
 				var bw = this.getWidth();
 				var bh = this.getHeight();
 				var bp = parseInt(this.getStyle('padding-right').replace('px', ''), 10);
@@ -1110,7 +1138,10 @@
 				}
 			}
 			
-			this.onSelect(e);
+			e.targetButton = this;
+			
+			this.onSelect(e, this);
+			this.fire('select', { targetButton: this });
 		}
 		,
 		_onRemoveHandler: function(e) {
@@ -1294,7 +1325,7 @@
 	 *      <button class="flagrate flagrate-button">foo</button>
 	 *      <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
 	 *      <hr>
-	 *      <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *      <button class="flagrate flagrate-button flagrate-disabled" disabled="disabled">disabled button</button>
 	 *    </div>
 	 *  </div>
 	 *  
@@ -1302,7 +1333,7 @@
 	 *        <button class="flagrate flagrate-button">foo</button>
 	 *        <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">bar</button>
 	 *        <hr>
-	 *        <button class="flagrate flagrate-button flagrate-button-disabled" disabled="disabled">disabled button</button>
+	 *        <button class="flagrate flagrate-button flagrate-disabled" disabled="disabled">disabled button</button>
 	 *      </div>
 	 *  
 	 *  `button` elements are created with flagrate.Button
@@ -1350,14 +1381,14 @@
 		
 		var attr = opt.attribute || {};
 		
-		attr.id       = opt.id;
-		attr['class'] = opt.className;
+		if (opt.id) attr.id = opt.id;
 		
 		//create
 		var that = new Element('div', attr);
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-menu');
+		if (opt.className) that.addClassName(opt.className);
 		
 		for (var i = 0, l = opt.items.length; i < l; i++) {
 			that.push(opt.items[i]);
@@ -1475,15 +1506,20 @@
 		
 		opt.onSelect = opt.onSelect || function(){};
 		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) attr.id = opt.id;
+		
 		//create
 		var that = new Button({
-			attribute: opt.attribute,
+			attribute: attr,
 			label    : opt.label,
 			icon     : opt.icon
 		});
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + '-pulldown');
+		if (opt.className) that.addClassName(opt.className);
 		
 		that.onSelect = function(e) {
 			
@@ -1817,7 +1853,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-textinput-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
 			
 			return this;
@@ -1828,7 +1864,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-textinput-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
 			
 			return this;
@@ -1838,7 +1874,7 @@
 		 *  flagrate.TextInput#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-textinput-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -1951,7 +1987,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-tokenizer-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this._input.disable();
 			
 			return this._updateTokens();
@@ -1962,7 +1998,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-tokenizer-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this._input.enable();
 			
 			return this._updateTokens();
@@ -1972,7 +2008,7 @@
 		 *  flagrate.Tokenizer#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-tokenizer-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2045,7 +2081,7 @@
 			var tm = parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10) || 2;
 			var im = parseInt(this._input.getStyle('margin-left').replace('px', ''), 10) || 2;
 			var ip = parseInt(this._input.getStyle('padding-left').replace('px', ''), 10) || 2;
-			var aw = vw - pl - pr - tw - tm - im - ip - (bw * 2);
+			var aw = vw - pl - pr - tw - tm - im - ip - (bw * 2) - 2;
 			
 			if (aw > 30) {
 				this._input.style.width = aw + 'px';
@@ -2292,7 +2328,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-textarea-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
 			
 			return this;
@@ -2303,7 +2339,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-textarea-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
 			
 			return this;
@@ -2313,7 +2349,7 @@
 		 *  flagrate.TextArea#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-textarea-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2338,6 +2374,225 @@
 		**/
 		isValid: function() {
 			return this.regexp.test(this.getValue());
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Select
+	 *
+	 *  #### Event
+	 *
+	 *  * `change`:
+	**/
+	
+	/*?
+	 *  flagrate.createSelect(option)
+	 *  new flagrate.Select(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  Select.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `items`                    (Array):
+	 *  * `listView`                 (Boolean; default `false`):
+	 *  * `multiple`                 (Boolean; default `false`):
+	 *  * `max`                      (Number; default `-1`):
+	 *  * `selectedIndex`            (Number):
+	 *  * `selectedIndexes`          (Array): array of Number.
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `onChange`                 (Function):
+	**/
+	flagrate.createSelect = function(a) {
+		return new Select(a);
+	};
+	
+	var Select = flagrate.Select = function flagrateSelect(opt) {
+		
+		opt = opt || {};
+		
+		this.items    = opt.items    || [];
+		this.listView = opt.listView || false;
+		this.multiple = opt.multiple || false;
+		this.max      = opt.max      || -1;
+		this.onChange = opt.onChange || function(){};
+		
+		if (this.multiple) {
+			this.selectedIndexes = opt.selectedIndexes || [];
+			this.values          = [];
+		} else {
+			this.selectedIndex = opt.selectedIndex || -1;
+			this.value         = null;
+		}
+		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) attr.id = opt.id;
+		
+		/*?
+		 *  flagrate.Select#isPulldown -> Boolean
+		 *  readonly property.
+		**/
+		this.isPulldown = (!this.listView && !this.multiple);
+		
+		//create
+		var that = new Element('div', attr);
+		if (this.isPulldown) {
+			that._pulldown = new Pulldown({
+				label    : '-',
+				items    : (function() {
+					
+					var items = [];
+					
+					var createOnSelectHandler = function(i) {
+						
+						return function() {
+							that.select(i);
+						};
+					};
+					
+					for (var i = 0, l = this.items.length; i < l; i++) {
+						items.push({
+							label   : this.items[i].label,
+							icon    : this.items[i].icon,
+							onSelect: createOnSelectHandler(i)
+						});
+					}
+					
+					return items;
+				}.bind(this))()
+			}).insertTo(that);
+		} else {
+			that._grid = new Grid({
+				headless   : true,
+				multiSelect: this.multiple,
+				cols: [
+					{
+						key  : 'label'
+					}
+				],
+				rows: (function() {
+					
+					var rows = [];
+					
+					var createOnSelectHandler = function(i) {
+						
+						return function() {
+							that.select(i);
+						};
+					};
+					
+					for (var i = 0, l = this.items.length; i < l; i++) {
+						rows.push({
+							cell: {
+								label: {
+									text: this.items[i].label,
+									icon: this.items[i].icon
+								}
+							},
+							onSelect: createOnSelectHandler(i)
+						});
+					}
+					
+					return rows;
+				}.bind(this))()
+			}).insertTo(that);
+		}
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-select');
+		if (opt.className) that.addClassName(opt.className);
+		
+		that.on('click', that._onClickHandler.bind(that));
+		
+		if (opt.style) that.setStyle(opt.style);
+		
+		if (opt.isDisabled) that.disable();
+		
+		if (that.multiple) {
+			that.selectedIndexes.forEach(function(index) {
+				that.select(index);
+			});
+		} else {
+			if (that.selectedIndex > -1) {
+				that.select(that.selectedIndex);
+			}
+		}
+		
+		return that;
+	};
+	
+	Select.prototype = {
+		/*?
+		 *  flagrate.Select#select(item) -> flagrate.Select
+		 *  - item (Number) - Index number of item.
+		**/
+		select: function(index) {
+			
+			if (this.items.length <= index) return this;
+			
+			if (this.multiple) {
+				this.selectedIndexes.push(index);
+			} else {
+				this.selectedIndex = index;
+			}
+			
+			if (this.isPulldown) {
+				this._pulldown.setLabel(this.items[index].label);
+				this._pulldown.setIcon(this.items[index].icon);
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#disable() -> flagrate.Select
+		**/
+		disable: function() {
+			
+			this.addClassName(flagrate.className + '-disabled');
+			
+			if (this.isPulldown) {
+				this._pulldown.disable();
+			} else {
+				this._grid.disable();
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#enable() -> flagrate.Select
+		**/
+		enable: function() {
+			
+			this.removeClassName(flagrate.className + '-disabled');
+			
+			if (this.isPulldown) {
+				this._pulldown.enable();
+			} else {
+				this._grid.enable();
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.hasClassName(flagrate.className + '-disabled');
+		}
+		,
+		_onClickHandler: function(e) {
+			
+			
+			
+			return this;
 		}
 	};
 	
@@ -2389,6 +2644,8 @@
 		
 		that._input.on('change', function(e) {
 			
+			e.targetCheckbox = that;
+			
 			if (that.isChecked()) {
 				if (that.onCheck) that.onCheck(e);
 			} else {
@@ -2412,7 +2669,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-checkbox-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', true);
 			
 			return this;
@@ -2423,7 +2680,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-checkbox-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', false);
 			
 			return this;
@@ -2433,7 +2690,7 @@
 		 *  flagrate.Checkbox#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-checkbox-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2520,7 +2777,7 @@
 		**/
 		disable: function() {
 			
-			this.addClassName(flagrate.className + '-radio-disabled');
+			this.addClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', true);
 			
 			return this;
@@ -2531,7 +2788,7 @@
 		**/
 		enable: function() {
 			
-			this.removeClassName(flagrate.className + '-radio-disabled');
+			this.removeClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', false);
 			
 			return this;
@@ -2541,7 +2798,7 @@
 		 *  flagrate.Radio#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-radio-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
@@ -2802,21 +3059,21 @@
 		 *  flagrate.Slider#disable() -> flagrate.Slider
 		**/
 		disable: function() {
-			return this.addClassName(flagrate.className + '-slider-disabled');
+			return this.addClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Slider#enable() -> flagrate.Slider
 		**/
 		enable: function() {
-			return this.removeClassName(flagrate.className + '-slider-disabled');
+			return this.removeClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Slider#isEnabled() -> Boolean
 		**/
 		isEnabled: function() {
-			return !this.hasClassName(flagrate.className + '-slider-disabled');
+			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		_onPointerDownHandler: function(e) {
@@ -4527,6 +4784,11 @@
 			this.pagePosition = 0;
 		}
 		
+		if (this.headless) {
+			this.disableSort   = true;
+			this.disableResize = true;
+		}
+		
 		return this._create()._requestRender();
 	};
 	
@@ -4854,6 +5116,33 @@
 			}
 			
 			return bulk ? removes : removes[0];
+		}
+		,
+		/*?
+		 *  flagrate.Grid#disable() -> flagrate.Grid
+		**/
+		disable: function() {
+			
+			this.element.addClassName(flagrate.className + '-disabled');
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#enable() -> flagrate.Grid
+		**/
+		enable: function() {
+			
+			this.element.removeClassName(flagrate.className + '-disabled');
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Grid#isEnabled() -> Boolean
+		**/
+		isEnabled: function() {
+			return !this.element.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		_create: function() {
@@ -5252,6 +5541,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (row.onClick)  row.onClick(e, row);
 				if (that.onClick) that.onClick(e, row);
 				
@@ -5269,6 +5560,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (row.onDblClick)  row.onDblClick(e, row);
 				if (that.onDblClick) that.onDblClick(e, row);
 			};
@@ -5278,6 +5571,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (cell.onClick) cell.onClick(e, cell);
 			};
 		}
@@ -5286,6 +5581,8 @@
 			
 			return function(e) {
 				
+				if (that.isEnabled() === false) return;
+				
 				if (cell.onDblClick) cell.onDblClick(e, cell);
 			};
 		}
@@ -5293,6 +5590,11 @@
 		_createRowOnCheckHandler: function(that, row) {
 			
 			return function(e) {
+				
+				if (that.isEnabled() === false) {
+					e.targetCheckbox.uncheck();
+					return;
+				}
 				
 				e.stopPropagation();
 				
@@ -5309,6 +5611,8 @@
 		_createLastRowOnClickHandler: function(that, row) {
 			
 			return function(e) {
+				
+				if (that.isEnabled() === false) return;
 				
 				e.stopPropagation();
 				
