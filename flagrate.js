@@ -4084,23 +4084,26 @@
 				this.disableDesktopNotify = true;
 			}
 			
-			/*- Get Permissions -*/
-			if ((this.desktopNotifyType === 'w3c') && (window.Notification.permission === 'default')) {
-				this.create({
-					text   : 'Click here to activate desktop notifications...',
-					onClick: function () {
-						window.Notification.requestPermission();
-					}.bind(this)
-				});
-			}
-			
-			if ((this.desktopNotifyType === 'webkit') && (window.webkitNotifications.checkPermission() === 1)) {
-				this.create({
-					text   : 'Click here to activate desktop notifications...',
-					onClick: function () {
-						window.webkitNotifications.requestPermission();
-					}.bind(this)
-				});
+			/*- Check protocol -*/
+			if (window.location.protocol !== 'file:') {
+				/*- Get Permissions -*/
+				if ((this.desktopNotifyType === 'w3c') && (window.Notification.permission === 'default')) {
+					this.create({
+						text   : 'Click here to activate desktop notifications...',
+						onClick: function () {
+							window.Notification.requestPermission();
+						}.bind(this)
+					});
+				}
+				
+				if ((this.desktopNotifyType === 'webkit') && (window.webkitNotifications.checkPermission() === 1)) {
+					this.create({
+						text   : 'Click here to activate desktop notifications...',
+						onClick: function () {
+							window.webkitNotifications.requestPermission();
+						}.bind(this)
+					});
+				}
 			}
 		}
 		
