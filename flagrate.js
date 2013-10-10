@@ -372,12 +372,10 @@
 	 *  - element (Element) - instance of Element.
 	 *  
 	 *  Tells whether `element` is visible
-	 *  
-	 *  This method is similar to http://api.prototypejs.org/dom/Element/visible/
 	**/
 	Element.visible = function (element) {
 		
-		return element.style.display !== 'none';
+		return element.style.display !== 'none' && element.parentNode !== null;
 	};
 	
 	/*?
@@ -3590,11 +3588,14 @@
 				document.body.addEventListener('mousewheel', this.close);
 			}
 			
-			var positioning = function _positioning() {
+			var positioning = function () {
 				
-				Popover._updatePosition(t, d);
-				
-				this._positioningTimer = setTimeout(positioning, 30);
+				if (Element.visible(target) === true) {
+					Popover._updatePosition(t, d);
+					this._positioningTimer = setTimeout(positioning, 30);
+				} else {
+					this.close();
+				}
 			}.bind(this);
 			this._positioningTimer = setTimeout(positioning, 30);
 			
