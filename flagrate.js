@@ -1,4 +1,6 @@
-/* jshint laxcomma: true */
+/*jshint laxcomma: true */
+/*jslint browser:true, vars:true, plusplus:true, nomen:true, continue:true, white:true */
+/*global HTMLElement, Event */
 /*!
  * Flagrate
  *
@@ -8,7 +10,7 @@
  * https://flagrate.org/
  * https://github.com/webnium/flagrate
 **/
-(function _flagrate() {
+(function () {
 	
 	"use strict";
 	
@@ -21,15 +23,32 @@
 	
 	flagrate.className = 'flagrate';
 	
-	var identity = flagrate.identity = function _id(a) {
+	var identity = flagrate.identity = function (a) {
 		return a;
 	};
 	
 	// extend object
-	var extendObject = flagrate.extendObject = function _extendObject(b, a) {
-		for (var k in a) b[k] = a[k];
+	var extendObject = flagrate.extendObject = function (b, a) {
+		/*jslint forin:true */
+		var k;
+		for (k in a) { b[k] = a[k]; }
 		return b;
 	};
+	
+	// empty function
+	var emptyFunction = flagrate.emptyFunction = function () {};
+	
+	// is element
+	var isElement;
+	if (typeof window.HTMLElement === 'object') {
+		isElement = function (a) {
+			return a instanceof window.HTMLElement;
+		};
+	} else {
+		isElement = function (a) {
+			return a && typeof a === "object" && a !== null && a.nodeType === 1 && typeof a.nodeName === "string";
+		};
+	}
 	
 	/*?
 	 *  class flagrate.Element
@@ -40,12 +59,12 @@
 	 *  #### Example
 	 *  
 	 *      var preview = flagrate.createElement().insertTo(x);
-	 *      preview.on('updated', function(e) {
+	 *      preview.on('updated', function (e) {
 	 *        console.log('fired custom event', e);
 	 *      });
 	 *      
 	 *      var input = flagrate.createTextInput().insertTo(x);
-	 *      input.on('change', function() {
+	 *      input.on('change', function () {
 	 *        preview.updateText(input.value);
 	 *        preview.fire('updated');
 	 *      });
@@ -75,10 +94,6 @@
 	 *      // The new way:
 	 *      var a = flagrate.createElement('a', { 'class': 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
 	**/
-	flagrate.createElement = function(a, b) {
-		return new Element(a, b);
-	};
-	
 	var Element = flagrate.Element = function flagrateElement(tagName, attr) {
 		
 		tagName = tagName || 'div';
@@ -90,9 +105,9 @@
 		
 		if (Element.cache[tagName]) {
 			node = Element.cache[tagName].cloneNode(false);
-		} else if ((attr !== null && 'type' in attr) || tagName === 'select') {
+		} else if ((attr !== null && attr.hasOwnProperty('type')) || tagName === 'select') {
 			node = document.createElement(tagName);
-		}else {
+		} else {
 			node = document.createElement(tagName);
 			Element.cache[tagName] = node.cloneNode(false);
 		}
@@ -102,242 +117,246 @@
 		return attr === null ? node : Element.writeAttribute(node, attr);
 	};
 	
+	flagrate.createElement = function (a, b) {
+		return new Element(a, b);
+	};
+	
 	Element.cache = {};
 	
 	Element.prototype = {
-		_flagrated: true
-		,
+		isFlagrated: true,
+		
 		/*?
 		 *  flagrate.Element#visible() -> Boolean
 		 *
 		 *  please refer to flagrate.Element.visible
 		**/
-		visible: function() {
+		visible: function () {
 			return Element.visible(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#toggle() -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.toggle
 		**/
-		toggle: function() {
+		toggle: function () {
 			return Element.toggle(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#hide() -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.hide
 		**/
-		hide: function() {
+		hide: function () {
 			return Element.hide(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#show() -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.show
 		**/
-		show: function() {
+		show: function () {
 			return Element.show(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#remove() -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.remove
 		**/
-		remove: function() {
+		remove: function () {
 			return Element.remove(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#update([newContent]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.update
 		**/
-		update: function(content) {
+		update: function (content) {
 			return Element.update(this, content);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#updateText([newContent]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.updateText
 		**/
-		updateText: function(text) {
+		updateText: function (text) {
 			return Element.updateText(this, text);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#insert(content) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.insert
 		**/
-		insert: function(content) {
+		insert: function (content) {
 			return Element.insert(this, content);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#insertText(content) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.insertText
 		**/
-		insertText: function(text) {
+		insertText: function (text) {
 			return Element.insertText(this, text);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#insertTo(element) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function(element) {
+		insertTo: function (element) {
 			return Element.insertTo(this, element);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#readAttribute(attributeName) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.readAttribute
 		**/
-		readAttribute: function(name) {
+		readAttribute: function (name) {
 			return Element.readAttribute(this, name);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#writeAttribute(attribute[, value = true]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.writeAttribute
 		**/
-		writeAttribute: function(name, value) {
+		writeAttribute: function (name, value) {
 			return Element.writeAttribute(this, name, value);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#getDimensions() -> Object
 		 *
 		 *  please refer to flagrate.Element.getDimensions
 		**/
-		getDimensions: function() {
+		getDimensions: function () {
 			return Element.getDimensions(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#getHeight() -> Number
 		 *
 		 *  please refer to flagrate.Element.getHeight
 		**/
-		getHeight: function() {
+		getHeight: function () {
 			return Element.getHeight(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#getWidth() -> Number
 		 *
 		 *  please refer to flagrate.Element.getWidth
 		**/
-		getWidth: function() {
+		getWidth: function () {
 			return Element.getWidth(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#cumulativeOffset() -> Object
 		 *
 		 *  please refer to flagrate.Element.cumulativeOffset
 		**/
-		cumulativeOffset: function() {
+		cumulativeOffset: function () {
 			return Element.cumulativeOffset(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#cumulativeScrollOffset() -> Object
 		 *
 		 *  please refer to flagrate.Element.cumulativeScrollOffset
 		**/
-		cumulativeScrollOffset: function() {
+		cumulativeScrollOffset: function () {
 			return Element.cumulativeScrollOffset(this);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#hasClassName(className) -> Boolean
 		 *
 		 *  please refer to flagrate.Element.hasClassName
 		**/
-		hasClassName: function(className) {
+		hasClassName: function (className) {
 			return Element.hasClassName(this, className);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#addClassName(className) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.addClassName
 		**/
-		addClassName: function(className) {
+		addClassName: function (className) {
 			return Element.addClassName(this, className);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#removeClassName(className) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.removeClassName
 		**/
-		removeClassName: function(className) {
+		removeClassName: function (className) {
 			return Element.removeClassName(this, className);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#toggleClassName(className) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.toggleClassName
 		**/
-		toggleClassName: function(className) {
+		toggleClassName: function (className) {
 			return Element.toggleClassName(this, className);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#getStyle(propertyName) -> String | Number | null
 		 *
 		 *  please refer to flagrate.Element.getStyle
 		**/
-		getStyle: function(propertyName) {
+		getStyle: function (propertyName) {
 			return Element.getStyle(this, propertyName);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#setStyle(style) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.setStyle
 		**/
-		setStyle: function(style) {
+		setStyle: function (style) {
 			return Element.setStyle(this, style);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#on(eventName, listener[, useCapture = false]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.on
 		**/
-		on: function(name, listener, useCapture) {
+		on: function (name, listener, useCapture) {
 			return Element.on(this, name, listener, useCapture);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#off(eventName, listener[, useCapture = false]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.off
 		**/
-		off: function(name, listener, useCapture) {
+		off: function (name, listener, useCapture) {
 			return Element.off(this, name, listener, useCapture);
-		}
-		,
+		},
+		
 		/*?
 		 *  flagrate.Element#fire(eventName[, property]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.fire
 		**/
-		fire: function(name, property) {
+		fire: function (name, property) {
 			return Element.fire(this, name, property);
 		}
 	};
@@ -356,7 +375,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/visible/
 	**/
-	Element.visible = function(element) {
+	Element.visible = function (element) {
 		
 		return element.style.display !== 'none';
 	};
@@ -369,7 +388,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/toggle/
 	**/
-	Element.toggle = function(element) {
+	Element.toggle = function (element) {
 		
 		return Element[Element.visible(element) ? 'hide' : 'show'](element);
 	};
@@ -382,7 +401,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/hide/
 	**/
-	Element.hide = function(element) {
+	Element.hide = function (element) {
 		
 		element.style.display = 'none';
 		return element;
@@ -396,7 +415,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/show/
 	**/
-	Element.show = function(element) {
+	Element.show = function (element) {
 		
 		element.style.display = '';
 		return element;
@@ -410,9 +429,9 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/remove/
 	**/
-	Element.remove = function(element) {
+	Element.remove = function (element) {
 		
-		if (element.parentNode) element.parentNode.removeChild(element);
+		if (element.parentNode) { element.parentNode.removeChild(element); }
 		return element;
 	};
 	
@@ -426,16 +445,16 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/update/
 	**/
-	Element.update = function(element, content) {
+	Element.update = function (element, content) {
 		
 		var i = element.childNodes.length;
-		while (i--) flagrate.Element.remove(element.childNodes[i]);
+		while (i--) { flagrate.Element.remove(element.childNodes[i]); }
 		
 		if (!content) {
 			return element;
 		}
 		
-		if (content instanceof HTMLElement) {
+		if (isElement(content) === true) {
 			element.appendChild(content);
 			return element;
 		}
@@ -454,16 +473,16 @@
 	 *  - element (Element) - instance of Element.
 	 *  - newContent (String|Number) - new text content.
 	**/
-	Element.updateText = function(element, content) {
+	Element.updateText = function (element, content) {
 		
 		var i = element.childNodes.length;
-		while (i--) flagrate.Element.remove(element.childNodes[i]);
+		while (i--) { flagrate.Element.remove(element.childNodes[i]); }
 		
 		if (!content) {
 			return element;
 		}
 		
-		if (content instanceof HTMLElement && typeof content.toString !== 'undefined') {
+		if (isElement(content) === true && typeof content.toString !== 'undefined') {
 			return Element.updateText(element, content.toString());
 		}
 		
@@ -486,35 +505,35 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/insert/
 	**/
-	Element.insert = function(element, insertion) {
+	Element.insert = function (element, insertion) {
 		
-		if (
-			typeof insertion === 'string' ||
-			typeof insertion === 'number' ||
-			insertion instanceof HTMLElement
-		) {
+		if (typeof insertion === 'string' || typeof insertion === 'number' || isElement(insertion) === true) {
 			insertion = { bottom: insertion };
 		}
 		
 		var content, insert, childNodes;
 		
-		for (var position in insertion) {
-			content  = insertion[position];
-			position = position.toLowerCase();
-			insert   = Element._insertionTranslation[position];
-			
-			if (content instanceof HTMLElement) {
-				insert(element, content);
-				continue;
-			}
-			
-			if (typeof content !== 'string') content = content.toString(10);
-			
-			var div = new Element();
-			div.innerHTML = content;
-			if (position === 'top' || position === 'after') childNodes.reverse();
-			for (var i = 0; i < div.childNodes.length; i++) {
-				insert(element, div.childNodes[i]);
+		var position;
+		for (position in insertion) {
+			if (insertion.hasOwnProperty(position)) {
+				content  = insertion[position];
+				position = position.toLowerCase();
+				insert   = Element._insertionTranslation[position];
+				
+				if (isElement(content) === true) {
+					insert(element, content);
+					continue;
+				}
+				
+				if (typeof content !== 'string') { content = content.toString(10); }
+				
+				var div = new Element();
+				div.innerHTML = content;
+				if (position === 'top' || position === 'after') { childNodes.reverse(); }
+				var i;
+				for (i = 0; i < div.childNodes.length; i++) {
+					insert(element, div.childNodes[i]);
+				}
 			}
 		}
 		
@@ -529,25 +548,25 @@
 	 *  Inserts content `above`, `below`, at the `top`, and/or at the `bottom` of
 	 *  the given element, depending on the option(s) given.
 	**/
-	Element.insertText = function(element, insertion) {
+	Element.insertText = function (element, insertion) {
 		
-		if (
-			typeof insertion === 'string' ||
-			typeof insertion === 'number'
-		) {
+		if (typeof insertion === 'string' || typeof insertion === 'number') {
 			insertion = { bottom: insertion };
 		}
 		
 		var content, insert;
 		
-		for (var position in insertion) {
-			content  = insertion[position];
-			position = position.toLowerCase();
-			insert   = Element._insertionTranslation[position];
-			
-			if (typeof content !== 'string') content = content.toString(10);
-			
-			insert(element, document.createTextNode(content));
+		var position;
+		for (position in insertion) {
+			if (insertion.hasOwnProperty(position)) {
+				content  = insertion[position];
+				position = position.toLowerCase();
+				insert   = Element._insertionTranslation[position];
+				
+				if (typeof content !== 'string') { content = content.toString(10); }
+				
+				insert(element, document.createTextNode(content));
+			}
 		}
 		
 		return element;
@@ -558,7 +577,7 @@
 	 *  - element (Element) - insert this.
 	 *  - to (Element) - insert to this element.
 	**/
-	Element.insertTo = function(element, to) {
+	Element.insertTo = function (element, to) {
 		
 		Element.insert(to, element);
 		
@@ -575,17 +594,17 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/wrap/
 	**/
-	Element.wrap = function(element, wrapper, attr) {
+	Element.wrap = function (element, wrapper, attr) {
 		
-		if (wrapper instanceof HTMLElement) {
-			if (attr) Element.writeAttribute(wrapper, attr);
+		if (isElement(wrapper) === true) {
+			if (attr) { Element.writeAttribute(wrapper, attr); }
 		} else if (typeof wrapper === 'string') {
 			wrapper = new Element(wrapper, attr);
 		} else {
 			wrapper = new Element('div', wrapper);
 		}
 		
-		if (element.parentNode) element.parentNode.replaceChild(wrapper, element);
+		if (element.parentNode) { element.parentNode.replaceChild(wrapper, element); }
 		
 		wrapper.appendChild(element);
 		
@@ -602,7 +621,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/readAttribute/
 	**/
-	Element.readAttribute = function(element, name) {
+	Element.readAttribute = function (element, name) {
 		
 		// ref: https://github.com/sstephenson/prototype/blob/1fb9728/src/dom/dom.js#L1856
 		
@@ -619,7 +638,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/writeAttribute/
 	**/
-	Element.writeAttribute = function(element, name, value) {
+	Element.writeAttribute = function (element, name, value) {
 		
 		var attr = {};
 		
@@ -629,14 +648,17 @@
 			attr[name] = (typeof value === 'undefined') ? true : value;
 		}
 		
-		for (var k in attr) {
-			value = attr[k];
-			if (value === false || value === null) {
-				element.removeAttribute(k);
-			} else if (value === true) {
-				element.setAttribute(k, k);
-			} else if (typeof value !== 'undefined') {
-				element.setAttribute(k, value);
+		var k;
+		for (k in attr) {
+			if (attr.hasOwnProperty(k)) {
+				value = attr[k];
+				if (value === false || value === null) {
+					element.removeAttribute(k);
+				} else if (value === true) {
+					element.setAttribute(k, k);
+				} else if (typeof value !== 'undefined') {
+					element.setAttribute(k, value);
+				}
 			}
 		}
 		
@@ -652,7 +674,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/getDimensions/
 	**/
-	Element.getDimensions = function(element) {
+	Element.getDimensions = function (element) {
 		
 		var display = Element.getStyle(element, 'display');
 		
@@ -672,7 +694,7 @@
 		};
 		
 		// Switching `fixed` to `absolute` causes issues in Safari.
-		if (before.position !== 'fixed') after.position = 'absolute';
+		if (before.position !== 'fixed') { after.position = 'absolute'; }
 		
 		Element.setStyle(element, after);
 		
@@ -692,7 +714,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/getHeight/
 	**/
-	Element.getHeight = function(element) {
+	Element.getHeight = function (element) {
 		
 		return Element.getDimensions(element).height;
 	};
@@ -703,7 +725,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/getWidth/
 	**/
-	Element.getWidth = function(element) {
+	Element.getWidth = function (element) {
 		
 		return Element.getDimensions(element).width;
 	};
@@ -714,7 +736,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/cumulativeOffset/
 	**/
-	Element.cumulativeOffset = function(element) {
+	Element.cumulativeOffset = function (element) {
 		
 		var t = 0, l = 0;
 		if (element.parentNode) {
@@ -739,7 +761,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/cumulativeScrollOffset/
 	**/
-	Element.cumulativeScrollOffset = function(element) {
+	Element.cumulativeScrollOffset = function (element) {
 		
 		var t = 0, l = 0;
 		do {
@@ -763,7 +785,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/hasClassName/
 	**/
-	Element.hasClassName = function(element, className) {
+	Element.hasClassName = function (element, className) {
 		
 		return (element.className.length > 0 && (element.className === className || new RegExp('(^|\\s)' + className + '(\\s|$)').test(element.className)));
 	};
@@ -775,7 +797,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/addClassName/
 	**/
-	Element.addClassName = function(element, className) {
+	Element.addClassName = function (element, className) {
 		
 		if (!Element.hasClassName(element, className)) {
 			element.className += (element.className ? ' ' : '') + className;
@@ -791,7 +813,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/removeClassName/
 	**/
-	Element.removeClassName = function(element, className) {
+	Element.removeClassName = function (element, className) {
 		
 		element.className = element.className.replace(
 			new RegExp('(^|\\s+)' + className + '(\\s+|$)'), ' '
@@ -807,7 +829,7 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/toggleClassName/
 	**/
-	Element.toggleClassName = function(element, className) {
+	Element.toggleClassName = function (element, className) {
 		
 		return Element[Element.hasClassName(element, className) ? 'removeClassName' : 'addClassName'](element, className);
 	};
@@ -819,9 +841,9 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/getStyle/
 	**/
-	Element.getStyle = function(element, style) {
+	Element.getStyle = function (element, style) {
 		
-		if (style === 'float') style = 'cssFloat';
+		if (style === 'float') { style = 'cssFloat'; }
 		
 		var value = element.style[style];
 		if (!value || value === 'auto') {
@@ -829,7 +851,7 @@
 			value = css ? css.getPropertyValue(style) : null;
 		}
 		
-		if (style === 'opacity') return value ? parseFloat(value) : 1.0;
+		if (style === 'opacity') { return value ? parseFloat(value) : 1.0; }
 		
 		return value === 'auto' ? null : value;
 	};
@@ -841,10 +863,13 @@
 	 *  
 	 *  This method is similar to http://api.prototypejs.org/dom/Element/setStyle/
 	**/
-	Element.setStyle = function(element, style) {
+	Element.setStyle = function (element, style) {
 		
-		for (var p in style) {
-			element.style[(p === 'float' || p === 'cssFloat') ? ((typeof element.style.styleFloat === 'undefined') ? 'cssFloat' : 'styleFloat') : p] = style[p];
+		var p;
+		for (p in style) {
+			if (style.hasOwnProperty(p)) {
+				element.style[(p === 'float' || p === 'cssFloat') ? ((typeof element.style.styleFloat === 'undefined') ? 'cssFloat' : 'styleFloat') : p] = style[p];
+			}
 		}
 		
 		return element;
@@ -859,7 +884,7 @@
 	 *  
 	 *  Registers an event handler on a DOM element.
 	**/
-	Element.on = function(element, name, listener, useCapture) {
+	Element.on = function (element, name, listener, useCapture) {
 		
 		element.addEventListener(name, listener, useCapture || false);
 		
@@ -875,7 +900,7 @@
 	 *  
 	 *  Registers an event handler on a DOM element.
 	**/
-	Element.off = function(element, name, listener, useCapture) {
+	Element.off = function (element, name, listener, useCapture) {
 		
 		element.removeEventListener(name, listener, useCapture || false);
 		
@@ -890,11 +915,11 @@
 	 *  
 	 *  Fires a custom event.
 	**/
-	Element.fire = function(element, name, property) {
+	Element.fire = function (element, name, property) {
 		
 		var event = document.createEvent('HTMLEvents');
 		event.initEvent(name, true, true);
-		if (property) extendObject(event, property);
+		if (property) { extendObject(event, property); }
 		element.dispatchEvent(event);
 		
 		return element;
@@ -914,9 +939,9 @@
 	 *  
 	 *  **Caution**: This method will add flagrate.Element instance methods to given element instance.
 	**/
-	Element.extend = function(element) {
+	Element.extend = function (element) {
 		
-		if (element._flagrated) return element;
+		if (element.isFlagrated) { return element; }
 		
 		extendObject(element, Element.prototype);
 		
@@ -925,16 +950,16 @@
 	
 	// from https://github.com/sstephenson/prototype/blob/1fb9728/src/dom/dom.js#L3021-L3041
 	Element._insertionTranslation = {
-		before: function(element, node) {
+		before: function (element, node) {
 			element.parentNode.insertBefore(node, element);
 		},
-		top: function(element, node) {
+		top: function (element, node) {
 			element.insertBefore(node, element.firstChild);
 		},
-		bottom: function(element, node) {
+		bottom: function (element, node) {
 			element.appendChild(node);
 		},
-		after: function(element, node) {
+		after: function (element, node) {
 			element.parentNode.insertBefore(node, element.nextSibling);
 		}
 	};
@@ -947,7 +972,7 @@
 	 *      var button = flagrate.createButton({
 	 *        label   : 'foo',
 	 *        icon    : 'icon.png',
-	 *        onSelect: function() {
+	 *        onSelect: function () {
 	 *          alert('hey');
 	 *        }
 	 *      }).insertTo(x);
@@ -988,10 +1013,6 @@
 	 *  * `onSelect`                 (Function):
 	 *  * `onRemove`                 (Function):
 	**/
-	flagrate.createButton = function(a) {
-		return new Button(a);
-	};
-	
 	var Button = flagrate.Button = function flagrateButton(opt) {
 		
 		opt = opt || {};
@@ -999,13 +1020,13 @@
 		opt.label             = opt.label             || '';
 		opt.isRemovableByUser = opt.isRemovableByUser || false;
 		
-		this.onSelect = opt.onSelect || function(){};
-		this.onRemove = opt.onRemove || function(){};
+		this.onSelect = opt.onSelect || emptyFunction;
+		this.onRemove = opt.onRemove || emptyFunction;
 		
 		var attr = opt.attribute || {};
 		
-		if (opt.id)        attr.id = opt.id;
-		if (opt.isFocused) attr.autofocus = true;
+		if (opt.id)        { attr.id = opt.id; }
+		if (opt.isFocused) { attr.autofocus = true; }
 		
 		//create
 		var that = new Element('button', attr);
@@ -1014,7 +1035,7 @@
 		that._label = new Element('span').updateText(opt.label).insertTo(that);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-button');
-		if (opt.className) that.addClassName(opt.className);
+		if (opt.className) { that.addClassName(opt.className); }
 		
 		that.on('click', that._onSelectHandler.bind(that), true);
 		
@@ -1025,27 +1046,31 @@
 			that._removeButton.on('click', that._onRemoveHandler.bind(that), true);
 		}
 		
-		if (opt.style) that.setStyle(opt.style);
-		if (opt.color) that.setColor(opt.color);
-		if (opt.icon)  that.setIcon(opt.icon);
+		if (opt.style) { that.setStyle(opt.style); }
+		if (opt.color) { that.setColor(opt.color); }
+		if (opt.icon)  { that.setIcon(opt.icon); }
 		
-		if (opt.isDisabled) that.disable();
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createButton = function (a) {
+		return new Button(a);
 	};
 	
 	Button.prototype = {
 		/*?
 		 *  flagrate.Button#select() -> flagrate.Button
 		**/
-		select: function() {
+		select: function () {
 			return this._onSelectHandler(null);
 		}
 		,
 		/*?
 		 *  flagrate.Button#disable() -> flagrate.Button
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
@@ -1056,7 +1081,7 @@
 		/*?
 		 *  flagrate.Button#enable() -> flagrate.Button
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
@@ -1067,7 +1092,7 @@
 		/*?
 		 *  flagrate.Button#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
@@ -1075,7 +1100,7 @@
 		 *  flagrate.Button#setLabel(text) -> flagrate.Button
 		 *  - text (String) - label string.
 		**/
-		setLabel: function(text) {
+		setLabel: function (text) {
 			return this._label.updateText(text);
 		}
 		,
@@ -1083,7 +1108,7 @@
 		 *  flagrate.Button#setColor(color) -> flagrate.Button
 		 *  - color (String) - please see below.
 		**/
-		setColor: function(color) {
+		setColor: function (color) {
 			
 			if (color.charAt(0) === '@') {
 				this.style.backgroundColor = '';
@@ -1099,7 +1124,7 @@
 		 *  flagrate.Button#setIcon([url]) -> flagrate.Button
 		 *  - url (String) - URL of icon image.
 		**/
-		setIcon: function(url) {
+		setIcon: function (url) {
 			
 			if (url) {
 				return this.addClassName(flagrate.className + '-icon').setStyle({
@@ -1112,9 +1137,9 @@
 			}
 		}
 		,
-		_onSelectHandler: function(e) {
+		_onSelectHandler: function (e) {
 			
-			if (this.isEnabled() === false) return;
+			if (this.isEnabled() === false) { return; }
 			
 			//for Firefox
 			if (this._removeButton && e && e.layerX) {
@@ -1144,9 +1169,9 @@
 			this.fire('select', { targetButton: this });
 		}
 		,
-		_onRemoveHandler: function(e) {
+		_onRemoveHandler: function (e) {
 			
-			if (this.isEnabled() && this.remove()) this.onRemove(e);
+			if (this.isEnabled() && this.remove()) { this.onRemove(e); }
 		}
 	};
 	
@@ -1207,17 +1232,13 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	flagrate.createButtons = function(a) {
-		return new Buttons(a);
-	};
-	
 	var Buttons = flagrate.Buttons = function flagrateButtons(opt) {
 		
 		opt = opt || {};
 		
 		opt.items = opt.items || [];
 		
-		this.onSelect = opt.onSelect || function(){};
+		this.onSelect = opt.onSelect || emptyFunction;
 		
 		var attr = opt.attribute || {};
 		
@@ -1230,11 +1251,12 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-buttons');
 		
-		for (var i = 0, l = opt.items.length; i < l; i++) {
+		var i, l;
+		for (i = 0, l = opt.items.length; i < l; i++) {
 			that.push(opt.items[i]);
 		}
 		
-		that.on('click', function(e) {
+		that.on('click', function (e) {
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -1243,11 +1265,15 @@
 		return that;
 	};
 	
+	flagrate.createButtons = function (a) {
+		return new Buttons(a);
+	};
+	
 	Buttons.prototype = {
 		/*?
 		 *  flagrate.Buttons#push(item) -> flagrate.Buttons
 		**/
-		push: function(a) {
+		push: function (a) {
 			
 			var button = new Button(
 				{
@@ -1255,15 +1281,15 @@
 					label     : a.label,
 					isDisabled: a.isDisabled,
 					color     : a.color,
-					onSelect  : function(e) {
+					onSelect  : function (e) {
 						
-						if (a.onSelect) a.onSelect(e);
+						if (a.onSelect) { a.onSelect(e); }
 						this.onSelect(e);
 					}.bind(this)
 				}
 			).insertTo(this);
 			
-			if (a.key) button._key = a.key;
+			if (a.key) { button._key = a.key; }
 			
 			return this;
 		}
@@ -1271,13 +1297,14 @@
 		/*?
 		 *  flagrate.Buttons#getButtonByKey(key) -> flagrate.Button | null
 		**/
-		getButtonByKey: function(key) {
+		getButtonByKey: function (key) {
 			
 			var result = null;
 			
 			var elements = this.childNodes;
-			for (var i = 0; i < elements.length; i++) {
-				if (!elements[i]._key) continue;
+			var i, l;
+			for (i = 0, l = elements.length; i < l; i++) {
+				if (!elements[i]._key) { continue; }
 				
 				if (elements[i]._key === key) {
 					result = elements[i];
@@ -1291,7 +1318,7 @@
 		/*?
 		 *  flagrate.Buttons#getButtons() -> Array
 		**/
-		getButtons: function() {
+		getButtons: function () {
 			return this.childNodes || [];
 		}
 	};
@@ -1367,34 +1394,31 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	flagrate.createMenu = function(a) {
-		return new Menu(a);
-	};
-	
 	var Menu = flagrate.Menu = function flagrateMenu(opt) {
 		
 		opt = opt || {};
 		
 		opt.items = opt.items    || [];
 		
-		this.onSelect = opt.onSelect || function(){};
+		this.onSelect = opt.onSelect || emptyFunction;
 		
 		var attr = opt.attribute || {};
 		
-		if (opt.id) attr.id = opt.id;
+		if (opt.id) { attr.id = opt.id; }
 		
 		//create
 		var that = new Element('div', attr);
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-menu');
-		if (opt.className) that.addClassName(opt.className);
+		if (opt.className) { that.addClassName(opt.className); }
 		
-		for (var i = 0, l = opt.items.length; i < l; i++) {
+		var i, l;
+		for (i = 0, l = opt.items.length; i < l; i++) {
 			that.push(opt.items[i]);
 		}
 		
-		that.on('click', function(e) {
+		that.on('click', function (e) {
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -1403,15 +1427,19 @@
 		return that;
 	};
 	
+	flagrate.createMenu = function (a) {
+		return new Menu(a);
+	};
+	
 	Menu.prototype = {
 		/*?
 		 *  flagrate.Menu#push(item) -> flagrate.Menu
 		**/
-		push: function(a) {
+		push: function (a) {
 			
-			if (a instanceof Array) {
+			/*if (a instanceof Array) {
 				//todo
-			} else if (typeof a === 'string') {
+			} else */if (typeof a === 'string') {
 				new Element('hr').insertTo(this);
 			} else {
 				var button = new Button(
@@ -1419,15 +1447,15 @@
 						icon      : a.icon,
 						label     : a.label,
 						isDisabled: a.isDisabled,
-						onSelect  : function(e) {
+						onSelect  : function (e) {
 							
-							if (a.onSelect) a.onSelect(e);
+							if (a.onSelect) { a.onSelect(e); }
 							this.onSelect(e);
 						}.bind(this)
 					}
 				).insertTo(this);
 				
-				if (a.key) button._key = a.key;
+				if (a.key) { button._key = a.key; }
 			}
 			
 			return this;
@@ -1493,10 +1521,6 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	flagrate.createPulldown = function(a) {
-		return new Pulldown(a);
-	};
-	
 	var Pulldown = flagrate.Pulldown = function flagratePulldown(opt) {
 		
 		opt = opt || {};
@@ -1504,11 +1528,11 @@
 		opt.label = opt.label || '';
 		opt.items = opt.items || null;
 		
-		opt.onSelect = opt.onSelect || function(){};
+		opt.onSelect = opt.onSelect || emptyFunction;
 		
 		var attr = opt.attribute || {};
 		
-		if (opt.id) attr.id = opt.id;
+		if (opt.id) { attr.id = opt.id; }
 		
 		//create
 		var that = new Button({
@@ -1519,9 +1543,9 @@
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + '-pulldown');
-		if (opt.className) that.addClassName(opt.className);
+		if (opt.className) { that.addClassName(opt.className); }
 		
-		that.onSelect = function(e) {
+		that.onSelect = function (e) {
 			
 			if (that._menu) {
 				that._menu.remove();
@@ -1529,23 +1553,11 @@
 				return;
 			}
 			
-			var removeMenu = function(e) {
-				
-				document.body.removeEventListener('click', removeMenu);
-				that.parentNode.removeEventListener('click', removeMenu);
-				that.off('click', removeMenu);
-				
-				menu.style.opacity = '0';
-				setTimeout(function(){ menu.remove(); }.bind(this), 500);
-				
-				delete that._menu;
-			};
-			
 			var menu = that._menu = new Menu(
 				{
 					className: flagrate.className + '-pulldown-menu',
 					items    : opt.items,
-					onSelect : function() {
+					onSelect : function () {
 						
 						opt.onSelect();
 						menu.remove();
@@ -1559,7 +1571,19 @@
 			
 			that.insert({ after: menu });
 			
-			setTimeout(function() {
+			var removeMenu = function (e) {
+				
+				document.body.removeEventListener('click', removeMenu);
+				that.parentNode.removeEventListener('click', removeMenu);
+				that.off('click', removeMenu);
+				
+				menu.style.opacity = '0';
+				setTimeout(function (){ menu.remove(); }.bind(this), 500);
+				
+				delete that._menu;
+			};
+			
+			setTimeout(function () {
 				document.body.addEventListener('click', removeMenu);
 				that.parentNode.addEventListener('click', removeMenu);
 				that.on('click', removeMenu);
@@ -1568,12 +1592,16 @@
 		
 		new Element('span', { 'class': flagrate.className + '-pulldown-triangle' }).insertTo(that);
 		
-		if (opt.style) that.setStyle(opt.style);
-		if (opt.color) that.setColor(opt.color);
+		if (opt.style) { that.setStyle(opt.style); }
+		if (opt.color) { that.setColor(opt.color); }
 		
-		if (opt.isDisabled) that.disable();
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createPulldown = function (a) {
+		return new Pulldown(a);
 	};
 	
 	/*?
@@ -1592,10 +1620,6 @@
 	 *  * `target`                   (Element):
 	 *  * `items`                    (Array): of item (see: flagrate.Menu)
 	**/
-	flagrate.createContextMenu = function(a) {
-		return new ContextMenu(a);
-	};
-	
 	var ContextMenu = flagrate.ContextMenu = function flagrateContextMenu(opt) {
 		
 		opt = opt || {};
@@ -1608,7 +1632,7 @@
 		/*?
 		 *  flagrate.ContextMenu#open() -> flagrate.ContextMenu
 		**/
-		this.open = function(e) {
+		this.open = function (e) {
 			
 			e = e || window.event || {};
 			
@@ -1616,7 +1640,7 @@
 				e.preventDefault();
 			}
 			
-			if (this.isShowing) this.close();
+			if (this.isShowing) { this.close(); }
 			
 			this.isShowing = true;
 			
@@ -1633,9 +1657,13 @@
 			
 			this._menu.insertTo(document.body);
 			
-			if (x + this._menu.getWidth() > window.innerWidth) x = x - this._menu.getWidth();
+			if (x + this._menu.getWidth() > window.innerWidth) {
+				x = x - this._menu.getWidth();
+			}
 			
-			if (y + this._menu.getHeight() > window.innerHeight) y = y - this._menu.getHeight();
+			if (y + this._menu.getHeight() > window.innerHeight) {
+				y = y - this._menu.getHeight();
+			}
 			
 			this._menu.style.top     = y + 'px';
 			this._menu.style.left    = x + 'px';
@@ -1651,7 +1679,7 @@
 		/*?
 		 *  flagrate.ContextMenu#close() -> flagrate.ContextMenu
 		**/
-		this.close = function() {
+		this.close = function () {
 			
 			document.body.removeEventListener('click', this.close);
 			document.body.removeEventListener('mouseup', this.close);
@@ -1660,8 +1688,8 @@
 			this.isShowing = false;
 			
 			var menu = this._menu;
-			setTimeout(function() {
-				if (menu && menu.remove) menu.remove();
+			setTimeout(function () {
+				if (menu && menu.remove) { menu.remove(); }
 			}, 0);
 			
 			delete this._menu;
@@ -1669,26 +1697,34 @@
 			return this;
 		}.bind(this);
 		
-		if (this.target !== null) this.target.addEventListener('contextmenu', this.open);
+		if (this.target !== null) {
+			this.target.addEventListener('contextmenu', this.open);
+		}
 		
 		return this;
+	};
+	
+	flagrate.createContextMenu = function (a) {
+		return new ContextMenu(a);
 	};
 	
 	ContextMenu.prototype = {
 		/*?
 		 *  flagrate.ContextMenu#visible() -> Boolean
 		**/
-		visible: function() {
+		visible: function () {
 			return this.isShowing;
 		}
 		,
 		/*?
 		 *  flagrate.ContextMenu#remove() -> flagrate.ContextMenu
 		**/
-		remove: function() {
-			if (this._menu) this.close();
+		remove: function () {
+			if (this._menu) { this.close(); }
 			
-			if (this.target !== null) this.target.removeEventListener('contextmenu', this.open);
+			if (this.target !== null) {
+				this.target.removeEventListener('contextmenu', this.open);
+			}
 		}
 	};
 	
@@ -1716,10 +1752,6 @@
 	 *  * `key`                      (String):
 	 *  * `element`                  (Element):
 	**/
-	flagrate.createToolbar = function(a) {
-		return new Toolbar(a);
-	};
-	
 	var Toolbar = flagrate.Toolbar = function flagrateToolbar(opt) {
 		
 		opt = opt || {};
@@ -1737,20 +1769,25 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-toolbar');
 		
-		for (var i = 0, l = opt.items.length; i < l; i++) {
+		var i, l;
+		for (i = 0, l = opt.items.length; i < l; i++) {
 			that.push(opt.items[i]);
 		}
 		
-		if (opt.style) that.setStyle(opt.style);
+		if (opt.style) { that.setStyle(opt.style); }
 		
 		return that;
+	};
+	
+	flagrate.createToolbar = function (a) {
+		return new Toolbar(a);
 	};
 	
 	Toolbar.prototype = {
 		/*?
 		 *  flagrate.Toolbar#push(item) -> flagrate.Toolbar
 		**/
-		push: function(a) {
+		push: function (a) {
 			
 			if (typeof a === 'string') {
 				new Element('hr').insertTo(this);
@@ -1758,7 +1795,7 @@
 				this.insert(a);
 			} else {
 				if (a.element) {
-					if (a.key) a.element._key = a.key;
+					if (a.key) { a.element._key = a.key; }
 					this.insert(a.element);
 				}
 			}
@@ -1769,13 +1806,14 @@
 		/*?
 		 *  flagrate.Toolbar#getElementByKey(key) -> Element | null
 		**/
-		getElementByKey: function(key) {
+		getElementByKey: function (key) {
 			
 			var result = null;
 			
 			var elements = this.childNodes;
-			for (var i = 0; i < elements.length; i++) {
-				if (!elements[i]._key) continue;
+			var i, l;
+			for (i = 0, l = elements.length; i < l; i++) {
+				if (!elements[i]._key) { continue; }
 				
 				if (elements[i]._key === key) {
 					result = elements[i];
@@ -1810,10 +1848,6 @@
 	 *  * `regexp`                   (RegExp):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	flagrate.createTextInput = function(a) {
-		return new TextInput(a);
-	};
-	
 	var TextInput = flagrate.TextInput = function flagrateTextInput(opt) {
 		
 		opt = opt || {};
@@ -1840,18 +1874,22 @@
 			});
 		}
 		
-		if (opt.style) that.setStyle(opt.style);
+		if (opt.style) { that.setStyle(opt.style); }
 		
-		if (opt.isDisabled) that.disable();
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createTextInput = function (a) {
+		return new TextInput(a);
 	};
 	
 	TextInput.prototype = {
 		/*?
 		 *  flagrate.TextInput#disable() -> flagrate.TextInput
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
@@ -1862,7 +1900,7 @@
 		/*?
 		 *  flagrate.TextInput#enable() -> flagrate.TextInput
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
@@ -1873,28 +1911,28 @@
 		/*?
 		 *  flagrate.TextInput#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.TextInput#getValue() -> String
 		**/
-		getValue: function() {
+		getValue: function () {
 			return this.readAttribute('value') || '';
 		}
 		,
 		/*?
 		 *  flagrate.TextInput#setValue(value) -> flagrate.TextInput
 		**/
-		setValue: function(value) {
+		setValue: function (value) {
 			return this.writeAttribute('value', value);
 		}
 		,
 		/*?
 		 *  flagrate.TextInput#isValid() -> Boolean
 		**/
-		isValid: function() {
+		isValid: function () {
 			return this.regexp.test(this.getValue());
 		}
 	};
@@ -1928,10 +1966,6 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
 	**/
-	flagrate.createTokenizer = function(a) {
-		return new Tokenizer(a);
-	};
-	
 	var Tokenizer = flagrate.Tokenizer = function flagrateTokenizer(opt) {
 		
 		opt = opt || {};
@@ -1941,7 +1975,7 @@
 		this.values   = opt.values   || [];
 		this.max      = opt.max      || -1;
 		this.tokenize = opt.tokenize || identity;
-		this.onChange = opt.onChange || function(){};
+		this.onChange = opt.onChange || emptyFunction;
 		
 		var attr = opt.attribute || {};
 		
@@ -1974,18 +2008,22 @@
 		that._input.on('focus',    that._onFocusHandler.bind(that));
 		that._input.on('blur',     that._onBlurHandler.bind(that));
 		
-		if (opt.style) that.setStyle(opt.style);
+		if (opt.style) { that.setStyle(opt.style); }
 		
-		if (opt.isDisabled) that.disable();
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createTokenizer = function (a) {
+		return new Tokenizer(a);
 	};
 	
 	Tokenizer.prototype = {
 		/*?
 		 *  flagrate.Tokenizer#disable() -> flagrate.Tokenizer
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.addClassName(flagrate.className + '-disabled');
 			this._input.disable();
@@ -1996,7 +2034,7 @@
 		/*?
 		 *  flagrate.Tokenizer#enable() -> flagrate.Tokenizer
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			this._input.enable();
@@ -2007,21 +2045,21 @@
 		/*?
 		 *  flagrate.Tokenizer#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Tokenizer#getValues() -> Array
 		**/
-		getValues: function() {
+		getValues: function () {
 			return this.values;
 		}
 		,
 		/*?
 		 *  flagrate.Tokenizer#setValues(values) -> flagrate.Tokenizer
 		**/
-		setValues: function(values) {
+		setValues: function (values) {
 			
 			this.values = values;
 			
@@ -2031,7 +2069,7 @@
 		/*?
 		 *  flagrate.Tokenizer#removeValues() -> flagrate.Tokenizer
 		**/
-		removeValues: function() {
+		removeValues: function () {
 			
 			this.values = [];
 			
@@ -2041,18 +2079,19 @@
 		/*?
 		 *  flagrate.Tokenizer#removeValue(value) -> flagrate.Tokenizer
 		**/
-		removeValue: function(value) {
+		removeValue: function (value) {
 			
 			this.values.splice(this.values.indexOf(value), 1);
 			
 			return this._updateTokens();
 		}
 		,
-		_updateTokens: function() {
+		_updateTokens: function () {
 			
 			this._tokens.update();
 			
-			for (var i = 0, l = this.values.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = this.values.length; i < l; i++) {
 				var value = this.values[i];
 				
 				var label = '';
@@ -2096,11 +2135,11 @@
 			return this;
 		}
 		,
-		_createTokenButtonOnRemoveHandler: function(that, value) {
-			return function() { that.removeValue(value); };
+		_createTokenButtonOnRemoveHandler: function (that, value) {
+			return function () { that.removeValue(value); };
 		}
 		,
-		_tokenize: function(e) {
+		_tokenize: function (e) {
 			
 			this._candidates = [];
 			
@@ -2108,22 +2147,22 @@
 			
 			var result = this.tokenize(str, this._tokenized.bind(this));
 			
-			if (result) this._tokenized(result);
+			if (result) { this._tokenized(result); }
 			
 			this._lastTokenizedValue = this._input.value;
 			
 			return this;
 		}
 		,
-		_tokenized: function(candidates) {
+		_tokenized: function (candidates) {
 			
-			if (candidates instanceof Array === false) candidates = [candidates];
+			if (candidates instanceof Array === false) { candidates = [candidates]; }
 			
 			this._candidates = candidates;
 			
 			var menu = new Menu(
 				{
-					onSelect: function() {
+					onSelect: function () {
 						menu.remove();
 					}
 				}
@@ -2133,7 +2172,8 @@
 			
 			this.insert({ top: menu });
 			
-			for (var i = 0, l = candidates.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = candidates.length; i < l; i++) {
 				var candidate = candidates[i];
 				
 				var a;
@@ -2144,22 +2184,22 @@
 					a = candidate;
 				}
 				
-				if (a.onSelect) a._onSelect = a.onSelect;
+				if (a.onSelect) { a._onSelect = a.onSelect; }
 				
 				a.onSelect = this._createMenuOnSelectHandler(this, candidate, a);
 				
 				menu.push(a);
 			}
 			
-			if (this._menu) this._menu.remove();
+			if (this._menu) { this._menu.remove(); }
 			this._menu = menu;
 			
 			return this;
 		}
 		,
-		_createMenuOnSelectHandler: function(that, candidate, menuItem) {
+		_createMenuOnSelectHandler: function (that, candidate, menuItem) {
 			
-			return function(e) {
+			return function (e) {
 				
 				if (that.max < 0 || that.max > that.values.length) {
 					that.values.push(candidate);
@@ -2167,15 +2207,15 @@
 				that._updateTokens();
 				that.onChange();
 				
-				if (menuItem._onSelect) menuItem._onSelect(e);
+				if (menuItem._onSelect) { menuItem._onSelect(e); }
 			};
 		}
 		,
-		_onClickHandler: function(e) {
+		_onClickHandler: function (e) {
 			this._input.focus();
 		}
 		,
-		_onKeydownHandler: function(e) {
+		_onKeydownHandler: function (e) {
 			
 			// ENTER:13
 			if (e.keyCode === 13 && this._lastTokenizedValue !== this._input.value) {
@@ -2206,7 +2246,7 @@
 					this._updateTokens();
 					this.onChange();
 					
-					if (this._menu) this._menu.remove();
+					if (this._menu) { this._menu.remove(); }
 				}
 			}
 			
@@ -2226,11 +2266,11 @@
 					this._updateTokens();
 					this.onChange();
 					
-					if (this._menu) this._menu.remove();
+					if (this._menu) { this._menu.remove(); }
 				}
 			}
 			
-			setTimeout(function() {
+			setTimeout(function () {
 			
 				if (this.max > -1 && this.max <= this.values.length && this._input.value !== '') {
 					e.stopPropagation();
@@ -2244,20 +2284,20 @@
 			}.bind(this), 0);
 		}
 		,
-		_onFocusHandler: function(e) {
+		_onFocusHandler: function (e) {
 			
 			this._updateTokens();
 			
 			this._tokenize();
 		}
 		,
-		_onBlurHandler: function(e) {
+		_onBlurHandler: function (e) {
 			
 			this._input.value = '';
 			
 			if (this._menu) {
 				this._menu.style.opacity = '0';
-				setTimeout(function(){ this._menu.remove(); }.bind(this), 500);
+				setTimeout(function (){ this._menu.remove(); }.bind(this), 500);
 			}
 		}
 	};
@@ -2285,10 +2325,6 @@
 	 *  * `regexp`                   (RegExp):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	flagrate.createTextArea = function(a) {
-		return new TextArea(a);
-	};
-	
 	var TextArea = flagrate.TextArea = function flagrateTextArea(opt) {
 		
 		opt = opt || {};
@@ -2314,19 +2350,23 @@
 			});
 		}
 		
-		if (opt.value) that.setValue(opt.value);
-		if (opt.style) that.setStyle(opt.style);
+		if (opt.value) { that.setValue(opt.value); }
+		if (opt.style) { that.setStyle(opt.style); }
 		
-		if (opt.isDisabled) that.disable();
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createTextArea = function (a) {
+		return new TextArea(a);
 	};
 	
 	TextArea.prototype = {
 		/*?
 		 *  flagrate.TextArea#disable() -> flagrate.TextArea
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.addClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', true);
@@ -2337,7 +2377,7 @@
 		/*?
 		 *  flagrate.TextArea#enable() -> flagrate.TextArea
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			this.writeAttribute('disabled', false);
@@ -2348,21 +2388,21 @@
 		/*?
 		 *  flagrate.TextArea#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.TextArea#getValue() -> String
 		**/
-		getValue: function() {
+		getValue: function () {
 			return this.value || '';
 		}
 		,
 		/*?
 		 *  flagrate.TextArea#setValue(value) -> flagrate.TextArea
 		**/
-		setValue: function(value) {
+		setValue: function (value) {
 			
 			this.value = value;
 			
@@ -2372,7 +2412,7 @@
 		/*?
 		 *  flagrate.TextArea#isValid() -> Boolean
 		**/
-		isValid: function() {
+		isValid: function () {
 			return this.regexp.test(this.getValue());
 		}
 	};
@@ -2407,10 +2447,6 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
 	**/
-	flagrate.createSelect = function(a) {
-		return new Select(a);
-	};
-	
 	var Select = flagrate.Select = function flagrateSelect(opt) {
 		
 		opt = opt || {};
@@ -2419,7 +2455,7 @@
 		this.listView = opt.listView || false;
 		this.multiple = opt.multiple || false;
 		this.max      = opt.max      || -1;
-		this.onChange = opt.onChange || function(){};
+		this.onChange = opt.onChange || emptyFunction;
 		
 		if (this.multiple) {
 			this.selectedIndexes = opt.selectedIndexes || [];
@@ -2431,7 +2467,7 @@
 		
 		var attr = opt.attribute || {};
 		
-		if (opt.id) attr.id = opt.id;
+		if (opt.id) { attr.id = opt.id; }
 		
 		/*?
 		 *  flagrate.Select#isPulldown -> Boolean
@@ -2444,18 +2480,19 @@
 		if (this.isPulldown) {
 			that._pulldown = new Pulldown({
 				label    : '-',
-				items    : (function() {
+				items    : (function () {
 					
 					var items = [];
 					
-					var createOnSelectHandler = function(i) {
+					var createOnSelectHandler = function (i) {
 						
-						return function() {
+						return function () {
 							that.select(i);
 						};
 					};
 					
-					for (var i = 0, l = this.items.length; i < l; i++) {
+					var i, l;
+					for (i = 0, l = this.items.length; i < l; i++) {
 						items.push({
 							label   : this.items[i].label,
 							icon    : this.items[i].icon,
@@ -2467,7 +2504,7 @@
 				}.bind(this))()
 			}).insertTo(that);
 		} else {
-			that._grid = new Grid({
+			that._grid = new flagrate.Grid({
 				headless   : true,
 				multiSelect: this.multiple,
 				cols: [
@@ -2475,18 +2512,19 @@
 						key  : 'label'
 					}
 				],
-				rows: (function() {
+				rows: (function () {
 					
 					var rows = [];
 					
-					var createOnSelectHandler = function(i) {
+					var createOnSelectHandler = function (i) {
 						
-						return function() {
+						return function () {
 							that.select(i);
 						};
 					};
 					
-					for (var i = 0, l = this.items.length; i < l; i++) {
+					var i, l;
+					for (i = 0, l = this.items.length; i < l; i++) {
 						rows.push({
 							cell: {
 								label: {
@@ -2505,16 +2543,16 @@
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-select');
-		if (opt.className) that.addClassName(opt.className);
+		if (opt.className) { that.addClassName(opt.className); }
 		
 		that.on('click', that._onClickHandler.bind(that));
 		
-		if (opt.style) that.setStyle(opt.style);
+		if (opt.style) { that.setStyle(opt.style); }
 		
-		if (opt.isDisabled) that.disable();
+		if (opt.isDisabled) { that.disable(); }
 		
 		if (that.multiple) {
-			that.selectedIndexes.forEach(function(index) {
+			that.selectedIndexes.forEach(function (index) {
 				that.select(index);
 			});
 		} else {
@@ -2526,14 +2564,18 @@
 		return that;
 	};
 	
+	flagrate.createSelect = function (a) {
+		return new Select(a);
+	};
+	
 	Select.prototype = {
 		/*?
 		 *  flagrate.Select#select(item) -> flagrate.Select
 		 *  - item (Number) - Index number of item.
 		**/
-		select: function(index) {
+		select: function (index) {
 			
-			if (this.items.length <= index) return this;
+			if (this.items.length <= index) { return this; }
 			
 			if (this.multiple) {
 				this.selectedIndexes.push(index);
@@ -2552,7 +2594,7 @@
 		/*?
 		 *  flagrate.Select#disable() -> flagrate.Select
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.addClassName(flagrate.className + '-disabled');
 			
@@ -2568,7 +2610,7 @@
 		/*?
 		 *  flagrate.Select#enable() -> flagrate.Select
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			
@@ -2584,11 +2626,11 @@
 		/*?
 		 *  flagrate.Select#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
-		_onClickHandler: function(e) {
+		_onClickHandler: function (e) {
 			
 			
 			
@@ -2605,10 +2647,6 @@
 	 *  new flagrate.Checkbox(option)
 	 *  - option (Object) - options.
 	**/
-	flagrate.createCheckbox = function(a) {
-		return new Checkbox(a);
-	};
-	
 	var Checkbox = flagrate.Checkbox = function flagrateCheckbox(opt) {
 		
 		var id = 'flagrate-checkbox-' + (++Checkbox.idCounter).toString(10);
@@ -2642,23 +2680,27 @@
 		that.insert({ top: new Element() });
 		that.insert({ top: that._input });
 		
-		that._input.on('change', function(e) {
+		that._input.on('change', function (e) {
 			
 			e.targetCheckbox = that;
 			
 			if (that.isChecked()) {
-				if (that.onCheck) that.onCheck(e);
+				if (that.onCheck) { that.onCheck(e); }
 			} else {
-				if (that.onUncheck) that.onUncheck(e);
+				if (that.onUncheck) { that.onUncheck(e); }
 			}
 			
-			if (that.onChange) that.onChange(e);
+			if (that.onChange) { that.onChange(e); }
 		});
 		
-		if (opt.isChecked)  that.check();
-		if (opt.isDisabled) that.disable();
+		if (opt.isChecked)  { that.check(); }
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createCheckbox = function (a) {
+		return new Checkbox(a);
 	};
 	
 	Checkbox.idCounter = 0;
@@ -2667,7 +2709,7 @@
 		/*?
 		 *  flagrate.Checkbox#disable() -> flagrate.Checkbox
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.addClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', true);
@@ -2678,7 +2720,7 @@
 		/*?
 		 *  flagrate.Checkbox#enable() -> flagrate.Checkbox
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', false);
@@ -2689,21 +2731,21 @@
 		/*?
 		 *  flagrate.Checkbox#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Checkbox#isChecked() -> Boolean
 		**/
-		isChecked: function() {
+		isChecked: function () {
 			return !!this._input.checked;
 		}
 		,
 		/*?
 		 *  flagrate.Checkbox#check() -> flagrate.Checkbox
 		**/
-		check: function() {
+		check: function () {
 			
 			this._input.checked = true;
 			
@@ -2713,7 +2755,7 @@
 		/*?
 		 *  flagrate.Checkbox#uncheck() -> flagrate.Checkbox
 		**/
-		uncheck: function() {
+		uncheck: function () {
 			
 			this._input.checked = false;
 			
@@ -2730,10 +2772,6 @@
 	 *  new flagrate.Radio(option)
 	 *  - option (Object) - options.
 	**/
-	flagrate.createRadio = function(a) {
-		return new Radio(a);
-	};
-	
 	var Radio = flagrate.Radio = function flagrateRadio(opt) {
 		
 		var id = 'flagrate-radio-' + (++Radio.idCounter).toString(10);
@@ -2763,10 +2801,14 @@
 		that.insert({ top: new Element() });
 		that.insert({ top: that._input });
 		
-		if (opt.isChecked)  that.check();
-		if (opt.isDisabled) that.disable();
+		if (opt.isChecked)  { that.check(); }
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createRadio = function (a) {
+		return new Radio(a);
 	};
 	
 	Radio.idCounter = 0;
@@ -2775,7 +2817,7 @@
 		/*?
 		 *  flagrate.Radio#disable() -> flagrate.Radio
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.addClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', true);
@@ -2786,7 +2828,7 @@
 		/*?
 		 *  flagrate.Radio#enable() -> flagrate.Radio
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.removeClassName(flagrate.className + '-disabled');
 			this._input.writeAttribute('disabled', false);
@@ -2797,28 +2839,28 @@
 		/*?
 		 *  flagrate.Radio#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Radio#isChecked() -> String
 		**/
-		isChecked: function() {
+		isChecked: function () {
 			return this._input.readAttribute('checked') === 'checked';
 		}
 		,
 		/*?
 		 *  flagrate.Radio#check() -> flagrate.Radio
 		**/
-		check: function() {
+		check: function () {
 			return this._input.writeAttribute('checked', true);
 		}
 		,
 		/*?
 		 *  flagrate.Radio#uncheck() -> flagrate.Radio
 		**/
-		uncheck: function() {
+		uncheck: function () {
 			return this._input.writeAttribute('checked', false);
 		}
 	};
@@ -2830,13 +2872,13 @@
 	 *
 	 *      var sw = flagrate.createSwitch().insertTo(x);
 	 *      
-	 *      sw.on('on', function() {
+	 *      sw.on('on', function () {
 	 *        console.log('on');
 	 *      });
-	 *      sw.on('off', function() {
+	 *      sw.on('off', function () {
 	 *        console.log('off');
 	 *      });
-	 *      sw.on('change', function(e) {
+	 *      sw.on('change', function (e) {
 	 *        console.log(e.target.isOn());
 	 *      });
 	 *  
@@ -2865,10 +2907,6 @@
 	 *  new flagrate.Switch(option)
 	 *  - option (Object) - options.
 	**/
-	flagrate.createSwitch = function(a) {
-		return new Switch(a);
-	};
-	
 	var Switch = flagrate.Switch = function flagrateSwitch(opt) {
 		
 		opt = opt || {};
@@ -2893,6 +2931,10 @@
 		return that;
 	};
 	
+	flagrate.createSwitch = function (a) {
+		return new Switch(a);
+	};
+	
 	Switch.prototype = {
 		/*?
 		 *  flagrate.Switch#isEnabled() -> flagrate.Switch
@@ -2902,14 +2944,14 @@
 		/*?
 		 *  flagrate.Switch#isOn() -> Boolean
 		**/
-		isOn: function() {
+		isOn: function () {
 			return this.dataset.flagrateSwitchStatus === 'on';
 		}
 		,
 		/*?
 		 *  flagrate.Switch#switchOn() -> flagrate.Switch
 		**/
-		switchOn: function() {
+		switchOn: function () {
 			
 			this.dataset.flagrateSwitchStatus = 'on';
 			
@@ -2919,7 +2961,7 @@
 		/*?
 		 *  flagrate.Switch#switchOff() -> flagrate.Switch
 		**/
-		switchOff: function() {
+		switchOff: function () {
 			
 			this.dataset.flagrateSwitchStatus = 'off';
 			
@@ -2929,7 +2971,7 @@
 		/*?
 		 *  flagrate.Switch#toggleSwitch() -> flagrate.Switch
 		**/
-		toggleSwitch: function() {
+		toggleSwitch: function () {
 			return this.isOn() ? this.switchOff() : this.switchOn();
 		}
 	};
@@ -2952,10 +2994,6 @@
 	 *  new flagrate.Progress(option)
 	 *  - option (Object) - options.
 	**/
-	flagrate.createProgress = function(a) {
-		return new Progress(a);
-	};
-	
 	var Progress = flagrate.Progress = function flagrateProgress(opt) {
 		
 		opt = opt || {};
@@ -2979,20 +3017,24 @@
 		return that;
 	};
 	
+	flagrate.createProgress = function (a) {
+		return new Progress(a);
+	};
+	
 	Progress.prototype = {
 		/*?
 		 *  flagrate.Progress#getValue() -> Number
 		**/
-		getValue: function() {
+		getValue: function () {
 			return this.value;
 		}
 		,
 		/*?
 		 *  flagrate.Progress#setValue(number) -> flagrate.Progress
 		**/
-		setValue: function(number) {
+		setValue: function (number) {
 			
-			if (typeof number !== 'number') return this;
+			if (typeof number !== 'number') { return this; }
 			
 			this.value = Math.max(0, Math.min(this.max, number));
 			
@@ -3001,7 +3043,7 @@
 			return this._updateProgress();
 		}
 		,
-		_updateProgress: function() {
+		_updateProgress: function () {
 			
 			var percentage = Math.max(0, Math.min(100, this.value / this.max * 100));
 			
@@ -3031,10 +3073,6 @@
 	 *  new flagrate.Slider(option)
 	 *  - option (Object) - options.
 	**/
-	flagrate.createSlider = function(a) {
-		return new Slider(a);
-	};
-	
 	var Slider = flagrate.Slider = function flagrateSlider(opt) {
 		
 		opt = opt || {};
@@ -3049,36 +3087,40 @@
 		that.on('touchstart',    that._onPointerDownHandler.bind(that));
 		that.on('MSPointerDown', that._onPointerDownHandler.bind(that));
 		
-		if (opt.isDisabled) that.disable();
+		if (opt.isDisabled) { that.disable(); }
 		
 		return that;
+	};
+	
+	flagrate.createSlider = function (a) {
+		return new Slider(a);
 	};
 	
 	Slider.prototype = {
 		/*?
 		 *  flagrate.Slider#disable() -> flagrate.Slider
 		**/
-		disable: function() {
+		disable: function () {
 			return this.addClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Slider#enable() -> flagrate.Slider
 		**/
-		enable: function() {
+		enable: function () {
 			return this.removeClassName(flagrate.className + '-disabled');
 		}
 		,
 		/*?
 		 *  flagrate.Slider#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
-		_onPointerDownHandler: function(e) {
+		_onPointerDownHandler: function (e) {
 			
-			if (!this.isEnabled()) return;
+			if (!this.isEnabled()) { return; }
 			
 			e.preventDefault();
 			
@@ -3100,11 +3142,11 @@
 			this._slide(x, pos);
 		}
 		,
-		_slide: function(x, pos) {
+		_slide: function (x, pos) {
 			
 			var unitWidth  = this.getWidth() / this.max;
 			
-			var onMove = function(e) {
+			var onMove = function (e) {
 				
 				e.preventDefault();
 				
@@ -3120,7 +3162,7 @@
 				this.fire('slide');
 			}.bind(this);
 			
-			var onUp = function(e) {
+			var onUp = function (e) {
 				
 				e.preventDefault();
 				
@@ -3190,10 +3232,6 @@
 	 *  * `element`       (Element):
 	 *  * `onSelect`      (Function):
 	**/
-	flagrate.createTab = function(a) {
-		return new Tab(a);
-	};
-	
 	var Tab = flagrate.Tab = function flagrateTab(opt) {
 		
 		opt = opt || {};
@@ -3203,6 +3241,11 @@
 		 *  This is readonly property for array of tab.
 		**/
 		this.tabs = opt.tabs || [];
+		
+		/*?
+		 *  flagrate.Tab#onSelect -> Function
+		**/
+		this.onSelect = opt.onSelect || null;
 		
 		var attr = opt.attribute || [];
 		
@@ -3217,8 +3260,8 @@
 		var that = new Element('div', attr);
 		extendObject(that, this);
 		
-		if (opt.className) that.addClassName(opt.className);
-		if (opt.style)     that.setStyle(opt.style);
+		if (opt.className) { that.addClassName(opt.className); }
+		if (opt.style)     { that.setStyle(opt.style); }
 		
 		/*?
 		 *  flagrate.Tab#selectedIndex -> Number
@@ -3228,9 +3271,13 @@
 		
 		that._create()._render();
 		
-		if (that.tabs.length > 0) that.select(that.selectedIndex);
+		if (that.tabs.length > 0) { that.select(that.selectedIndex); }
 		
 		return that;
+	};
+	
+	flagrate.createTab = function (a) {
+		return new Tab(a);
 	};
 	
 	Tab.prototype = {
@@ -3240,11 +3287,11 @@
 		 *  
 		 *  select the tab.
 		**/
-		select: function(a) {
+		select: function (a) {
 			
 			var index = (typeof a === 'number') ? a : this.indexOf(a);
 			
-			if (index === -1) return this;
+			if (index === -1) { return this; }
 			
 			if (this.tabs[this.selectedIndex]._button) {
 				this.tabs[this.selectedIndex]._button.removeClassName(flagrate.className + '-tab-selected');
@@ -3256,12 +3303,12 @@
 			
 			tab._button.addClassName(flagrate.className + '-tab-selected');
 			
-			if (tab.text)    this._body.updateText(tab.text);
-			if (tab.html)    this._body.update(tab.html);
-			if (tab.element) this._body.update(tab.element);
+			if (tab.text)    { this._body.updateText(tab.text); }
+			if (tab.html)    { this._body.update(tab.html); }
+			if (tab.element) { this._body.update(tab.element); }
 			
-			if (tab.onSelect) tab.onSelect(window.event, tab);
-			if (this.onSelect) this.onSelect(window.event, tab);
+			if (tab.onSelect)  { tab.onSelect(window.event, tab); }
+			if (this.onSelect) { this.onSelect(window.event, tab); }
 			
 			return this;
 		}
@@ -3272,10 +3319,11 @@
 		 *  
 		 *  unshift the tab.
 		**/
-		unshift: function(r) {
+		unshift: function (r) {
 			
 			if (r instanceof Array) {
-				for (var i = 0, l = r.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = r.length; i < l; i++) {
 					this.tabs.unshift(r);
 				}
 			} else {
@@ -3293,10 +3341,11 @@
 		 *  
 		 *  push the tab.
 		**/
-		push: function(r) {
+		push: function (r) {
 			
 			if (r instanceof Array) {
-				for (var i = 0, l = r.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = r.length; i < l; i++) {
 					this.tabs.push(r);
 				}
 			} else {
@@ -3314,13 +3363,14 @@
 		 *  
 		 *  shift the tab.
 		**/
-		shift: function(c) {
+		shift: function (c) {
 			
 			c = c || 1;
 			
 			var removes = [];
 			
-			for (var i = 0, l = this.tabs.length; i < l && i < c; i++) {
+			var i, l;
+			for (i = 0, l = this.tabs.length; i < l && i < c; i++) {
 				removes.push(this.tabs.shift());
 			}
 			
@@ -3335,13 +3385,14 @@
 		 *  
 		 *  pop the tab.
 		**/
-		pop: function(c) {
+		pop: function (c) {
 			
 			c = c || 1;
 			
 			var removes = [];
 			
-			for (var i = 0, l = this.tabs.length; i < l && i < c; i++) {
+			var i, l;
+			for (i = 0, l = this.tabs.length; i < l && i < c; i++) {
 				removes.push(this.tabs.pop());
 			}
 			
@@ -3358,16 +3409,17 @@
 		 *  
 		 *  Changes the content of a tabs, adding new tab(s) while removing old tab(s).
 		**/
-		splice: function(index, c, t) {
+		splice: function (index, c, t) {
 			
 			c = c || this.tabs.length - index;
 			
 			var removes = this.tabs.splice(index, c);
 			
 			if (t) {
-				if (t instanceof Array === false) t = [t];
+				if (t instanceof Array === false) { t = [t]; }
 				
-				for (var i = 0, l = t.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = t.length; i < l; i++) {
 					this.tabs.splice(index + i, 0, t[i]);
 				}
 			}
@@ -3383,7 +3435,7 @@
 		 *
 		 *  delete tab(s).
 		**/
-		'delete': function(a) {
+		'delete': function (a) {
 			
 			var removes = [];
 			var bulk    = false;
@@ -3393,9 +3445,12 @@
 				bulk = true;
 			}
 			
-			for (var i = 0, l = a.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = a.length; i < l; i++) {
 				var index = (typeof a[i] === 'number') ? a[i] : this.indexOf(a[i]);
-				if (index !== -1) removes.push(this.splice(index, 1));
+				if (index !== -1) {
+					removes.push(this.splice(index, 1));
+				}
 			}
 			
 			return bulk ? removes : removes[0];
@@ -3405,12 +3460,13 @@
 		 *  flagrate.Tab#indexOf(tab) -> Number
 		 *  - tab (Object|String) - tab to locate in the flagrate.Tab#tabs.
 		**/
-		indexOf: function(a) {
+		indexOf: function (a) {
 			
 			if (typeof a === 'string') {
 				var index = -1;
 				
-				for (var i = 0, l = this.tabs.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = this.tabs.length; i < l; i++) {
 					if (this.tabs[i].key === a) {
 						index = i;
 						break;
@@ -3423,7 +3479,7 @@
 			}
 		}
 		,
-		_create: function() {
+		_create: function () {
 			
 			this._head = new Element('div', { 'class': flagrate.className + '-tab-head' }).insertTo(this);
 			this._body = new Element('div', { 'class': flagrate.className + '-tab-body' }).insertTo(this);
@@ -3431,11 +3487,12 @@
 			return this;
 		}
 		,
-		_render: function() {
+		_render: function () {
 			
 			this._head.update();
 			
-			for (var i = 0, l = this.tabs.length, tab; i < l; i++) {
+			var i, l, tab;
+			for (i = 0, l = this.tabs.length; i < l; i++) {
 				tab = this.tabs[i];
 				
 				if (!tab._button) {
@@ -3454,9 +3511,9 @@
 			return this;
 		}
 		,
-		_createOnSelectHandler: function(that, tab) {
+		_createOnSelectHandler: function (that, tab) {
 			
-			return function(e) {
+			return function (e) {
 				
 				that.select(tab);
 			};
@@ -3482,10 +3539,6 @@
 	 *  * `element`   (Element):
 	 *  * `className` (String):
 	**/
-	flagrate.createPopover = function(a) {
-		return new Popover(a);
-	};
-	
 	var Popover = flagrate.Popover = function flagratePopover(opt) {
 		
 		opt = opt || {};
@@ -3501,15 +3554,15 @@
 		 *  flagrate.Popover#open([target]) -> flagrate.Popover
 		 *  - target (Element) - for targeting to force
 		**/
-		this.open = function(target) {
+		this.open = function (target) {
 			
 			var e = window.event || {};
 			var t = this.target || e.target || document.body;
 			
-			if (target instanceof Event)       e = target;
-			if (target instanceof HTMLElement) t = target;
+			if (target instanceof Event)       { e = target; }
+			if (target instanceof HTMLElement) { t = target; }
 			
-			if (this.isShowing) this.close();
+			if (this.isShowing) { this.close(); }
 			
 			this.isShowing = true;
 			
@@ -3517,11 +3570,11 @@
 				'class': flagrate.className + ' ' + flagrate.className + '-popover'
 			});
 			
-			if (opt.className) d.addClassName(opt.className);
+			if (opt.className) { d.addClassName(opt.className); }
 			
-			if (text)    d.updateText(text);
-			if (html)    d.update(html);
-			if (element) d.update(element);
+			if (text)    { d.updateText(text); }
+			if (html)    { d.update(html); }
+			if (element) { d.update(element); }
 			
 			d.style.opacity = 0;
 			d.insertTo(document.body);
@@ -3545,9 +3598,9 @@
 			}.bind(this);
 			this._positioningTimer = setTimeout(positioning, 30);
 			
-			var stopper = function(e) {
+			var stopper = function (e) {
 				e.stopPropagation();
-				if (e.type === 'mousewheel') e.preventDefault();
+				if (e.type === 'mousewheel') { e.preventDefault(); }
 			};
 			
 			this._div.on('click', stopper);
@@ -3560,7 +3613,7 @@
 		/*?
 		 *  flagrate.Popover#close() -> flagrate.Popover
 		**/
-		this.close = function() {
+		this.close = function () {
 			
 			clearTimeout(this._positioningTimer);
 			
@@ -3572,8 +3625,8 @@
 			this.isShowing = false;
 			
 			var div = this._div;
-			setTimeout(function() {
-				if (div && div.remove) div.remove();
+			setTimeout(function () {
+				if (div && div.remove) { div.remove(); }
 			}, 0);
 			
 			delete this._div;
@@ -3581,30 +3634,36 @@
 			return this;
 		}.bind(this);
 		
-		if (this.target !== null) this.target.addEventListener('mouseover', this.open);
+		if (this.target !== null) { this.target.addEventListener('mouseover', this.open); }
 		
 		return this;
+	};
+	
+	flagrate.createPopover = function (a) {
+		return new Popover(a);
 	};
 	
 	Popover.prototype = {
 		/*?
 		 *  flagrate.Popover#visible() -> Boolean
 		**/
-		visible: function() {
+		visible: function () {
 			return this.isShowing;
 		}
 		,
 		/*?
 		 *  flagrate.Popover#remove() -> flagrate.Popover
 		**/
-		remove: function() {
-			if (this._div) this.close();
+		remove: function () {
+			if (this._div) { this.close(); }
 			
-			if (this.target !== null) this.target.removeEventListener('mouseover', this.open);
+			if (this.target !== null) {
+				this.target.removeEventListener('mouseover', this.open);
+			}
 		}
 	};
 	
-	Popover._updatePosition = function(target, div) {
+	Popover._updatePosition = function (target, div) {
 		
 		var tOffset  = Element.cumulativeOffset(target);
 		var tScroll  = Element.cumulativeScrollOffset(target);
@@ -3693,42 +3752,42 @@
 	 *  ##### onBeforeStep / onAfterStep
 	 *  
 	 *      // async callback
-	 *      function(done) {// if expects callback, will waits for it.
+	 *      function (done) {// if expects callback, will waits for it.
 	 *        setTimeout(done, 1000);
 	 *      }
 	 *      
 	 *      // sync
-	 *      function() {
+	 *      function () {
 	 *        // ...
 	 *      }
 	**/
-	flagrate.createTutorial = function(a) {
-		return new Tutorial(a);
-	};
-	
 	var Tutorial = flagrate.Tutorial = function flagrateTutorial(opt) {
 		
 		opt = opt || {};
 		
 		this.steps    = opt.steps    || [];
 		this.index    = opt.count    || 0;
-		this.onFinish = opt.onFinish || function(){};
-		this.onAbort  = opt.onAbort  || function(){};
-		this.onClose  = opt.onClose  || function(){};
+		this.onFinish = opt.onFinish || emptyFunction;
+		this.onAbort  = opt.onAbort  || emptyFunction;
+		this.onClose  = opt.onClose  || emptyFunction;
+	};
+	
+	flagrate.createTutorial = function (a) {
+		return new Tutorial(a);
 	};
 	
 	Tutorial.prototype = {
 		/*?
 		 *  flagrate.Tutorial#visible() -> Boolean
 		**/
-		visible: function() {
+		visible: function () {
 			return !!this._popover || !!this._modal || !!this._inStep;
 		}
 		,
 		/*?
 		 *  flagrate.Tutorial#open() -> flagrate.Tutorial
 		**/
-		open: function() {
+		open: function () {
 			
 			if (this.visible() === false) {
 				this._main();
@@ -3740,7 +3799,7 @@
 		/*?
 		 *  flagrate.Tutorial#close() -> flagrate.Tutorial
 		**/
-		close: function() {
+		close: function () {
 			
 			if (this.visible() === true) {
 				this._afterStep(this.onClose.bind(this));
@@ -3752,7 +3811,7 @@
 		/*?
 		 *  flagrate.Tutorial#abort() -> flagrate.Tutorial
 		**/
-		abort: function() {
+		abort: function () {
 			
 			if (this.visible() === true) {
 				this._afterStep(this.onAbort.bind(this));
@@ -3764,7 +3823,7 @@
 		/*?
 		 *  flagrate.Tutorial#finish() -> flagrate.Tutorial
 		**/
-		finish: function() {
+		finish: function () {
 			
 			this._afterStep(this.onFinish.bind(this));
 			this.index = 0;
@@ -3775,11 +3834,11 @@
 		/*?
 		 *  flagrate.Tutorial#prev() -> flagrate.Tutorial
 		**/
-		prev: function() {
+		prev: function () {
 			
-			this._afterStep(function() {
+			this._afterStep(function () {
 				
-				if (this.index > 0) --this.index;
+				if (this.index > 0) { --this.index; }
 				this._main();
 			}.bind(this));
 			
@@ -3789,18 +3848,18 @@
 		/*?
 		 *  flagrate.Tutorial#next() -> flagrate.Tutorial
 		**/
-		next: function() {
+		next: function () {
 			
-			this._afterStep(function() {
+			this._afterStep(function () {
 				
-				if ((this.index + 1) < this.steps.length) ++this.index;
+				if ((this.index + 1) < this.steps.length) { ++this.index; }
 				this._main();
 			}.bind(this));
 			
 			return this;
 		}
 		,
-		_main: function() {
+		_main: function () {
 			
 			this._inStep = true;
 			
@@ -3820,7 +3879,7 @@
 			return this;
 		}
 		,
-		_step: function() {
+		_step: function () {
 			
 			var step = this.steps[this.index];
 			
@@ -3829,14 +3888,14 @@
 			if ((this.index + 1) >= this.steps.length) {
 				buttons.push({
 					className: flagrate.className + '-tutorial-button-finish',
-					onSelect : function() {
+					onSelect : function () {
 						this._afterStep(this.finish.bind(this));
 					}.bind(this)
 				});
 			} else {
 				buttons.push({
 					className: flagrate.className + '-tutorial-button-next',
-					onSelect : function() {
+					onSelect : function () {
 						this._afterStep(this.next.bind(this));
 					}.bind(this)
 				});
@@ -3845,7 +3904,7 @@
 			if (this.index > 0) {
 				buttons.push({
 					className: flagrate.className + '-tutorial-button-prev',
-					onSelect: function() {
+					onSelect: function () {
 						this._afterStep(this.prev.bind(this));
 					}.bind(this)
 				});
@@ -3854,7 +3913,7 @@
 			if ((this.index + 1) < this.steps.length) {
 				buttons.push({
 					className: flagrate.className + '-tutorial-button-abort',
-					onSelect: function() {
+					onSelect: function () {
 						this._afterStep(this.abort.bind(this));
 					}.bind(this)
 				});
@@ -3875,7 +3934,7 @@
 				new Element().insertText(step.text).insertTo(container);
 				
 				var buttonContainer = new Element('footer').insertTo(container);
-				buttons.forEach(function(button) {
+				buttons.forEach(function (button) {
 					new Button(button).insertTo(buttonContainer);
 				});
 				
@@ -3886,7 +3945,7 @@
 				
 				this._popover.open(target);
 			} else {
-				this._modal = new Modal({
+				this._modal = new flagrate.Modal({
 					disableCloseByMask: true,
 					disableCloseButton: true,
 					disableCloseByEsc : true,
@@ -3899,12 +3958,12 @@
 				this._modal.open();
 			}
 			
-			if (step.onStep) step.onStep();
+			if (step.onStep) { step.onStep(); }
 			
 			return this;
 		}
 		,
-		_afterStep: function(done) {
+		_afterStep: function (done) {
 			
 			this._inStep = false;
 			
@@ -3956,10 +4015,10 @@
 	 *      // create notify
 	 *      notify.create({ text: 'Hello' });
 	 *      
-	 *      setTimeout(function() {
+	 *      setTimeout(function () {
 	 *        notify.create({
 	 *          text   : 'Hey, are you awake?',
-	 *          onClick: function() {
+	 *          onClick: function () {
 	 *            notify.create({ text: 'Aaaah' });
 	 *          }
 	 *        });
@@ -3992,10 +4051,6 @@
 	 *  * `timeout`               (Number;  default `5`):
 	 *  * `title`                 (String;  default `"Notify"`):
 	**/
-	flagrate.createNotify = function(a) {
-		return new Notify(a);
-	};
-	
 	var Notify = flagrate.Notify = function flagrateNotify(opt) {
 		
 		opt = opt || {};
@@ -4033,7 +4088,7 @@
 			if ((this.desktopNotifyType === 'w3c') && (window.Notification.permission === 'default')) {
 				this.create({
 					text   : 'Click here to activate desktop notifications...',
-					onClick: function() {
+					onClick: function () {
 						window.Notification.requestPermission();
 					}.bind(this)
 				});
@@ -4042,7 +4097,7 @@
 			if ((this.desktopNotifyType === 'webkit') && (window.webkitNotifications.checkPermission() === 1)) {
 				this.create({
 					text   : 'Click here to activate desktop notifications...',
-					onClick: function() {
+					onClick: function () {
 						window.webkitNotifications.requestPermission();
 					}.bind(this)
 				});
@@ -4050,6 +4105,10 @@
 		}
 		
 		return this;
+	};
+	
+	flagrate.createNotify = function (a) {
+		return new Notify(a);
 	};
 	
 	Notify.prototype = {
@@ -4073,11 +4132,8 @@
 			
 			/*- Desktop notify -*/
 			if (this.disableDesktopNotify === false) {
-				if (
-					this.disableFocusDetection === false &&
-					(document.hasFocus && document.hasFocus() === false) ||
-					!document.hasFocus
-				) {
+				var hasFocus = !!document.hasFocus ? document.hasFocus() : false;
+				if (this.disableFocusDetection === false && hasFocus === false) {
 					if (this.createDesktopNotify(opt) === true) {
 						return this;
 					}
@@ -4112,7 +4168,28 @@
 			new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
 			var notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
 			
-			notifyClose.on('click', function(e) {
+			/*- Remove a notify element -*/
+			var closeNotify = function () {
+				
+				isAlive = false;
+				
+				notify.style.opacity = 0;
+				
+				//onClose event
+				if (onClose !== null) {
+					onClose();
+				}
+				
+				setTimeout(function () {
+					
+					this.target.removeChild(notify);
+					
+					this.notifies.splice(this.notifies.indexOf(notify), 1);
+					this.positioner();
+				}.bind(this), 300);
+			}.bind(this);
+			
+			notifyClose.on('click', function (e) {
 				
 				e.stopPropagation();
 				e.preventDefault();
@@ -4130,13 +4207,13 @@
 			
 			/*- onClick event -*/
 			if (onClick === null) {
-				notify.on('click', function(e) {
+				notify.on('click', function (e) {
 					
 					closeNotify();
 				});
 			} else {
 				notify.style.cursor = 'pointer';
-				notify.on('click', function(e) {
+				notify.on('click', function (e) {
 					
 					e.stopPropagation();
 					e.preventDefault();
@@ -4151,13 +4228,13 @@
 			
 			/*- Show notify -*/
 			notify.style.display = 'block';
-			setTimeout(function() {
+			setTimeout(function () {
 				notify.style.opacity = 1;
 			}, 10);
 			
 			/*- Set timeout -*/
 			if (timeout !== 0) {
-				var onTimeout = function() {
+				var onTimeout = function () {
 					
 					if (isAlive) {
 						closeNotify();
@@ -4167,33 +4244,12 @@
 				closeTimer = setTimeout(onTimeout, timeout * 1000);
 				
 				//Clear timeout
-				notify.on('mouseover', function() {
+				notify.on('mouseover', function () {
 					
 					clearTimeout(closeTimer);
 					closeTimer = setTimeout(onTimeout, timeout * 1000);
 				});
 			}
-			
-			/*- Remove a notify element -*/
-			var closeNotify = function() {
-				
-				isAlive = false;
-				
-				notify.style.opacity = 0;
-				
-				//onClose event
-				if (onClose !== null) {
-					onClose();
-				}
-				
-				setTimeout(function() {
-					
-					this.target.removeChild(notify);
-					
-					this.notifies.splice(this.notifies.indexOf(notify), 1);
-					this.positioner();
-				}.bind(this), 300);
-			}.bind(this);
 			
 			this.notifies.push(notify);
 			this.positioner();
@@ -4216,7 +4272,6 @@
 			
 			/*- Create a desktop notification -*/
 			if (type === 'w3c') {
-				console.log('test');
 				/*- Get Permissions -*/
 				if (window.Notification.permission !== 'granted') {
 					return false;
@@ -4238,7 +4293,7 @@
 			
 			/*- Set timeout -*/
 			if (timeout !== 0) {
-				closeTimer = setTimeout(function() {
+				closeTimer = setTimeout(function () {
 					
 					if (isAlive) {
 						notify.cancel();
@@ -4248,12 +4303,12 @@
 			
 			/*- onClick event -*/
 			if (onClick === null) {
-				notify.addEventListener('click', function(e) {
+				notify.addEventListener('click', function (e) {
 					
 					notify.cancel();
 				});
 			} else {
-				notify.addEventListener('click', function(e) {
+				notify.addEventListener('click', function (e) {
 					
 					onClick();
 					notify.cancel();
@@ -4261,7 +4316,7 @@
 			}
 			
 			/*- onClose event -*/
-			notify.onclose = function() {
+			notify.onclose = function () {
 				isAlive = false;
 				if (onClose !== null) {
 					onClose();
@@ -4269,7 +4324,7 @@
 			};
 			
 			/*- Show notify -*/
-			if (notify.show) notify.show();
+			if (notify.show) { notify.show(); }
 			
 			return true;
 		}
@@ -4279,7 +4334,8 @@
 			var pX = 0;
 			var pY = 0;
 			
-			for (var i = 0, l = this.notifies.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = this.notifies.length; i < l; i++) {
 				var notify = this.notifies[i];
 				
 				var x = this.vMargin + pX;
@@ -4351,10 +4407,6 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `className`                (String):
 	**/
-	flagrate.createModal = function(a) {
-		return new Modal(a);
-	};
-	
 	var Modal = flagrate.Modal = function flagrateModal(opt) {
 		
 		opt = opt || {};
@@ -4372,9 +4424,9 @@
 		this.buttons   = opt.buttons  || [];
 		this.sizing    = opt.sizing   || 'flex';
 		
-		this.onBeforeClose = opt.onBeforeClose || function(){};
-		this.onClose       = opt.onClose       || function(){};
-		this.onShow        = opt.onShow        || function(){};
+		this.onBeforeClose = opt.onBeforeClose || emptyFunction;
+		this.onClose       = opt.onClose       || emptyFunction;
+		this.onShow        = opt.onShow        || emptyFunction;
 		
 		this.disableCloseButton = opt.disableCloseButton || false;
 		this.disableCloseByMask = opt.disableCloseByMask || false;
@@ -4393,7 +4445,7 @@
 		
 		//create
 		this._modal = new Element('div');
-		this._modal.on('click', function(e) {
+		this._modal.on('click', function (e) {
 			
 			e.stopPropagation();
 		});
@@ -4415,13 +4467,14 @@
 		**/
 		this.content  = new Element('div').insertTo(this._content);
 		
-		if (this.text    !== '') this.content.insertText(this.text);
-		if (this.html    !== '') this.content.update(this.html);
-		if (this.element !== null) this.content.update(this.element);
+		if (this.text    !== '')   { this.content.insertText(this.text); }
+		if (this.html    !== '')   { this.content.update(this.html); }
+		if (this.element !== null) { this.content.update(this.element); }
 		
 		this._footer = new Element('footer').insertTo(this._modal);
 		
-		for (var i = 0, l = this.buttons.length; i < l; i++) {
+		var i, l;
+		for (i = 0, l = this.buttons.length; i < l; i++) {
 			var a = this.buttons[i];
 			
 			a.button = new Button({
@@ -4446,7 +4499,7 @@
 			'class': this.className
 		});
 		
-		if (this.target !== document.body) this._base.style.position = 'absolute';
+		if (this.target !== document.body) { this._base.style.position = 'absolute'; }
 		
 		this._base.addClassName(
 			flagrate.className + ' ' +
@@ -4460,29 +4513,33 @@
 			this._base.on('click', this.close.bind(this));
 		}
 		
-		this._onKeydownHandler = function(e) {
+		this._onKeydownHandler = function (e) {
 			
 			var active = document.activeElement.tagName;
 			
-			if (active !== 'BODY') return;
+			if (active !== 'BODY') { return; }
 			
 			e.stopPropagation();
 			e.preventDefault();
 			
 			// TAB:9
 			if (e.keyCode === 9) {
-				if (this._closeButton) return this._closeButton.focus();
-				if (this.buttons[0]) return this.buttons[0].button.focus();
+				if (this._closeButton) { return this._closeButton.focus(); }
+				if (this.buttons[0])   { return this.buttons[0].button.focus(); }
 			}
 			
 			// ENTER:13
-			if (e.keyCode === 13 && this.buttons[0]) return this.buttons[0].button.click();
+			if (e.keyCode === 13 && this.buttons[0]) { return this.buttons[0].button.click(); }
 			
 			// ESC:27
-			if (e.keyCode === 27) return this.close();
+			if (e.keyCode === 27) { return this.close(); }
 		}.bind(this);
 		
 		return this;
+	};
+	
+	flagrate.createModal = function (a) {
+		return new Modal(a);
 	};
 	
 	Modal.prototype = {
@@ -4502,13 +4559,13 @@
 		**/
 		open: function _show() {
 			
-			if (this.visible() === true) return this;
+			if (this.visible() === true) { return this; }
 			
-			if (this.closingTimer) clearTimeout(this.closingTimer);
+			if (this.closingTimer) { clearTimeout(this.closingTimer); }
 			
 			Element.insert(this.target, this._base);
 			
-			setTimeout(function() {
+			setTimeout(function () {
 				this._base.addClassName(flagrate.className + '-modal-visible');
 			}.bind(this), 0);
 			
@@ -4575,7 +4632,9 @@
 			};
 			this.positioningTimer = setTimeout(positioning.bind(this), 0);
 			
-			if (this.disableCloseByEsc === false) window.addEventListener('keydown', this._onKeydownHandler);
+			if (this.disableCloseByEsc === false) {
+				window.addEventListener('keydown', this._onKeydownHandler);
+			}
 			
 			return this;
 		}
@@ -4597,7 +4656,7 @@
 		**/
 		close: function _close(e) {
 			
-			if (this.visible() === false) return this;
+			if (this.visible() === false) { return this; }
 			
 			this._base.removeClassName(flagrate.className + '-modal-visible');
 			
@@ -4613,9 +4672,11 @@
 			
 			clearTimeout(this.positioningTimer);
 			
-			this.closingTimer = setTimeout(function(){ this._base.remove(); }.bind(this), 200);
+			this.closingTimer = setTimeout(function (){ this._base.remove(); }.bind(this), 200);
 			
-			if (this.disableCloseByEsc === false) window.removeEventListener('keydown', this._onKeydownHandler);
+			if (this.disableCloseByEsc === false) {
+				window.removeEventListener('keydown', this._onKeydownHandler);
+			}
 			
 			// Callback: onClose
 			this.onClose(this, e);
@@ -4626,13 +4687,14 @@
 		/*?
 		 *  flagrate.Modal#getButtonByKey(key) -> flagrate.Button | null
 		**/
-		getButtonByKey: function(key) {
+		getButtonByKey: function (key) {
 			
 			var result = null;
 			
 			var buttons = this.buttons;
-			for (var i = 0; i < buttons.length; i++) {
-				if (!buttons[i].key) continue;
+			var i, l;
+			for (i = 0; i < buttons.length; i++) {
+				if (!buttons[i].key) { continue; }
 				
 				if (buttons[i].key === key) {
 					result = buttons[i].button;
@@ -4646,16 +4708,16 @@
 		/*?
 		 *  flagrate.Modal#getButtons() -> Array
 		**/
-		getButtons: function() {
+		getButtons: function () {
 			return this.buttons || [];
 		}
 		,
-		_createButtonOnSelectHandler: function(that, button) {
+		_createButtonOnSelectHandler: function (that, button) {
 			
-			return function(e) {
+			return function (e) {
 				try {
-					if (button.onSelect) button.onSelect(e, that);
-					if (button.onClick)  button.onClick(e, that);// DEPRECATED
+					if (button.onSelect) { button.onSelect(e, that); }
+					if (button.onClick)  { button.onClick(e, that); }// DEPRECATED
 				} catch (err) {
 					throw new Error('flagrate.Modal: ' + err);
 				}
@@ -4744,10 +4806,6 @@
 	 *  * `onDblClick`               (Function):
 	 *  * `postProcess`              (Function):
 	**/
-	flagrate.createGrid = function(a) {
-		return new Grid(a);
-	};
-	
 	var Grid = flagrate.Grid = function flagrateGrid(opt) {
 		
 		opt = opt || {};
@@ -4792,6 +4850,10 @@
 		return this._create()._requestRender();
 	};
 	
+	flagrate.createGrid = function (a) {
+		return new Grid(a);
+	};
+	
 	Grid.idCounter = 0;
 	
 	Grid.prototype = {
@@ -4800,7 +4862,7 @@
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function(element) {
+		insertTo: function (element) {
 			return this.element.insertTo(element) && this;
 		}
 		,
@@ -4809,7 +4871,7 @@
 		 *
 		 *  select row(s)
 		**/
-		select: function(a) {
+		select: function (a) {
 			
 			var rows;
 			
@@ -4818,35 +4880,41 @@
 			} else {
 				rows = [];
 				
-				for (var i = 0, l = arguments.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = arguments.length; i < l; i++) {
 					if (typeof arguments[i] === 'number') {
-						if (this.rows[arguments[i]]) rows.push(this.rows[arguments[i]]);
+						if (this.rows[arguments[i]]) { rows.push(this.rows[arguments[i]]); }
 					} else if (typeof a === 'object') {
 						rows.push(a);
 					}
 				}
 			}
 			
-			if (this.multiSelect === false) this.deselectAll();
+			if (this.multiSelect === false) { this.deselectAll(); }
 			
-			for (var j = 0, m = rows.length; j < m; j++) {
+			var j, m;
+			for (j = 0, m = rows.length; j < m; j++) {
 				var row = rows[j];
 				
 				row.isSelected = true;
 				
-				if (row._tr && row._tr.hasClassName(flagrate.className + '-grid-row-selected') === true) continue;
+				if (row._tr && row._tr.hasClassName(flagrate.className + '-grid-row-selected') === true) {
+					continue;
+				}
 				
 				this._selectedRows.push(row);
 				
-				if (row._tr) row._tr.addClassName(flagrate.className + '-grid-row-selected');
+				if (row._tr) { row._tr.addClassName(flagrate.className + '-grid-row-selected'); }
 				
-				if (row._checkbox) row._checkbox.check();
+				if (row._checkbox) { row._checkbox.check(); }
 				
-				if (row.onSelect) row.onSelect(window.event, row);
-				if (this.onSelect) this.onSelect(window.event, row);
+				if (row.onSelect)  { row.onSelect(window.event, row); }
+				if (this.onSelect) { this.onSelect(window.event, row); }
 			}
 			
-			if (this._selectedRows.length !== 0 && this._checkbox) this._checkbox.check();
+			if (this._selectedRows.length !== 0 && this._checkbox) {
+				this._checkbox.check();
+			}
 			
 			return this;
 		}
@@ -4856,7 +4924,7 @@
 		 *
 		 *  deselect row(s)
 		**/
-		deselect: function(a) {
+		deselect: function (a) {
 			
 			var rows;
 			
@@ -4865,33 +4933,39 @@
 			} else {
 				rows = [];
 				
-				for (var i = 0, l = arguments.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = arguments.length; i < l; i++) {
 					if (typeof arguments[i] === 'number') {
-						if (this.rows[arguments[i]]) rows.push(this.rows[arguments[i]]);
+						if (this.rows[arguments[i]]) { rows.push(this.rows[arguments[i]]); }
 					} else if (typeof a === 'object') {
 						rows.push(a);
 					}
 				}
 			}
 			
-			for (var j = 0, m = rows.length; j < m; j++) {
+			var j, m;
+			for (j = 0, m = rows.length; j < m; j++) {
 				var row = rows[j];
 				
 				row.isSelected = false;
 				
-				if (row._tr && row._tr.hasClassName(flagrate.className + '-grid-row-selected') === false) continue;
+				if (row._tr && row._tr.hasClassName(flagrate.className + '-grid-row-selected') === false) {
+					continue;
+				}
 				
 				this._selectedRows.splice(this._selectedRows.indexOf(row), 1);
 				
-				if (row._tr) row._tr.removeClassName(flagrate.className + '-grid-row-selected');
+				if (row._tr) { row._tr.removeClassName(flagrate.className + '-grid-row-selected'); }
 				
-				if (row._checkbox) row._checkbox.uncheck();
+				if (row._checkbox) { row._checkbox.uncheck(); }
 				
-				if (row.onDeselect) row.onDeselect(window.event, row);
-				if (this.onDeselect) this.onDeselect(window.event, row);
+				if (row.onDeselect)  { row.onDeselect(window.event, row); }
+				if (this.onDeselect) { this.onDeselect(window.event, row); }
 			}
 			
-			if (this._selectedRows.length === 0 && this._checkbox) this._checkbox.uncheck();
+			if (this._selectedRows.length === 0 && this._checkbox) {
+				this._checkbox.uncheck();
+			}
 			
 			return this;
 		}
@@ -4901,7 +4975,7 @@
 		 *
 		 *  select all rows
 		**/
-		selectAll: function() {
+		selectAll: function () {
 			return this.select(this.rows);
 		}
 		,
@@ -4910,7 +4984,7 @@
 		 *
 		 *  deselect all rows
 		**/
-		deselectAll: function() {
+		deselectAll: function () {
 			return this.deselect(this.rows);
 		}
 		,
@@ -4919,7 +4993,7 @@
 		 *
 		 *  get selected rows
 		**/
-		getSelectedRows: function() {
+		getSelectedRows: function () {
 			return this._selectedRows;
 		}
 		,
@@ -4930,22 +5004,27 @@
 		 *
 		 *  sort rows by key
 		**/
-		sort: function(key, isAsc) {
+		sort: function (key, isAsc) {
 			
-			this.rows.sort(function(a, b) {
+			this.rows.sort(function (a, b) {
 				
 				var A = 0;
 				var B = 0;
 				
-				if (a.cell[key]) A = a.cell[key].sortAlt || a.cell[key].text || a.cell[key].html || a.cell[key].element && a.cell[key].element.innerHTML || a.cell[key]._div && a.cell[key]._div.innerHTML || 0;
-				if (b.cell[key]) B = b.cell[key].sortAlt || b.cell[key].text || b.cell[key].html || b.cell[key].element && b.cell[key].element.innerHTML || b.cell[key]._div && b.cell[key]._div.innerHTML || 0;
+				if (a.cell[key]) {
+					A = a.cell[key].sortAlt || a.cell[key].text || a.cell[key].html || (a.cell[key].element && a.cell[key].element.innerHTML) || (a.cell[key]._div && a.cell[key]._div.innerHTML) || 0;
+				}
+				if (b.cell[key]) {
+					B = b.cell[key].sortAlt || b.cell[key].text || b.cell[key].html || (b.cell[key].element && b.cell[key].element.innerHTML) || (b.cell[key]._div && b.cell[key]._div.innerHTML) || 0;
+				}
 				
 				return (A > B) ? 1 : -1;
 			});
 			
-			if (!isAsc) this.rows.reverse();
+			if (!isAsc) { this.rows.reverse(); }
 			
-			for (var i = 0, l = this.cols.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = this.cols.length; i < l; i++) {
 				if (this.cols[i].key === key) {
 					if (this.cols[i]._th) {
 						if (isAsc) {
@@ -4960,7 +5039,9 @@
 					this.cols[i].isSorted = true;
 					this.cols[i].isAsc    = !!isAsc;
 				} else {
-					if (this.cols[i].isSorted && this.cols[i]._th) this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-asc').removeClassName(flagrate.className + '-grid-col-sorted-desc');
+					if (this.cols[i].isSorted && this.cols[i]._th) {
+						this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-asc').removeClassName(flagrate.className + '-grid-col-sorted-desc');
+					}
 					
 					this.cols[i].isSorted = false;
 					this.cols[i].isAsc    = null;
@@ -4978,10 +5059,11 @@
 		 *
 		 *  unshift row(s)
 		**/
-		unshift: function(r) {
+		unshift: function (r) {
 			
 			if (r instanceof Array) {
-				for (var i = 0, l = r.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = r.length; i < l; i++) {
 					this.rows.unshift(r);
 				}
 			} else {
@@ -4999,10 +5081,11 @@
 		 *
 		 *  push row(s)
 		**/
-		push: function(r) {
+		push: function (r) {
 			
 			if (r instanceof Array) {
-				for (var i = 0, l = r.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = r.length; i < l; i++) {
 					this.rows.push(r);
 				}
 			} else {
@@ -5020,13 +5103,14 @@
 		 *
 		 *  shift row(s)
 		**/
-		shift: function(c) {
+		shift: function (c) {
 			
 			c = c || 1;
 			
 			var removes = [];
 			
-			for (var i = 0, l = this.rows.length; i < l && i < c; i++) {
+			var i, l;
+			for (i = 0, l = this.rows.length; i < l && i < c; i++) {
 				removes.push(this.rows.shift());
 			}
 			
@@ -5041,13 +5125,14 @@
 		 *
 		 *  pop row(s)
 		**/
-		pop: function(c) {
+		pop: function (c) {
 			
 			c = c || 1;
 			
 			var removes = [];
 			
-			for (var i = 0, l = this.rows.length; i < l && i < c; i++) {
+			var i, l;
+			for (i = 0, l = this.rows.length; i < l && i < c; i++) {
 				removes.push(this.rows.pop());
 			}
 			
@@ -5064,16 +5149,17 @@
 		 *
 		 *  Changes the content of a rows, adding new row(s) while removing old rows.
 		**/
-		splice: function(index, c, r) {
+		splice: function (index, c, r) {
 			
 			c = c || this.rows.length - index;
 			
 			var removes = this.rows.splice(index, c);
 			
 			if (r) {
-				if (r instanceof Array === false) r = [r];
+				if (r instanceof Array === false) { r = [r]; }
 				
-				for (var i = 0, l = r.length; i < l; i++) {
+				var i, l;
+				for (i = 0, l = r.length; i < l; i++) {
 					this.rows.splice(index + i, 0, r[i]);
 				}
 			}
@@ -5090,7 +5176,7 @@
 		 *
 		 *  Returns the index at which a given row can be found in the flagrate.Grid#rows, or -1 if it is not present.
 		**/
-		indexOf: function(r, index) {
+		indexOf: function (r, index) {
 			return this.rows.indexOf(r, index);
 		}
 		,
@@ -5100,7 +5186,7 @@
 		 *
 		 *  delete row(s).
 		**/
-		'delete': function(r) {
+		'delete': function (r) {
 			
 			var removes = [];
 			var bulk    = false;
@@ -5110,9 +5196,10 @@
 				bulk = true;
 			}
 			
-			for (var i = 0, l = r.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = r.length; i < l; i++) {
 				var index = this.indexOf(r[i]);
-				if (index !== -1) removes.push(this.splice(index, 1));
+				if (index !== -1) { removes.push(this.splice(index, 1)); }
 			}
 			
 			return bulk ? removes : removes[0];
@@ -5121,7 +5208,7 @@
 		/*?
 		 *  flagrate.Grid#disable() -> flagrate.Grid
 		**/
-		disable: function() {
+		disable: function () {
 			
 			this.element.addClassName(flagrate.className + '-disabled');
 			
@@ -5131,7 +5218,7 @@
 		/*?
 		 *  flagrate.Grid#enable() -> flagrate.Grid
 		**/
-		enable: function() {
+		enable: function () {
 			
 			this.element.removeClassName(flagrate.className + '-disabled');
 			
@@ -5141,23 +5228,23 @@
 		/*?
 		 *  flagrate.Grid#isEnabled() -> Boolean
 		**/
-		isEnabled: function() {
+		isEnabled: function () {
 			return !this.element.hasClassName(flagrate.className + '-disabled');
 		}
 		,
-		_create: function() {
+		_create: function () {
 			
 			// root container
 			this.element = new Element('div');
 			
-			if (this.id)        this.element.writeAttribute('id', this.id);
-			if (this.className) this.element.writeAttribute('class', this.className);
-			if (this.attribute) this.element.writeAttribute(this.attribute);
-			if (this.style)     this.element.setStyle(this.style);
+			if (this.id)        { this.element.writeAttribute('id', this.id); }
+			if (this.className) { this.element.writeAttribute('class', this.className); }
+			if (this.attribute) { this.element.writeAttribute(this.attribute); }
+			if (this.style)     { this.element.setStyle(this.style); }
 			
 			this.element.addClassName(flagrate.className + ' ' + flagrate.className + '-grid');
 			
-			if (this.headless) this.element.addClassName(flagrate.className + '-grid-headless');
+			if (this.headless) { this.element.addClassName(flagrate.className + '-grid-headless'); }
 			
 			// head container 
 			this._head = new Element('div', { 'class': flagrate.className + '-grid-head' }).insertTo(this.element);
@@ -5181,28 +5268,29 @@
 				}).insertTo(new Element('th', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(tr));
 			}
 			
-			for (var i = 0, l = this.cols.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = this.cols.length; i < l; i++) {
 				var col = this.cols[i];
 				
 				col._id = this._id + '-col-' + i.toString(10);
 				
 				col._th  = new Element('th').insertTo(tr);
 				
-				if (col.id)        col._th.writeAttribute('id', col.id);
-				if (col.className) col._th.writeAttribute('class', col.className);
-				if (col.attribute) col._th.writeAttribute(col.attribute);
-				if (col.style)     col._th.setStyle(col.style);
+				if (col.id)        { col._th.writeAttribute('id', col.id); }
+				if (col.className) { col._th.writeAttribute('class', col.className); }
+				if (col.attribute) { col._th.writeAttribute(col.attribute); }
+				if (col.style)     { col._th.setStyle(col.style); }
 				
 				col._th.addClassName(col._id);
 				
 				var width = !!col.width ? (col.width.toString(10) + 'px') : 'auto';
 				this._style.insertText('.' + col._id + '{width:' + width + '}');
 				
-				if (col.align) col._th.style.textAlign = col.align;
+				if (col.align) { col._th.style.textAlign = col.align; }
 				
 				col._div = new Element().insertTo(col._th);
 				
-				if (col.label) col._div.updateText(col.label);
+				if (col.label) { col._div.updateText(col.label); }
 				
 				if (col.icon) {
 					col._div.addClassName(flagrate.className + '-icon');
@@ -5243,7 +5331,7 @@
 							key    : 'first',
 							element: new Button({
 								className: flagrate.className + '-grid-pager-first',
-								onSelect : function() {
+								onSelect : function () {
 									this.pagePosition = 0;
 									this._requestRender();
 								}.bind(this)
@@ -5253,7 +5341,7 @@
 							key    : 'prev',
 							element: new Button({
 								className: flagrate.className + '-grid-pager-prev',
-								onSelect : function() {
+								onSelect : function () {
 									--this.pagePosition;
 									this._requestRender();
 								}.bind(this)
@@ -5267,7 +5355,7 @@
 							key    : 'next',
 							element: new Button({
 								className: flagrate.className + '-grid-pager-next',
-								onSelect : function() {
+								onSelect : function () {
 									++this.pagePosition;
 									this._requestRender();
 								}.bind(this)
@@ -5277,7 +5365,7 @@
 							key    : 'last',
 							element: new Button({
 								className: flagrate.className + '-grid-pager-last',
-								onSelect : function() {
+								onSelect : function () {
 									this.pagePosition = Math.floor(this.rows.length / this.numberOfRowsPerPage);
 									this._requestRender();
 								}.bind(this)
@@ -5298,15 +5386,15 @@
 			return this;
 		}
 		,
-		_requestRender: function() {
+		_requestRender: function () {
 			
-			if (this._renderTimer) clearTimeout(this._renderTimer);
+			if (this._renderTimer) { clearTimeout(this._renderTimer); }
 			this._renderTimer = setTimeout(this._render.bind(this), 0);
 			
 			return this;
 		}
 		,
-		_render: function() {
+		_render: function () {
 			
 			if (this.onRender !== null && this.onRender(this) === false) {
 				return this;
@@ -5321,8 +5409,8 @@
 			if (this.pagination) {
 				pl    = 0;
 				pages = Math.ceil(rl / this.numberOfRowsPerPage);
-				if (pages <= this.pagePosition) this.pagePosition = pages - 1;
-				if (this.pagePosition <= 0) this.pagePosition = 0;
+				if (pages <= this.pagePosition) { this.pagePosition = pages - 1; }
+				if (this.pagePosition <= 0) { this.pagePosition = 0; }
 				from  = this.pagePosition * this.numberOfRowsPerPage;
 				to    = from + this.numberOfRowsPerPage;
 			}
@@ -5331,20 +5419,20 @@
 			
 			for (i = 0; i < rl; i++) {
 				if (this.pagination) {
-					if (i < from) continue;
-					if (i >= to)  break;
+					if (i < from) { continue; }
+					if (i >= to)  { break; }
 					++pl;
 				}
 				
 				row = this.rows[i];
 				
-				if (!row._tr) row._tr = new Element('tr');
+				if (!row._tr) { row._tr = new Element('tr'); }
 				row._tr.insertTo(this._tbody);
 				
-				if (row.id)        row._tr.writeAttribute('id', row.id);
-				if (row.className) row._tr.writeAttribute('class', row.className);
-				if (row.attribute) row._tr.writeAttribute(row.attribute);
-				if (row.style)     row._tr.setStyle(row.style);
+				if (row.id)        { row._tr.writeAttribute('id', row.id); }
+				if (row.className) { row._tr.writeAttribute('class', row.className); }
+				if (row.attribute) { row._tr.writeAttribute(row.attribute); }
+				if (row.style)     { row._tr.setStyle(row.style); }
 				
 				if (row.onClick || this.onClick || this.disableSelect === false) {
 					if (this.disableSelect === false) {
@@ -5367,30 +5455,30 @@
 					}).insertTo(new Element('td', { 'class': flagrate.className + '-grid-cell-checkbox' }).insertTo(row._tr));
 				}
 				
-				if (row.isSelected === true) this.select(row);
+				if (row.isSelected === true) { this.select(row); }
 				
 				for (j = 0; j < cl; j++) {
 					col  = this.cols[j];
-					cell = row.cell[col.key] || (row.cell[col.key] = {});
+					cell = !!row.cell[col.key] ? row.cell[col.key] : (row.cell[col.key] = {});
 					
-					if (!cell._td) cell._td = new Element('td');
+					if (!cell._td) { cell._td = new Element('td'); }
 					cell._td.insertTo(row._tr);
 					
-					if (cell.id)        cell._td.writeAttribute('id', cell.id);
-					if (cell.className) cell._td.writeAttribute('class', cell.className);
-					if (cell.attribute) cell._td.writeAttribute(cell.attribute);
-					if (cell.style)     cell._td.setStyle(cell.style);
+					if (cell.id)        { cell._td.writeAttribute('id', cell.id); }
+					if (cell.className) { cell._td.writeAttribute('class', cell.className); }
+					if (cell.attribute) { cell._td.writeAttribute(cell.attribute); }
+					if (cell.style)     { cell._td.setStyle(cell.style); }
 					
-					if (col.align) cell._td.style.textAlign = col.align;
+					if (col.align) { cell._td.style.textAlign = col.align; }
 					
 					cell._td.addClassName(col._id);
 					
-					if (!cell._div) cell._div = new Element();
+					if (!cell._div) { cell._div = new Element(); }
 					cell._div.insertTo(cell._td);
 					
-					if (cell.text)    cell._div.updateText(cell.text);
-					if (cell.html)    cell._div.update(cell.html);
-					if (cell.element) cell._div.update(cell.element);
+					if (cell.text)    { cell._div.updateText(cell.text); }
+					if (cell.html)    { cell._div.update(cell.html); }
+					if (cell.element) { cell._div.update(cell.element); }
 					
 					if (cell.icon) {
 						cell._div.addClassName(flagrate.className + '-icon');
@@ -5410,10 +5498,10 @@
 					}
 					
 					// post-processing
-					if (cell.postProcess) cell.postProcess(cell._td);
+					if (cell.postProcess) { cell.postProcess(cell._td); }
 				}
 				
-				if (!row._last) row._last = new Element('td', { 'class': this._id + '-col-last' });
+				if (!row._last) { row._last = new Element('td', { 'class': this._id + '-col-last' }); }
 				row._last.insertTo(row._tr);
 				
 				// menu
@@ -5421,7 +5509,7 @@
 					row._last.addClassName(flagrate.className + '-grid-cell-menu');
 					
 					//row
-					if (row._menu) row._menu.remove();
+					if (row._menu) { row._menu.remove(); }
 					row._menu = new ContextMenu({
 						target: row._tr,
 						items : row.menuItems
@@ -5431,8 +5519,8 @@
 				}
 				
 				// post-processing
-				if (row.postProcess) row.postProcess(row._tr);
-				if (this.postProcessOfRow) this.postProcessOfRow(row._tr);
+				if (row.postProcess) { row.postProcess(row._tr); }
+				if (this.postProcessOfRow) { this.postProcessOfRow(row._tr); }
 			}//<--for
 			
 			if (this.pagination) {
@@ -5450,18 +5538,19 @@
 				this._updatePositionOfResizeHandles();
 			}
 			
-			if (this.onRendered !== null) this.onRendered(this);
+			if (this.onRendered !== null) { this.onRendered(this); }
 			
 			return this;
 		}
 		,
-		_updatePositionOfResizeHandles: function() {
+		_updatePositionOfResizeHandles: function () {
 			
 			var adj = this.fill ? -this._body.scrollLeft : 0;
 			
 			var col;
 			
-			for (var i = 0, l = this.cols.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = this.cols.length; i < l; i++) {
 				col = this.cols[i];
 				
 				if (col._resizeHandle) {
@@ -5472,14 +5561,15 @@
 			return this;
 		}
 		,
-		_updateLayoutOfCols: function() {
+		_updateLayoutOfCols: function () {
 			
 			var col;
 			
-			for (var i = 0, l = this.cols.length; i < l; i++) {
+			var i, l;
+			for (i = 0, l = this.cols.length; i < l; i++) {
 				col = this.cols[i];
 				
-				if (col.width) continue;
+				if (col.width) { continue; }
 				
 				col.width = col._th.getWidth();
 				
@@ -5493,7 +5583,7 @@
 			
 			this.element.addClassName(flagrate.className + '-grid-fixed');
 			
-			setTimeout(function() {
+			setTimeout(function () {
 				
 				var base = this.fill ? this._body : this.element;
 				this._style.updateText(
@@ -5507,17 +5597,17 @@
 			return this;
 		}
 		,
-		_createOnScrollHandler: function(that) {
+		_createOnScrollHandler: function (that) {
 			
-			return function(e) {
+			return function (e) {
 				
-				if (that.disableResize === false) that._updateLayoutOfCols();
+				if (that.disableResize === false) { that._updateLayoutOfCols(); }
 			};
 		}
 		,
-		_createBodyOnScrollHandler: function(that) {
+		_createBodyOnScrollHandler: function (that) {
 			
-			return function(e) {
+			return function (e) {
 				
 				that._head.style.right = (that._body.offsetWidth - that._body.clientWidth) + 'px';
 				that._head.scrollLeft = that._body.scrollLeft;
@@ -5529,22 +5619,22 @@
 			};
 		}
 		,
-		_createColOnClickHandler: function(that, col) {
+		_createColOnClickHandler: function (that, col) {
 			
-			return function(e) {
+			return function (e) {
 				
 				that.sort(col.key, !col.isAsc);
 			};
 		}
 		,
-		_createRowOnClickHandler: function(that, row) {
+		_createRowOnClickHandler: function (that, row) {
 			
-			return function(e) {
+			return function (e) {
 				
-				if (that.isEnabled() === false) return;
+				if (that.isEnabled() === false) { return; }
 				
-				if (row.onClick)  row.onClick(e, row);
-				if (that.onClick) that.onClick(e, row);
+				if (row.onClick)  { row.onClick(e, row); }
+				if (that.onClick) { that.onClick(e, row); }
 				
 				if (that.disableSelect === false) {
 					if (row.isSelected === true) {
@@ -5556,40 +5646,40 @@
 			};
 		}
 		,
-		_createRowOnDblClickHandler: function(that, row) {
+		_createRowOnDblClickHandler: function (that, row) {
 			
-			return function(e) {
+			return function (e) {
 				
-				if (that.isEnabled() === false) return;
+				if (that.isEnabled() === false) { return; }
 				
-				if (row.onDblClick)  row.onDblClick(e, row);
-				if (that.onDblClick) that.onDblClick(e, row);
+				if (row.onDblClick)  { row.onDblClick(e, row); }
+				if (that.onDblClick) { that.onDblClick(e, row); }
 			};
 		}
 		,
-		_createCellOnClickHandler: function(that, cell) {
+		_createCellOnClickHandler: function (that, cell) {
 			
-			return function(e) {
+			return function (e) {
 				
-				if (that.isEnabled() === false) return;
+				if (that.isEnabled() === false) { return; }
 				
-				if (cell.onClick) cell.onClick(e, cell);
+				if (cell.onClick) { cell.onClick(e, cell); }
 			};
 		}
 		,
-		_createCellOnDblClickHandler: function(that, cell) {
+		_createCellOnDblClickHandler: function (that, cell) {
 			
-			return function(e) {
+			return function (e) {
 				
-				if (that.isEnabled() === false) return;
+				if (that.isEnabled() === false) { return; }
 				
-				if (cell.onDblClick) cell.onDblClick(e, cell);
+				if (cell.onDblClick) { cell.onDblClick(e, cell); }
 			};
 		}
 		,
-		_createRowOnCheckHandler: function(that, row) {
+		_createRowOnCheckHandler: function (that, row) {
 			
-			return function(e) {
+			return function (e) {
 				
 				if (that.isEnabled() === false) {
 					e.targetCheckbox.uncheck();
@@ -5608,21 +5698,21 @@
 			};
 		}
 		,
-		_createLastRowOnClickHandler: function(that, row) {
+		_createLastRowOnClickHandler: function (that, row) {
 			
-			return function(e) {
+			return function (e) {
 				
-				if (that.isEnabled() === false) return;
+				if (that.isEnabled() === false) { return; }
 				
 				e.stopPropagation();
 				
-				if (row._menu) row._menu.open();
+				if (row._menu) { row._menu.open(); }
 			};
 		}
 		,
-		_createResizeHandleOnMousedownHandler: function(that, col) {
+		_createResizeHandleOnMousedownHandler: function (that, col) {
 			
-			return function(e) {
+			return function (e) {
 				
 				//e.stopPropagation();
 				e.preventDefault();
@@ -5630,7 +5720,7 @@
 				var current = e.clientX;
 				var origin  = current;
 				
-				var onMove = function(e) {
+				var onMove = function (e) {
 					
 					e.preventDefault();
 					
@@ -5640,7 +5730,7 @@
 					col._resizeHandle.style.left = (parseInt(col._resizeHandle.style.left.replace('px', ''), 10) + delta) + 'px';
 				};
 				
-				var onUp = function(e) {
+				var onUp = function (e) {
 					
 					e.preventDefault();
 					
@@ -5665,4 +5755,4 @@
 		}
 	};
 	
-})();
+}());
