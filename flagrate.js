@@ -3620,7 +3620,7 @@
 			
 			var positioning = function () {
 				
-				if (Element.visible(target) === true) {
+				if (Element.exists(target) === true) {
 					Popover._updatePosition(t, d);
 					this._positioningTimer = setTimeout(positioning, 30);
 				} else {
