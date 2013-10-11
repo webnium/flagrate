@@ -136,6 +136,15 @@
 		},
 		
 		/*?
+		 *  flagrate.Element#exists() -> Boolean
+		 *
+		 *  please refer to flagrate.Element.exists
+		**/
+		exists: function () {
+			return Element.exists(this);
+		},
+		
+		/*?
 		 *  flagrate.Element#toggle() -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.toggle
@@ -372,10 +381,31 @@
 	 *  - element (Element) - instance of Element.
 	 *  
 	 *  Tells whether `element` is visible
+	 *  
+	 *  This method is similar to http://api.prototypejs.org/dom/Element/visible/
 	**/
 	Element.visible = function (element) {
 		
-		return element.style.display !== 'none' && element.parentNode !== null;
+		return element.style.display !== 'none';
+	};
+	
+	/*?
+	 *  flagrate.Element.exists(element) -> Boolean
+	 *  - element (Element) - instance of Element.
+	 *  
+	 *  Tells whether `element` is exists on document.
+	**/
+	Element.exists = function (element) {
+		
+		if (element.parentNode) {
+			while ((element = element.parentNode) !== null) {
+				if (element === document) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	};
 	
 	/*?
@@ -3590,7 +3620,7 @@
 			
 			var positioning = function () {
 				
-				if (Element.visible(target) === true) {
+				if (Element.exists(target) === true) {
 					Popover._updatePosition(t, d);
 					this._positioningTimer = setTimeout(positioning, 30);
 				} else {
