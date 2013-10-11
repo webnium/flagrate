@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>flagrate.Element.update - Flagrate API documentation</title>
+	<title>flagrate.Element.exists - Flagrate API documentation</title>
 	<meta name="robots" content="noarchive">
 	<meta name="generator" content="flagdoc">
 	<script type="text/javascript" src="https://flagrate.org/flagrate.min.js"></script>
@@ -369,29 +369,27 @@
 	
 	<div class="content">
 		<ul class="breadcrumbs">
-			<li><a href="./">Top</a></li><li><a href="flagrate.Element.html">flagrate.Element</a></li><li>update</li>
+			<li><a href="./">Top</a></li><li><a href="flagrate.Element.html">flagrate.Element</a></li><li>exists</li>
 		</ul>
 		
 		<div class="title">
 			<small>class-method</small>
-			<h2>flagrate.Element.update</h2>
+			<h2>flagrate.Element.exists</h2>
 		</div>
 		
 		<div class="source-link">
-			<a href="https://github.com/webnium/flagrate/blob/master/flagrate.js#L467">View source: flagrate.js#467 &rarr;</a>
+			<a href="https://github.com/webnium/flagrate/blob/master/flagrate.js#L393">View source: flagrate.js#393 &rarr;</a>
 		</div>
 		
 		<div class="syntax">
-			<pre><code class="ebnf"><span class="key">flagrate.Element.update</span>(<span class="arguments">element[, newContent]</span>) &rarr; <span class="return"><span class="object-Element">Element</span></span></code></pre>
+			<pre><code class="ebnf"><span class="key">flagrate.Element.exists</span>(<span class="arguments">element</span>) &rarr; <span class="return"><span class="object-Boolean">Boolean</span></span></code></pre>
 			<ul class="arguments">
-				<li><code class="argument-name">element</code> (<code class="object-Element">Element</code>) – instance of Element.</li><li><code class="argument-name">newContent</code> (<code class="object-String">String</code>|<code class="object-Number">Number</code>|<code class="object-Element">Element</code>) – new content.</li>
+				<li><code class="argument-name">element</code> (<code class="object-Element">Element</code>) – instance of Element.</li>
 			</ul>
 		</div>
 		
 		<div class="description">
-			<p>Replaces <em>the content</em> of <code>element</code> with the <code>newContent</code> argument and
-returns <code>element</code>.</p>
-<p>This method is similar to <a href="http://api.prototypejs.org/dom/Element/update/">http://api.prototypejs.org/dom/Element/update/</a></p>
+			<p>Tells whether <code>element</code> is exists on document.</p>
 
 		</div>
 		
@@ -405,7 +403,7 @@ returns <code>element</code>.</p>
 		if (ebnf.innerHTML === '') document.getElementsByClassName('syntax')[0].style.display = 'none';
 		
 		var classKey   = 'flagrate.Element';
-		var currentKey = 'flagrate.Element.update';
+		var currentKey = 'flagrate.Element.exists';
 		
 		var apiList = document.getElementById('api-list');
 		var li      = apiList.firstChild.getElementsByClassName('type-class');
