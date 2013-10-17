@@ -3776,6 +3776,7 @@
 	 *  * `target`             (Element|String): Element to target. If target is undefined or not found, will creates flagrate.Modal.
 	 *  * `title`              (String): Title for this step.
 	 *  * `text`               (String): Descriptive text for this step.
+	 *  * `html`               (String): Descriptive html for this step.
 	 *  * `onStep`             (Function): Triggered whenever a step is started.
 	 *  * `onBeforeStep`       (Function): Triggered at before starting of this step.
 	 *  * `onAfterStep`        (Function): Triggered at after of this step.
@@ -3961,9 +3962,16 @@
 			
 			if (target) {
 				var container = new Element();
+				var body      = new Element();
 				
-				new Element().insertText(step.text).insertTo(container);
+				if (step.html) {
+					body.insert(step.html).insertTo(container);
+				}
 				
+				if (step.text) {
+					body.insertText(step.text).insertTo(container);
+				}
+					
 				var buttonContainer = new Element('footer').insertTo(container);
 				buttons.forEach(function (button) {
 					new Button(button).insertTo(buttonContainer);
@@ -3983,6 +3991,7 @@
 					className         : flagrate.className + '-tutorial',
 					title             : step.title,
 					text              : step.text,
+					html              : step.html,
 					buttons           : buttons
 				});
 				
