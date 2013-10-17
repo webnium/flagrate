@@ -964,21 +964,21 @@ div.flagrate-grid.flagrate-grid-fill {
 				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr:hover {
 					background-color: #ddd; }
 				
-				div.flagrate-grid > div > table > tbody > tr:nth-child(even):hover {
+				div.flagrate-grid > div > table > tbody > tr:nth-child(odd):hover {
 					background-color: #d9d9d9; }
 				
 				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected,
 				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected {
 					background-color: rgba(26,96,237,0.35); }
 				
-				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected {
+				div.flagrate-grid > div > table > tbody > tr:nth-child(odd).flagrate-grid-row-selected {
 					background-color: rgba(26,96,237,0.40); }
 				
 				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover,
 				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover {
 					background-color: rgba(26,96,237,0.45); }
 				
-				div.flagrate-grid > div > table > tbody > tr:nth-child(even).flagrate-grid-row-selected:hover {
+				div.flagrate-grid > div > table > tbody > tr:nth-child(odd).flagrate-grid-row-selected:hover {
 					background-color: rgba(26,96,237,0.50); }
 				
 				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selectable,
