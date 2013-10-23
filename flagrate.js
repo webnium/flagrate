@@ -1855,6 +1855,10 @@
 	
 	/*?
 	 *  class flagrate.TextInput
+	 *
+	 *  #### Inheritance
+	 *  
+	 *  * [HTMLInputElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement) (MDN)
 	**/
 	
 	/*?
