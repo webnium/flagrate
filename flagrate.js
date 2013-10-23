@@ -1947,14 +1947,17 @@
 		 *  flagrate.TextInput#getValue() -> String
 		**/
 		getValue: function () {
-			return this.readAttribute('value') || '';
+			return this.value;
 		}
 		,
 		/*?
 		 *  flagrate.TextInput#setValue(value) -> flagrate.TextInput
 		**/
 		setValue: function (value) {
-			return this.writeAttribute('value', value);
+			
+			this.value = value;
+			
+			return this;
 		}
 		,
 		/*?
