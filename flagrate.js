@@ -4851,6 +4851,7 @@
 	 *  * `text`                     (String):
 	 *  * `html`                     (String):
 	 *  * `element`                  (Element):
+	 *  * `icon`                     (String):
 	 *  * `sortAlt`                  (Number|String):
 	 *  * `onClick`                  (Function):
 	 *  * `onDblClick`               (Function):
