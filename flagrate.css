@@ -823,6 +823,16 @@ div.flagrate-modal.flagrate-modal-visible {
 			background-color: transparent;
 			box-shadow      : none; }
 			
+			div.flagrate-modal > div > div > div {
+				position: relative; }
+				
+				div.flagrate-modal.flagrate-sizing-full > div > div > div > div {
+					position: absolute;
+					top     : 0;
+					right   : 0;
+					bottom  : 0;
+					left    : 0; }
+			
 			/* close button */
 			div.flagrate-modal > div > div > button {
 				z-index         : 1;
