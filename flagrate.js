@@ -5285,7 +5285,11 @@
 		,
 		_create: function () {
 			
-			// root container
+			/*?
+			 *  flagrate.Grid#element -> flagrate.Element
+			 *
+			 *  This is entity of Grid container. it's flagrate.Element.
+			**/
 			this.element = new Element('div');
 			
 			if (this.id)        { this.element.writeAttribute('id', this.id); }
