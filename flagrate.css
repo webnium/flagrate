@@ -826,6 +826,9 @@ div.flagrate-modal.flagrate-modal-visible {
 			div.flagrate-modal > div > div > div {
 				position: relative; }
 				
+				div.flagrate-modal > div > div > div > div {
+					word-break: break-all; }
+				
 				div.flagrate-modal.flagrate-sizing-full > div > div > div > div {
 					position: absolute;
 					top     : 0;
