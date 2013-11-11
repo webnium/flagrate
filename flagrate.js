@@ -793,9 +793,14 @@
 		
 		var t = 0, l = 0;
 		do {
-			t      += element.scrollTop  || 0;
-			l      += element.scrollLeft || 0;
-			element = element.parentNode;
+			t += element.scrollTop  || 0;
+			l += element.scrollLeft || 0;
+			// for Chrome
+			if (element.parentNode === document.body && document.documentElement.scrollTop !== 0) {
+				element = document.documentElement;
+			} else {
+				element = element.parentNode;
+			}
 		} while (element);
 		
 		var offset = {
@@ -3592,7 +3597,7 @@
 		this.open = function (target) {
 			
 			var e = window.event || {};
-			var t = this.target || e.target || document.body;
+			var t = this.target || e.target || document.documentElement;
 			
 			if (target instanceof Event)       { e = target; }
 			if (target instanceof HTMLElement) { t = target; }
@@ -3616,7 +3621,7 @@
 			
 			Popover._updatePosition(t, d);
 			
-			this._div.style.opacity = 1;
+			d.style.opacity = 1;
 			
 			if (e.type && e.type === 'mouseover') {
 				document.body.addEventListener('click', this.close);
@@ -3627,7 +3632,7 @@
 			
 			var positioning = function () {
 				
-				if (Element.exists(target) === true) {
+				if (Element.exists(t) === true) {
 					Popover._updatePosition(t, d);
 					this._positioningTimer = setTimeout(positioning, 30);
 				} else {
