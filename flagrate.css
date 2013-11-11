@@ -33,12 +33,11 @@ button.flagrate-button {
 	display            : inline-block;
 	cursor             : pointer;
 	padding            : 4px 10px 3px;
-	border             : 2px solid rgba(0,0,0,0);
-	box-shadow         : inset 0 0 0 rgba(0,0,0,0);
+	border             : 2px solid transparent;
 	background-repeat  : no-repeat;
 	background-position: 5px center;
 	background-color   : #555;
-	color              : rgba(255,255,255,0.8);
+	color              : white;
 	font-family        : inherit;
 	font-size          : 12px;
 	font-weight        : normal;
@@ -60,35 +59,60 @@ button.flagrate-button.flagrate-icon {
 button.flagrate-button:focus,
 button.flagrate-button:hover {
 	border-color      : rgba(0,0,0,0.20);
-	color             : rgba(255,255,255,1);
-	box-shadow        : inset 0 30px 0 rgba(0,0,0,0.15); }
+	background-color  : #3b3b3b; }
 
 button.flagrate-button:active {
-	border-color      : rgba(0,0,0,1);
-	box-shadow        : inset 0 30px 0 rgba(0,0,0,0.4); }
+	border-color      : rgba(0,0,0,1); }
 
 button.flagrate-button:focus {
-	outline           : 2px solid rgba(0,0,0,0.2); }
+	outline           : none; }
 
 button.flagrate-button.flagrate-disabled {
-	color             : rgba(255,255,255,0.5);
-	border-color      : rgba(255,255,255,0.2);
-	box-shadow        : inset 0 30px 0 rgba(255,255,255,0.2);
-	text-shadow       : none; }
+	border-color      : transparent;
+	opacity           : 0.65; }
 
 button.flagrate-button.flagrate-button-color-blue,
-button.flagrate-button.flagrate-button-color-primary { background-color: #1a60ed; }
+button.flagrate-button.flagrate-button-color-primary { background-color: #388dd6; }
+button.flagrate-button.flagrate-button-color-blue:focus,
+button.flagrate-button.flagrate-button-color-primary:focus,
+button.flagrate-button.flagrate-button-color-blue:hover,
+button.flagrate-button.flagrate-button-color-primary:hover { background-color: #2778be; }
+
 button.flagrate-button.flagrate-button-color-lightblue,
-button.flagrate-button.flagrate-button-color-info    { background-color: #11c2e2; }
+button.flagrate-button.flagrate-button-color-info { background-color: #11c2e2; }
+button.flagrate-button.flagrate-button-color-lightblue:focus,
+button.flagrate-button.flagrate-button-color-info:focus,
+button.flagrate-button.flagrate-button-color-lightblue:hover,
+button.flagrate-button.flagrate-button-color-info:hover { background-color: #0fb3d0; }
+
 button.flagrate-button.flagrate-button-color-red,
-button.flagrate-button.flagrate-button-color-danger  { background-color: #bd362f; }
+button.flagrate-button.flagrate-button-color-danger { background-color: #d2322d; }
+button.flagrate-button.flagrate-button-color-red:focus,
+button.flagrate-button.flagrate-button-color-danger:focus,
+button.flagrate-button.flagrate-button-color-red:hover,
+button.flagrate-button.flagrate-button-color-danger:hover { background-color: #b82b27; }
+
 button.flagrate-button.flagrate-button-color-green,
 button.flagrate-button.flagrate-button-color-success { background-color: #5bb75b; }
+button.flagrate-button.flagrate-button-color-green:focus,
+button.flagrate-button.flagrate-button-color-success:focus,
+button.flagrate-button.flagrate-button-color-green:hover,
+button.flagrate-button.flagrate-button-color-success:hover { background-color: #449b44; }
+
 button.flagrate-button.flagrate-button-color-orange,
 button.flagrate-button.flagrate-button-color-warning { background-color: #faa732; }
-button.flagrate-button.flagrate-button-color-pink    { background-color: #d67fae; }
+button.flagrate-button.flagrate-button-color-orange:focus,
+button.flagrate-button.flagrate-button-color-warning:focus,
+button.flagrate-button.flagrate-button-color-orange:hover,
+button.flagrate-button.flagrate-button-color-warning:hover { background-color: #e08505; }
 
-button.flagrate-button.flagrate-button-color-inverse { background-color: #eee; color: rgba(0,0,0,0.8); }
+button.flagrate-button.flagrate-button-color-pink { background-color: #d67fae; }
+button.flagrate-button.flagrate-button-color-pink:focus,
+button.flagrate-button.flagrate-button-color-pink:hover { background-color: #cc609a; }
+
+button.flagrate-button.flagrate-button-color-inverse { background-color: #eee; color: #3b3b3b; }
+button.flagrate-button.flagrate-button-color-inverse:focus,
+button.flagrate-button.flagrate-button-color-inverse:hover { background-color: #fff; }
 
 	button.flagrate-button > button.flagrate-button-remove,
 	button.flagrate-pulldown > span.flagrate-pulldown-triangle {
@@ -507,8 +531,8 @@ label.flagrate-radio.flagrate-icon {
 	
 	label.flagrate-checkbox > input:checked+div,
 	label.flagrate-radio > input:checked+div {
-		background-color: #1a60ed;
-		border-color    : #1a60ed; }
+		background-color: #388dd6;
+		border-color    : #388dd6; }
 	
 	label.flagrate-checkbox:hover > div::after,
 	label.flagrate-checkbox > input:checked+div::after {
@@ -581,7 +605,7 @@ button.flagrate-switch::after {
 	transition        : all 0.2s ease; }
 
 button.flagrate-switch[data-flagrate-switch-status="on"] {
-	background-color: #1a60ed; }
+	background-color: #388dd6; }
 
 button.flagrate-switch[data-flagrate-switch-status="on"]::after {
 	left            : 43px; }
@@ -645,7 +669,7 @@ div.flagrate-progress {
 	div.flagrate-progress > div {
 		height          : 100%;
 		width           : 0%;
-		background-color: #1a60ed; }
+		background-color: #388dd6; }
 
 div.flagrate-slider {
 	cursor            : pointer;
@@ -982,17 +1006,17 @@ div.flagrate-grid.flagrate-grid-fill {
 				
 				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected,
 				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected {
-					background-color: rgba(26,96,237,0.35); }
+					background-color: rgba(56,141,214,0.35); }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(odd).flagrate-grid-row-selected {
-					background-color: rgba(26,96,237,0.40); }
+					background-color: rgba(56,141,214,0.40); }
 				
 				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover,
 				div.flagrate-select > div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected:hover {
-					background-color: rgba(26,96,237,0.45); }
+					background-color: rgba(56,141,214,0.45); }
 				
 				div.flagrate-grid > div > table > tbody > tr:nth-child(odd).flagrate-grid-row-selected:hover {
-					background-color: rgba(26,96,237,0.50); }
+					background-color: rgba(56,141,214,0.50); }
 				
 				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selectable,
 				div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-clickable {
@@ -1028,7 +1052,7 @@ div.flagrate-grid.flagrate-grid-fill {
 					
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-asc,
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-desc {
-						color           : rgba(26,96,237,1); }
+						color           : rgba(56,141,214,1); }
 					
 						div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-asc > div::after,
 						div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-col-sorted-desc > div::after {
@@ -1130,7 +1154,7 @@ div.flagrate-grid.flagrate-grid-fill {
 		background-color: rgba(0,0,0,0.1); }
 	
 	div.flagrate-grid > div.flagrate-grid-col-resize-handle:active {
-		background-color: rgba(26,96,237,0.35); }
+		background-color: rgba(56,141,214,0.35); }
 	
 	div.flagrate-grid > div.flagrate-grid-pager {
 		position        : relative;
@@ -1153,7 +1177,7 @@ div.flagrate-grid.flagrate-grid-fill {
 			padding         : 6px 5px 5px; }
 		
 		div.flagrate-grid > div.flagrate-grid-pager > button {
-			color: rgba(26,96,237,1); }
+			color: rgba(56,141,214,1); }
 		
 		div.flagrate-grid > div.flagrate-grid-pager > button.flagrate-grid-pager-first::before {
 			content: '\3008'; }
