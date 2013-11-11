@@ -114,6 +114,19 @@ button.flagrate-button.flagrate-button-color-inverse { background-color: #eee; c
 button.flagrate-button.flagrate-button-color-inverse:focus,
 button.flagrate-button.flagrate-button-color-inverse:hover { background-color: #fff; }
 
+button.flagrate-button.flagrate-button-color-transparent { background-color: transparent; color: black; }
+button.flagrate-button.flagrate-button-color-transparent:focus,
+button.flagrate-button.flagrate-button-color-transparent:hover { background-color: rgba(0,0,0,0.05); }
+
+button.flagrate-button.flagrate-button-color-link {
+	background-color: transparent;
+	color           : #388dd6;
+	border-color    : transparent; }
+button.flagrate-button.flagrate-button-color-link:focus,
+button.flagrate-button.flagrate-button-color-link:hover {
+	text-decoration : underline;
+	background-color: transparent; }
+
 	button.flagrate-button > button.flagrate-button-remove,
 	button.flagrate-pulldown > span.flagrate-pulldown-triangle {
 		display    : inline-block;
