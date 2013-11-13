@@ -5136,7 +5136,7 @@
 			if (r instanceof Array) {
 				var i, l;
 				for (i = 0, l = r.length; i < l; i++) {
-					this.rows.unshift(r);
+					this.rows.unshift(r[i]);
 				}
 			} else {
 				this.rows.unshift(r);
@@ -5158,7 +5158,7 @@
 			if (r instanceof Array) {
 				var i, l;
 				for (i = 0, l = r.length; i < l; i++) {
-					this.rows.push(r);
+					this.rows.push(r[i]);
 				}
 			} else {
 				this.rows.push(r);
