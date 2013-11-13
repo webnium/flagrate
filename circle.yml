@@ -1,0 +1,52 @@
+general:
+  branches:
+    ignore:
+      - gh-pages
+
+machine:
+  node:
+    version: 0.10.0
+
+dependencies:
+  pre:
+    #- wget -O selenium-server.jar http://selenium.googlecode.com/files/selenium-server-standalone-2.33.0.jar
+    #- nohup bash -c "java -jar selenium-server.jar &"
+    #- npm install soda
+    #- npm install mocha
+    - npm install jshint -g
+    - npm install -g git://github.com/kanreisa/flagdoc.git
+
+test:
+  override:
+    #- mocha -R spec
+    - jshint flagrate.js
+
+deployment:
+  gh-pages:
+    branch: master
+    commands:
+      - git checkout gh-pages
+      - git config --global user.email "flagrate@webnium.co.jp"
+      - git config --global user.name "Flagrate"
+      - git merge --no-ff -m "Merge branch 'master' into gh-pages by CicleCI" master
+      
+      - git rm --ignore-unmatch flagrate.min.js
+      - wget -O compiler.tar.gz https://closure-compiler.googlecode.com/files/compiler-latest.tar.gz
+      - tar -xzvf compiler.tar.gz compiler.jar
+      - java -jar compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js flagrate.js > flagrate.min.js
+      - git add flagrate.min.js
+      
+      - git rm --ignore-unmatch flagrate.min.css
+      - wget -O yuicompressor.zip https://github.com/downloads/yui/yuicompressor/yuicompressor-2.4.7.zip
+      - unzip -p yuicompressor.zip yuicompressor-2.4.7/build/* > yuicompressor.jar
+      - java -jar yuicompressor.jar --type css flagrate.css > flagrate.min.css
+      - git add flagrate.min.css
+      - git commit -a -m "Build 'flagrate.min.js' and 'flagrate.min.css'" || true
+      
+      - git rm -r --ignore-unmatch api
+      - mkdir api
+      - flagdoc --scripts=flagrate.js --readme=README.md --output=api/ --source-link-prefix=https://github.com/webnium/flagrate/blob/master/
+      - git add api
+      - git commit -a -m "Build API documentation" || true
+      
+      - git push || true
