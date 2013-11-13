@@ -6072,7 +6072,8 @@
 			var depends = field.depends;
 			
 			if (!depends || depends.length === 0) {
-				return (field._dependsIsOk = true);
+				field._dependsIsOk = true;
+				return true;
 			}
 			
 			var result = true;
@@ -6115,7 +6116,8 @@
 				}
 			}
 			
-			return (field._dependsIsOk = result);
+			field._dependsIsOk = result;
+			return result;
 		},
 		_createField: function (field) {
 			
