@@ -1205,3 +1205,87 @@ div.flagrate-grid.flagrate-grid-fill {
 			content: '\3009'; }
 		
 		div.flagrate-grid > div.flagrate-grid-pager > span.flagrate-grid-pager-num { }
+
+form.flagrate-form {
+	display         : block;
+	overflow        : visible;
+	background-color: #fff;
+	padding         : 0; }
+
+	form.flagrate-form > div {
+		display     : table;
+		table-layout: fixed;
+		width       : 100%;
+		padding     : 0;
+		border-top  : 1px solid #ccc; }
+
+	form.flagrate-form > div:first-child {
+		border-top: none; }
+	
+		form.flagrate-form > div > * {
+			display       : table-cell;
+			padding       : 0;
+			vertical-align: middle; }
+	
+		form.flagrate-form > div > div.flagrate-form-field-label {
+			margin        : 0;
+			padding       : 0;
+			width         : 25%;
+			text-align    : right; }
+		
+			form.flagrate-form > div > div.flagrate-form-field-label > label {
+				padding    : 10px;
+				display    : inline-block;
+				line-height: 16px;
+				word-break : break-all;
+				font-weight: bold; }
+		
+			form.flagrate-form > div > div.flagrate-form-field-label > label.flagrate-icon {
+				padding-left: 25px; }
+		
+			form.flagrate-form > div.flagrate-required > div.flagrate-form-field-label > label::after {
+				color    : #d2322d;
+				margin   : 0 0 0 2px;
+				font-size: 12px;
+				content  : '*'; }
+
+			form.flagrate-form > div > div > div {
+				padding    : 10px 0; }
+
+			form.flagrate-form > div > div > ul.flagrate-form-field-error {
+				margin     : 0;
+				line-height: 1.4em;
+				font-size  : 12px;
+				color      : #d2322d;
+				background : #fbeeee;
+				margin     : 0;
+				padding    : 0;
+				overflow   : hidden;
+				height     : 0;
+				max-height : 0;
+				opacity    : 0;
+				list-style : disc inside;
+				transition : opacity 0.3s ease, max-height 0.2s ease, height 0.2s ease; }
+
+			form.flagrate-form > div.flagrate-has-error > div > ul.flagrate-form-field-error {
+				padding    : 10px;
+				overflow   : visible;
+				height     : auto;
+				max-height : 100px;
+				border-top : 1px solid #f5d6d5;
+				opacity    : 1; }
+
+			form.flagrate-form > div > div > div.flagrate-form-field-html,
+			form.flagrate-form > div > div > p.flagrate-form-field-text {
+				margin     : 0;
+				padding    : 10px 0;
+				line-height: 1.4em; }
+
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(2),
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(3),
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(4),
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(5) {
+				padding    : 10px;
+				font-size  : 12px;
+				border-top : 1px solid #ddd;
+				background : #eee; }

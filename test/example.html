@@ -581,6 +581,64 @@
 				}
 			]
 		}).insertTo(c);
+		
+		// Form
+		var form = flagrate.createForm({
+			fields: [
+				{
+					key  : 'textInput',
+					label: 'Text input',
+					input: {
+						type  : 'text',
+						option: {
+							placeholder: 'test'
+						}
+					}
+				},
+				{
+					key  : 'passwordInput',
+					label: 'Password input',
+					text : 'Strong password please.',
+					input: {
+						type  : 'password',
+						option: {
+							placeholder: 'placeholder',
+							icon       : 'icon.png'
+						},
+						isRequired: true
+					}
+				},
+				{
+					key  : 'desc',
+					label: 'Description',
+					icon : 'icon.png',
+					input: {
+						type  : 'textarea',
+						option: {
+							placeholder: 'placeholder'
+						}
+					}
+				},
+				{
+					label: 'depended',
+					text : 'test',
+					depends: [
+						{
+							key: 'textInput',
+							val: 'test'
+						}
+					]
+				},
+				{
+					label: 'just text',
+					text : '<b>text</b>'
+				},
+				{
+					label: 'just html',
+					html : '<b>html</b>'
+				}
+			]
+		}).insertTo(c);
 	</script>
 </body>
 </html>
