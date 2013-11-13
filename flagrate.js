@@ -2966,7 +2966,11 @@
 		
 		that.addClassName(flagrate.className + '-switch');
 		
-		that.dataset.flagrateSwitchStatus = opt.isOn ? 'on' : 'off';
+		if (that.dataset) {
+			that.dataset.flagrateSwitchStatus = opt.isOn ? 'on' : 'off';
+		} else {
+			that.writeAttribute('data-flagrate-switch-status', opt.isOn ? 'on' : 'off');
+		}
 		
 		return that;
 	};
@@ -2985,7 +2989,11 @@
 		 *  flagrate.Switch#isOn() -> Boolean
 		**/
 		isOn: function () {
-			return this.dataset.flagrateSwitchStatus === 'on';
+			if (this.dataset) {
+				return this.dataset.flagrateSwitchStatus === 'on';
+			} else {
+				return this.readAttribute('data-flagrate-switch-status') === 'on';
+			}
 		}
 		,
 		/*?
@@ -2993,7 +3001,11 @@
 		**/
 		switchOn: function () {
 			
-			this.dataset.flagrateSwitchStatus = 'on';
+			if (this.dataset) {
+				this.dataset.flagrateSwitchStatus = 'on';
+			} else {
+				this.writeAttribute('data-flagrate-switch-status', 'on');
+			}
 			
 			return this.fire('on').fire('change');
 		}
@@ -3003,7 +3015,11 @@
 		**/
 		switchOff: function () {
 			
-			this.dataset.flagrateSwitchStatus = 'off';
+			if (this.dataset) {
+				this.dataset.flagrateSwitchStatus = 'off';
+			} else {
+				this.writeAttribute('data-flagrate-switch-status', 'off');
+			}
 			
 			return this.fire('off').fire('change');
 		}
@@ -5120,7 +5136,7 @@
 			if (r instanceof Array) {
 				var i, l;
 				for (i = 0, l = r.length; i < l; i++) {
-					this.rows.unshift(r);
+					this.rows.unshift(r[i]);
 				}
 			} else {
 				this.rows.unshift(r);
@@ -5142,7 +5158,7 @@
 			if (r instanceof Array) {
 				var i, l;
 				for (i = 0, l = r.length; i < l; i++) {
-					this.rows.push(r);
+					this.rows.push(r[i]);
 				}
 			} else {
 				this.rows.push(r);
@@ -5766,7 +5782,7 @@
 				
 				e.stopPropagation();
 				
-				if (row._menu) { row._menu.open(); }
+				if (row._menu) { row._menu.open(e); }
 			};
 		}
 		,
