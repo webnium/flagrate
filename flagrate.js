@@ -5766,7 +5766,7 @@
 				
 				e.stopPropagation();
 				
-				if (row._menu) { row._menu.open(); }
+				if (row._menu) { row._menu.open(e); }
 			};
 		}
 		,
