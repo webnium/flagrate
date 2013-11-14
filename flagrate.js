@@ -579,9 +579,7 @@
 			insertion = { bottom: insertion };
 		}
 		
-		var content, insert;
-		
-		var position;
+		var position, content, insert;
 		for (position in insertion) {
 			if (insertion.hasOwnProperty(position)) {
 				content  = insertion[position];
@@ -5826,6 +5824,930 @@
 				document.body.addEventListener('mouseup',   onUp, true);
 			};
 		}
+	};
+	
+	/*?
+	 *  class flagrate.Form
+	 *
+	 *  This is **NOT** stable for now. testing.
+	 *  some required methods are missing.
+	**/
+	
+	/*?
+	 *  flagrate.createForm(option)
+	 *  new flagrate.Form(option)
+	 *  - option (Object) - configuration.
+	 *  
+	 *  Create and initialize the Form.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `fields`                   (Array; default `[]`): of **[field](#field)** object.
+	 *  * `id`                       (String): `id` attribute of container.
+	 *  * `className`                (String): `class` attribute of container.
+	 *  * `attribute`                (Object): additional attribute of container.
+	 *  * `style`                    (Object): style of container. (using flagrate.Element.setStyle)
+	 *  
+	 *  #### field
+	 *  
+	 *  * `key`                      (String):
+	 *  * `warp`                     (String|Array; experimental):
+	 *  * `label`                    (String; default `""`):
+	 *  * `icon`                     (String):
+	 *  * `text`                     (String):
+	 *  * `html`                     (String):
+	 *  * `element`                  (Element):
+	 *  * `input`                    (Object): see **[input](#input)**
+	 *  * `depends`                  (Array): of **[depend](#depend)**
+	 *  * `id`                       (String): `id` attribute of container.
+	 *  * `className`                (String): `class` attribute of container.
+	 *  * `attribute`                (Object): additional attribute of container.
+	 *  * `style`                    (Object): style of container. (using flagrate.Element.setStyle)
+	 *
+	 *  #### input
+	 *
+	 *  * `type`                     (String|Object; **required**): **[inputtype](#inputType)** String or Object
+	 *  * `option`                   (Object): *(see the options for each type)*
+	 *  * `isRequired`               (Boolean; default `false`):
+	 *  * `min`                      (Number): (simple validator)
+	 *  * `max`                      (Number): (simple validator)
+	 *  * `minLength`                (Number): (simple validator)
+	 *  * `maxLength`                (Number): (simple validator)
+	 *  * `validators`               (Array): of **[inputValidator](#inputvalidator)** String or Object or Function.
+	 *  * `toString`                 (Boolean; default `false`):
+	 *  * `trim`                     (Boolean; default `false`):
+	 *  * `toNumber`                 (Boolean; default `false`):
+	 *
+	 *  #### depend
+	 *
+	 *  * `key`                      (String; **required**):
+	 *  * `val`                      (any):
+	 *  * `operator`                 (String):
+	 *
+	 *  #### inputType
+	 *
+	 *  if specified a String, will use flagrate.Form.inputType[(specified)].
+	 *
+	 *  #### inputValidator
+	 *
+	 *  if specified a String, will use flagrate.Form.inputValidator[(specified)].
+	 *
+	 *      // Example: custom validator
+	 *      validators: [
+	 *        // using regex:
+	 *        {
+	 *          regexp: /^[a-z0-9]+(-[a-z0-9]+)*(\.([a-z0-9]+(-[a-z0-9]+)*))*$/i,
+	 *          error: 'Please enter a valid hostname string.'
+	 *        },
+	 *        // using async function:
+	 *        function (input, done) {
+	 *          someAsyncFunction(input, function (err, result) {
+	 *            if (err) {
+	 *              done('error', 'This hostname is already in use. (' + err + ')');
+	 *            } else {
+	 *              done('success');
+	 *            }
+	 *          });
+	 *        },
+	 *        // using sync function:
+	 *        function (input, done) {
+	 *          var err = someSyncFunction(input);
+	 *          if (err) {
+	 *            done('error', 'This hostname is prohibited. (' + err + ')');
+	 *          } else {
+	 *            done('success');
+	 *          }
+	 *        }
+	 *      ]
+	 *
+	 *  see flagrate.Form.inputValidator to read more documents.
+	**/
+	var Form = flagrate.Form = function flagrateForm(opt) {
+		
+		opt = opt || {};
+		
+		this.id                  = opt.id                  || null;
+		this.className           = opt.className           || null;
+		this.attribute           = opt.attribute           || null;
+		this.style               = opt.style               || null;
+		
+		this.fields = [];
+		
+		this._create();
+		
+		if (opt.fields && opt.fields.length !== 0) {
+			this.push(opt.fields);
+		}
+		
+		return this;
+	};
+	
+	flagrate.createForm = function (a) {
+		return new Form(a);
+	};
+	
+	Form.idCounter = 0;
+	
+	Form.prototype = {
+		/*?
+		 *  flagrate.Form#insertTo(element) -> flagrate.Form
+		 *
+		 *  please refer to flagrate.Element.insertTo
+		**/
+		insertTo: function (element) {
+			return this.element.insertTo(element) && this;
+		},
+		
+		/*?
+		 *  flagrate.Form#getResult() -> Object
+		 *
+		 *  Returns a result Object.
+		**/
+		getResult: function () {
+			
+			var result = {};
+			
+			var i, l, j, m, field, key, warping;
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if ((!field.key && !field.warp) || field.visible() === false) { continue; }
+				
+				if (field.warp) {
+					if (typeof field.warp === 'string') {
+						key = field.warp;
+					} else if (field.warp instanceof Array) {
+						warping = result;
+						for (j = 0, m = field.warp.length; j < m; j++) {
+							if (!warping[field.warp[j]]) {
+								warping[field.warp[j]] = {};
+							}
+							
+							if (j === m - 1) {
+								warping[field.warp[j]] = field.getVal();
+							} else {
+								warping = warping[field.warp[j]];
+							}
+						}
+						continue;
+					} else {
+						key = field.key;
+					}
+				} else {
+					key = field.key;
+				}
+				
+				if (!key) { continue; }
+				
+				result[key] = field.getVal();
+			}
+			
+			return result;
+		},
+		
+		/*?
+		 *  flagrate.Form#validate(done) -> flagrate.Form
+		 *  - done (Function) - callback when the validation is done.
+		 *
+		 *  #### Example
+		 *
+		 *      form.validate(function(success) {
+		 *        if (success) {
+		 *          console.log('form is valid.');
+		 *        } else {
+		 *          console.log('form is invalid.');
+		 *        }
+		 *      });
+		**/
+		validate: function (callback) {
+			
+			var i, l, j, m, field, fields = [], run;
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field.input && field.input._type) {
+					fields.push(field);
+				}
+			}
+			
+			var hasError = false;
+			
+			var fin = function () {
+				if (callback) { callback(!hasError); }
+			};
+			
+			var done = function (result) {
+				
+				if (result === false) {
+					hasError = true;
+				}
+				
+				run();
+			};
+			
+			run = function () {
+				
+				if (fields.length === 0 || hasError === true) { return fin(); }
+				
+				fields.shift().validate(done);
+			};
+			run();
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.Form#enable() -> flagrate.Form
+		**/
+		enable: function () {
+			
+			var i, l, field;
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field.input && field.input._type) {
+					field.input._type.enable.call(field.input);
+				}
+			}
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.Form#disable() -> flagrate.Form
+		**/
+		disable: function () {
+			
+			var i, l, field;
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field.input && field.input._type) {
+					field.input._type.disable.call(field.input);
+				}
+			}
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.Form#getField(key) -> Object | null
+		 *  - key (String) - specified field key.
+		**/
+		getField: function (key) {
+			
+			var i, l, field;
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field.key && field.key === key) {
+					return field;
+				}
+			}
+			
+			return null;
+		},
+		
+		/*?
+		 *  flagrate.Form#push(field) -> Number
+		 *  - field (Object|Array)
+		 *
+         *  push field(s)
+		**/
+		push: function (f) {
+			
+			var i, l;
+			
+			if (f instanceof Array) {
+				for (i = 0, l = f.length; i < l; i++) {
+					this._createField(f[i]);
+					this.fields.push(f[i]);
+				}
+			} else {
+				this._createField(f);
+				this.fields.push(f);
+			}
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				this._collectFieldRefs(this.fields[i]);
+				this._checkFieldDepends(this.fields[i]);
+			}
+			
+			this._requestRender();
+			
+			return this.fields.length;
+		},
+		_create: function () {
+			
+			/*?
+			 *  flagrate.Form#element -> flagrate.Element
+			 *
+			 *  This is entity of Form container. it's flagrate.Element.
+			**/
+			this.element = new Element('form');
+			
+			if (this.id)        { this.element.writeAttribute('id', this.id); }
+			if (this.className) { this.element.writeAttribute('class', this.className); }
+			if (this.attribute) { this.element.writeAttribute(this.attribute); }
+			if (this.style)     { this.element.setStyle(this.style); }
+			
+			this.element.addClassName(flagrate.className + ' ' + flagrate.className + '-form');
+			
+			return this;
+		},
+		_requestRender: function () {
+			
+			if (this._renderTimer) { clearTimeout(this._renderTimer); }
+			this._renderTimer = setTimeout(this._render.bind(this), 0);
+			
+			return this;
+		},
+		_render: function () {
+			
+			var active = document.activeElement;
+			
+			var i, l, field;
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field._dependsIsOk === true) {
+					field._div.insertTo(this.element);
+				} else {
+					if (field.visible() === true) {
+						field._div.remove();
+					}
+				}
+			}
+			
+			if (active) {
+				active.focus();
+			}
+			
+			return this;
+		},
+		_collectFieldRefs: function (field) {
+			
+			field._refs = [];
+			
+			if (!field.key) {
+				return this;
+			}
+			
+			var i, l, j, m, fi;
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				fi = this.fields[i];
+				
+				if (field === fi || !fi.depends || fi.depends.length === 0) {
+					continue;
+				}
+				
+				for (j = 0, m = fi.depends.length; j < m; j++) {
+					if (field.key === fi.depends[j].key) {
+						field._refs.push(fi);
+						break;
+					}
+				}
+			}
+			
+			return this;
+		},
+		_compareDepend: function (d) {
+			
+			var f = this.getField(d.key);
+			
+			if (f === null) {
+				return false;
+			} else {
+				if (f._dependsIsOk === false) {
+					return false;
+				}
+				if (typeof d.val === 'undefined') {
+					return true;
+				}
+				if (d.operator) {
+					if (d.operator === '===' && d.val === f.getVal()) { return true; }
+					if (d.operator === '!==' && d.val !== f.getVal()) { return true; }
+					//if (d.operator === '==' && d.val == f.getVal()) { return true; }
+					//if (d.operator === '!=' && d.val != f.getVal()) { return true; }
+					if (d.operator === '>=' && d.val >= f.getVal()) { return true; }
+					if (d.operator === '<=' && d.val <= f.getVal()) { return true; }
+					if (d.operator === '>' && d.val > f.getVal()) { return true; }
+					if (d.operator === '<' && d.val < f.getVal()) { return true; }
+				} else {
+					if (d.val === f.getVal()) {
+						return true;
+					}
+				}
+			}
+			
+			return false;
+		},
+		_checkFieldDepends: function (field) {
+			
+			var depends = field.depends;
+			
+			if (!depends || depends.length === 0) {
+				field._dependsIsOk = true;
+				return true;
+			}
+			
+			var result = true;
+			var i, l, j, m, d, f, s;
+			
+			for (i = 0, l = depends.length; i < l; i++) {
+				d = depends[i];
+				
+				if (d instanceof Array) {
+					s = false;
+					
+					for (j = 0, m = d.length; j < m; i++) {
+						if (this._compareDepend(d[j]) === true) {
+							s = true;
+							break;
+						}
+					}
+					
+					if (s === false) {
+						result = false;
+						break;
+					}
+				} else {
+					if (this._compareDepend(d) === false) {
+						result = false;
+						break;
+					}
+				}
+			}
+			
+			field._dependsIsOk = result;
+			return result;
+		},
+		_createField: function (field) {
+			
+			field._dependsIsOk  = (!field.depends || field.depends.length === 0);
+			field._inputIsValid = null;
+			
+			// field container
+			field._div = new Element('div');
+			
+			// attributes to field container
+			if (field.id)        { field._div.writeAttribute('id', field.id); }
+			if (field.className) { field._div.writeAttribute('class', field.className); }
+			if (field.attribute) { field._div.writeAttribute(field.attribute); }
+			if (field.style)     { field._div.setStyle(field.style); }
+			
+			// create label
+			field._label = new Element('label').insertText(field.label || '');
+			new Element('div', {
+				'class': flagrate.className + '-form-field-label'
+			}).insert(field._label).insertTo(field._div);
+			
+			// icon to label
+			if (field.icon) {
+				field._label.addClassName(flagrate.className + '-icon');
+				field._label.setStyle({
+					backgroundImage: 'url(' + field.icon + ')'
+				});
+			}
+			
+			// input container
+			field._inputC = new Element('div').insertTo(field._div);
+			
+			// input ready?
+			if (field.input && field.input.type) {
+				if (typeof field.input.type === 'string') {
+					field.input._type = Form.inputType[field.input.type];
+				} else {
+					field.input._type = field.input.type;
+				}
+			}
+			
+			// init input
+			if (field.input && field.input._type) {
+				if (!field.input.id) {
+					field.input.id = flagrate.className + '-form-input-' + (++Form.idCounter);
+				}
+				
+				if (!field.input.option) { field.input.option = {}; }
+				
+				field._label.writeAttribute('for', field.input.id);
+				
+				field.input.element = field.input._type.create.call(field.input);
+				new Element('div', {
+					'class': flagrate.className + '-form-field-input'
+				}).insert(field.input.element).insertTo(field._inputC);
+				
+				field.input.element.writeAttribute('id', field.input.id);
+				
+				if (field.input.style) {
+					field.input.element.setStyle(field.input.style);
+				}
+				
+				// init validator
+				if (field.input.validators) {
+					field.input.validators.forEach(function (v, i) {
+						if (typeof v === 'string') {
+							field.input.validators[i] = flagrate.Form.inputValidator[v];
+						}
+					});
+				} else {
+					field.input.validators = [];
+				}
+				
+				// result block
+				field.input._result = new Element('ul', {
+					'class': flagrate.className + '-form-field-result'
+				}).insertTo(field._inputC);
+				
+				// etc
+				if (field.input.isRequired === true) {
+					field._div.addClassName(flagrate.className + '-required');
+				}
+			}
+			
+			// misc
+			if (field.element) {
+				new Element('div', {
+					'class': flagrate.className + '-form-field-element'
+				}).insert(field.element).insertTo(field._inputC);
+			}
+			if (field.html) {
+				new Element('div', {
+					'class': flagrate.className + '-form-field-html'
+				}).insert(field.html).insertTo(field._inputC);
+			}
+			if (field.text) {
+				new Element('p', {
+					'class': flagrate.className + '-form-field-text'
+				}).insertText(field.text).insertTo(field._inputC);
+			}
+			
+			// field methods
+			field.visible = function () {
+				return (field._div.parentNode !== null && field._div.parentNode === this.element);
+			}.bind(this);
+			
+			field.getVal = function () {
+				
+				if (!field.input) {
+					return void 0;
+				}
+				
+				var result = field.input._type.getVal.call(field.input);
+				
+				if (field.input.toString === true) {
+					result = result.toString();
+				}
+				
+				if (field.input.trim === true && typeof result === 'string') {
+					result = result.trim();
+				}
+				
+				if (field.input.toNumber === true && typeof result !== 'number') {
+					if (typeof result === 'string') {
+						result = parseFloat(result);
+					} else if (result instanceof Date) {
+						result = result.getTime();
+					} else if (typeof result === 'boolean') {
+						result = (result === true) ? 1 : 0;
+					}
+				}
+				
+				return result;
+			};
+			
+			field.setVal = function (val) {
+				
+				if (!field.input) {
+					return field;
+				}
+				
+				field.input._type.setVal.call(field.input, val);
+				
+				field._inputOnChange();
+				
+				return field;
+			};
+			
+			field.validate = function (callback) {
+				
+				var val = field.getVal();
+				
+				var hasError   = false;
+				var hasWarning = false;
+				
+				field.input._result.update();
+				
+				// simple validator
+				if (field.input.isRequired === true && !val && val !== 0) {
+					hasError = true;
+				}
+				if (field.input.min && field.input.min > val) {
+					hasError = true;
+				}
+				if (field.input.max && field.input.max < val) {
+					hasError = true;
+				}
+				if (field.input.minLength && field.input.minLength > (val.length || (val.toString && val.toString().length) || 0)) {
+					hasError = true;
+				}
+				if (field.input.maxLength && field.input.maxLength < (val.length || (val.toString && val.toString().length) || 0)) {
+					hasError = true;
+				}
+				
+				// validators
+				var q = [];
+				field.input.validators.forEach(function (v) {
+					q.push(v);
+				});
+				
+				var fin = function () {
+					if (field.input._result.innerHTML === '') {
+						field._div.removeClassName(flagrate.className + '-has-result');
+					} else {
+						field._div.addClassName(flagrate.className + '-has-result');
+					}
+					
+					if (hasError) {
+						field._div.removeClassName(flagrate.className + '-has-warning');
+						field._div.removeClassName(flagrate.className + '-has-success');
+						field._div.addClassName(flagrate.className + '-has-error');
+					} else if (hasWarning) {
+						field._div.removeClassName(flagrate.className + '-has-error');
+						field._div.removeClassName(flagrate.className + '-has-success');
+						field._div.addClassName(flagrate.className + '-has-warning');
+					} else {
+						field._div.removeClassName(flagrate.className + '-has-error');
+						field._div.removeClassName(flagrate.className + '-has-warning');
+						field._div.addClassName(flagrate.className + '-has-success');
+					}
+					
+					field._hasError   = hasError;
+					field._hasWarning = hasWarning;
+					
+					if (callback) { callback(!hasError); }
+				};
+				
+				var run;
+				
+				var done = function (result, message) {
+					
+					switch (result) {
+					case true:
+					case 'success':
+						break;
+					case null:
+					case 'warning':
+						hasWarning = true;
+						break;
+					case false:
+					case 'error':
+						hasError = true;
+						break;
+					}
+					
+					if (message) {
+						new Element('li').insertText(message).insertTo(field.input._result);
+					}
+					
+					run();
+				};
+				
+				run = function () {
+					
+					if (q.length === 0 || hasError === true) { return fin(); }
+					
+					var v = q.shift();
+					
+					if (typeof v === 'function') {
+						v.call(field.input, val, done);
+					} else {
+						if (v.regexp.test(val)) {
+							done(true, v.success);
+						} else {
+							done(false, v.error);
+						}
+					}
+				};
+				run();
+			};
+			
+			field._inputOnChange = function () {
+				
+				// validation
+				field.validate();
+				
+				// dependency
+				var rerend = false;
+				
+				field._refs.forEach(function (refField) {
+					if (refField._dependsIsOk !== this._checkFieldDepends(refField)) {
+						rerend = true;
+					}
+				}.bind(this));
+				
+				if (rerend === true) {
+					this._requestRender();
+				}
+			}.bind(this);
+			
+			// listen change event
+			if (field.input && field.input._type) {
+				var changeEvents = field.input._type.changeEvents || ['change'];
+				changeEvents.forEach(function (eventName) {
+					field.input.element.on(eventName, field._inputOnChange);
+				});
+			}
+			
+			return this;
+		}//<--_createField
+	};
+	
+	/*?
+	 *  flagrate.Form.inputValidator -> Object
+	 *
+	 *  #### Built-in validators
+	 *
+	 *  * numeric
+	 *  * alphanumeric
+	 *
+	 *  #### Basic validator
+	 *
+	 *      // success and error messages are optional
+	 *      { regexp: /RegExp/, success: 'String', error: 'String' }
+	 *      // warning state is not available in this way, see Advanced.
+	 *
+	 *  #### Advanced validator
+	 *
+	 *      // Sync or Async validation
+	 *      function (input, done) { done(result, message); }// message is optional
+	 *
+	 *      // Examples
+	 *      function (input, done) { done(true); }// success
+	 *      function (input, done) { done(null); }// warning
+	 *      function (input, done) { done(false); }// error
+	 *      function (input, done) { done('success'); }// success
+	 *      function (input, done) { done('warning'); }// warning
+	 *      function (input, done) { done('error'); }// error
+	 *      function (input, done) { done(true, '...'); }// success with message
+	 *      function (input, done) { done(null, '...'); }// warning with message
+	 *      function (input, done) { done(false, '...'); }// error with message
+	 *
+	 *  #### Example: adding error message to built-in validators
+	 *
+	 *      flagrate.Form.inputValidator.numeric.error = 'Please enter a numbers.';
+	 *      flagrate.Form.inputValidator.alphanumeric.error = 'Please enter a alphanumeric.';
+	 *
+	 *  #### Example: add the custom validator to Flagrate (to create plugin)
+	 *
+	 *      flagrate.Form.inputValidator.hostname = {
+	 *        regexp: /^[a-z0-9]+(-[a-z0-9]+)*(\.([a-z0-9]+(-[a-z0-9]+)*))*$/i,
+	 *        error: 'Please enter a valid hostname string.'
+	 *      };
+	**/
+	Form.inputValidator = {
+		numeric: {
+			regexp: /^[0-9]+$/
+		},
+		alphanumeric: {
+			regexp: /^[a-z0-9]+$/i
+		}
+	};
+	
+	/*?
+	 *  flagrate.Form.inputType -> Object
+	 *
+	 *  #### Built-in input types
+	 *
+	 *  * [text](#text) -> `String`
+	 *  * [password](#password) -> `String`
+	 *  * [textarea](#textarea) -> `String`
+	 *  * [number](#number) -> `Number`
+	**/
+	Form.inputType = {};
+	
+	/*?
+	 *  #### text
+	 *  most basic single-line text input. (uses flagrate.TextInput)
+	 *
+	 *  * `value`       (String):
+	 *  * `placeholder` (String):
+	 *  * `icon`        (String):
+	 *  * `maxLength`   (Number):
+	**/
+	Form.inputType.text = {
+		changeEvents: ['change', 'keyup'],
+		create: function () {
+			// return to define this.element
+			return new TextInput({
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				attribute  : {
+					maxlength: this.maxLength
+				}
+			});
+		},
+		getVal: function () {
+			return this.element.getValue();
+		},
+		setVal: function (value) {
+			this.element.setValue(value);
+		},
+		enable: function () {
+			this.element.enable();
+		},
+		disable: function () {
+			this.element.disable();
+		}
+	};
+	
+	/*?
+	 *  #### password
+	 *  password input. Almost the same to [text](#text).
+	**/
+	Form.inputType.password = {
+		changeEvents: ['change', 'keyup'],
+		create: function () {
+			return new TextInput({
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				attribute  : {
+					type     : 'password',
+					maxlength: this.maxLength
+				}
+			});
+		},
+		getVal: Form.inputType.text.getVal,
+		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### textarea
+	 *  textarea input. (uses flagrate.TextArea)
+	 *
+	 *  * `value`       (String):
+	 *  * `placeholder` (String):
+	 *  * `icon`        (String):
+	 *  * `maxLength`   (Number):
+	**/
+	Form.inputType.textarea = {
+		changeEvents: ['change', 'keyup'],
+		create: function () {
+			return new TextArea({
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				attribute  : {
+					maxlength: this.maxLength
+				}
+			});
+		},
+		getVal: Form.inputType.text.getVal,
+		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### number
+	 *  number input. (uses flagrate.TextInput)
+	 *
+	 *  * `value`       (String):
+	 *  * `placeholder` (String):
+	 *  * `icon`        (String):
+	 *  * `min`         (Number):
+	 *  * `max`         (Number):
+	 *  * `maxLength`   (Number):
+	**/
+	Form.inputType.number = {
+		changeEvents: ['change', 'keyup'],
+		create: function () {
+			return new TextInput({
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				attribute  : {
+					type     : 'number',
+					inputmode: 'numeric',
+					min      : this.min,
+					max      : this.max,
+					maxlength: this.maxLength
+				}
+			});
+		},
+		getVal: function () {
+			return parseFloat(this.element.getValue());
+		},
+		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
 	};
 	
 }());
