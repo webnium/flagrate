@@ -1324,13 +1324,16 @@ form.flagrate-form {
 			form.flagrate-form > div > div > p.flagrate-form-field-text {
 				margin     : 0;
 				padding    : 10px 0;
+				font-size  : 12px;
 				line-height: 1.4em; }
+
+			form.flagrate-form > div > div > p.flagrate-form-field-text {
+				white-space: pre-wrap; }
 
 			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(2),
 			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(3),
 			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(4),
 			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(5) {
 				padding    : 10px;
-				font-size  : 12px;
 				border-top : 1px solid #ddd;
 				background : #eee; }

@@ -5869,14 +5869,14 @@
 	 *  * `type`                     (String|Object; **required**): **[inputtype](#inputType)** String or Object
 	 *  * `option`                   (Object): *(see the options for each type)*
 	 *  * `isRequired`               (Boolean; default `false`):
-	 *  * `minNumber`                (Number): (simple validator)
-	 *  * `maxNumber`                (Number): (simple validator)
+	 *  * `min`                      (Number): (simple validator)
+	 *  * `max`                      (Number): (simple validator)
 	 *  * `minLength`                (Number): (simple validator)
 	 *  * `maxLength`                (Number): (simple validator)
 	 *  * `validators`               (Array): of **[inputValidator](#inputvalidator)** String or Object or Function.
 	 *  * `toString`                 (Boolean; default `false`):
 	 *  * `trim`                     (Boolean; default `false`):
-	 *  * `toNumbers`                (Boolean; default `false`):
+	 *  * `toNumber`                 (Boolean; default `false`):
 	 *
 	 *  #### depend
 	 *
@@ -5903,19 +5903,19 @@
 	 *        function (input, done) {
 	 *          someAsyncFunction(input, function (err, result) {
 	 *            if (err) {
-	 *              done('This hostname is already in use. (' + err + ')');
+	 *              done('error', 'This hostname is already in use. (' + err + ')');
 	 *            } else {
-	 *              done(true);
+	 *              done('success');
 	 *            }
 	 *          });
 	 *        },
 	 *        // using sync function:
-	 *        function (input) {
+	 *        function (input, done) {
 	 *          var err = someSyncFunction(input);
 	 *          if (err) {
-	 *            return 'This hostname is prohibited. (' + err + ')';
+	 *            done('error', 'This hostname is prohibited. (' + err + ')');
 	 *          } else {
-	 *            return true;
+	 *            done('success');
 	 *          }
 	 *        }
 	 *      ]
@@ -5956,6 +5956,141 @@
 		**/
 		insertTo: function (element) {
 			return this.element.insertTo(element) && this;
+		},
+		
+		/*?
+		 *  flagrate.Form#getResult() -> Object
+		 *
+		 *  Returns a result Object.
+		**/
+		getResult: function () {
+			
+			var result = {};
+			
+			var i, l, j, m, field, key, warping;
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if ((!field.key && !field.warp) || field.visible() === false) { continue; }
+				
+				if (field.warp) {
+					if (typeof field.warp === 'string') {
+						key = field.warp;
+					} else if (field.warp instanceof Array) {
+						warping = result;
+						for (j = 0, m = field.warp.length; j < m; j++) {
+							if (!warping[field.warp[j]]) {
+								warping[field.warp[j]] = {};
+							}
+							
+							if (j === m - 1) {
+								warping[field.warp[j]] = field.getVal();
+							} else {
+								warping = warping[field.warp[j]];
+							}
+						}
+						continue;
+					} else {
+						key = field.key;
+					}
+				} else {
+					key = field.key;
+				}
+				
+				if (!key) { continue; }
+				
+				result[key] = field.getVal();
+			}
+			
+			return result;
+		},
+		
+		/*?
+		 *  flagrate.Form#validate(done) -> flagrate.Form
+		 *  - done (Function) - callback when the validation is done.
+		 *
+		 *  #### Example
+		 *
+		 *      form.validate(function(success) {
+		 *        if (success) {
+		 *          console.log('form is valid.');
+		 *        } else {
+		 *          console.log('form is invalid.');
+		 *        }
+		 *      });
+		**/
+		validate: function (callback) {
+			
+			var i, l, j, m, field, fields = [], run;
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field.input && field.input._type) {
+					fields.push(field);
+				}
+			}
+			
+			var hasError = false;
+			
+			var fin = function () {
+				if (callback) { callback(!hasError); }
+			};
+			
+			var done = function (result) {
+				
+				if (result === false) {
+					hasError = true;
+				}
+				
+				run();
+			};
+			
+			run = function () {
+				
+				if (fields.length === 0 || hasError === true) { return fin(); }
+				
+				fields.shift().validate(done);
+			};
+			run();
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.Form#enable() -> flagrate.Form
+		**/
+		enable: function () {
+			
+			var i, l, field;
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field.input && field.input._type) {
+					field.input._type.enable.call(field.input);
+				}
+			}
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.Form#disable() -> flagrate.Form
+		**/
+		disable: function () {
+			
+			var i, l, field;
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				field = this.fields[i];
+				
+				if (field.input && field.input._type) {
+					field.input._type.disable.call(field.input);
+				}
+			}
+			
+			return this;
 		},
 		
 		/*?
@@ -6207,6 +6342,10 @@
 				
 				field.input.element.writeAttribute('id', field.input.id);
 				
+				if (field.input.style) {
+					field.input.element.setStyle(field.input.style);
+				}
+				
 				// init validator
 				if (field.input.validators) {
 					field.input.validators.forEach(function (v, i) {
@@ -6267,7 +6406,7 @@
 					result = result.trim();
 				}
 				
-				if (field.input.toNumbers === true && typeof result !== 'number') {
+				if (field.input.toNumber === true && typeof result !== 'number') {
 					if (typeof result === 'string') {
 						result = parseFloat(result);
 					} else if (result instanceof Date) {
@@ -6293,7 +6432,7 @@
 				return field;
 			};
 			
-			field.validate = function () {
+			field.validate = function (callback) {
 				
 				var val = field.getVal();
 				
@@ -6304,6 +6443,18 @@
 				
 				// simple validator
 				if (field.input.isRequired === true && !val && val !== 0) {
+					hasError = true;
+				}
+				if (field.input.min && field.input.min > val) {
+					hasError = true;
+				}
+				if (field.input.max && field.input.max < val) {
+					hasError = true;
+				}
+				if (field.input.minLength && field.input.minLength > (val.length || (val.toString && val.toString().length) || 0)) {
+					hasError = true;
+				}
+				if (field.input.maxLength && field.input.maxLength < (val.length || (val.toString && val.toString().length) || 0)) {
 					hasError = true;
 				}
 				
@@ -6333,6 +6484,11 @@
 						field._div.removeClassName(flagrate.className + '-has-warning');
 						field._div.addClassName(flagrate.className + '-has-success');
 					}
+					
+					field._hasError   = hasError;
+					field._hasWarning = hasWarning;
+					
+					if (callback) { callback(!hasError); }
 				};
 				
 				var run;
@@ -6415,7 +6571,7 @@
 	 *
 	 *  #### Built-in validators
 	 *
-	 *  * numbers
+	 *  * numeric
 	 *  * alphanumeric
 	 *
 	 *  #### Basic validator
@@ -6442,7 +6598,7 @@
 	 *
 	 *  #### Example: adding error message to built-in validators
 	 *
-	 *      flagrate.Form.inputValidator.numbers.error = 'Please enter a numbers.';
+	 *      flagrate.Form.inputValidator.numeric.error = 'Please enter a numbers.';
 	 *      flagrate.Form.inputValidator.alphanumeric.error = 'Please enter a alphanumeric.';
 	 *
 	 *  #### Example: add the custom validator to Flagrate (to create plugin)
@@ -6453,7 +6609,7 @@
 	 *      };
 	**/
 	Form.inputValidator = {
-		numbers: {
+		numeric: {
 			regexp: /^[0-9]+$/
 		},
 		alphanumeric: {
@@ -6466,9 +6622,10 @@
 	 *
 	 *  #### Built-in input types
 	 *
-	 *  * text -> String
-	 *  * password -> String
-	 *  * textarea -> String
+	 *  * [text](#text) -> `String`
+	 *  * [password](#password) -> `String`
+	 *  * [textarea](#textarea) -> `String`
+	 *  * [number](#number) -> `Number`
 	**/
 	Form.inputType = {};
 	
@@ -6479,15 +6636,19 @@
 	 *  * `value`       (String):
 	 *  * `placeholder` (String):
 	 *  * `icon`        (String):
+	 *  * `maxLength`   (Number):
 	**/
 	Form.inputType.text = {
 		changeEvents: ['change', 'keyup'],
 		create: function () {
 			// return to define this.element
 			return new TextInput({
-				value      : this.option.value,
-				placeholder: this.option.placeholder,
-				icon       : this.option.icon
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				attribute  : {
+					maxlength: this.maxLength
+				}
 			});
 		},
 		getVal: function () {
@@ -6512,11 +6673,12 @@
 		changeEvents: ['change', 'keyup'],
 		create: function () {
 			return new TextInput({
-				value      : this.option.value,
-				placeholder: this.option.placeholder,
-				icon       : this.option.icon,
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
 				attribute  : {
-					type: 'password'
+					type     : 'password',
+					maxlength: this.maxLength
 				}
 			});
 		},
@@ -6533,17 +6695,56 @@
 	 *  * `value`       (String):
 	 *  * `placeholder` (String):
 	 *  * `icon`        (String):
+	 *  * `maxLength`   (Number):
 	**/
 	Form.inputType.textarea = {
 		changeEvents: ['change', 'keyup'],
 		create: function () {
 			return new TextArea({
-				value      : this.option.value,
-				placeholder: this.option.placeholder,
-				icon       : this.option.icon
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				attribute  : {
+					maxlength: this.maxLength
+				}
 			});
 		},
 		getVal: Form.inputType.text.getVal,
+		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### number
+	 *  number input. (uses flagrate.TextInput)
+	 *
+	 *  * `value`       (String):
+	 *  * `placeholder` (String):
+	 *  * `icon`        (String):
+	 *  * `min`         (Number):
+	 *  * `max`         (Number):
+	 *  * `maxLength`   (Number):
+	**/
+	Form.inputType.number = {
+		changeEvents: ['change', 'keyup'],
+		create: function () {
+			return new TextInput({
+				value      : this.value,
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				attribute  : {
+					type     : 'number',
+					inputmode: 'numeric',
+					min      : this.min,
+					max      : this.max,
+					maxlength: this.maxLength
+				}
+			});
+		},
+		getVal: function () {
+			return parseFloat(this.element.getValue());
+		},
 		setVal: Form.inputType.text.setVal,
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
