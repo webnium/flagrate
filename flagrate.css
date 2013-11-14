@@ -377,6 +377,36 @@ div.flagrate-tokenizer:hover {
 	color             : #000;
 	outline           : none; }
 
+.flagrate-has-success input.flagrate-textinput,
+.flagrate-has-success textarea.flagrate-textarea,
+.flagrate-has-success div.flagrate-tokenizer {
+	border-color: #449b44; }
+
+.flagrate-has-success input.flagrate-textinput:focus,
+.flagrate-has-success textarea.flagrate-textarea:focus,
+.flagrate-has-success div.flagrate-tokenizer:focus {
+	border-color: #5bb75b; }
+
+.flagrate-has-warning input.flagrate-textinput,
+.flagrate-has-warning textarea.flagrate-textarea,
+.flagrate-has-warning div.flagrate-tokenizer {
+	border-color: #e08505; }
+
+.flagrate-has-warning input.flagrate-textinput:focus,
+.flagrate-has-warning textarea.flagrate-textarea:focus,
+.flagrate-has-warning div.flagrate-tokenizer:focus {
+	border-color: #faa732; }
+
+.flagrate-has-error input.flagrate-textinput,
+.flagrate-has-error textarea.flagrate-textarea,
+.flagrate-has-error div.flagrate-tokenizer {
+	border-color: #b82b27; }
+
+.flagrate-has-error input.flagrate-textinput:focus,
+.flagrate-has-error textarea.flagrate-textarea:focus,
+.flagrate-has-error div.flagrate-tokenizer:focus {
+	border-color: #d2322d; }
+
 div.flagrate-tokenizer {
 	cursor            : text;
 	padding           : 0px 4px 3px 2px;
@@ -1205,3 +1235,105 @@ div.flagrate-grid.flagrate-grid-fill {
 			content: '\3009'; }
 		
 		div.flagrate-grid > div.flagrate-grid-pager > span.flagrate-grid-pager-num { }
+
+form.flagrate-form {
+	display         : block;
+	overflow        : visible;
+	background-color: #fff;
+	padding         : 0; }
+
+	form.flagrate-form > div {
+		display     : table;
+		table-layout: fixed;
+		width       : 100%;
+		padding     : 0;
+		border-top  : 1px solid #ccc; }
+
+	form.flagrate-form > div:first-child {
+		border-top: none; }
+	
+		form.flagrate-form > div > * {
+			display       : table-cell;
+			padding       : 0;
+			vertical-align: middle; }
+	
+		form.flagrate-form > div > div.flagrate-form-field-label {
+			margin        : 0;
+			padding       : 0;
+			width         : 25%;
+			text-align    : right; }
+		
+			form.flagrate-form > div > div.flagrate-form-field-label > label {
+				padding    : 10px;
+				display    : inline-block;
+				line-height: 16px;
+				word-break : break-all;
+				font-weight: bold; }
+		
+			form.flagrate-form > div > div.flagrate-form-field-label > label.flagrate-icon {
+				padding-left: 25px; }
+		
+			form.flagrate-form > div.flagrate-required > div.flagrate-form-field-label > label::after {
+				color    : #d2322d;
+				margin   : 0 0 0 2px;
+				font-size: 12px;
+				content  : '*'; }
+
+			form.flagrate-form > div > div > div {
+				padding    : 10px 0; }
+
+			form.flagrate-form > div > div > ul.flagrate-form-field-result {
+				margin     : 0;
+				line-height: 1.4em;
+				font-size  : 12px;
+				color      : #555;
+				background : #fff;
+				margin     : 0;
+				padding    : 0;
+				overflow   : hidden;
+				height     : 0;
+				max-height : 0;
+				opacity    : 0;
+				list-style : disc inside;
+				transition : opacity 0.3s ease, max-height 0.2s ease, height 0.2s ease; }
+
+			form.flagrate-form > div.flagrate-has-result > div > ul.flagrate-form-field-result {
+				padding    : 10px;
+				overflow   : visible;
+				height     : auto;
+				max-height : 100px;
+				border-top : 1px solid #ddd;
+				opacity    : 1; }
+
+			form.flagrate-form > div.flagrate-has-success > div > ul.flagrate-form-field-result {
+				color       : #449B44;
+				background  : #e2f2e2;
+				border-color: #cde9cd; }
+
+			form.flagrate-form > div.flagrate-has-warning > div > ul.flagrate-form-field-result {
+				color       : #faa732;
+				background  : #fef4e6;
+				border-color: #fde3be; }
+
+			form.flagrate-form > div.flagrate-has-error > div > ul.flagrate-form-field-result {
+				color       : #d2322d;
+				background  : #fbeeee;
+				border-color: #f5d6d5; }
+
+			form.flagrate-form > div > div > div.flagrate-form-field-html,
+			form.flagrate-form > div > div > p.flagrate-form-field-text {
+				margin     : 0;
+				padding    : 10px 0;
+				font-size  : 12px;
+				line-height: 1.4em; }
+
+			form.flagrate-form > div > div > p.flagrate-form-field-text {
+				white-space: pre-wrap; }
+
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(2),
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(3),
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(4),
+			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(5) {
+				padding    : 10px;
+				border-top : 1px solid #ddd;
+				background : #eee; }

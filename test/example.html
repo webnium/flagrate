@@ -581,6 +581,117 @@
 				}
 			]
 		}).insertTo(c);
+		
+		// Form
+		var form = flagrate.createForm({
+			fields: [
+				{
+					key  : 'id',
+					warp : ['user', 'id'],
+					label: 'User ID',
+					input: {
+						type       : 'text',
+						placeholder: 'hoge',
+						isRequired : true,
+						icon       : 'icon.png',
+						style      : { width: '100px' },
+						maxLength  : 16,
+						validators : [
+							'alphanumeric',
+							{
+								regexp : /.{4,16}/,
+								success: 'ID looks great.',
+								error  : 'ID must be at least 4 characters.'
+							}
+						]
+					}
+				},
+				{
+					label: 'Welcome',
+					text : 'Hi, We are waiting for you!',
+					depends: [
+						{
+							key: 'id',
+							operator: '!==',
+							val: ''
+						}
+					]
+				},
+				{
+					key   : 'password',
+					warp  : ['user', 'password'],
+					label : 'User Password',
+					text  : 'Very long password please.\nNG: `password` `12345678` `qwertyui`',
+					input : {
+						type       : 'password',
+						placeholder: 'Password',
+						isRequired : true,
+						minLength  : 6,
+						maxLength  : 128,
+						validators : [
+							function (input, done) {
+								if (['password', '12345678', 'qwertyui'].indexOf(input) !== -1) {
+									done('error', '`' + input + '` huh?');
+								} else if (input.length < 8) {
+									done('warning', 'Too short. (' + (input.length - 8) + ')');
+								} else if (input.length > 16) {
+									done('success', 'Very long!');
+								} else {
+									done('success', 'ok.');
+								}
+							}
+						]
+					}
+				},
+				{
+					key  : 'age',
+					warp : ['user', 'age'],
+					label: 'Your Age',
+					text : '16~18',
+					input: {
+						type      : 'number',
+						min       : 16,
+						max       : 18,
+						value     : 16,
+						validators: ['numeric'],
+						style     : { width: '50px' }
+					}
+				},
+				{
+					key  : 'comment',
+					label: 'Comment',
+					icon : 'icon.png',
+					input: {
+						type       : 'textarea',
+						placeholder: 'Blah.'
+					}
+				}
+			]
+		}).insertTo(c);
+		
+		flagrate.createButton({
+			color   : '@lightblue',
+			label   : '#enable',
+			onSelect: function () { form.enable(); }
+		}).insertTo(c);
+		
+		flagrate.createButton({
+			color   : '@lightblue',
+			label   : '#disable',
+			onSelect: function () { form.disable(); }
+		}).insertTo(c);
+		
+		flagrate.createButton({
+			color   : '@lightblue',
+			label   : '#getResult (see console.log)',
+			onSelect: function () { console.log(form.getResult()); }
+		}).insertTo(c);
+		
+		flagrate.createButton({
+			color   : '@lightblue',
+			label   : '#validate (see console.log)',
+			onSelect: function () { form.validate(function (a) { console.log(a); }); }
+		}).insertTo(c);
 	</script>
 </body>
 </html>
