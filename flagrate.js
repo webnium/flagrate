@@ -539,9 +539,7 @@
 			insertion = { bottom: insertion };
 		}
 		
-		var content, insert, childNodes;
-		
-		var position;
+		var position, content, insert, div;
 		for (position in insertion) {
 			if (insertion.hasOwnProperty(position)) {
 				content  = insertion[position];
@@ -555,12 +553,11 @@
 				
 				if (typeof content !== 'string') { content = content.toString(10); }
 				
-				var div = new Element();
+				div = new Element();
 				div.innerHTML = content;
-				if (position === 'top' || position === 'after') { childNodes.reverse(); }
-				var i;
-				for (i = 0; i < div.childNodes.length; i++) {
-					insert(element, div.childNodes[i]);
+				if (position === 'top' || position === 'after') { div.childNodes.reverse(); }
+				while (div.childNodes.length !== 0) {
+					insert(element, div.childNodes[0]);
 				}
 			}
 		}
@@ -582,9 +579,7 @@
 			insertion = { bottom: insertion };
 		}
 		
-		var content, insert;
-		
-		var position;
+		var position, content, insert;
 		for (position in insertion) {
 			if (insertion.hasOwnProperty(position)) {
 				content  = insertion[position];
