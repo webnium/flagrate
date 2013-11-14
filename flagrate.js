@@ -5856,7 +5856,7 @@
 	 *  #### field
 	 *  
 	 *  * `key`                      (String):
-	 *  * `warps`                    (String; experimental):
+	 *  * `warp`                     (String|Array; experimental):
 	 *  * `label`                    (String; default `""`):
 	 *  * `icon`                     (String):
 	 *  * `text`                     (String):
@@ -5874,13 +5874,14 @@
 	 *  * `type`                     (String|Object; **required**): **[inputtype](#inputType)** String or Object
 	 *  * `option`                   (Object): *(see the options for each type)*
 	 *  * `isRequired`               (Boolean; default `false`):
-	 *  * `minNumber`                (Number):
-	 *  * `maxNumber`                (Number):
-	 *  * `minLength`                (Number):
-	 *  * `maxLength`                (Number):
+	 *  * `minNumber`                (Number): (simple validator)
+	 *  * `maxNumber`                (Number): (simple validator)
+	 *  * `minLength`                (Number): (simple validator)
+	 *  * `maxLength`                (Number): (simple validator)
 	 *  * `validators`               (Array): of **[inputValidator](#inputvalidator)** String or Object or Function.
-	 *  * `toNumber`                 (Boolean; default `false`):
+	 *  * `toString`                 (Boolean; default `false`):
 	 *  * `trim`                     (Boolean; default `false`):
+	 *  * `toNumbers`                (Boolean; default `false`):
 	 *
 	 *  #### depend
 	 *
@@ -6083,6 +6084,37 @@
 			
 			return this;
 		},
+		_compareDepend: function (d) {
+			
+			var f = this.getField(d.key);
+			
+			if (f === null) {
+				return false;
+			} else {
+				if (f._dependsIsOk === false) {
+					return false;
+				}
+				if (typeof d.val === 'undefined') {
+					return true;
+				}
+				if (d.operator) {
+					if (d.operator === '===' && d.val === f.getVal()) { return true; }
+					if (d.operator === '!==' && d.val !== f.getVal()) { return true; }
+					//if (d.operator === '==' && d.val == f.getVal()) { return true; }
+					//if (d.operator === '!=' && d.val != f.getVal()) { return true; }
+					if (d.operator === '>=' && d.val >= f.getVal()) { return true; }
+					if (d.operator === '<=' && d.val <= f.getVal()) { return true; }
+					if (d.operator === '>' && d.val > f.getVal()) { return true; }
+					if (d.operator === '<' && d.val < f.getVal()) { return true; }
+				} else {
+					if (d.val === f.getVal()) {
+						return true;
+					}
+				}
+			}
+			
+			return false;
+		},
 		_checkFieldDepends: function (field) {
 			
 			var depends = field.depends;
@@ -6093,41 +6125,29 @@
 			}
 			
 			var result = true;
-			var i, l, d, f;
+			var i, l, j, m, d, f, s;
 			
 			for (i = 0, l = depends.length; i < l; i++) {
 				d = depends[i];
 				
 				if (d instanceof Array) {
+					s = false;
 					
-				} else {
-					f = this.getField(d.key);
-					if (f === null) {
-						result = false;
-						break;
-					} else {
-						if (f._dependsIsOk === false) {
-							result = false;
+					for (j = 0, m = d.length; j < m; i++) {
+						if (this._compareDepend(d[j]) === true) {
+							s = true;
 							break;
 						}
-						if (typeof d.val === 'undefined') {
-							continue;
-						}
-						if (d.operator) {
-							if (d.operator === '===' && d.val === f.getVal()) { continue; }
-							if (d.operator === '!==' && d.val !== f.getVal()) { continue; }
-							//if (d.operator === '==' && d.val == f.getVal()) { continue; }
-							//if (d.operator === '!=' && d.val != f.getVal()) { continue; }
-							if (d.operator === '>=' && d.val >= f.getVal()) { continue; }
-							if (d.operator === '<=' && d.val <= f.getVal()) { continue; }
-							if (d.operator === '>' && d.val > f.getVal()) { continue; }
-							if (d.operator === '<' && d.val < f.getVal()) { continue; }
-						} else {
-							if (d.val !== f.getVal()) {
-								result = false;
-								break;
-							}
-						}
+					}
+					
+					if (s === false) {
+						result = false;
+						break;
+					}
+				} else {
+					if (this._compareDepend(d) === false) {
+						result = false;
+						break;
 					}
 				}
 			}
@@ -6192,9 +6212,20 @@
 				
 				field.input.element.writeAttribute('id', field.input.id);
 				
-				// error block
-				field.input._error = new Element('ul', {
-					'class': flagrate.className + '-form-field-error'
+				// init validator
+				if (field.input.validators) {
+					field.input.validators.forEach(function (v, i) {
+						if (typeof v === 'string') {
+							field.input.validators[i] = flagrate.Form.inputValidator[v];
+						}
+					});
+				} else {
+					field.input.validators = [];
+				}
+				
+				// result block
+				field.input._result = new Element('ul', {
+					'class': flagrate.className + '-form-field-result'
 				}).insertTo(field._inputC);
 				
 				// etc
@@ -6233,9 +6264,15 @@
 				
 				var result = field.input._type.getVal.call(field.input);
 				
-				//trim...!
+				if (field.input.toString === true) {
+					result = result.toString();
+				}
 				
-				if (field.input.toNumber === true && typeof result !== 'number') {
+				if (field.input.trim === true && typeof result === 'string') {
+					result = result.trim();
+				}
+				
+				if (field.input.toNumbers === true && typeof result !== 'number') {
 					if (typeof result === 'string') {
 						result = parseFloat(result);
 					} else if (result instanceof Date) {
@@ -6261,17 +6298,107 @@
 				return field;
 			};
 			
+			field.validate = function () {
+				
+				var val = field.getVal();
+				
+				var hasError   = false;
+				var hasWarning = false;
+				
+				field.input._result.update();
+				
+				// simple validator
+				if (field.input.isRequired === true && !val && val !== 0) {
+					hasError = true;
+				}
+				
+				// validators
+				var q = [];
+				field.input.validators.forEach(function (v) {
+					q.push(v);
+				});
+				
+				var fin = function () {
+					if (field.input._result.innerHTML === '') {
+						field._div.removeClassName(flagrate.className + '-has-result');
+					} else {
+						field._div.addClassName(flagrate.className + '-has-result');
+					}
+					
+					if (hasError) {
+						field._div.removeClassName(flagrate.className + '-has-warning');
+						field._div.removeClassName(flagrate.className + '-has-success');
+						field._div.addClassName(flagrate.className + '-has-error');
+					} else if (hasWarning) {
+						field._div.removeClassName(flagrate.className + '-has-error');
+						field._div.removeClassName(flagrate.className + '-has-success');
+						field._div.addClassName(flagrate.className + '-has-warning');
+					} else {
+						field._div.removeClassName(flagrate.className + '-has-error');
+						field._div.removeClassName(flagrate.className + '-has-warning');
+						field._div.addClassName(flagrate.className + '-has-success');
+					}
+				};
+				
+				var run;
+				
+				var done = function (result, message) {
+					
+					switch (result) {
+					case true:
+					case 'success':
+						break;
+					case null:
+					case 'warning':
+						hasWarning = true;
+						break;
+					case false:
+					case 'error':
+						hasError = true;
+						break;
+					}
+					
+					if (message) {
+						new Element('li').insertText(message).insertTo(field.input._result);
+					}
+					
+					run();
+				};
+				
+				run = function () {
+					
+					if (q.length === 0 || hasError === true) { return fin(); }
+					
+					var v = q.shift();
+					
+					if (typeof v === 'function') {
+						v.call(field.input, val, done);
+					} else {
+						if (v.regexp.test(val)) {
+							done(true, v.success);
+						} else {
+							done(false, v.error);
+						}
+					}
+				};
+				run();
+			};
+			
 			field._inputOnChange = function () {
 				
-				var re = false;
+				// validation
+				field.validate();
+				
+				// dependency
+				var rerend = false;
 				
 				field._refs.forEach(function (refField) {
 					if (refField._dependsIsOk !== this._checkFieldDepends(refField)) {
-						re = true;
+						rerend = true;
 					}
 				}.bind(this));
 				
-				if (re === true) {
+				if (rerend === true) {
 					this._requestRender();
 				}
 			}.bind(this);
@@ -6298,21 +6425,32 @@
 	 *
 	 *  #### Basic validator
 	 *
-	 *      { regexp: /RegExp/, error: 'String' }
+	 *      // success and error messages are optional
+	 *      { regexp: /RegExp/, success: 'String', error: 'String' }
+	 *      // warning state is not available in this way, see Advanced.
 	 *
 	 *  #### Advanced validator
 	 *
-	 *      // Sync
-	 *      function (input) { return errorString || true; }
-	 *      // Async
-	 *      function (input, done) { done(errorString || true); }
+	 *      // Sync or Async validation
+	 *      function (input, done) { done(result, message); }// message is optional
 	 *
-	 *  #### Example: overwrite built-in validators error message
+	 *      // Examples
+	 *      function (input, done) { done(true); }// success
+	 *      function (input, done) { done(null); }// warning
+	 *      function (input, done) { done(false); }// error
+	 *      function (input, done) { done('success'); }// success
+	 *      function (input, done) { done('warning'); }// warning
+	 *      function (input, done) { done('error'); }// error
+	 *      function (input, done) { done(true, '...'); }// success with message
+	 *      function (input, done) { done(null, '...'); }// warning with message
+	 *      function (input, done) { done(false, '...'); }// error with message
 	 *
-	 *      flagrate.Form.inputValidator.numbers.error = '数字を入力してください';
-	 *      flagrate.Form.inputValidator.alphanumeric.error = 'what?';
+	 *  #### Example: adding error message to built-in validators
 	 *
-	 *  #### Example: add the custom validators to Flagrate (to create plugin)
+	 *      flagrate.Form.inputValidator.numbers.error = 'Please enter a numbers.';
+	 *      flagrate.Form.inputValidator.alphanumeric.error = 'Please enter a alphanumeric.';
+	 *
+	 *  #### Example: add the custom validator to Flagrate (to create plugin)
 	 *
 	 *      flagrate.Form.inputValidator.hostname = {
 	 *        regexp: /^[a-z0-9]+(-[a-z0-9]+)*(\.([a-z0-9]+(-[a-z0-9]+)*))*$/i,
@@ -6321,12 +6459,10 @@
 	**/
 	Form.inputValidator = {
 		numbers: {
-			regexp: /^[0-9]+$/,
-			error: 'Please enter a numbers.'
+			regexp: /^[0-9]+$/
 		},
 		alphanumeric: {
-			regexp: /^[a-z0-9]+$/i,
-			error: 'Please enter a alphanumeric.'
+			regexp: /^[a-z0-9]+$/i
 		}
 	};
 	
@@ -6350,6 +6486,7 @@
 	 *  * `icon`        (String):
 	**/
 	Form.inputType.text = {
+		changeEvents: ['change', 'keyup'],
 		create: function () {
 			// return to define this.element
 			return new TextInput({
@@ -6377,6 +6514,7 @@
 	 *  password input. Almost the same to [text](#text).
 	**/
 	Form.inputType.password = {
+		changeEvents: ['change', 'keyup'],
 		create: function () {
 			return new TextInput({
 				value      : this.option.value,
@@ -6402,6 +6540,7 @@
 	 *  * `icon`        (String):
 	**/
 	Form.inputType.textarea = {
+		changeEvents: ['change', 'keyup'],
 		create: function () {
 			return new TextArea({
 				value      : this.option.value,

@@ -596,16 +596,31 @@
 					}
 				},
 				{
-					key  : 'passwordInput',
-					label: 'Password input',
-					text : 'Strong password please.',
-					input: {
+					key   : 'passwordInput',
+					altKey: ['password'],
+					warps : ['Server', ''],
+					label : 'Password input',
+					html  : 'Strong password please.<br>do not use `password` `12345678` `qwertyui`',
+					input : {
 						type  : 'password',
 						option: {
 							placeholder: 'placeholder',
 							icon       : 'icon.png'
 						},
-						isRequired: true
+						isRequired: true,
+						minLength : 8,
+						maxLength : 128,
+						validators: [
+							function (input, done) {
+								if (['password', '12345678', 'qwertyui'].indexOf(input) !== -1) {
+									done('error', '`' + input + '` huh?');
+								} else if (input === 'murasaki') {
+									done('error', '`' + input + '` huh?');
+								}else {
+									done('success', 'this is ok');
+								}
+							}
+						]
 					}
 				},
 				{
@@ -617,6 +632,15 @@
 						option: {
 							placeholder: 'placeholder'
 						}
+					}
+				},
+				{
+					key  : 'numbers',
+					label: 'Numbers',
+					input: {
+						type      : 'text',
+						toNumbers : true,
+						validators: ['numbers']
 					}
 				},
 				{
