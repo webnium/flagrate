@@ -579,9 +579,7 @@
 			insertion = { bottom: insertion };
 		}
 		
-		var content, insert;
-		
-		var position;
+		var position, content, insert;
 		for (position in insertion) {
 			if (insertion.hasOwnProperty(position)) {
 				content  = insertion[position];
