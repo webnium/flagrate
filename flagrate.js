@@ -6048,7 +6048,7 @@
 		},
 		
 		/*?
-		 *  flagrate.Form#validate(done) -> flagrate.Form
+		 *  flagrate.Form#validate([done]) -> flagrate.Form
 		 *  - done (Function) - callback when the validation is done.
 		 *
 		 *  #### Example
