@@ -2492,12 +2492,17 @@
 		this.max      = opt.max      || -1;
 		this.onChange = opt.onChange || emptyFunction;
 		
+		/*?
+		 *  flagrate.Select#selectedIndexes -> Array
+		 *  readonly property.
+		 *
+		 *  flagrate.Select#selectedIndex -> Number
+		 *  readonly property.
+		**/
 		if (this.multiple) {
 			this.selectedIndexes = opt.selectedIndexes || [];
-			this.values          = [];
 		} else {
 			this.selectedIndex = opt.selectedIndex || -1;
-			this.value         = null;
 		}
 		
 		var attr = opt.attribute || {};
@@ -2512,19 +2517,27 @@
 		
 		//create
 		var that = new Element('div', attr);
+		
+		var createOnSelectHandler = function (i) {
+			
+			return function () {
+				that.select(i);
+			};
+		};
+		
+		var createOnDeselectHandler = function (i) {
+			
+			return function () {
+				that.deselect(i);
+			};
+		};
+		
 		if (this.isPulldown) {
 			that._pulldown = new Pulldown({
 				label    : '-',
 				items    : (function () {
 					
 					var items = [];
-					
-					var createOnSelectHandler = function (i) {
-						
-						return function () {
-							that.select(i);
-						};
-					};
 					
 					var i, l;
 					for (i = 0, l = this.items.length; i < l; i++) {
@@ -2551,13 +2564,6 @@
 					
 					var rows = [];
 					
-					var createOnSelectHandler = function (i) {
-						
-						return function () {
-							that.select(i);
-						};
-					};
-					
 					var i, l;
 					for (i = 0, l = this.items.length; i < l; i++) {
 						rows.push({
@@ -2567,7 +2573,8 @@
 									icon: this.items[i].icon
 								}
 							},
-							onSelect: createOnSelectHandler(i)
+							onSelect: createOnSelectHandler(i),
+							onDeselect: createOnDeselectHandler(i)
 						});
 					}
 					
@@ -2579,8 +2586,6 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-select');
 		if (opt.className) { that.addClassName(opt.className); }
-		
-		that.on('click', that._onClickHandler.bind(that));
 		
 		if (opt.style) { that.setStyle(opt.style); }
 		
@@ -2613,6 +2618,7 @@
 			if (this.items.length <= index) { return this; }
 			
 			if (this.multiple) {
+				if (this.max > -1 && this.selectedIndex.length >= this.max) { return this; } 
 				this.selectedIndexes.push(index);
 			} else {
 				this.selectedIndex = index;
@@ -2621,6 +2627,28 @@
 			if (this.isPulldown) {
 				this._pulldown.setLabel(this.items[index].label);
 				this._pulldown.setIcon(this.items[index].icon);
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#deselect([item]) -> flagrate.Select
+		 *  - item (Number) - Index number of item.
+		**/
+		deselect: function (index) {
+			
+			if (this.items.length <= index) { return this; }
+			
+			if (this.multiple) {
+				this.selectedIndexes.splice(this.selectedIndexes.indexOf(index), 1);
+			} else {
+				this.selectedIndex = -1;
+			}
+			
+			if (this.isPulldown) {
+				this._pulldown.setLabel('-');
+				this._pulldown.setIcon(null);
 			}
 			
 			return this;
@@ -2665,11 +2693,25 @@
 			return !this.hasClassName(flagrate.className + '-disabled');
 		}
 		,
-		_onClickHandler: function (e) {
+		/*?
+		 *  flagrate.Select#getValue() -> any
+		**/
+		getValue: function () {
+			return this.items[this.selectedIndex].value;
+		}
+		,
+		/*?
+		 *  flagrate.Select#getValues() -> Array
+		**/
+		getValues: function () {
 			
+			var i, l, result = [];
 			
+			for (i = 0, l = this.selectedIndexes.length; i < l; i++) {
+				result.push(this.items[this.selectedIndexes[i]].value);
+			}
 			
-			return this;
+			return result;
 		}
 	};
 	
