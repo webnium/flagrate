@@ -5924,7 +5924,7 @@
 	 *
 	 *  * `key`                      (String; **required**):
 	 *  * `val`                      (any):
-	 *  * `operator`                 (String):
+	 *  * `op`                       (String): `===`, `!==`, `>=`, `<=`, `>`, `<`
 	 *
 	 *  #### inputType
 	 *
@@ -6269,15 +6269,15 @@
 				if (typeof d.val === 'undefined') {
 					return true;
 				}
-				if (d.operator) {
-					if (d.operator === '===' && d.val === f.getVal()) { return true; }
-					if (d.operator === '!==' && d.val !== f.getVal()) { return true; }
-					//if (d.operator === '==' && d.val == f.getVal()) { return true; }
-					//if (d.operator === '!=' && d.val != f.getVal()) { return true; }
-					if (d.operator === '>=' && d.val >= f.getVal()) { return true; }
-					if (d.operator === '<=' && d.val <= f.getVal()) { return true; }
-					if (d.operator === '>' && d.val > f.getVal()) { return true; }
-					if (d.operator === '<' && d.val < f.getVal()) { return true; }
+				if (d.op) {
+					if (d.op === '===' && d.val === f.getVal()) { return true; }
+					if (d.op === '!==' && d.val !== f.getVal()) { return true; }
+					//if (d.op === '==' && d.val == f.getVal()) { return true; }
+					//if (d.op === '!=' && d.val != f.getVal()) { return true; }
+					if (d.op === '>=' && d.val >= f.getVal()) { return true; }
+					if (d.op === '<=' && d.val <= f.getVal()) { return true; }
+					if (d.op === '>' && d.val > f.getVal()) { return true; }
+					if (d.op === '<' && d.val < f.getVal()) { return true; }
 				} else {
 					if (d.val === f.getVal()) {
 						return true;
