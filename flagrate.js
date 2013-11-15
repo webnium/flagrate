@@ -6630,7 +6630,7 @@
 	Form.inputType = {};
 	
 	/*?
-	 *  #### text
+	 *  #### text -> `String`
 	 *  most basic single-line text input. (uses flagrate.TextInput)
 	 *
 	 *  * `value`       (String):
@@ -6666,7 +6666,7 @@
 	};
 	
 	/*?
-	 *  #### password
+	 *  #### password -> `String`
 	 *  password input. Almost the same to [text](#text).
 	**/
 	Form.inputType.password = {
@@ -6689,7 +6689,7 @@
 	};
 	
 	/*?
-	 *  #### textarea
+	 *  #### textarea -> `String`
 	 *  textarea input. (uses flagrate.TextArea)
 	 *
 	 *  * `value`       (String):
@@ -6716,7 +6716,7 @@
 	};
 	
 	/*?
-	 *  #### number
+	 *  #### number -> `Number`
 	 *  number input. (uses flagrate.TextInput)
 	 *
 	 *  * `value`       (String):
