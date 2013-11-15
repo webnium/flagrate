@@ -6668,6 +6668,7 @@
 	 *  * [password](#password) -> `String`
 	 *  * [textarea](#textarea) -> `String`
 	 *  * [number](#number) -> `Number`
+	 *  * [checkbox](#checkbox) -> `Boolean`
 	**/
 	Form.inputType = {};
 	
@@ -6788,6 +6789,36 @@
 			return parseFloat(this.element.getValue());
 		},
 		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### checkbox -> `Boolean`
+	 *  Checkbox input. (uses flagrate.Checkbox)
+	 *
+	 *  * `label`       (String):
+	 *  * `icon`        (String):
+	 *  * `isChecked`   (Boolean):
+	**/
+	Form.inputType.checkbox = {
+		create: function () {
+			return new Checkbox({
+				icon     : this.icon,
+				label    : this.label,
+				isChecked: this.isChecked
+			});
+		},
+		getVal: function () {
+			return this.element.isChecked();
+		},
+		setVal: function (value) {
+			if (value) {
+				this.element.check();
+			} else {
+				this.element.uncheck();
+			}
+		},
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
 	};

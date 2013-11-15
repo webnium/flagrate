@@ -32,8 +32,8 @@ button.flagrate::-moz-focus-inner {
 button.flagrate-button {
 	display            : inline-block;
 	cursor             : pointer;
-	padding            : 4px 10px 3px;
-	border             : 2px solid transparent;
+	padding            : 5px 11px 4px;
+	border             : 1px solid transparent;
 	background-repeat  : no-repeat;
 	background-position: 5px center;
 	background-color   : #555;
@@ -44,22 +44,22 @@ button.flagrate-button {
 	line-height        : 17px;
 	white-space        : nowrap;
 	
-	-webkit-transition: all 0.3s ease;
-	-moz-transition   : all 0.3s ease;
-	-ms-transition    : all 0.3s ease;
-	-o-transition     : all 0.3s ease;
-	transition        : all 0.3s ease; }
+	-webkit-transition: background 0.3s ease;
+	-moz-transition   : background 0.3s ease;
+	-ms-transition    : background 0.3s ease;
+	-o-transition     : background 0.3s ease;
+	transition        : background 0.3s ease; }
 	
 	button.flagrate-button > span {
 		font-size         : inherit; }
 
 button.flagrate-button.flagrate-icon {
-	padding-left      : 24px; }
+	padding-left      : 25px; }
 
 button.flagrate-button:focus,
 button.flagrate-button:hover {
 	border-color      : rgba(0,0,0,0.20);
-	background-color  : #3b3b3b; }
+	background-color  : #444; }
 
 button.flagrate-button:active {
 	border-color      : rgba(0,0,0,1); }
@@ -355,9 +355,9 @@ input.flagrate-textinput,
 textarea.flagrate-textarea,
 div.flagrate-tokenizer {
 	display           : inline-block;
-	border            : 2px solid rgba(0,0,0,0.35); 
+	border            : 1px solid rgba(0,0,0,0.35); 
 	background-color  : #fff;
-	padding           : 4px 8px 3px;
+	padding           : 5px 8px 4px;
 	color             : #222;
 	line-height       : 21px;
 	width             : 220px; }
@@ -368,7 +368,7 @@ input.flagrate-textinput {
 input.flagrate-textinput.flagrate-icon,
 textarea.flagrate-textarea.flagrate-icon,
 div.flagrate-tokenizer.flagrate-icon {
-	padding-left      : 24px; }
+	padding-left      : 25px; }
 
 input.flagrate-textinput:focus,
 textarea.flagrate-textarea:focus,
@@ -409,7 +409,7 @@ div.flagrate-tokenizer:hover {
 
 div.flagrate-tokenizer {
 	cursor            : text;
-	padding           : 0px 4px 3px 2px;
+	padding           : 0px 4px 4px 2px;
 	width             : 230px; }
 
 input.flagrate-disabled,
@@ -421,19 +421,19 @@ div.flagrate-disabled:hover {
 	color             : #555; }
 
 div.flagrate-tokenizer.flagrate-icon {
-	padding-left      : 22px;
+	padding-left      : 23px;
 	width             : 226px; }
 	
 	div.flagrate-tokenizer > span {
 		display: inline-block;
-		margin : 2px 0 0 2px;
+		margin : 2px 0 0 3px;
 		vertical-align: top; }
 		
 		div.flagrate-tokenizer > span > button.flagrate-button,
 		div.flagrate-tokenizer > span > button.flagrate-button:hover,
 		div.flagrate-tokenizer > span > button.flagrate-button:active {
 			padding         : 2px 4px 1px;
-			margin          : 2px 4px 0 0;
+			margin          : 3px 4px 0 0;
 			cursor          : default;
 			border-width    : 1px;
 			border-color    : rgba(0,0,0,0.25);
@@ -458,7 +458,7 @@ div.flagrate-tokenizer.flagrate-icon {
 		display   : inline-block;
 		width     : 65px;
 		padding   : 0 0 0 2px;
-		margin    : 4px 0 0 2px;
+		margin    : 5px 0 0 2px;
 		border    : none;
 		box-shadow: none;
 		vertical-align: top; }
@@ -530,7 +530,7 @@ label.flagrate-radio {
 	height             : 20px;
 	line-height        : 20px;
 	margin             : 0;
-	padding            : 0 10px 0 25px;
+	padding            : 0 10px 0 26px;
 	cursor             : pointer; }
 
 label.flagrate-checkbox.flagrate-disabled,
@@ -564,7 +564,7 @@ label.flagrate-radio.flagrate-icon {
 		display         : block;
 		width           : 10px;
 		height          : 10px;
-		border          : 3px solid #555;
+		border          : 3px solid #777;
 		padding         : 2px;
 		background-color: #fff; }
 	
@@ -594,7 +594,7 @@ label.flagrate-radio.flagrate-icon {
 		color           : rgba(255,255,255,0.9); }
 	
 	label.flagrate-checkbox > input:focus+div {
-		box-shadow      : 0 0 0 2px rgba(0,0,0,0.25); }
+		box-shadow      : 0 0 0 2px rgba(0,0,0,0.15); }
 	
 	label.flagrate-radio > input:focus+div {
 		box-shadow      : inset 0 0 0 3px #fff, 0 0 0 2px rgba(0,0,0,0.25); }
@@ -626,7 +626,7 @@ button.flagrate-switch:disabled {
 	width           : 60px;
 	height          : 20px;
 	box-shadow      : inset 0 0 0 1px rgba(255,255,255,0.7);
-	border-color    : #777;
+	border          : 2px solid #777;
 	background-color: #777; }
 
 button.flagrate-switch:disabled {
@@ -678,7 +678,9 @@ div.flagrate-toolbar {
 		width           : 120px; }
 	
 	div.flagrate-toolbar > button {
-		background-color: transparent; }
+		background-color: transparent;
+		padding-top     : 4px;
+		padding-bottom  : 3px; }
 	
 	div.flagrate-toolbar > button:focus {
 		outline: none; }
