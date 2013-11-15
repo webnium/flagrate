@@ -6664,11 +6664,11 @@
 	 *
 	 *  #### Built-in input types
 	 *
-	 *  * [text](#text) -> `String`
-	 *  * [password](#password) -> `String`
-	 *  * [textarea](#textarea) -> `String`
-	 *  * [number](#number) -> `Number`
-	 *  * [checkbox](#checkbox) -> `Boolean`
+	 *  * [text](#text-string-) -> `String`
+	 *  * [password](#password-string-) -> `String`
+	 *  * [textarea](#textarea-string-) -> `String`
+	 *  * [number](#number-number-) -> `Number`
+	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
 	**/
 	Form.inputType = {};
 	
