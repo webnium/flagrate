@@ -586,6 +586,16 @@
 		var form = flagrate.createForm({
 			fields: [
 				{
+					label: 'Welcome',
+					text : 'Hi, We are waiting for you!',
+					depends: [
+						{
+							key: 'id',
+							val: ''
+						}
+					]
+				},
+				{
 					key  : 'id',
 					warp : ['user', 'id'],
 					label: 'User ID',
@@ -605,17 +615,6 @@
 							}
 						]
 					}
-				},
-				{
-					label: 'Welcome',
-					text : 'Hi, We are waiting for you!',
-					depends: [
-						{
-							key: 'id',
-							operator: '!==',
-							val: ''
-						}
-					]
 				},
 				{
 					key   : 'password',
@@ -665,6 +664,23 @@
 						type       : 'textarea',
 						placeholder: 'Blah.'
 					}
+				},
+				{
+					key  : 'agree',
+					input: {
+						type : 'checkbox',
+						label: 'I agree to the Service Terms and Privacy.'
+					}
+				},
+				{
+					key  : 'saveCredentials',
+					input: {
+						type : 'checkbox',
+						label: 'Keep me signed-in on this computer.'
+					},
+					depends: [
+						{ key: 'agree', val: true }
+					]
 				}
 			]
 		}).insertTo(c);
