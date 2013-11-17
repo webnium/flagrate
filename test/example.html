@@ -657,6 +657,56 @@
 					}
 				},
 				{
+					key  : 'plan',
+					label: 'Plan',
+					input: {
+						isRequired: true,
+						type : 'radios',
+						items: [
+							{
+								label: 'Free',
+								value: 'free'
+							},
+							{
+								label: 'Pro',
+								value: 'pro'
+							},
+							{
+								label: 'Enterprise',
+								value: 'enterprise'
+							}
+						]
+					}
+				},
+				{
+					key  : 'paymentMethod',
+					label: 'Payment Method',
+					input: {
+						isRequired: true,
+						type : 'radios',
+						items: [
+							{
+								label: 'Credit Card',
+								value: 'credit'
+							},
+							{
+								label: 'PayPal',
+								value: 'paypal'
+							},
+							{
+								label: 'Bitcoin',
+								value: 'bitcoin'
+							}
+						]
+					},
+					depends: [
+						[
+							{ key: 'plan', val: 'pro' },
+							{ key: 'plan', val: 'enterprise' }
+						]
+					]
+				},
+				{
 					key  : 'comment',
 					label: 'Comment',
 					icon : 'icon.png',
@@ -668,6 +718,7 @@
 				{
 					key  : 'agree',
 					input: {
+						isRequired: true,
 						type : 'checkbox',
 						label: 'I agree to the Service Terms and Privacy.'
 					}

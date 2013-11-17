@@ -537,6 +537,10 @@ label.flagrate-checkbox.flagrate-disabled,
 label.flagrate-radio.flagrate-disabled {
 	color              : #777; }
 
+.flagrate-has-error label.flagrate-checkbox,
+.flagrate-has-error label.flagrate-radio {
+	color              : #d2322d; }
+
 label.flagrate-checkbox.flagrate-icon,
 label.flagrate-radio.flagrate-icon {
 	padding-left       : 43px;

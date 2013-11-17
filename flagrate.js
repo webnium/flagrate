@@ -2878,6 +2878,14 @@
 		that.insert({ top: new Element() });
 		that.insert({ top: that._input });
 		
+		that._input.on('change', function () {
+			if (this.isChecked()) {
+				that.fire('check');
+			} else {
+				that.fire('uncheck');
+			}
+		}.bind(that));
+		
 		if (opt.isChecked)  { that.check(); }
 		if (opt.isDisabled) { that.disable(); }
 		
@@ -2924,21 +2932,157 @@
 		 *  flagrate.Radio#isChecked() -> String
 		**/
 		isChecked: function () {
-			return this._input.readAttribute('checked') === 'checked';
+			return !!this._input.checked;
 		}
 		,
 		/*?
 		 *  flagrate.Radio#check() -> flagrate.Radio
 		**/
 		check: function () {
-			return this._input.writeAttribute('checked', true);
+			
+			this._input.checked = true;
+			
+			return this;
 		}
 		,
 		/*?
 		 *  flagrate.Radio#uncheck() -> flagrate.Radio
 		**/
 		uncheck: function () {
-			return this._input.writeAttribute('checked', false);
+			
+			this._input.checked = false;
+			
+			return this;
+		}
+	};
+	
+	/*?
+	 *  class flagrate.Radios
+	**/
+	
+	/*?
+	 *  flagrate.createRadios(option)
+	 *  new flagrate.Radios(option)
+	 *  - option (Object) - options.
+	**/
+	var Radios = flagrate.Radios = function flagrateRadios(opt) {
+		
+		opt = opt || {};
+		
+		this.items    = opt.items    || [];
+		//this.onChange = opt.onChange || emptyFunction;
+		
+		var id = 'flagrate-radios-' + (++Radio.idCounter);
+		
+		/*?
+		 *  flagrate.Radios#selectedIndex -> Number
+		 *  readonly.
+		**/
+		this.selectedIndex = opt.selectedIndex || -1;
+		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) { attr.id = opt.id; }
+		
+		//create
+		var that = new Element('div', attr);
+		
+		var createOnCheckHandler = function (i) {
+			
+			return function () {
+				that.selectedIndex = i;
+			};
+		};
+		
+		var i, l;
+		for (i = 0, l = this.items.length; i < l; i++) {
+			this.items[i]._radio = new Radio({
+				label: this.items[i].label,
+				icon : this.items[i].icon,
+				name : id
+			}).on('check', createOnCheckHandler(i)).insertTo(that);
+		}
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-radios');
+		if (opt.className) { that.addClassName(opt.className); }
+		
+		if (opt.style) { that.setStyle(opt.style); }
+		
+		if (opt.isDisabled) { that.disable(); }
+		
+		if (that.selectedIndex > -1) {
+			this.items[that.selectedIndex]._radio.check();
+		}
+		
+		return that;
+	};
+	
+	flagrate.createRadios = function (a) {
+		return new Radios(a);
+	};
+	
+	Radios.idCounter = 0;
+	
+	Radios.prototype = {
+		/*?
+		 *  flagrate.Radios#select(index) -> flagrate.Radios
+		**/
+		select: function (index) {
+			
+			this.items[index]._radio.check();
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Radios#getValue() -> any
+		**/
+		getValue: function () {
+			
+			if (this.selectedIndex === -1) {
+				return void 0;
+			} else {
+				return this.items[this.selectedIndex].value;
+			}
+		},
+		/*?
+		 *  flagrate.Radios#setValue() -> flagrate.Radios
+		**/
+		setValue: function (value) {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (this.items[i].value === value) {
+					this.select(i);
+					break;
+				}
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Radios#enable() -> flagrate.Radios
+		**/
+		enable: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.items[i]._radio.enable();
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Radios#disable() -> flagrate.Radios
+		**/
+		disable: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.items[i]._radio.disable();
+			}
+			
+			return this;
 		}
 	};
 	
@@ -6238,7 +6382,7 @@
 				return this;
 			}
 			
-			var i, l, j, m, fi;
+			var i, l, j, m, k, n, fi, s;
 			for (i = 0, l = this.fields.length; i < l; i++) {
 				fi = this.fields[i];
 				
@@ -6247,9 +6391,25 @@
 				}
 				
 				for (j = 0, m = fi.depends.length; j < m; j++) {
-					if (field.key === fi.depends[j].key) {
-						field._refs.push(fi);
+					if (fi.depends[j] instanceof Array) {
+						s = false;
+						
+						for (k = 0, n = fi.depends[j].length; k < n; k++) {
+							if (field.key === fi.depends[j][k].key) {
+								s = true;
+								break;
+							}
+						}
+						
+						if (s) {
+							field._refs.push(fi);
+						}
 						break;
+					} else {
+						if (field.key === fi.depends[j].key) {
+							field._refs.push(fi);
+							break;
+						}
 					}
 				}
 			}
@@ -6305,7 +6465,7 @@
 				if (d instanceof Array) {
 					s = false;
 					
-					for (j = 0, m = d.length; j < m; i++) {
+					for (j = 0, m = d.length; j < m; j++) {
 						if (this._compareDepend(d[j]) === true) {
 							s = true;
 							break;
@@ -6669,6 +6829,7 @@
 	 *  * [textarea](#textarea-string-) -> `String`
 	 *  * [number](#number-number-) -> `Number`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
+	 *  * [radios](#radios-any-) -> `any`
 	**/
 	Form.inputType = {};
 	
@@ -6819,6 +6980,24 @@
 				this.element.uncheck();
 			}
 		},
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### radios -> `any`
+	 *  Radio buttons input. (uses flagrate.Radios)
+	 *
+	 *  * `items` (Array):
+	**/
+	Form.inputType.radios = {
+		create: function () {
+			return new Radios({
+				items: this.items
+			});
+		},
+		getVal: Form.inputType.text.getVal,
+		setVal: Form.inputType.text.setVal,
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
 	};
