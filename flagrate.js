@@ -68,23 +68,19 @@
 		traverse: function (obj, pointer, value, isSet) {
 			var part = jsonPointer.untilde(pointer.shift());
 			
-			//if(!obj.hasOwnProperty(part)) {
-			//	return null;
-			//}
-			if(pointer.length !== 0) { // keep traversin!
+			if (pointer.length !== 0) {// keep traversin!
 				if (isSet && typeof obj[part] !== 'object') {
 					obj[part] = {};
 				}
-				return jsonPointer.traverse(obj[part], pointer, value);
+				return jsonPointer.traverse(obj[part], pointer, value, isSet);
 			}
 			// we're done
-			if(typeof value === "undefined") {
+			if (typeof value === "undefined") {
 				// just reading
 				return obj[part];
 			}
-			// set new value, return old value
-			//var old_value = obj[part];
-			if(value === null) {
+			// set new value, and return
+			if (value === null) {
 				delete obj[part];
 			} else {
 				obj[part] = value;
@@ -92,15 +88,15 @@
 			return value;
 		},
 		validate_input: function (obj, pointer) {
-			if(typeof obj !== "object") {
+			if (typeof obj !== "object") {
 				throw new Error("Invalid input object.");
 			}
 			
-			if(pointer === "") {
+			if (pointer === "") {
 				return [];
 			}
 			
-			if(!pointer) {
+			if (!pointer) {
 				throw new Error("Invalid JSON pointer.");
 			}
 			
