@@ -6830,6 +6830,8 @@
 	 *  * [number](#number-number-) -> `Number`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
 	 *  * [radios](#radios-any-) -> `any`
+	 *  * [file](#file-file-) -> `File`
+	 *  * [files](#files-filelist-) -> `FileList`
 	**/
 	Form.inputType = {};
 	
@@ -7000,6 +7002,55 @@
 		setVal: Form.inputType.text.setVal,
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### file -> `File`
+	 *  File input for [File API](http://www.w3.org/TR/file-upload/)
+	**/
+	Form.inputType.file = {
+		create: function () {
+			return new Element('input', {
+				type: 'file'
+			});
+		},
+		getVal: function () {
+			return this.element.files[0];
+		},
+		setVal: function (file) {
+			this.element.files[0] = file;
+		},
+		enable: function () {
+			this.element.writeAttribute('disabled', false);
+		},
+		disable: function () {
+			this.element.writeAttribute('disabled', true);
+		}
+	};
+	
+	/*?
+	 *  #### files -> `FileList`
+	 *  File input for [File API](http://www.w3.org/TR/file-upload/)
+	**/
+	Form.inputType.files = {
+		create: function () {
+			return new Element('input', {
+				type    : 'file',
+				multiple: true
+			});
+		},
+		getVal: function () {
+			return this.element.files;
+		},
+		setVal: function (files) {
+			this.element.files = files;
+		},
+		enable: function () {
+			this.element.writeAttribute('disabled', false);
+		},
+		disable: function () {
+			this.element.writeAttribute('disabled', true);
+		}
 	};
 	
 }());
