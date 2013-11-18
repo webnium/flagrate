@@ -50,6 +50,84 @@
 		};
 	}
 	
+	// jsonpointer
+	// ref: node-jsonpointer https://github.com/janl/node-jsonpointer
+	// ref: http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-08
+	var jsonPointer = flagrate.jsonPointer = {
+		untilde: function (str) {
+			return str.replace(/~[01]/g, function (m) {
+				switch (m) {
+				case "~0":
+					return "~";
+				case "~1":
+					return "/";
+				}
+				throw new Error("Invalid tilde escape: " + m);
+			});
+		},
+		traverse: function (obj, pointer, value, isSet) {
+			var part = jsonPointer.untilde(pointer.shift());
+			
+			//if(!obj.hasOwnProperty(part)) {
+			//	return null;
+			//}
+			if(pointer.length !== 0) { // keep traversin!
+				if (isSet && typeof obj[part] !== 'object') {
+					obj[part] = {};
+				}
+				return jsonPointer.traverse(obj[part], pointer, value);
+			}
+			// we're done
+			if(typeof value === "undefined") {
+				// just reading
+				return obj[part];
+			}
+			// set new value, return old value
+			//var old_value = obj[part];
+			if(value === null) {
+				delete obj[part];
+			} else {
+				obj[part] = value;
+			}
+			return value;
+		},
+		validate_input: function (obj, pointer) {
+			if(typeof obj !== "object") {
+				throw new Error("Invalid input object.");
+			}
+			
+			if(pointer === "") {
+				return [];
+			}
+			
+			if(!pointer) {
+				throw new Error("Invalid JSON pointer.");
+			}
+			
+			pointer = pointer.split("/");
+			var first = pointer.shift();
+			if (first !== "") {
+				throw new Error("Invalid JSON pointer.");
+			}
+			
+			return pointer;
+		},
+		get: function (obj, pointer) {
+			pointer = jsonPointer.validate_input(obj, pointer);
+			if (pointer.length === 0) {
+				return obj;
+			}
+			return jsonPointer.traverse(obj, pointer);
+		},
+		set: function (obj, pointer, value) {
+			pointer = jsonPointer.validate_input(obj, pointer);
+			if (pointer.length === 0) {
+				throw new Error("Invalid JSON pointer for set.");
+			}
+			return jsonPointer.traverse(obj, pointer, value, true);
+		}
+	};
+	
 	/*?
 	 *  class flagrate.Element
 	 *  
@@ -6037,7 +6115,7 @@
 	 *  #### field
 	 *  
 	 *  * `key`                      (String):
-	 *  * `warp`                     (String|Array; experimental):
+	 *  * `point`                    (String; experimental):
 	 *  * `label`                    (String; default `""`):
 	 *  * `icon`                     (String):
 	 *  * `text`                     (String):
@@ -6153,39 +6231,17 @@
 			
 			var result = {};
 			
-			var i, l, j, m, field, key, warping;
+			var i, l, j, m, field, key;
 			for (i = 0, l = this.fields.length; i < l; i++) {
 				field = this.fields[i];
 				
-				if ((!field.key && !field.warp) || field.visible() === false) { continue; }
+				if ((!field.key && !field.point) || field.visible() === false) { continue; }
 				
-				if (field.warp) {
-					if (typeof field.warp === 'string') {
-						key = field.warp;
-					} else if (field.warp instanceof Array) {
-						warping = result;
-						for (j = 0, m = field.warp.length; j < m; j++) {
-							if (!warping[field.warp[j]]) {
-								warping[field.warp[j]] = {};
-							}
-							
-							if (j === m - 1) {
-								warping[field.warp[j]] = field.getVal();
-							} else {
-								warping = warping[field.warp[j]];
-							}
-						}
-						continue;
-					} else {
-						key = field.key;
-					}
-				} else {
-					key = field.key;
+				if (field.point) {
+					jsonPointer.set(result, field.point, field.getVal());
+				} else if (field.key) {
+					result[field.key] = field.getVal();
 				}
-				
-				if (!key) { continue; }
-				
-				result[key] = field.getVal();
 			}
 			
 			return result;
