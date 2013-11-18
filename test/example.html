@@ -657,6 +657,24 @@
 					}
 				},
 				{
+					key  : 'identifications',
+					label: 'Your Identification',
+					input: {
+						isRequired: true,
+						type      : 'files',
+						validators: [
+							function (input, done) {
+								for (var i = 0, l = input.length; i < l; i++) {
+									if (input[i].type.match(/^image\//) === null) {
+										return done('error', 'Image only.');
+									}
+								}
+								done('success');
+							}
+						]
+					}
+				},
+				{
 					key  : 'plan',
 					label: 'Plan',
 					input: {
