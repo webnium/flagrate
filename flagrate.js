@@ -1130,6 +1130,8 @@
 		if (opt.id)        { attr.id = opt.id; }
 		if (opt.isFocused) { attr.autofocus = true; }
 		
+		if (!attr.type)    { attr.type = 'button'; }
+		
 		//create
 		var that = new Element('button', attr);
 		extendObject(that, this);
@@ -2611,7 +2613,10 @@
 				label    : '-',
 				items    : (function () {
 					
-					var items = [];
+					var items = [{
+						label   : '-',
+						onSelect: createOnSelectHandler(-1)
+					}];
 					
 					var i, l;
 					for (i = 0, l = this.items.length; i < l; i++) {
@@ -2692,15 +2697,31 @@
 			if (this.items.length <= index) { return this; }
 			
 			if (this.multiple) {
-				if (this.max > -1 && this.selectedIndex.length >= this.max) { return this; } 
+				if (this.max > -1 && this.selectedIndex.length >= this.max) {
+					if (this._grid.rows[index].isSelected === true) {
+						this._grid.deselect(index);
+					}
+					return this;
+				} 
 				this.selectedIndexes.push(index);
 			} else {
 				this.selectedIndex = index;
 			}
 			
 			if (this.isPulldown) {
-				this._pulldown.setLabel(this.items[index].label);
-				this._pulldown.setIcon(this.items[index].icon);
+				if (index === -1) {
+					this._pulldown.setLabel('-');
+					this._pulldown.setIcon(null);
+				} else {
+					this._pulldown.setLabel(this.items[index].label);
+					this._pulldown.setIcon(this.items[index].icon);
+				}
+				
+				this.fire('change');
+			} else {
+				if (this._grid.rows[index].isSelected === false) {
+					this._grid.select(index);
+				}
 			}
 			
 			return this;
@@ -2715,7 +2736,10 @@
 			if (this.items.length <= index) { return this; }
 			
 			if (this.multiple) {
-				this.selectedIndexes.splice(this.selectedIndexes.indexOf(index), 1);
+				var selectedIndex = this.selectedIndexes.indexOf(index);
+				if (selectedIndex !== -1) {
+					this.selectedIndexes.splice(this.selectedIndexes.indexOf(index), 1);
+				}
 			} else {
 				this.selectedIndex = -1;
 			}
@@ -2723,6 +2747,38 @@
 			if (this.isPulldown) {
 				this._pulldown.setLabel('-');
 				this._pulldown.setIcon(null);
+				
+				this.fire('change');
+			} else {
+				if (this._grid.rows[index].isSelected === true) {
+					this._grid.deselect(index);
+				}
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#selectAll() -> flagrate.Select
+		**/
+		selectAll: function () {
+			
+			if (this.multiple) {
+				this._grid.selectAll();
+			}
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.Select#deselectAll() -> flagrate.Select
+		**/
+		deselectAll: function () {
+			
+			if (this.multiple) {
+				this._grid.deselectAll();
+			} else {
+				this.deselect();
 			}
 			
 			return this;
@@ -2771,7 +2827,12 @@
 		 *  flagrate.Select#getValue() -> any
 		**/
 		getValue: function () {
-			return this.items[this.selectedIndex].value;
+			
+			if (this.selectedIndex > -1) {
+				return this.items[this.selectedIndex].value;
+			} else {
+				return void 0;
+			}
 		}
 		,
 		/*?
@@ -5200,28 +5261,26 @@
 		**/
 		select: function (a) {
 			
-			var rows;
+			var rows, i, l;
 			
 			if (a instanceof Array) {
 				rows = a;
 			} else {
 				rows = [];
 				
-				var i, l;
 				for (i = 0, l = arguments.length; i < l; i++) {
-					if (typeof arguments[i] === 'number') {
-						if (this.rows[arguments[i]]) { rows.push(this.rows[arguments[i]]); }
-					} else if (typeof a === 'object') {
-						rows.push(a);
-					}
+					rows.push(arguments[i]);
 				}
 			}
 			
 			if (this.multiSelect === false) { this.deselectAll(); }
 			
-			var j, m;
-			for (j = 0, m = rows.length; j < m; j++) {
-				var row = rows[j];
+			for (i = 0, l = rows.length; i < l; i++) {
+				var row = rows[i];
+				
+				if (typeof row === 'number') {
+					row = this.rows[row];
+				}
 				
 				row.isSelected = true;
 				
@@ -5243,6 +5302,8 @@
 				this._checkbox.check();
 			}
 			
+			this.element.fire('change');
+			
 			return this;
 		}
 		,
@@ -5253,26 +5314,24 @@
 		**/
 		deselect: function (a) {
 			
-			var rows;
+			var rows, i, l;
 			
 			if (a instanceof Array) {
 				rows = a;
 			} else {
 				rows = [];
 				
-				var i, l;
 				for (i = 0, l = arguments.length; i < l; i++) {
-					if (typeof arguments[i] === 'number') {
-						if (this.rows[arguments[i]]) { rows.push(this.rows[arguments[i]]); }
-					} else if (typeof a === 'object') {
-						rows.push(a);
-					}
+					rows.push(arguments[i]);
 				}
 			}
 			
-			var j, m;
-			for (j = 0, m = rows.length; j < m; j++) {
-				var row = rows[j];
+			for (i = 0, l = rows.length; i < l; i++) {
+				var row = rows[i];
+				
+				if (typeof row === 'number') {
+					row = this.rows[row];
+				}
 				
 				row.isSelected = false;
 				
@@ -5293,6 +5352,8 @@
 			if (this._selectedRows.length === 0 && this._checkbox) {
 				this._checkbox.uncheck();
 			}
+			
+			this.element.fire('change');
 			
 			return this;
 		}
@@ -6696,7 +6757,7 @@
 				field.input._result.update();
 				
 				// simple validator
-				if (field.input.isRequired === true && !val && val !== 0) {
+				if (field.input.isRequired === true && (typeof val === 'undefined' || val.length === 0)) {
 					hasError = true;
 				}
 				if (field.input.min && field.input.min > val) {
@@ -6882,6 +6943,7 @@
 	 *  * [number](#number-number-) -> `Number`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
 	 *  * [radios](#radios-any-) -> `any`
+	 *  * [select](#select-any-array-) -> `any`|`Array`
 	 *  * [file](#file-file-) -> `File`
 	 *  * [files](#files-filelist-) -> `FileList`
 	**/
@@ -7052,6 +7114,52 @@
 		},
 		getVal: Form.inputType.text.getVal,
 		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### select -> `any`|`array`
+	 *  Select input. (uses flagrate.Select)
+	 *
+	 *  * `items` (Array):
+	 *  * `listView` (Boolean; default `false`):
+	 *  * `multiple` (Boolean; default `false`):
+	 *  * `max` (Number; default `-1`):
+	 *  * `selectedIndex` (Number):
+	 *  * `selectedIndexes` (Array): of Number
+	**/
+	Form.inputType.select = {
+		create: function () {
+			return new Select({
+				items          : this.items,
+				listView       : this.listView,
+				multiple       : this.multiple,
+				max            : this.max,
+				selectedIndex  : this.selectedIndex,
+				selectedIndexes: this.selectedIndexes
+			});
+		},
+		getVal: function () {
+			return (this.multiple === true) ? this.element.getValues() : this.element.getValue();
+		},
+		setVal: function (val) {
+			if (this.multiple === false) {
+				val = [val];
+			} else {
+				this.element.deselectAll();
+			}
+			
+			var i, j, l, m;
+			for (i = 0, l = val.length, m = this.element.items.length; i < l; i++) {
+				for (j = 0; j < m; j++) {
+					if (val[i] === this.element.items[j].value) {
+						this.element.select(j);
+						break;
+					}
+				}
+			}
+		},
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
 	};

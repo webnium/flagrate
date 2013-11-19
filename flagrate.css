@@ -29,6 +29,9 @@ button.flagrate::-moz-focus-inner {
 .flagrate.flagrate-disabled * {
 	cursor: not-allowed !important; }
 
+.flagrate-has-error input[type='file'] {
+	color: #d2322d; }
+
 button.flagrate-button {
 	display            : inline-block;
 	cursor             : pointer;
@@ -478,11 +481,29 @@ div.flagrate-select {
 		background-color: #fff;
 		color           : #555;
 		border-color    : rgba(0,0,0,0.35); }
+
+	div.flagrate-has-success div.flagrate-select > button.flagrate-pulldown {
+		border-color    : #449b44; }
+
+	div.flagrate-has-warning div.flagrate-select > button.flagrate-pulldown {
+		border-color    : #e08505; }
+
+	div.flagrate-has-error div.flagrate-select > button.flagrate-pulldown {
+		border-color    : #b82b27; }
 	
 	div.flagrate-select > button.flagrate-pulldown:focus,
 	div.flagrate-select > button.flagrate-pulldown:hover {
 		border-color: rgba(0,0,0,1);
 		color       : rgba(0,0,0,1); }
+
+	div.flagrate-has-success div.flagrate-select > button.flagrate-pulldown:focus {
+		border-color    : #5bb75b; }
+
+	div.flagrate-has-warning div.flagrate-select > button.flagrate-pulldown:focus {
+		border-color    : #faa732; }
+
+	div.flagrate-has-error div.flagrate-select > button.flagrate-pulldown:focus {
+		border-color    : #d2322d; }
 	
 	div.flagrate-select > button.flagrate-pulldown.flagrate-disabled {
 		border-color      : rgba(0,0,0,0.2);
@@ -519,6 +540,15 @@ div.flagrate-select {
 	
 	div.flagrate-select > div.flagrate-grid {
 		border: 1px solid rgba(0,0,0,0.35); }
+
+	div.flagrate-has-success div.flagrate-select > div.flagrate-grid {
+		border-color    : #449b44; }
+
+	div.flagrate-has-warning div.flagrate-select > div.flagrate-grid {
+		border-color    : #e08505; }
+
+	div.flagrate-has-error div.flagrate-select > div.flagrate-grid {
+		border-color    : #b82b27; }
 		
 		div.flagrate-select > div.flagrate-grid > div.flagrate-grid-body {
 			max-height: 100px; }
