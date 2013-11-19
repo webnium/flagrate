@@ -31,7 +31,7 @@ deployment:
       - git merge --no-ff -m "Merge branch 'master' into gh-pages by CicleCI" master
       
       - git rm --ignore-unmatch flagrate.min.js
-      - wget -O compiler.tar.gz https://closure-compiler.googlecode.com/files/compiler-latest.tar.gz
+      - wget -O compiler.tar.gz http://dl.google.com/closure-compiler/compiler-latest.tar.gz
       - tar -xzvf compiler.tar.gz compiler.jar
       - java -jar compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js flagrate.js > flagrate.min.js
       - git add flagrate.min.js
