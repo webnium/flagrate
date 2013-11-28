@@ -6657,6 +6657,20 @@
 				
 				field.input.element.writeAttribute('id', field.input.id);
 				
+				// value, values is alias but it's deprecated!
+				if (field.input.value) {
+					//console.warn('field.input.value is deprecated. please use field.input.val!');
+					field.input.val = field.input.value;
+				} else if (field.input.values) {
+					//console.warn('field.input.values is deprecated. please use field.input.val!');
+					field.input.val = field.input.values;
+				}
+				
+				// set the default value
+				if (field.input.val) {
+					field.input._type.setVal.call(field.input, field.input.val);
+				}
+				
 				if (field.input.style) {
 					field.input.element.setStyle(field.input.style);
 				}
@@ -6953,7 +6967,6 @@
 	 *  #### text -> `String`
 	 *  most basic single-line text input. (uses flagrate.TextInput)
 	 *
-	 *  * `value`       (String):
 	 *  * `placeholder` (String):
 	 *  * `icon`        (String):
 	 *  * `maxLength`   (Number):
@@ -6963,7 +6976,6 @@
 		create: function () {
 			// return to define this.element
 			return new TextInput({
-				value      : this.value,
 				placeholder: this.placeholder,
 				icon       : this.icon,
 				attribute  : {
@@ -6993,7 +7005,6 @@
 		changeEvents: ['change', 'keyup'],
 		create: function () {
 			return new TextInput({
-				value      : this.value,
 				placeholder: this.placeholder,
 				icon       : this.icon,
 				attribute  : {
@@ -7012,7 +7023,6 @@
 	 *  #### textarea -> `String`
 	 *  textarea input. (uses flagrate.TextArea)
 	 *
-	 *  * `value`       (String):
 	 *  * `placeholder` (String):
 	 *  * `icon`        (String):
 	 *  * `maxLength`   (Number):
@@ -7021,7 +7031,6 @@
 		changeEvents: ['change', 'keyup'],
 		create: function () {
 			return new TextArea({
-				value      : this.value,
 				placeholder: this.placeholder,
 				icon       : this.icon,
 				attribute  : {
@@ -7039,7 +7048,6 @@
 	 *  #### number -> `Number`
 	 *  number input. (uses flagrate.TextInput)
 	 *
-	 *  * `value`       (String):
 	 *  * `placeholder` (String):
 	 *  * `icon`        (String):
 	 *  * `min`         (Number):
@@ -7050,7 +7058,6 @@
 		changeEvents: ['change', 'keyup'],
 		create: function () {
 			return new TextInput({
-				value      : this.value,
 				placeholder: this.placeholder,
 				icon       : this.icon,
 				attribute  : {
@@ -7076,14 +7083,12 @@
 	 *
 	 *  * `label`       (String):
 	 *  * `icon`        (String):
-	 *  * `isChecked`   (Boolean):
 	**/
 	Form.inputType.checkbox = {
 		create: function () {
 			return new Checkbox({
-				icon     : this.icon,
-				label    : this.label,
-				isChecked: this.isChecked
+				icon : this.icon,
+				label: this.label
 			});
 		},
 		getVal: function () {
