@@ -6168,6 +6168,8 @@
 	 *  * `className`                (String): `class` attribute of container.
 	 *  * `attribute`                (Object): additional attribute of container.
 	 *  * `style`                    (Object): style of container. (using flagrate.Element.setStyle)
+	 *  * `nolabel`                  (Boolean; default `false`): hide labels.
+	 *  * `vertical`                 (Boolean; default `false`): vertical label style.
 	 *  
 	 *  #### field
 	 *  
@@ -6251,6 +6253,8 @@
 		this.className           = opt.className           || null;
 		this.attribute           = opt.attribute           || null;
 		this.style               = opt.style               || null;
+		this.nolabel             = opt.nolabel             || false;
+		this.vertical            = opt.vertical            || false;
 		
 		this.fields = [];
 		
@@ -6455,6 +6459,13 @@
 			
 			this.element.addClassName(flagrate.className + ' ' + flagrate.className + '-form');
 			
+			if (this.nolabel === true) {
+				this.element.addClassName(flagrate.className + '-form-nolabel');
+			}
+			if (this.vertical === true) {
+				this.element.addClassName(flagrate.className + '-form-vertical');
+			}
+			
 			return this;
 		},
 		_requestRender: function () {
@@ -6615,17 +6626,19 @@
 			if (field.style)     { field._div.setStyle(field.style); }
 			
 			// create label
-			field._label = new Element('label').insertText(field.label || '');
-			new Element('div', {
-				'class': flagrate.className + '-form-field-label'
-			}).insert(field._label).insertTo(field._div);
-			
-			// icon to label
-			if (field.icon) {
-				field._label.addClassName(flagrate.className + '-icon');
-				field._label.setStyle({
-					backgroundImage: 'url(' + field.icon + ')'
-				});
+			if (this.nolabel === false) {
+				field._label = new Element('label').insertText(field.label || '');
+				new Element('div', {
+					'class': flagrate.className + '-form-field-label'
+				}).insert(field._label).insertTo(field._div);
+				
+				// icon to label
+				if (field.icon) {
+					field._label.addClassName(flagrate.className + '-icon');
+					field._label.setStyle({
+						backgroundImage: 'url(' + field.icon + ')'
+					});
+				}
 			}
 			
 			// input container
@@ -6648,7 +6661,7 @@
 				
 				if (!field.input.option) { field.input.option = {}; }
 				
-				field._label.writeAttribute('for', field.input.id);
+				if (this.nolabel === false) { field._label.writeAttribute('for', field.input.id); }
 				
 				field.input.element = field.input._type.create.call(field.input);
 				new Element('div', {
