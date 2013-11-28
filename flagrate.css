@@ -1328,7 +1328,8 @@ form.flagrate-form.flagrate-form-vertical {
 				margin     : 10px 0 0 0; }
 		
 			form.flagrate-form > div > div.flagrate-form-field-label > label.flagrate-icon {
-				padding-left: 25px; }
+				background-position: 0 center;
+				padding-left       : 20px; }
 		
 			form.flagrate-form > div.flagrate-required > div.flagrate-form-field-label > label::after {
 				color    : #d2322d;
