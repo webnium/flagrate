@@ -1675,6 +1675,25 @@
 			
 			that.insert({ after: menu });
 			
+			// To prevent overflow.
+			var menuHeight    = menu.getHeight();
+			var menuMargin    = parseInt(menu.getStyle('margin-top').replace('px', ''), 10);
+			var cummOffsetTop = that.cumulativeOffset().top;
+			var	upsideSpace   = - window.scrollY + cummOffsetTop;
+			var downsideSpace = window.scrollY + window.innerHeight - cummOffsetTop - that.getHeight();
+			if (menuHeight + menuMargin > downsideSpace) {
+				if (upsideSpace > downsideSpace) {
+					if (upsideSpace < menuHeight + menuMargin) {
+						menuHeight = (upsideSpace - menuMargin - menuMargin);
+						menu.style.maxHeight = menuHeight + 'px';
+					}
+					menu.style.top = (that.offsetTop - menuHeight - (menuMargin * 2)) + 'px';
+				} else {
+					menuHeight = (downsideSpace - menuMargin - menuMargin);
+					menu.style.maxHeight = menuHeight + 'px';
+				}
+			}
+			
 			var removeMenu = function (e) {
 				
 				document.body.removeEventListener('click', removeMenu);

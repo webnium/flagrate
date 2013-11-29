@@ -182,7 +182,9 @@ div.flagrate-menu {
 div.flagrate-pulldown-menu {
 	position          : absolute;
 	margin            : 4px 0 0 0;
-	background-color  : #555; }
+	background-color  : #555;
+	overflow-y        : auto;
+	max-height        : 200px; }
 
 div.flagrate-context-menu {
 	z-index           : 99999999;
