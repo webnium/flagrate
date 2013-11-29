@@ -7159,10 +7159,10 @@
 			});
 		},
 		getVal: function () {
-			return (this.multiple === true) ? this.element.getValues() : this.element.getValue();
+			return (this.element.multiple === true) ? this.element.getValues() : this.element.getValue();
 		},
 		setVal: function (val) {
-			if (this.multiple === false) {
+			if (this.element.multiple === false) {
 				val = [val];
 			} else {
 				this.element.deselectAll();
