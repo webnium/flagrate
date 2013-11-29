@@ -1,3 +1,6 @@
+.flagrate {
+	box-sizing         : border-box; }
+
 .flagrate,
 .flagrate > *,
 .flagrate-grid * {
@@ -363,10 +366,10 @@ div.flagrate-tokenizer {
 	padding           : 5px 9px 4px;
 	color             : #222;
 	line-height       : 21px;
-	width             : 220px; }
+	width             : 240px; }
 
 input.flagrate-textinput {
-	height            : 21px; }
+	height            : 32px; }
 
 input.flagrate-textinput.flagrate-icon,
 textarea.flagrate-textarea.flagrate-icon,
@@ -413,7 +416,7 @@ div.flagrate-tokenizer:hover {
 div.flagrate-tokenizer {
 	cursor            : text;
 	padding           : 0px 5px 4px 3px;
-	width             : 230px; }
+	width             : 240px; }
 
 input.flagrate-disabled,
 textarea.flagrate-disabled,
@@ -424,8 +427,7 @@ div.flagrate-disabled:hover {
 	color             : #555; }
 
 div.flagrate-tokenizer.flagrate-icon {
-	padding-left      : 23px;
-	width             : 226px; }
+	padding-left      : 23px; }
 	
 	div.flagrate-tokenizer > span {
 		display: inline-block;
@@ -460,6 +462,7 @@ div.flagrate-tokenizer.flagrate-icon {
 	div.flagrate-tokenizer > input {
 		display   : inline-block;
 		width     : 65px;
+		height    : 21px;
 		padding   : 0 0 0 2px;
 		margin    : 5px 0 0 2px;
 		border    : none;
@@ -709,7 +712,8 @@ div.flagrate-toolbar {
 		padding-top     : 2px;
 		padding-bottom  : 1px;
 		font-size       : 12px;
-		width           : 120px; }
+		width           : 120px;
+		height          : 24px; }
 	
 	div.flagrate-toolbar > button {
 		background-color: transparent;
