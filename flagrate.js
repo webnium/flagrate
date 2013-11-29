@@ -1145,6 +1145,7 @@
 		
 		if (opt.isRemovableByUser) {
 			that._removeButton = new Element('button', {
+				type   : 'button',
 				'class': flagrate.className + '-button-remove'
 			}).insertTo(that);
 			that._removeButton.on('click', that._onRemoveHandler.bind(that), true);
@@ -2286,9 +2287,11 @@
 		,
 		_tokenized: function (candidates) {
 			
+			if (candidates === '') { return this; }
+			
 			if (candidates instanceof Array === false) { candidates = [candidates]; }
 			
-			this._candidates = candidates;
+			this._candidates = [];
 			
 			var menu = new Menu(
 				{
@@ -2300,8 +2303,6 @@
 			
 			menu.style.left = this._input.offsetLeft + 'px';
 			
-			this.insert({ top: menu });
-			
 			var i, l;
 			for (i = 0, l = candidates.length; i < l; i++) {
 				var candidate = candidates[i];
@@ -2309,6 +2310,7 @@
 				var a;
 				
 				if (typeof candidate === 'string') {
+					if (candidate === '') { continue; }
 					a = { label: candidate };
 				} else {
 					a = candidate;
@@ -2318,11 +2320,16 @@
 				
 				a.onSelect = this._createMenuOnSelectHandler(this, candidate, a);
 				
+				this._candidates.push(candidate);
 				menu.push(a);
 			}
 			
 			if (this._menu) { this._menu.remove(); }
-			this._menu = menu;
+			
+			if (this._candidates.length !== 0) {
+				this.insert({ top: menu });
+				this._menu = menu;
+			}
 			
 			return this;
 		}
@@ -6677,8 +6684,6 @@
 				if (!field.input.id) {
 					field.input.id = flagrate.className + '-form-input-' + (++Form.idCounter);
 				}
-				
-				if (!field.input.option) { field.input.option = {}; }
 				
 				if (this.nolabel === false) { field._label.writeAttribute('for', field.input.id); }
 				
