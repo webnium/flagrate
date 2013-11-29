@@ -2278,7 +2278,7 @@
 			
 			var result = this.tokenize(str, this._tokenized.bind(this));
 			
-			if (result) { this._tokenized(result); }
+			if (typeof result !== 'undefined') { this._tokenized(result); }
 			
 			this._lastTokenizedValue = this._input.value;
 			
@@ -2286,8 +2286,6 @@
 		}
 		,
 		_tokenized: function (candidates) {
-			
-			if (candidates === '') { return this; }
 			
 			if (candidates instanceof Array === false) { candidates = [candidates]; }
 			
