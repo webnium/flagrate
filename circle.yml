@@ -50,3 +50,5 @@ deployment:
       - git commit -a -m "Build API documentation" || true
       
       - git push || true
+      
+      - rsync -rlptz --delete -e "ssh -p 10022" ./ grandma@bakery.flagrate.org:~/www/
