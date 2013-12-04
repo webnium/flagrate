@@ -971,7 +971,8 @@ div.flagrate-modal.flagrate-modal-visible {
 			div.flagrate-modal > div > div > button:focus,
 			div.flagrate-modal > div > div > button:hover {
 				color           : #e60012;
-				box-shadow      : none; }
+				box-shadow      : none;
+				background      : none;}
 				
 			div.flagrate-modal > div > div > button:active {
 				color           : #000; }
