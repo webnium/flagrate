@@ -1529,6 +1529,11 @@
 			e.preventDefault();
 		});
 		
+		that.on('mouseup', function (e) {
+			
+			e.stopPropagation();
+		});
+		
 		return that;
 	};
 	
@@ -3479,9 +3484,16 @@
 		
 		that.addClassName(flagrate.className + '-slider');
 		
-		that.on('mousedown',     that._onPointerDownHandler.bind(that));
-		that.on('touchstart',    that._onPointerDownHandler.bind(that));
-		that.on('MSPointerDown', that._onPointerDownHandler.bind(that));
+		if (typeof window.ontouchstart !== 'undefined') {
+			that.on('touchstart', that._onPointerDownHandler.bind(that));
+		}
+		if (navigator.pointerEnabled) {
+			that.on('pointerdown', that._onPointerDownHandler.bind(that));
+		} else if (navigator.msPointerEnabled) {
+			that.on('MSPointerDown', that._onPointerDownHandler.bind(that));// deprecated on IE11
+		} else {
+			that.on('mousedown', that._onPointerDownHandler.bind(that));
+		}
 		
 		if (opt.isDisabled) { that.disable(); }
 		
@@ -3525,12 +3537,13 @@
 			
 			switch (e.type) {
 				case 'mousedown':
-				case 'MSPointerDown':
+				case 'MSPointerDown':// deprecated on IE11
+				case 'pointerdown':
 					x   = e.offsetX || e.layerX;
 					pos = e.clientX;
 					break;
 				case 'touchstart':
-					x   = e.touches[0].clientX - e.target.offsetLeft;
+					x   = e.touches[0].pageX - this.cumulativeOffset().left;
 					pos = e.touches[0].clientX;
 					break;
 			}
@@ -3547,7 +3560,7 @@
 				e.preventDefault();
 				
 				if (e.touches && e.touches[0]) {
-					x   = x + e.touches[0].clientX -pos;
+					x   = x + e.touches[0].clientX - pos;
 					pos = e.touches[0].clientX;
 				} else {
 					x   = x + e.clientX - pos;
@@ -3562,16 +3575,24 @@
 				
 				e.preventDefault();
 				
-				document.body.removeEventListener('mousemove',     onMove);
-				document.body.removeEventListener('touchmove',     onMove);
-				document.body.removeEventListener('MSPointerMove', onMove);
-				document.body.removeEventListener('mouseup',       onUp);
-				document.body.removeEventListener('touchend',      onUp);
-				document.body.removeEventListener('touchcancel',   onUp);
-				document.body.removeEventListener('MSPointerUp',   onUp);
+				if (typeof window.ontouchend !== 'undefined') {
+					document.body.removeEventListener('touchmove', onMove);
+					document.body.removeEventListener('touchend', onUp);
+					document.body.removeEventListener('touchcancel', onUp);
+				}
+				if (navigator.pointerEnabled) {
+					document.body.removeEventListener('pointermove', onMove);
+					document.body.removeEventListener('pointerup', onUp);
+				} else if (navigator.msPointerEnabled) {
+					document.body.removeEventListener('MSPointerUp', onUp);
+					document.body.removeEventListener('MSPointerMove', onMove);
+				} else {
+					document.body.removeEventListener('mousemove', onMove);
+					document.body.removeEventListener('mouseup', onUp);
+				}
 				
 				if (e.touches && e.touches[0]) {
-					x = x + e.touches[0].clientX -pos;
+					x = x + e.touches[0].clientX - pos;
 					this.setValue(Math.round(x / unitWidth));
 					this.fire('slide');
 				}
@@ -3583,13 +3604,21 @@
 				}
 			}.bind(this);
 			
-			document.body.addEventListener('mousemove',     onMove);
-			document.body.addEventListener('touchmove',     onMove);
-			document.body.addEventListener('MSPointerMove', onMove);
-			document.body.addEventListener('mouseup',       onUp);
-			document.body.addEventListener('touchend',      onUp);
-			document.body.addEventListener('touchcancel',   onUp);
-			document.body.addEventListener('MSPointerUp',   onUp);
+			if (typeof window.ontouchend !== 'undefined') {
+				document.body.addEventListener('touchmove', onMove);
+				document.body.addEventListener('touchend', onUp);
+				document.body.addEventListener('touchcancel', onUp);
+			}
+			if (navigator.pointerEnabled) {
+				document.body.addEventListener('pointermove', onMove);
+				document.body.addEventListener('pointerup', onUp);
+			} else if (navigator.msPointerEnabled) {
+				document.body.addEventListener('MSPointerMove', onMove);
+				document.body.addEventListener('MSPointerUp', onUp);
+			} else {
+				document.body.addEventListener('mousemove', onMove);
+				document.body.addEventListener('mouseup', onUp);
+			}
 			
 			this.setValue(Math.round(x / unitWidth));
 			this.fire('slide');
