@@ -1685,8 +1685,8 @@
 			var menuHeight    = menu.getHeight();
 			var menuMargin    = parseInt(menu.getStyle('margin-top').replace('px', ''), 10);
 			var cummOffsetTop = that.cumulativeOffset().top;
-			var	upsideSpace   = - window.scrollY + cummOffsetTop;
-			var downsideSpace = window.scrollY + window.innerHeight - cummOffsetTop - that.getHeight();
+			var	upsideSpace   = - window.pageYOffset + cummOffsetTop;
+			var downsideSpace = window.pageYOffset + window.innerHeight - cummOffsetTop - that.getHeight();
 			if (menuHeight + menuMargin > downsideSpace) {
 				if (upsideSpace > downsideSpace) {
 					if (upsideSpace < menuHeight + menuMargin) {
