@@ -1206,7 +1206,10 @@
 		 *  - text (String) - label string.
 		**/
 		setLabel: function (text) {
-			return this._label.updateText(text);
+			
+			this._label.updateText(text);
+			
+			return this;
 		}
 		,
 		/*?
