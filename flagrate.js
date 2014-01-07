@@ -5462,7 +5462,7 @@
 					B = b.cell[key].sortAlt || b.cell[key].text || b.cell[key].html || (b.cell[key].element && b.cell[key].element.innerHTML) || (b.cell[key]._div && b.cell[key]._div.innerHTML) || 0;
 				}
 				
-				return (A > B) ? 1 : -1;
+				return A === B ? 0 : (A > B ? 1 : -1);
 			});
 			
 			if (!isAsc) { this.rows.reverse(); }
