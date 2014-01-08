@@ -1173,6 +1173,9 @@ div.flagrate-grid.flagrate-grid-fill {
 							div.flagrate-grid > div > table > tbody > tr.flagrate-grid-row-selected > td.flagrate-grid-cell-checkbox > .flagrate-checkbox > div {
 								opacity: 1; }
 					
+					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-clickable {
+						cursor: pointer; }
+					
 					div.flagrate-grid > div > table > thead > tr > th.flagrate-grid-cell-menu,
 					div.flagrate-grid > div > table > tbody > tr > td.flagrate-grid-cell-menu {
 						overflow        : visible; }
