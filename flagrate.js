@@ -5456,10 +5456,10 @@
 				var B = 0;
 				
 				if (a.cell[key]) {
-					A = a.cell[key].sortAlt || a.cell[key].text || a.cell[key].html || (a.cell[key].element && a.cell[key].element.innerHTML) || (a.cell[key]._div && a.cell[key]._div.innerHTML) || 0;
+					A = typeof a.cell[key].sortAlt !== 'undefined' ? a.cell[key].sortAlt : a.cell[key].text || a.cell[key].html || (a.cell[key].element && a.cell[key].element.innerHTML) || (a.cell[key]._div && a.cell[key]._div.innerHTML) || 0;
 				}
 				if (b.cell[key]) {
-					B = b.cell[key].sortAlt || b.cell[key].text || b.cell[key].html || (b.cell[key].element && b.cell[key].element.innerHTML) || (b.cell[key]._div && b.cell[key]._div.innerHTML) || 0;
+					B = typeof b.cell[key].sortAlt !== 'undefined' ? b.cell[key].sortAlt : b.cell[key].text || b.cell[key].html || (b.cell[key].element && b.cell[key].element.innerHTML) || (b.cell[key]._div && b.cell[key]._div.innerHTML) || 0;
 				}
 				
 				return A === B ? 0 : (A > B ? 1 : -1);
