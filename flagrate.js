@@ -6953,7 +6953,7 @@
 					
 					if (typeof v === 'function') {
 						v.call(field.input, val, done);
-					} else {
+					} else if (typeof val === 'string' && val !== ''){
 						if (v.regexp.test(val)) {
 							done(true, v.success);
 						} else {
@@ -6962,11 +6962,7 @@
 					}
 				};
 				
-				if (typeof val === 'string' && val !== '') {
-					run();
-				} else {
-					fin();
-				}
+				run();
 			};
 			
 			field._inputOnChange = function () {
