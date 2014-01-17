@@ -6959,7 +6959,7 @@
 					}
 				};
 				
-				if (typeof val === 'string') {
+				if (typeof val === 'string' && val !== '') {
 					run();
 				} else {
 					fin();
