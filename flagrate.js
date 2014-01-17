@@ -3197,7 +3197,10 @@
 		**/
 		select: function (index) {
 			
-			this.items[index]._radio.check();
+			if (typeof this.items[index] !== 'undefined') {
+				this.selectedIndex = index;
+				this.items[index]._radio.check();
+			}
 			
 			return this;
 		},
