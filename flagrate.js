@@ -6407,7 +6407,7 @@
 			
 			run = function () {
 				
-				if (fields.length === 0 || hasError === true) { return fin(); }
+				if (fields.length === 0) { return fin(); }
 				
 				fields.shift().validate(done);
 			};
