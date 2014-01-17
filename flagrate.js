@@ -6838,16 +6838,46 @@
 				field.input._result.update();
 				
 				// simple validator
-				if (field.input.isRequired === true && (typeof val === 'undefined' || val.length === 0)) {
-					hasError = true;
+				if (field.input.isRequired === true) {
+					if (typeof val === 'undefined') {
+						hasError = true;
+					} else if (typeof val.length !== 'undefined' && val.length === 0) {
+						hasError = true;
+					} else if (val === false || val === null) {
+						hasError = true;
+					}
 				}
-				if (field.input.min && field.input.min > val) {
-					hasError = true;
+				if (field.input.min) {
+					if (typeof val === 'number') {
+						if (field.input.min > val) {
+							hasError = true;
+						}
+					} else if (typeof val === 'string' && val !== '') {
+						if (field.input.min > parseInt(val, 10)) {
+							hasError = true;
+						}
+					} else if (val instanceof Array) {
+						if (field.input.min > val.length) {
+							hasError = true;
+						}
+					}
 				}
-				if (field.input.max && field.input.max < val) {
-					hasError = true;
+				if (field.input.max) {
+					if (typeof val === 'number') {
+						if (field.input.max < val) {
+							hasError = true;
+						}
+					} else if (typeof val === 'string' && val !== '') {
+						if (field.input.max < parseInt(val, 10)) {
+							hasError = true;
+						}
+					} else if (val instanceof Array) {
+						if (field.input.max < val.length) {
+							hasError = true;
+						}
+					}
 				}
-				if (field.input.minLength && field.input.minLength > (val.length || (val.toString && val.toString().length) || 0)) {
+				if (field.input.minLength && field.input.minLength > (val.length || (val.toString && val.toString().length) || 0) && (typeof val === 'string' && val !== '')) {
 					hasError = true;
 				}
 				if (field.input.maxLength && field.input.maxLength < (val.length || (val.toString && val.toString().length) || 0)) {
@@ -6928,7 +6958,12 @@
 						}
 					}
 				};
-				run();
+				
+				if (typeof val === 'string') {
+					run();
+				} else {
+					fin();
+				}
 			};
 			
 			field._inputOnChange = function () {
