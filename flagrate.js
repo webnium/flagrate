@@ -6959,6 +6959,8 @@
 						} else {
 							done(false, v.error);
 						}
+					} else {
+						done(true);
 					}
 				};
 				
