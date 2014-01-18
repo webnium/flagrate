@@ -1144,6 +1144,8 @@
 		that.on('click', that._onSelectHandler.bind(that), true);
 		
 		if (opt.isRemovableByUser) {
+			that.addClassName(flagrate.className + '-button-removable');
+			
 			that._removeButton = new Element('button', {
 				type   : 'button',
 				'class': flagrate.className + '-button-remove'
@@ -1253,7 +1255,7 @@
 			if (this._removeButton && e && e.layerX) {
 				var bw = this.getWidth();
 				var bh = this.getHeight();
-				var bp = parseInt(this.getStyle('padding-right').replace('px', ''), 10);
+				var bp = parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
 				var rw = this._removeButton.getWidth();
 				var rh = this._removeButton.getHeight();
 				var lx = e.layerX;
