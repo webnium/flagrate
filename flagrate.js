@@ -1144,6 +1144,8 @@
 		that.on('click', that._onSelectHandler.bind(that), true);
 		
 		if (opt.isRemovableByUser) {
+			that.addClassName(flagrate.className + '-button-removable');
+			
 			that._removeButton = new Element('button', {
 				type   : 'button',
 				'class': flagrate.className + '-button-remove'
@@ -1253,7 +1255,7 @@
 			if (this._removeButton && e && e.layerX) {
 				var bw = this.getWidth();
 				var bh = this.getHeight();
-				var bp = parseInt(this.getStyle('padding-right').replace('px', ''), 10);
+				var bp = parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
 				var rw = this._removeButton.getWidth();
 				var rh = this._removeButton.getHeight();
 				var lx = e.layerX;
@@ -2879,6 +2881,203 @@
 			}
 			
 			return result;
+		}
+	};
+	
+	/*?
+	 *  class flagrate.ComboBox
+	**/
+	
+	/*?
+	 *  flagrate.createComboBox(option)
+	 *  new flagrate.ComboBox(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  Select.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `value`                    (String): default value.
+	 *  * `items`                    (Array): of String values.
+	 *  * `placeholder`              (String):
+	 *  * `icon`                     (String):
+	 *  * `regexp`                   (RegExp):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	**/
+	var ComboBox = flagrate.ComboBox = function flagrateComboBox(opt) {
+		
+		opt = opt || {};
+		
+		this.items  = opt.items  || [];
+		this.regexp = opt.regexp || null;
+		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) { attr.id = opt.id; }
+		
+		//create
+		var that = new Element('div', attr);
+		
+		that._textinput = new TextInput({
+			value      : opt.value,
+			placeholder: opt.placeholder,
+			icon       : opt.icon
+		}).insertTo(that);
+		
+		var createOnSelectHandler = function (value) {
+			
+			return function () {
+				that.setValue(value);
+				that._textinput.focus();
+				that.fire('change');
+			};
+		};
+		
+		that._button = new Button({
+			onSelect: function () {
+				
+				if (that._menu) {
+					that._menu.remove();
+					delete that._menu;
+					return;
+				}
+				
+				var items = [];
+				var i, l;
+				for (i = 0, l = that.items.length; i < l; i++) {
+					items.push({
+						label   : that.items[i],
+						onSelect: createOnSelectHandler(that.items[i])
+					});
+				}
+				
+				var menu = that._menu = new Menu(
+					{
+						className: flagrate.className + '-combobox-menu',
+						items    : items,
+						onSelect : function () {
+							
+							menu.remove();
+							delete that._menu;
+						}
+					}
+				).insertTo(that);
+				
+				// To prevent overflow.
+				var menuHeight    = menu.getHeight();
+				var menuMargin    = parseInt(menu.getStyle('margin-top').replace('px', ''), 10);
+				var cummOffsetTop = that.cumulativeOffset().top;
+				var upsideSpace   = - window.pageYOffset + cummOffsetTop;
+				var downsideSpace = window.pageYOffset + window.innerHeight - cummOffsetTop - that.getHeight();
+				if (menuHeight + menuMargin > downsideSpace) {
+					if (upsideSpace > downsideSpace) {
+						if (upsideSpace < menuHeight + menuMargin) {
+							menuHeight = (upsideSpace - menuMargin - menuMargin);
+							menu.style.maxHeight = menuHeight + 'px';
+						}
+						menu.addClassName(flagrate.className + '-combobox-menu-upper');
+					} else {
+						menuHeight = (downsideSpace - menuMargin - menuMargin);
+						menu.style.maxHeight = menuHeight + 'px';
+					}
+				}
+				
+				var removeMenu = function (e) {
+					
+					document.body.removeEventListener('click', removeMenu);
+					that.parentNode.removeEventListener('click', removeMenu);
+					that.off('click', removeMenu);
+					
+					menu.style.opacity = '0';
+					setTimeout(function (){ menu.remove(); }.bind(this), 500);
+					
+					delete that._menu;
+				};
+				
+				setTimeout(function () {
+					document.body.addEventListener('click', removeMenu);
+					that.parentNode.addEventListener('click', removeMenu);
+					that.on('click', removeMenu);
+				}, 0);
+			}
+		}).insertTo(that);
+		
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-combobox');
+		if (opt.className) { that.addClassName(opt.className); }
+		
+		if (opt.style) { that.setStyle(opt.style); }
+		
+		if (opt.isDisabled) { that.disable(); }
+		
+		return that;
+	};
+	
+	flagrate.createComboBox = function (a) {
+		return new ComboBox(a);
+	};
+	
+	ComboBox.prototype = {
+		/*?
+		 *  flagrate.ComboBox#disable() -> flagrate.ComboBox
+		**/
+		disable: function () {
+			
+			this.addClassName(flagrate.className + '-disabled');
+			
+			this._textinput.disable();
+			this._button.disable();
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.ComboBox#enable() -> flagrate.ComboBox
+		**/
+		enable: function () {
+			
+			this.removeClassName(flagrate.className + '-disabled');
+			
+			this._textinput.enable();
+			this._button.enable();
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.ComboBox#isEnabled() -> Boolean
+		**/
+		isEnabled: function () {
+			return !this.hasClassName(flagrate.className + '-disabled');
+		}
+		,
+		/*?
+		 *  flagrate.ComboBox#getValue() -> String
+		**/
+		getValue: function () {
+			return this._textinput.value;
+		}
+		,
+		/*?
+		 *  flagrate.ComboBox#setValue(value) -> flagrate.ComboBox
+		**/
+		setValue: function (value) {
+			
+			this._textinput.value = value;
+			
+			return this;
+		}
+		,
+		/*?
+		 *  flagrate.ComboBox#isValid() -> Boolean
+		**/
+		isValid: function (value) {
+			return this.regexp.test(this.getValue());
 		}
 	};
 	
@@ -7175,6 +7374,33 @@
 		getVal: function () {
 			return parseFloat(this.element.getValue());
 		},
+		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### combobox -> `String`
+	 *  combobox input. (uses flagrate.ComboBox)
+	 *
+	 *  * `placeholder` (String):
+	 *  * `icon`        (String):
+	 *  * `maxLength`   (Number):
+	 *  * `items`       (Array): of String values.
+	**/
+	Form.inputType.combobox = {
+		changeEvents: ['change', 'keyup'],
+		create: function () {
+			return new ComboBox({
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				items      : this.items,
+				attribute  : {
+					maxlength: this.maxLength
+				}
+			});
+		},
+		getVal: Form.inputType.text.getVal,
 		setVal: Form.inputType.text.setVal,
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
