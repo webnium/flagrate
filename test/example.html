@@ -193,6 +193,13 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// ComboBox
+		flagrate.createComboBox({ placeholder: 'ComboBox', items: ['hoge', 'huga', 'poyo'] }).insertTo(c);
+		flagrate.createComboBox({ value: 'ComboBox', isDisabled: true }).insertTo(c);
+		flagrate.createComboBox({ placeholder: 'ComboBox', icon: 'icon.png', items: ['hoge', 'huga', 'poyo'] }).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Select
 		flagrate.createSelect({
 			items: [

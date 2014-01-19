@@ -592,6 +592,68 @@ div.flagrate-select {
 		div.flagrate-select > div.flagrate-grid > div.flagrate-grid-body {
 			max-height: 100px; }
 
+div.flagrate-combobox {
+	display         : inline-block;
+	width           : 240px;
+	height          : 32px; }
+	
+	div.flagrate-combobox > input.flagrate-textinput {
+		display         : inline-block;
+		width           : 100%;
+		height          : 100%;
+		padding-right   : 30px; }
+	
+	div.flagrate-combobox > button.flagrate-button {
+		position         : absolute;
+		top              : 1px;
+		right            : 1px;
+		bottom           : 1px;
+		height           : auto;
+		width            : 25px;
+		box-shadow       : none;
+		border-color     : transparent;
+		border-left-color: rgba(0,0,0,0.2);
+		color            : rgba(0,0,0,0.5);
+		background-color : transparent; }
+	
+	div.flagrate-combobox > button.flagrate-button::after {
+		display          : inline-block;
+		position         : absolute;
+		top              : 50%;
+		right            : 5px;
+		margin-top       : -9px;
+		line-height      : 20px;
+		height           : 20px;
+		content          : '\25bc'; }
+	
+	div.flagrate-combobox > button.flagrate-button:hover {
+		border-left-color: rgba(0,0,0,0.50);
+		color            : rgba(0,0,0,0.7); }
+	
+	div.flagrate-combobox > button.flagrate-button:active,
+	div.flagrate-combobox > button.flagrate-button:focus {
+		border-left-color: #000;
+		color            : #000; }
+	
+	div.flagrate-combobox > button.flagrate-button.flagrate-disabled {
+		border-left-color: #ddd;
+		color            : rgba(0,0,0,0.5); }
+	
+	div.flagrate-combobox > div.flagrate-menu.flagrate-combobox-menu {
+		position         : absolute;
+		top              : 100%;
+		left             : 0;
+		width            : 100%;
+		max-height       : 200px;
+		margin           : 2px 0 0 0;
+		overflow-x       : hidden;
+		overflow-y       : auto; }
+	
+	div.flagrate-combobox > div.flagrate-menu.flagrate-combobox-menu.flagrate-combobox-menu-upper {
+		top              : auto;
+		bottom           : 100%;
+		margin           : 0 0 2px 0; }
+
 label.flagrate-checkbox,
 label.flagrate-radio {
 	display            : inline-block;
