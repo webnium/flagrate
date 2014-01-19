@@ -7380,6 +7380,33 @@
 	};
 	
 	/*?
+	 *  #### combobox -> `String`
+	 *  combobox input. (uses flagrate.ComboBox)
+	 *
+	 *  * `placeholder` (String):
+	 *  * `icon`        (String):
+	 *  * `maxLength`   (Number):
+	 *  * `items`       (Array): of String values.
+	**/
+	Form.inputType.combobox = {
+		changeEvents: ['change', 'keyup'],
+		create: function () {
+			return new ComboBox({
+				placeholder: this.placeholder,
+				icon       : this.icon,
+				items      : this.items,
+				attribute  : {
+					maxlength: this.maxLength
+				}
+			});
+		},
+		getVal: Form.inputType.text.getVal,
+		setVal: Form.inputType.text.setVal,
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
 	 *  #### checkbox -> `Boolean`
 	 *  Checkbox input. (uses flagrate.Checkbox)
 	 *
