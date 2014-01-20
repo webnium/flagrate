@@ -70,7 +70,8 @@ button.flagrate-button {
 		overflow          : hidden;
 		font-size         : inherit;
 		line-height       : inherit;
-		height            : 17px; }
+		height            : 17px;
+		vertical-align    : middle; }
 
 button.flagrate-button.flagrate-icon {
 	padding-left      : 25px; }
