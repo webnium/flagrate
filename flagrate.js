@@ -7257,6 +7257,7 @@
 	 *  * [password](#password-string-) -> `String`
 	 *  * [textarea](#textarea-string-) -> `String`
 	 *  * [number](#number-number-) -> `Number`
+	 *  * [combobox](#combobox-string-) -> `String`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
 	 *  * [radios](#radios-any-) -> `any`
 	 *  * [select](#select-any-array-) -> `any`|`Array`
