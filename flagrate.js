@@ -4071,8 +4071,7 @@
 			var bulk    = false;
 			
 			if (a instanceof Array === false) {
-				a    = [a];
-				bulk = true;
+				a = [a];
 			}
 			
 			var i, l;
@@ -5838,8 +5837,7 @@
 			var bulk    = false;
 			
 			if (r instanceof Array === false) {
-				r    = [r];
-				bulk = true;
+				r = [r];
 			}
 			
 			var i, l;
