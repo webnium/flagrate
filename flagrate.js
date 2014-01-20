@@ -4071,8 +4071,7 @@
 			var bulk    = false;
 			
 			if (a instanceof Array === false) {
-				a    = [a];
-				bulk = true;
+				a = [a];
 			}
 			
 			var i, l;
@@ -5838,8 +5837,7 @@
 			var bulk    = false;
 			
 			if (r instanceof Array === false) {
-				r    = [r];
-				bulk = true;
+				r = [r];
 			}
 			
 			var i, l;
@@ -6700,6 +6698,90 @@
 			this._requestRender();
 			
 			return this.fields.length;
+		},
+		
+		/*?
+		 *  flagrate.Form#splice(index[, howMany, field]) -> Array
+		 *  - index   (Number) - Index at which to start changing the flagrate.Form#fields.
+		 *  - howMany (Number) - An integer indicating the number of old flagrate.Form#fields to remove.
+		 *  - field   (Object|Array) - The row(s) to add to the flagrate.Form#fields.
+		 *
+		 *  Changes the content of a fields, adding new field(s) while removing old field(s).
+		**/
+		splice: function (index, c, f) {
+			
+			var i, l;
+			
+			c = c || this.fields.length - index;
+			
+			var removes = this.fields.splice(index, c);
+			
+			if (f) {
+				if (f instanceof Array === false) { f = [f]; }
+				
+				for (i = 0, l = f.length; i < l; i++) {
+					this._createField(f[i]);
+					this.fields.splice(index + i, 0, f[i]);
+				}
+			}
+			
+			for (i = 0, l = this.fields.length; i < l; i++) {
+				this._collectFieldRefs(this.fields[i]);
+				this._checkFieldDepends(this.fields[i]);
+			}
+			
+			this._requestRender();
+			
+			return removes;
+		},
+		
+		/*?
+		 *  flagrate.Form#delete(field) -> Object|Array
+		 *  - field (Object|Array|String|Number) - field to locale in the flagrate.Form#fields. String is field#key.
+		 *
+		 *  delete field(s)
+		**/
+		'delete': function (f) {
+			
+			var removes = [];
+			var bulk    = false;
+			
+			if (f instanceof Array === false) {
+				f = [f];
+			}
+			
+			var i, l;
+			for (i = 0, l = f.length; i < l; i++) {
+				var index = (typeof f[i] === 'number') ? f[i] : this.indexOf(f[i]);
+				if (index !== -1) {
+					removes.push(this.splice(index, 1));
+				}
+			}
+			
+			return bulk ? removes : removes[0];
+		},
+		
+		/*?
+		 *  flagrate.Form#indexOf(field) -> Object|Array
+		 *  - field (Object|String) - field to locale in the flagrate.Form#fields.
+		**/
+		indexOf: function (f) {
+			
+			if (typeof f === 'string') {
+				var index = -1;
+				
+				var i, l;
+				for (i = 0, l = this.fields.length; i < l; i++) {
+					if (this.fields[i].key === f) {
+						index = i;
+						break;
+					}
+				}
+				
+				return index;
+			} else {
+				return this.fields.indexOf(f);
+			}
 		},
 		_create: function () {
 			
