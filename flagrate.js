@@ -6585,7 +6585,7 @@
 			for (i = 0, l = this.fields.length; i < l; i++) {
 				field = this.fields[i];
 				
-				if (field.input && field.input._type) {
+				if (field._dependsIsOk === true && field.input && field.input._type) {
 					fields.push(field);
 				}
 			}
