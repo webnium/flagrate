@@ -6954,7 +6954,7 @@
 		_createField: function (field) {
 			
 			field._dependsIsOk  = (!field.depends || field.depends.length === 0);
-			field._inputIsValid = null;
+			//field._inputIsValid = null;
 			
 			// field container
 			field._div = new Element('div');
