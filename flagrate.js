@@ -7018,7 +7018,7 @@
 				}
 				
 				// set the default value
-				if (field.input.val) {
+				if (typeof field.input.val !== 'undefined') {
 					field.input._type.setVal.call(field.input, field.input.val);
 				}
 				
