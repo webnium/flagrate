@@ -1060,15 +1060,16 @@ div.flagrate-modal.flagrate-modal-visible {
 				background      : none;
 				border          : none;
 				color           : #aaa;
-				padding         : 0; }
-			
-			div.flagrate-modal > div > div > button::after {
-				display    : inline-block;
-				content    : '\2716';
-				font-size  : 10px;
-				font-weight: bold;
-				font-family: inherit;
-				text-shadow: 0 0 1px #fff; }
+				padding         : 0;
+				height          : 10px; }
+				
+				div.flagrate-modal > div > div > button > span::after {
+					display    : inline-block;
+					content    : '\2716';
+					font-size  : 10px;
+					font-weight: bold;
+					font-family: inherit;
+					text-shadow: 0 0 1px #fff; }
 				
 			div.flagrate-modal > div > div > button:focus,
 			div.flagrate-modal > div > div > button:hover {
