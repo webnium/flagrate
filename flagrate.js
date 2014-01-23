@@ -6806,6 +6806,10 @@
 				this.element.addClassName(flagrate.className + '-form-vertical');
 			}
 			
+			this.element.on('submit', function (e) {
+				e.preventDefault();
+			});
+			
 			return this;
 		},
 		_requestRender: function () {
