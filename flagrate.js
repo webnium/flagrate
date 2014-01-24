@@ -950,7 +950,7 @@
 		var value = element.style[style];
 		if (!value || value === 'auto') {
 			var css = document.defaultView.getComputedStyle(element, null);
-			value = css ? css.getPropertyValue(style) : null;
+			value = css ? css[style] : null;
 		}
 		
 		if (style === 'opacity') { return value ? parseFloat(value) : 1.0; }
