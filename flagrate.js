@@ -15,7 +15,7 @@
 	"use strict";
 	
 	// flagrate global scope
-	if (typeof window.flagrate !== 'undefined') {
+	if (window.flagrate !== void 0) {
 		throw new Error('[conflict] flagrate is already defined.');
 	}
 	
@@ -75,7 +75,7 @@
 				return jsonPointer.traverse(obj[part], pointer, value, isSet);
 			}
 			// we're done
-			if (typeof value === "undefined") {
+			if (value === void 0) {
 				// just reading
 				return obj[part];
 			}
@@ -584,7 +584,7 @@
 			return element;
 		}
 		
-		if (isElement(content) === true && typeof content.toString !== 'undefined') {
+		if (isElement(content) === true && (content.toString !== void 0)) {
 			return Element.updateText(element, content.toString());
 		}
 		
@@ -742,7 +742,7 @@
 		if (typeof name === 'object') {
 			attr = name;
 		} else {
-			attr[name] = (typeof value === 'undefined') ? true : value;
+			attr[name] = (value === void 0) ? true : value;
 		}
 		
 		var k;
@@ -753,7 +753,7 @@
 					element.removeAttribute(k);
 				} else if (value === true) {
 					element.setAttribute(k, k);
-				} else if (typeof value !== 'undefined') {
+				} else if (value !== void 0) {
 					element.setAttribute(k, value);
 				}
 			}
@@ -970,7 +970,7 @@
 		var p;
 		for (p in style) {
 			if (style.hasOwnProperty(p)) {
-				element.style[(p === 'float' || p === 'cssFloat') ? ((typeof element.style.styleFloat === 'undefined') ? 'cssFloat' : 'styleFloat') : p] = style[p];
+				element.style[(p === 'float' || p === 'cssFloat') ? ((element.style.styleFloat === void 0) ? 'cssFloat' : 'styleFloat') : p] = style[p];
 			}
 		}
 		
@@ -2288,7 +2288,7 @@
 			
 			var result = this.tokenize(str, this._tokenized.bind(this));
 			
-			if (typeof result !== 'undefined') { this._tokenized(result); }
+			if (result !== void 0) { this._tokenized(result); }
 			
 			this._lastTokenizedValue = this._input.value;
 			
@@ -3396,7 +3396,7 @@
 		**/
 		select: function (index) {
 			
-			if (typeof this.items[index] !== 'undefined') {
+			if (this.items[index] !== void 0) {
 				this.selectedIndex = index;
 				this.items[index]._radio.check();
 			}
@@ -3689,7 +3689,7 @@
 		
 		that.addClassName(flagrate.className + '-slider');
 		
-		if (typeof window.ontouchstart !== 'undefined') {
+		if (window.ontouchstart !== void 0) {
 			that.on('touchstart', that._onPointerDownHandler.bind(that));
 		}
 		if (navigator.pointerEnabled) {
@@ -3780,7 +3780,7 @@
 				
 				e.preventDefault();
 				
-				if (typeof window.ontouchend !== 'undefined') {
+				if (window.ontouchend !== void 0) {
 					document.body.removeEventListener('touchmove', onMove);
 					document.body.removeEventListener('touchend', onUp);
 					document.body.removeEventListener('touchcancel', onUp);
@@ -3809,7 +3809,7 @@
 				}
 			}.bind(this);
 			
-			if (typeof window.ontouchend !== 'undefined') {
+			if (window.ontouchend !== void 0) {
 				document.body.addEventListener('touchmove', onMove);
 				document.body.addEventListener('touchend', onUp);
 				document.body.addEventListener('touchcancel', onUp);
@@ -4717,9 +4717,9 @@
 			this.desktopNotifyType = null;
 			
 			/*- Check supported -*/
-			if (typeof window.Notification !== 'undefined' && window.Notification.permission) {
+			if ((window.Notification !== void 0) && window.Notification.permission) {
 				this.desktopNotifyType = 'w3c';
-			} else if (typeof window.webkitNotifications !== 'undefined') {
+			} else if (window.webkitNotifications !== void 0) {
 				this.desktopNotifyType = 'webkit';
 			} else {
 				this.disableDesktopNotify = true;
@@ -4789,7 +4789,7 @@
 			var message = opt.message || opt.body || opt.content || opt.text || null;
 			var onClick = opt.onClick || null;
 			var onClose = opt.onClose || null;
-			var timeout = (typeof opt.timeout !== 'undefined') ? opt.timeout : this.timeout;
+			var timeout = (opt.timeout !== void 0) ? opt.timeout : this.timeout;
 			
 			var isAlive = true;
 			var closeTimer;
@@ -4907,7 +4907,7 @@
 			var message = opt.message || opt.body || opt.content || opt.text || null;
 			var onClick = opt.onClick || null;
 			var onClose = opt.onClose || null;
-			var timeout = (typeof opt.timeout !== 'undefined') ? opt.timeout : this.timeout;
+			var timeout = (opt.timeout !== void 0) ? opt.timeout : this.timeout;
 			
 			var isAlive = true;
 			var notify  = null;
@@ -5657,10 +5657,10 @@
 				var B = 0;
 				
 				if (a.cell[key]) {
-					A = typeof a.cell[key].sortAlt !== 'undefined' ? a.cell[key].sortAlt : a.cell[key].text || a.cell[key].html || (a.cell[key].element && a.cell[key].element.innerHTML) || (a.cell[key]._div && a.cell[key]._div.innerHTML) || 0;
+					A = (a.cell[key].sortAlt !== void 0) ? a.cell[key].sortAlt : a.cell[key].text || a.cell[key].html || (a.cell[key].element && a.cell[key].element.innerHTML) || (a.cell[key]._div && a.cell[key]._div.innerHTML) || 0;
 				}
 				if (b.cell[key]) {
-					B = typeof b.cell[key].sortAlt !== 'undefined' ? b.cell[key].sortAlt : b.cell[key].text || b.cell[key].html || (b.cell[key].element && b.cell[key].element.innerHTML) || (b.cell[key]._div && b.cell[key]._div.innerHTML) || 0;
+					B = (b.cell[key].sortAlt !== void 0) ? b.cell[key].sortAlt : b.cell[key].text || b.cell[key].html || (b.cell[key].element && b.cell[key].element.innerHTML) || (b.cell[key]._div && b.cell[key]._div.innerHTML) || 0;
 				}
 				
 				return A === B ? 0 : (A > B ? 1 : -1);
@@ -6894,7 +6894,7 @@
 				if (f._dependsIsOk === false) {
 					return false;
 				}
-				if (typeof d.val === 'undefined') {
+				if (d.val === void 0) {
 					return true;
 				}
 				if (d.op) {
@@ -7022,7 +7022,7 @@
 				}
 				
 				// set the default value
-				if (typeof field.input.val !== 'undefined') {
+				if (field.input.val !== void 0) {
 					field.input._type.setVal.call(field.input, field.input.val);
 				}
 				
@@ -7127,9 +7127,9 @@
 				
 				// simple validator
 				if (field.input.isRequired === true) {
-					if (typeof val === 'undefined') {
+					if (val === void 0) {
 						hasError = true;
-					} else if (typeof val.length !== 'undefined' && val.length === 0) {
+					} else if ((val.length !== void 0) && val.length === 0) {
 						hasError = true;
 					} else if (val === false || val === null) {
 						hasError = true;
