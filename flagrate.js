@@ -4949,13 +4949,21 @@
 			if (onClick === null) {
 				notify.addEventListener('click', function (e) {
 					
-					notify.cancel();
+					if (type === 'w3c') {
+						notify.close();
+					} else {
+						notify.cancel();
+					}
 				});
 			} else {
 				notify.addEventListener('click', function (e) {
 					
 					onClick();
-					notify.cancel();
+					if (type === 'w3c') {
+						notify.close();
+					} else {
+						notify.cancel();
+					}
 				});
 			}
 			
