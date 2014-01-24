@@ -5169,7 +5169,7 @@
 			
 			var active = document.activeElement.tagName;
 			
-			if (active !== 'BODY') { return; }
+			if (active !== 'BODY' && active !== 'DIV') { return; }
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -5212,6 +5212,8 @@
 		open: function _show() {
 			
 			if (this.visible() === true) { return this; }
+			
+			if (document.activeElement) { document.activeElement.blur(); }
 			
 			if (this.closingTimer) { clearTimeout(this.closingTimer); }
 			
