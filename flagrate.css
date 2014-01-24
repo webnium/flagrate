@@ -55,7 +55,7 @@ button.flagrate-button {
 	font-weight        : normal;
 	white-space        : nowrap;
 	height             : 28px;
-	line-height        : 17px;
+	line-height        : 18px;
 	text-align         : center;
 	
 	-webkit-transition: background 0.2s ease;
@@ -70,8 +70,7 @@ button.flagrate-button {
 		overflow          : hidden;
 		font-size         : inherit;
 		line-height       : inherit;
-		height            : 17px;
-		vertical-align    : middle; }
+		vertical-align    : top; }
 
 button.flagrate-button.flagrate-icon {
 	padding-left      : 25px; }
@@ -463,7 +462,7 @@ div.flagrate-tokenizer.flagrate-icon {
 			border-color    : rgba(0,0,0,0.25);
 			color           : rgba(0,0,0,0.85);
 			font-size       : 10px;
-			line-height     : 15px;
+			line-height     : 10px;
 			height          : 20px;
 			background-color: #ddd;
 			box-shadow      : none;
@@ -824,9 +823,7 @@ div.flagrate-toolbar {
 		width           : 120px; }
 	
 	div.flagrate-toolbar > button {
-		background-color: transparent;
-		padding-top     : 4px;
-		padding-bottom  : 3px; }
+		background-color: transparent; }
 	
 	div.flagrate-toolbar > button:focus {
 		outline: none; }
