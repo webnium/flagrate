@@ -3,16 +3,53 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-Language" content="en, ja">
 	
-	<title>Flagrate: A JavaScript UI library.</title>
+	<title>Flagrate</title>
 	
-	<meta name="description" content="A pure JavaScript class-object UI library for building RIA using techniques such as DHTML and DOM scripting.">
+	<meta name="description" content="A pure JavaScript class-object UI library for building RIA/SPA using techniques such as HTML5.">
+	
+	<!--
+	Designed by:
+	
+	 ;                                                      ., 
+	 @@,                                                   X@: 
+	 ;@@#.                                               2@@#  
+	  @@@@M.                                           2@@@@.  
+	  ;@@@@@M.                                       5@@@@@H   
+	   @@@@@@@M.                                   5@@@@##@:   
+	   s@@@@@@@@B.                               5@@@@##M@@    
+	    @@##@@@@@@H.                           5@@@@####M@s    
+	    9@####@@@@@@H.                       S@@@@#######@     
+	    .@@#####@@@@@@H.                   i@@@@########@9     
+	     M@#######@@@@@@A.               i@@@@##########@.     
+	     :@@########@@@@@@A            i@@@@##########M@M      
+	      @@##########@@@@@@A        i@@@@#############@;      
+	      s@############@@@@@@A    i@@@@##############@@       
+	       @@#############@@@@@@Ar@@@@@##############M@i       
+	       9@###############@@@#; 3@@@################@        
+	       .@@#############@@3      r@@@############M@h        
+	        M@###########@@X          r@@@###########@.        
+	        :@@########@@X              r@@@########@B         
+	         @@######@@3                  r@@@######@;         
+	         i@####@@9                      r@@@###@@          
+	          @@#@@9                          r@@@#@i          
+	          9@@h                              s@@@           
+	          .#                                  X&           
+	                                                           
+	                                                           
+	                  _  /_ _  .   _ _   /_  _                 
+	             |/|//_'/_// ///_// / //// //_ .               
+	                                                           
+	          Established on Monday, April 1st, 2013           
+	                                                           
+	-->
 	
 	<meta name="keywords" content="flagrate">
 	<meta name="robots" content="index,follow">
 	
-	<meta property="og:title"            content="Flagrate: A JavaScript UI library.">
-	<meta property="og:description"      content="A pure JavaScript class-object UI library for building RIA using techniques such as DHTML and DOM scripting.">
+	<meta property="og:title"            content="Flagrate">
+	<meta property="og:description"      content="A pure JavaScript class-object UI library for building RIA/SPA using techniques such as HTML5.">
 	<meta property="og:site_name"        content="Flagrate">
 	<meta property="og:type"             content="website">
 	<meta property="og:url"              content="https://flagrate.org/">
@@ -22,6 +59,7 @@
 	<meta property="og:image:width"      content="1024">
 	<meta property="og:image:height"     content="1024">
 	<meta property="og:locale"           content="en_US">
+	<meta property="og:locale"           content="en_JP">
 	
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="./favicon.ico">
 	<link rel="canonical" href="https://flagrate.org/">
@@ -39,119 +77,353 @@
 		});
 	</script>
 	
-	<link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 	<style type="text/css">
 		body {
-			padding-top: 20px;
-			padding-bottom: 40px; }
+			padding    : 0;
+			margin     : 0;
+			font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ",
+			             Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+		}
 		
-		.container-narrow {
-			margin   : 0 auto;
-			max-width: 1000px; }
+		div.c {
+			position: relative;
+			width   : 900px;
+			margin  : 0 auto;
+			height  : 100%;
+		}
 		
-		.container-narrow > hr {
-			margin: 20px 0; }
+		@media screen and (max-width: 940px) {
+			div.c {
+				width   : 95%;
+			}
+		}
 		
-		.masthead ul.nav {
-			padding-top: 20px; }
+		@media screen and (min-width: 1200px) {
+			div.c {
+				width   : 1000px;
+			}
+		}
 		
-		.poster {
-			background: no-repeat center center url(./resources/poster.svg);
-			height     : 40px;
-			padding-top: 260px;
-			text-align : center; }
-			
-			/* Textual links in masthead */
-			.poster-links {
-				margin: 0;
-				list-style: none; }
-				
-				.poster-links li {
-					display: inline;
-					padding: 0 10px;
-					color: rgba(0,0,0,.35); }
+		div.cover {
+			position  : relative;
+			background: #0049c9;
+			height    : 400px;
+		}
 		
-		.social {
-			text-align: center; }
-			
-			.social-buttons {
-				margin: 0;
-				list-style: none; }
-				
-				.social-buttons li {
-					display: inline;
-					padding: 0 5px;
-					color: rgba(0,0,0,.35); }
+		div.cover a {
+			color: #fff;
+		}
 		
-		.footer {
-			text-align: center; }
-			
-			.footer ul.footer-links {
-				margin: 0 0 10px;
-				list-style: none; }
-				
-				.footer ul.footer-links > li {
-					display: inline;
-					padding: 0 2px;
-					color  : rgba(0,0,0,.35); }
+		div.cover > div > header {
+			position  : absolute;
+			top       : 0;
+			right     : 0;
+			left      : 0;
+			height    : 90px;
+		}
+		
+		div.cover > div > header > img.product {
+			position  : absolute;
+			top       : 0;
+			left      : 0;
+			display   : inline-block;
+			background: #fff;
+			padding   : 20px 0 10px 0;
+			width     : 200px;
+			height    : 60px;
+		}
+		
+		div.cover > div > header > ul.nav {
+			position  : absolute;
+			top       : 20px;
+			right     : 0;
+			display   : inline-block;
+			margin    : 0;
+			padding   : 0;
+		}
+		
+		div.cover > div > header > ul.nav > li {
+			float          : left;
+			margin         : 0 0 0 30px;
+			list-style-type: disc;
+			color          : rgba(255,255,255,0.5);
+			font-size      : 14px;
+		}
+		
+		div.cover > div > header > ul.nav > li:first-child {
+			margin-left    : 0;
+			list-style-type: none;
+		}
+		
+		div.cover > div > header > ul.nav > li > a {
+			text-decoration: none;
+			line-height    : 60px;
+		}
+		
+		div.cover > div > header > ul.nav > li > a:hover {
+			text-decoration: underline;
+		}
+		
+		div.cover > div > header > ul.nav > li.active > a {
+			text-decoration: none;
+			background     : rgba(255,255,255,0.8);
+			padding        : 2px 5px;
+			color          : #0049c9;
+			cursor         : default;
+			border-radius  : 2px;
+		}
+		
+		div.cover > div > ul.links {
+			position  : absolute;
+			bottom    : 0;
+			right     : 0;
+			display   : inline-block;
+		}
+		
+		div.cover > div > ul.links > li {
+			display   : inline-block;
+			margin    : 0 0 0 10px;
+			list-style: none;
+			font-size : 15px;
+			color     : #777;
+		}
+		
+		div.cover > div > ul.links > li > a {
+			display        : inline-block;
+			padding        : 10px 15px 9px;
+			background     : rgba(0,0,0,0.25);
+			text-decoration: none;
+		}
+		
+		div.cover > div > ul.links > li > a:hover {
+			background: rgba(0,0,0,0.5);
+		}
+		
+		div.belt {
+			position  : relative;
+			background: #eee;
+			height    : 60px;
+		}
+		
+		div.belt > div > ul {
+			position  : absolute;
+			top       : 20px;
+			right     : 0;
+			left      : 0;
+			display   : inline-block;
+			margin    : 0;
+			padding   : 0;
+		}
+		
+		div.belt > div > ul > li {
+			float     : left;
+			margin    : 0 10px 0 0;
+			list-style: none;
+		}
+		
+		div.keys {
+			text-align: center;
+			padding   : 20px;
+		}
+		
+		div.keys h2 {
+			font-weight: normal;
+			font-size  : 28px;
+			color      : #777;
+		}
+		
+		div.keys h2 > small.asterisk {
+			color: #f44;
+		}
+		
+		div.keys p.ps {
+			font-size: 15px;
+			color    : #777;
+		}
+		
+		div.keys p.ps a {
+			text-decoration: none;
+			color          : #555;
+		}
+		
+		div.keys p.ps a:hover {
+			text-decoration: underline;
+		}
+		
+		div.keys ul.icons {
+			display: block;
+			margin : 0;
+			padding: 0;
+		}
+		
+		div.keys ul.icons > li {
+			display   : inline-block;
+			margin    : 0 0 0 10px;
+			list-style: none;
+			font-size : 13px;
+			color     : #777;
+		}
+		
+		div.keys ul.icons > li:first-child {
+			margin-left: 0;
+		}
+		
+		div.keys ul.icons > li > img {
+			width  : 64px;
+			height : 64px;
+			padding: 16px;
+		}
+		
+		div.keys ul.icons > li > p {
+			margin: 0;
+		}
+		
+		footer {
+			border-top: 2px solid #eee;
+			padding   : 10px;
+			text-align: center;
+			font-size : 13px;
+			color     : #999;
+		}
+		
+		footer a {
+			color          : #555;
+			text-decoration: none;
+		}
+		
+		footer a:hover {
+			text-decoration: underline;
+		}
+		
+		footer p {
+			display: block;
+			margin : 15px;
+			padding: 0;
+		}
+		
+		footer ul {
+			display: block;
+			margin : 0;
+			padding: 0;
+		}
+		
+		footer ul > li {
+			display   : inline-block;
+			margin    : 0 0 0 10px;
+			list-style: none;
+		}
+		
+		footer ul > li:first-child {
+			margin-left: 0;
+		}
+		
+		footer img.logo {
+			width : 40px;
+			height: 40px;
+		}
 	</style>
+	
+	<link rel="shortcut icon" type="image/png" href="./resources/favicon.png">
+	<link rel="shortcut icon" type="image/svg+xml" sizes="any" href="./resources/favicon.svg">
+	
+	<script>
+		
+		function init() {
+			
+			// l10n
+			(function () {
+				
+				var languages = (function () {
+					
+					var cl = document.querySelector('meta[http-equiv="Content-Language"]').getAttribute('content');
+					
+					var langs = cl.split(',');
+					var i, l;
+					for (i = 0, l = langs.length; i < l; i++) {
+						langs[i] = langs[i].trim();
+					}
+					
+					return langs;
+				}());
+				
+				var language = (window.navigator.language || window.navigator.userLanguage).substr(0, 2);
+				if (languages.indexOf(language) === -1) {
+					language = languages[0];
+				}
+				
+				var elements = document.querySelectorAll('*[lang]');
+				var i, l;
+				for (i = 0, l = elements.length; i < l; i++) {
+					if (elements[i].getAttribute('lang') !== language) {
+						flagrate.Element.remove(elements[i]);
+					}
+				}
+			}());
+			
+			// keys icons
+			(function () {
+				
+				var imgs = document.querySelectorAll('div.keys ul.icons > li > img[alt]');
+				var i, l, img;
+				for (i = 0, l = imgs.length; i < l; i++) {
+					img = imgs[i];
+					
+					flagrate.createPopover({
+						target: img,
+						text  : img.getAttribute('alt')
+					});
+				}
+			}());
+		}
+		
+		// _|_
+		// \ /
+		//  v
+		window.addEventListener('DOMContentLoaded', init);
+		
+	</script>
 </head>
 <body>
-	<div class="container-narrow">
-	
-		<div class="masthead">
-			<img class="pull-right" src="./resources/head.svg">
-			<ul class="nav nav-pills">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="https://github.com/webnium/flagrate/wiki">Getting started</a></li>
-				<li><a href="./api/">API</a></li>
-			</ul>
-		</div>
-	
-		<hr>
-	
-		<div class="poster">
-			<ul class="poster-links">
+	<div class="cover">
+		<div class="c">
+			
+			<header>
+				<img class="product" src="./resources/head.svg">
+				<ul class="nav">
+					<li class="active">
+						<a href="#">
+							<span lang="en">Home</span>
+							<span lang="ja">ホーム</span>
+						</a>
+					</li>
+					<!--
+					<li>
+						<a href="./snippets/">
+							<span lang="en">Snippets</span>
+							<span lang="ja">スニペット</span>
+						</a>
+					</li>
+					-->
+					<li>
+						<a href="./api/">
+							<span lang="en">API Docs</span>
+							<span lang="ja">APIドキュメント</span>
+						</a>
+					</li>
+				</ul>
+			</header>
+			
+			<ul class="links">
 				<li>
-					<a href="http://github.com/webnium/flagrate/">GitHub</a>
-				</li>
-				<li>
-					<a href="https://github.com/webnium/flagrate/wiki#examples">Examples</a>
-				</li>
-				<li>
-					Preview Release
-				</li>
-			</ul>
-		</div>
-		
-		<hr>
-		
-		<div class="social">
-			<ul class="social-buttons">
-				<li>
-					<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=webnium&amp;repo=flagrate&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>
-				</li>
-				<li>
-					<iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/follow_button.html#id=twitter-widget-1&amp;lang=en&amp;screen_name=flagratejs&amp;show_count=true&amp;show_screen_name=true&amp;size=m" class="twitter-follow-button twitter-follow-button" title="Twitter Follow Button" data-twttr-rendered="true" style="width: 160px; height: 20px;"></iframe>
-				</li>
-				<li>
-					<iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html#count=horizontal&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=https%3A%2F%2Fflagrate.org%2F&amp;related=mdo%3ACreator%20of%20Twitter%20Bootstrap&amp;size=m&amp;text=Flagrate&amp;url=https%3A%2F%2Fflagrate.org%2F&amp;via=flagratejs" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 100px; height: 20px;"></iframe>
-				</li>
-				<li>
-					<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fflagrate.org%2F&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font=arial&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=239129829438266" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:20px;" allowTransparency="true"></iframe>
+					<a href="http://github.com/webnium/flagrate/">Fork me on GitHub</a>
 				</li>
 			</ul>
-		</div>
-		
-		<hr>
-		
+			
+			<!--
+
+
 		<div class="row-fluid marketing">
 			<div class="span4">
-				<h4>High Performance</h4>
-				<p>testing.. <a href="http://jsperf.com/flagrate-grid-performance/3">flagrate.Grid</a></p>
-			</div>
-			<div class="span4">
-				<h4>Object-Oriented</h4>
 				<p>
 					Write the good code. More robust programming.
 					<pre class="prettyprint lang-js">
@@ -161,49 +433,116 @@ var modal = flagrate.createModal({
 });
 
 modal.open();</pre>
-					<pre class="prettyprint lang-js">
-// These are equivalent.
-var notify = flagrate.createNotify();
-var notify = new flagrate.Notify();</pre>
-				</p>
-			</div>
-			<div class="span4">
-				<h4>Pure JavaScript</h4>
-				<p>
-					No dependencies, No pollution.<br>Works with any web framework.
-					<pre class="prettyprint lang-js">
-var popover = flagrate.createPopover({
-  text: 'Yay!'
-});
-
-// Pure
-popover.open(document.getElementById('x'));
-// jQuery
-popover.open($('#x')[0]);
-// Prototype.js
-popover.open($('x'));</pre>
 				</p>
 			</div>
 		</div>
-	
-	  <hr>
-	
-	  <div class="footer">
-		<p>
-			Designed by <a href="https://webnium.co.jp/">Webnium</a> in Tokyo, <a href="https://twitter.com/kanreisa/">Yuki</a>.<br>
-			Code licensed under <a href="https://github.com/webnium/flagrate/blob/master/LICENSE">MIT License</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
-		</p>
-		<ul class="footer-links">
-			<li><a href="http://blog.flagrate.org/">Blog</a></li>
-			<li>&sdot;</li>
-			<li><a href="https://github.com/webnium/flagrate/issues?state=open">Issues</a></li>
-			<li>&sdot;</li>
-			<li><a href="https://github.com/webnium/flagrate/wiki/CHANGELOG">Changelog</a></li>
-		</ul>
-		<img src="./resources/webnium.svg">
-		<p>&copy; <a href="https://webnium.co.jp/">webnium,Inc.</a></p>
-	  </div>
-	
-	</div> <!-- /container -->
+
+			-->
+		</div>
+	</div>
+	<div class="belt">
+		<div class="c">
+			
+			<ul class="social-buttons">
+				<li>
+					<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=webnium&amp;repo=flagrate&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>
+				</li>
+				<li>
+					<iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/follow_button.html#id=twitter-widget-1&amp;lang=en&amp;screen_name=flagratejs&amp;show_count=true&amp;show_screen_name=true&amp;size=m" class="twitter-follow-button twitter-follow-button" title="Twitter Follow Button" data-twttr-rendered="true" style="width: 200px; height: 20px;"></iframe>
+				</li>
+				<li>
+					<iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html#count=horizontal&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=https%3A%2F%2Fflagrate.org%2F&amp;related=mdo%3ACreator%20of%20Twitter%20Bootstrap&amp;size=m&amp;text=Flagrate&amp;url=https%3A%2F%2Fflagrate.org%2F&amp;via=flagratejs" class="twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 85px; height: 20px;"></iframe>
+				</li>
+				<li>
+					<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fflagrate.org%2F&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font=arial&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=239129829438266" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:20px;" allowTransparency="true"></iframe>
+				</li>
+			</ul>
+			
+		</div>
+	</div>
+	<div class="keys">
+		<div class="c" style="height:auto">
+			<h2 lang="en">Targeted platforms</h2>
+			<h2 lang="ja">対応プラットフォーム</h2>
+			<ul class="icons">
+				<li>
+					<img src="./resources/icon-platform-ie.svg" alt="Internet Explorer">
+					<p>9+</p>
+				</li>
+				<li>
+					<img src="./resources/icon-platform-chrome.svg" alt="Chrome">
+					<p>Current (32+)</p>
+				</li>
+				<li>
+					<img src="./resources/icon-platform-firefox.svg" alt="Firefox">
+					<p>Current (26+)</p>
+				</li>
+				<li>
+					<img src="./resources/icon-platform-safari.svg" alt="Safari">
+					<p>Current (7+)</p>
+				</li>
+				<li>
+					<img src="./resources/icon-platform-opera.svg" alt="Opera">
+					<p>Current (18+)</p>
+				</li>
+				<li>
+					<img src="./resources/icon-platform-windowsstoreapp.svg" alt="Windows Store App">
+					<p>Windows 8.1</p>
+				</li>
+			</ul>
+			<p class="ps">
+				<span lang="en">And...</span>
+				<span lang="ja">さらに...</span>
+				<a href="https://code.google.com/p/chromiumembedded/">Chromium Embedded Framework (CEF)</a>,
+				<a href="https://developer.mozilla.org/ja/docs/XULRunner">XULRunner</a>,
+				<a href="http://www.tidesdk.org/">TideSDK</a>,
+				<span lang="en">and more!</span>
+				<span lang="ja">などでも動きます!</span>
+			</p>
+			
+			<!--
+			<h2 lang="en">Getting Started</h2>
+			<h2 lang="ja">始めてみましょう</h2>
+			
+			<h2 lang="en">Examples <small class="asterisk">*</small></h2>
+			<h2 lang="ja">こんなところで使われています <small class="asterisk">*</small></h2>
+			-->
+		</div>
+	</div>
+	<footer>
+		<div class="c">
+			<p>
+				<img class="logo" src="./resources/footer-logo-flagrate.svg">
+				<br>
+				<b>Preview Release</b>
+			</p>
+			<p>
+				Designed by
+				<a href="https://webnium.co.jp/">Webnium</a> in Tokyo,
+				<a href="https://twitter.com/kanreisa/">Yuki</a>.
+				<br>
+				Code licensed under
+				<a href="https://github.com/webnium/flagrate/blob/master/LICENSE">MIT License</a>, documentation under
+				<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+			</p>
+			<ul class="links">
+				<li>
+					<a href="http://blog.flagrate.org/">Blog</a>
+				</li>
+				<li>
+					<a href="https://github.com/webnium/flagrate/issues?state=open">Issues</a>
+				</li>
+				<li>
+					<a href="https://github.com/webnium/flagrate/wiki/CHANGELOG">Changelog</a>
+				</li>
+			</ul>
+			<p>
+				<img class="logo" src="./resources/footer-logo-webnium.svg">
+				<br>
+				&copy;
+				<a href="https://webnium.co.jp/">webnium,Inc.</a>
+			</p>
+		</div>
+	</footer>
 </body>
 </html>
