@@ -4940,7 +4940,11 @@
 				closeTimer = setTimeout(function () {
 					
 					if (isAlive) {
-						notify.cancel();
+						if (type === 'w3c') {
+							notify.close();
+						} else {
+							notify.cancel();
+						}
 					}
 				}, timeout * 1000);
 			}
