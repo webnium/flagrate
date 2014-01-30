@@ -950,7 +950,7 @@
 		var value = element.style[style];
 		if (!value || value === 'auto') {
 			var css = document.defaultView.getComputedStyle(element, null);
-			value = css ? css[style] : null;
+			value = css && (css[style] !== void 0) && css[style] !== "" ? css[style] : null;
 		}
 		
 		if (style === 'opacity') { return value ? parseFloat(value) : 1.0; }
@@ -1255,7 +1255,7 @@
 			if (this._removeButton && e && e.layerX) {
 				var bw = this.getWidth();
 				var bh = this.getHeight();
-				var bp = parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
+				var bp = this._removeButton.getStyle('margin-right') === null ? 0 : parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
 				var rw = this._removeButton.getWidth();
 				var rh = this._removeButton.getHeight();
 				var lx = e.layerX;
@@ -2254,13 +2254,13 @@
 			}
 			
 			var vw = this.getWidth();
-			var bw = parseInt(this.getStyle('border-width').replace('px', ''), 10)  || 2;
-			var pl = parseInt(this.getStyle('padding-left').replace('px', ''), 10)  || 4;
-			var pr = parseInt(this.getStyle('padding-right').replace('px', ''), 10) || 4;
+			var bw = this.getStyle('border-width') === null ? 2 : parseInt(this.getStyle('border-width').replace('px', ''), 10);
+			var pl = this.getStyle('padding-left') === null ? 4 : parseInt(this.getStyle('padding-left').replace('px', ''), 10);
+			var pr = this.getStyle('padding-right') === null ? 4 : parseInt(this.getStyle('padding-right').replace('px', ''), 10);
 			var tw = this._tokens.getWidth();
-			var tm = parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10) || 2;
-			var im = parseInt(this._input.getStyle('margin-left').replace('px', ''), 10) || 2;
-			var ip = parseInt(this._input.getStyle('padding-left').replace('px', ''), 10) || 2;
+			var tm = this._tokens.getStyle('margin-left') === null ? 2 : parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10);
+			var im = this._input.getStyle('margin-left') === null ? 2 : parseInt(this._input.getStyle('margin-left').replace('px', ''), 10);
+			var ip = this._input.getStyle('padding-left') === null ? 2 : parseInt(this._input.getStyle('padding-left').replace('px', ''), 10);
 			var aw = vw - pl - pr - tw - tm - im - ip - (bw * 2) - 2;
 			
 			if (aw > 30) {
