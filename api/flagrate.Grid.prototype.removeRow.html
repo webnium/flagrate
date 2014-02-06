@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>flagrate.createGrid - Flagrate API documentation</title>
+	<title>flagrate.Grid#removeRow - Flagrate API documentation</title>
 	<meta name="robots" content="noarchive">
 	<meta name="generator" content="flagdoc">
 	<script type="text/javascript" src="https://flagrate.org/flagrate.min.js"></script>
@@ -377,98 +377,27 @@
 	
 	<div class="content">
 		<ul class="breadcrumbs">
-			<li><a href="./">Top</a></li><li><a href="flagrate.Grid.html">flagrate.Grid</a></li><li>createGrid</li>
+			<li><a href="./">Top</a></li><li><a href="flagrate.Grid.html">flagrate.Grid</a></li><li>removeRow</li>
 		</ul>
 		
 		<div class="title">
-			<small>constructor</small>
-			<h2>flagrate.createGrid</h2>
+			<small>instance-method</small>
+			<h2>flagrate.Grid#removeRow</h2>
 		</div>
 		
 		<div class="source-link">
-			<a href="https://github.com/webnium/flagrate/blob/master/flagrate.js#L5392">View source: flagrate.js#5392 &rarr;</a>
+			<a href="https://github.com/webnium/flagrate/blob/master/flagrate.js#L5843">View source: flagrate.js#5843 &rarr;</a>
 		</div>
 		
 		<div class="syntax">
-			<pre><code class="ebnf"><span class="key">flagrate.createGrid</span>(<span class="arguments">option</span>) &rarr; <span class="return"><span class="object-flagrate.Grid"><a href="flagrate.Grid.html" title="flagrate.Grid (class)">flagrate.Grid</a></span></span>
-<span class="alias">new flagrate.Grid</span></code></pre>
+			<pre><code class="ebnf"><span class="key">flagrate.Grid#removeRow</span>(<span class="arguments">row</span>) &rarr; <span class="return"><span class="object-Object">Object</span> | <span class="object-Array">Array</span></span></code></pre>
 			<ul class="arguments">
-				<li><code class="argument-name">option</code> (<code class="object-Object">Object</code>) – configuration for the grid.</li>
+				<li><code class="argument-name">row</code> (<code class="object-Object">Object</code>|<code class="object-Array">Array</code>) – row to locate in the flagrate.Grid.</li>
 			</ul>
 		</div>
 		
 		<div class="description">
-			<p>Create and initialize the grid.</p>
-<h4 id="option">option</h4>
-<ul>
-<li><code>id</code>                       (String): <code>id</code> attribute of container.</li>
-<li><code>className</code>                (String):</li>
-<li><code>attribute</code>                (Object):</li>
-<li><code>style</code>                    (Object): (using <a href="flagrate.Element.setStyle.html" title="flagrate.Element.setStyle (class-method)">flagrate.Element.setStyle</a>)</li>
-<li><code>cols</code>                     (Array): of col object.</li>
-<li><code>rows</code>                     (Array): of row object.</li>
-<li><code>pagination</code>               (Boolean; default <code>false</code>):</li>
-<li><code>numberOfRowsPerPage</code>      (Number; default <code>20</code>): pagination.</li>
-<li><code>fill</code>                     (Boolean; default <code>false</code>):</li>
-<li><code>headless</code>                 (Boolean; default <code>false</code>):</li>
-<li><code>multiSelect</code>              (Boolean; default <code>false</code>):</li>
-<li><code>disableCheckbox</code>          (Boolean; default <code>false</code>):</li>
-<li><code>disableSelect</code>            (Boolean; default <code>false</code>):</li>
-<li><code>disableSort</code>              (Boolean; default <code>false</code>):</li>
-<li><code>disableFilter</code>            (Boolean; default <code>false</code>):</li>
-<li><code>disableResize</code>            (Boolean; default <code>false</code>):</li>
-<li><code>onSelect</code>                 (Function):</li>
-<li><code>onDeselect</code>               (Function):</li>
-<li><code>onClick</code>                  (Function):</li>
-<li><code>onDblClick</code>               (Function):</li>
-<li><code>onRender</code>                 (Function):</li>
-<li><code>onRendered</code>               (Function):</li>
-<li><code>postProcessOfRow</code>         (Function):</li>
-</ul>
-<h4 id="col">col</h4>
-<ul>
-<li><code>id</code>                       (String): <code>id</code> attribute of <code>th</code></li>
-<li><code>className</code>                (String):</li>
-<li><code>attribute</code>                (Object):</li>
-<li><code>style</code>                    (Object): styling of <code>th</code> (using <a href="flagrate.Element.setStyle.html" title="flagrate.Element.setStyle (class-method)">flagrate.Element.setStyle</a>)</li>
-<li><code>key</code>                      (String; required):</li>
-<li><code>label</code>                    (String; default <code>&quot;&quot;</code>):</li>
-<li><code>icon</code>                     (String):</li>
-<li><code>align</code>                    (String):</li>
-<li><code>width</code>                    (Number):</li>
-<li><code>disableSort</code>              (Boolean; default <code>false</code>):</li>
-<li><code>disableResize</code>            (Boolean; default <code>false</code>):</li>
-</ul>
-<h4 id="row">row</h4>
-<ul>
-<li><code>id</code>                       (String): <code>id</code> attribute of <code>tr</code></li>
-<li><code>className</code>                (String):</li>
-<li><code>attribute</code>                (Object):</li>
-<li><code>style</code>                    (Object): styling of <code>tr</code> (using <a href="flagrate.Element.setStyle.html" title="flagrate.Element.setStyle (class-method)">flagrate.Element.setStyle</a>)</li>
-<li><code>cell</code>                     (Object; default <code>{}</code>): of cell object.</li>
-<li><code>menuItems</code>                (Array): of Menu items.</li>
-<li><code>isSelected</code>               (Boolean):</li>
-<li><code>onSelect</code>                 (Function):</li>
-<li><code>onDeselect</code>               (Function):</li>
-<li><code>onClick</code>                  (Function):</li>
-<li><code>onDblClick</code>               (Function):</li>
-<li><code>postProcess</code>              (Function):</li>
-</ul>
-<h4 id="cell">cell</h4>
-<ul>
-<li><code>id</code>                       (String): <code>id</code> attribute of <code>td</code></li>
-<li><code>className</code>                (String):</li>
-<li><code>attribute</code>                (Object):</li>
-<li><code>style</code>                    (Object): styling of <code>td</code> (using <a href="flagrate.Element.setStyle.html" title="flagrate.Element.setStyle (class-method)">flagrate.Element.setStyle</a>)</li>
-<li><code>text</code>                     (String):</li>
-<li><code>html</code>                     (String):</li>
-<li><code>element</code>                  (Element):</li>
-<li><code>icon</code>                     (String):</li>
-<li><code>sortAlt</code>                  (Number|String):</li>
-<li><code>onClick</code>                  (Function):</li>
-<li><code>onDblClick</code>               (Function):</li>
-<li><code>postProcess</code>              (Function):</li>
-</ul>
+			<p>remove row(s).</p>
 
 		</div>
 		
@@ -482,7 +411,7 @@
 		if (ebnf.innerHTML === '') document.getElementsByClassName('syntax')[0].style.display = 'none';
 		
 		var classKey   = 'flagrate.Grid';
-		var currentKey = 'flagrate.createGrid';
+		var currentKey = 'flagrate.Grid#removeRow';
 		
 		var apiList = document.getElementById('api-list');
 		var li      = apiList.firstChild.getElementsByClassName('type-class');
