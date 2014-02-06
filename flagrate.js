@@ -2736,7 +2736,10 @@
 						this._grid.deselect(index);
 					}
 					return this;
-				} 
+				}
+				if (this.selectedIndexes.indexOf(index) !== -1) {
+					return this;
+				}
 				this.selectedIndexes.push(index);
 			} else {
 				this.selectedIndex = index;
@@ -2753,7 +2756,7 @@
 				
 				this.fire('change');
 			} else {
-				if (this._grid.rows[index].isSelected === false) {
+				if (!this._grid.rows[index].isSelected) {
 					this._grid.select(index);
 				}
 			}
