@@ -2799,6 +2799,12 @@
 			
 			if (this.multiple) {
 				this._grid.selectAll();
+				this.selectedIndexes = [];
+				
+				var i, l;
+				for (i = 0, l = this.items.length; i < l; i++) {
+					this.selectedIndexes.push(i);
+				}
 			}
 			
 			return this;
@@ -2811,6 +2817,7 @@
 			
 			if (this.multiple) {
 				this._grid.deselectAll();
+				this.selectedIndexes = [];
 			} else {
 				this.deselect();
 			}
