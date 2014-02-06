@@ -4060,12 +4060,12 @@
 		}
 		,
 		/*?
-		 *  flagrate.Tab#delete(tab) -> Object|Array
+		 *  flagrate.Tab#removeTab(tab) -> Object|Array
 		 *  - tab (Array|Object|String|Number) - tab to locate in the flagrate.Tab#tabs.
 		 *
-		 *  delete tab(s).
+		 *  remove tab(s).
 		**/
-		'delete': function (a) {
+		removeTab: function (a) {
 			
 			var removes = [];
 			var bulk    = false;
@@ -5840,12 +5840,12 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#delete(row) -> Object|Array
+		 *  flagrate.Grid#removeRow(row) -> Object|Array
 		 *  - row (Object|Array) - row to locate in the flagrate.Grid.
 		 *
-		 *  delete row(s).
+		 *  remove row(s).
 		**/
-		'delete': function (r) {
+		removeRow: function (r) {
 			
 			var removes = [];
 			var bulk    = false;
@@ -6750,12 +6750,12 @@
 		},
 		
 		/*?
-		 *  flagrate.Form#delete(field) -> Object|Array
+		 *  flagrate.Form#removeField(field) -> Object|Array
 		 *  - field (Object|Array|String|Number) - field to locale in the flagrate.Form#fields. String is field#key.
 		 *
-		 *  delete field(s)
+		 *  remove field(s)
 		**/
-		'delete': function (f) {
+		removeField: function (f) {
 			
 			var removes = [];
 			var bulk    = false;
