@@ -945,6 +945,8 @@
 	**/
 	Element.getStyle = function (element, style) {
 		
+		style = style === 'float' ? 'cssFloat' : style.replace(/-+([a-z])?/g, function (m, s) { return s ? s.toUpperCase() : ''; });
+		
 		if (style === 'float') { style = 'cssFloat'; }
 		
 		var value = element.style[style];
