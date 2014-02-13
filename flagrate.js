@@ -947,8 +947,6 @@
 		
 		style = style === 'float' ? 'cssFloat' : style.replace(/-+([a-z])?/g, function (m, s) { return s ? s.toUpperCase() : ''; });
 		
-		if (style === 'float') { style = 'cssFloat'; }
-		
 		var value = element.style[style];
 		if (!value || value === 'auto') {
 			var css = document.defaultView.getComputedStyle(element, null);
