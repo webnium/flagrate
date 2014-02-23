@@ -971,13 +971,7 @@ div.flagrate-modal.flagrate-modal-visible {
 		position          : absolute;
 		right             : 0;
 		left              : 0;
-		height            : auto;
-		
-		-webkit-transition: opacity 0.2s ease;
-		-moz-transition   : opacity 0.2s ease;
-		-ms-transition    : opacity 0.2s ease;
-		-o-transition     : opacity 0.2s ease;
-		transition        : opacity 0.2s ease; }
+		height            : auto; }
 	
 	div.flagrate-modal.flagrate-tutorial > div {
 		background-color  : rgba(0,0,0,0.5); }
