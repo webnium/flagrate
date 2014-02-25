@@ -3628,6 +3628,8 @@
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-progress');
 		
+		that._bar = new Element().insertTo(that);
+		
 		that._updateProgress();
 		
 		return that;
@@ -3663,9 +3665,7 @@
 			
 			var percentage = Math.max(0, Math.min(100, this.value / this.max * 100));
 			
-			this.update(
-				new Element().setStyle({ width: percentage + '%' })
-			);
+			this._bar.setStyle({ width: percentage + '%' });
 			
 			return this;
 		}

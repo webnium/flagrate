@@ -857,7 +857,12 @@ div.flagrate-progress {
 	div.flagrate-progress > div {
 		height          : 100%;
 		width           : 0%;
-		background-color: #388dd6; }
+		background-color: #388dd6;
+		-webkit-transition: width 0.2s ease;
+		-moz-transition   : width 0.2s ease;
+		-ms-transition    : width 0.2s ease;
+		-o-transition     : width 0.2s ease;
+		transition        : width 0.2s ease; }
 
 div.flagrate-slider {
 	cursor            : pointer;
@@ -867,6 +872,13 @@ div.flagrate-slider.flagrate-disabled { }
 	
 	div.flagrate-slider.flagrate-disabled > div {
 		background-color  : #888; }
+	
+	div.flagrate-slider > div {
+		-webkit-transition: width 0.1s ease;
+		-moz-transition   : width 0.1s ease;
+		-ms-transition    : width 0.1s ease;
+		-o-transition     : width 0.1s ease;
+		transition        : width 0.1s ease; }
 	
 	div.flagrate-slider > div::after {
 		content         : '';
