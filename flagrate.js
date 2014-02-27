@@ -3931,13 +3931,11 @@
 			
 			var index = (typeof a === 'number') ? a : this.indexOf(a);
 			
-			if (index === -1) { return this; }
+			if (index < 0 || index >= this.tabs.length) { return this; }
 			
-			if (0<=this.selectedIndex && this.selectedIndex < this.tabs.length && this.tabs[this.selectedIndex]._button) {
+			if (0 <= this.selectedIndex && this.selectedIndex < this.tabs.length && this.tabs[this.selectedIndex]._button) {
 				this.tabs[this.selectedIndex]._button.removeClassName(flagrate.className + '-tab-selected');
 			}
-			
-			if (index < 0 && this.tabs.length <= index) { return this; }
 			
 			this.selectedIndex = index;
 			
