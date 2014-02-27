@@ -3933,13 +3933,16 @@
 			
 			if (index === -1) { return this; }
 			
-			if (this.tabs[this.selectedIndex]._button) {
+			if (0<=this.selectedIndex && this.selectedIndex < this.tabs.length && this.tabs[this.selectedIndex]._button) {
 				this.tabs[this.selectedIndex]._button.removeClassName(flagrate.className + '-tab-selected');
 			}
+			
+			if (index < 0 && this.tabs.length <= index) { return this; }
 			
 			this.selectedIndex = index;
 			
 			var tab = this.tabs[index];
+			if (!tab || !tab._button) { return this; }
 			
 			tab._button.addClassName(flagrate.className + '-tab-selected');
 			
