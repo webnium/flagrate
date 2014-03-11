@@ -1064,7 +1064,8 @@ div.flagrate-modal.flagrate-modal-visible {
 				border          : none;
 				color           : #aaa;
 				padding         : 0;
-				height          : 10px; }
+				height          : 10px;
+				line-height     : 10px; }
 				
 				div.flagrate-modal > div > div > button > span::after {
 					display    : inline-block;
