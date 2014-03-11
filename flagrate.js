@@ -291,12 +291,12 @@
 		},
 		
 		/*?
-		 *  flagrate.Element#insertTo(element) -> flagrate.Element
+		 *  flagrate.Element#insertTo(element[, position = "bottom"]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function (element) {
-			return Element.insertTo(this, element);
+		insertTo: function (element, pos) {
+			return Element.insertTo(this, element, pos);
 		},
 		
 		/*?
@@ -670,13 +670,22 @@
 	};
 	
 	/*?
-	 *  flagrate.Element.insertTo(element, to) -> Element
+	 *  flagrate.Element.insertTo(element, to[, position = "bottom"]) -> Element
 	 *  - element (Element) - insert this.
 	 *  - to (Element) - insert to this element.
+	 *  - position (String) - `before` or `top` or `bottom` or `after`.
 	**/
-	Element.insertTo = function (element, to) {
+	Element.insertTo = function (element, to, pos) {
 		
-		Element.insert(to, element);
+		var insertion = {};
+		
+		if (pos) {
+			insertion[pos] = element;
+		} else {
+			insertion.bottom = element;
+		}
+		
+		Element.insert(to, insertion);
 		
 		return element;
 	};
@@ -5528,12 +5537,12 @@
 	
 	Grid.prototype = {
 		/*?
-		 *  flagrate.Grid#insertTo(element) -> flagrate.Grid
+		 *  flagrate.Grid#insertTo(element[, position = "bottom"]) -> flagrate.Grid
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function (element) {
-			return this.element.insertTo(element) && this;
+		insertTo: function (element, pos) {
+			return this.element.insertTo(element, pos) && this;
 		}
 		,
 		/*?
@@ -6556,12 +6565,12 @@
 	
 	Form.prototype = {
 		/*?
-		 *  flagrate.Form#insertTo(element) -> flagrate.Form
+		 *  flagrate.Form#insertTo(element[, position = "bottom"]) -> flagrate.Form
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function (element) {
-			return this.element.insertTo(element) && this;
+		insertTo: function (element, pos) {
+			return this.element.insertTo(element, pos) && this;
 		},
 		
 		/*?
