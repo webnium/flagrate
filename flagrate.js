@@ -5461,7 +5461,7 @@
 	 *  * `className`                (String):
 	 *  * `attribute`                (Object):
 	 *  * `style`                    (Object): styling of `tr` (using flagrate.Element.setStyle)
-	 *  * `cell`                     (Object; default `{}`): of cell object.
+	 *  * `cell`                     (Object|String; default `{}`): of cell object. or String for text.
 	 *  * `menuItems`                (Array): of Menu items.
 	 *  * `isSelected`               (Boolean):
 	 *  * `onSelect`                 (Function):
@@ -5525,6 +5525,16 @@
 			this.disableSort   = true;
 			this.disableResize = true;
 		}
+		
+		/*?
+		 *  flagrate.Grid#sortedByKey -> String | null
+		 *  readonly.
+		 *
+		 *  flagrate.Grid#sortedByAsc -> Boolean | null
+		 *  readonly.
+		**/
+		this.sortedByKey = null;
+		this.sortedByAsc = null;
 		
 		return this._create()._requestRender();
 	};
@@ -5677,13 +5687,15 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#sort(key, isAsc) -> flagrate.Grid
+		 *  flagrate.Grid#sort(key[, isAsc = true]) -> flagrate.Grid
 		 *  - key   (String)
 		 *  - isAsc (Boolean)
 		 *
 		 *  sort rows by key
 		**/
 		sort: function (key, isAsc) {
+			
+			if (isAsc === void 0) { isAsc = true; }
 			
 			this.rows.sort(function (a, b) {
 				
@@ -5700,7 +5712,7 @@
 				return A === B ? 0 : (A > B ? 1 : -1);
 			});
 			
-			if (!isAsc) { this.rows.reverse(); }
+			if (isAsc === false) { this.rows.reverse(); }
 			
 			var i, l;
 			for (i = 0, l = this.cols.length; i < l; i++) {
@@ -5716,7 +5728,10 @@
 					}
 					
 					this.cols[i].isSorted = true;
-					this.cols[i].isAsc    = !!isAsc;
+					this.cols[i].isAsc    = isAsc;
+					
+					this.sortedByKey = key;
+					this.sortedByAsc = isAsc;
 				} else {
 					if (this.cols[i].isSorted && this.cols[i]._th) {
 						this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-asc').removeClassName(flagrate.className + '-grid-col-sorted-desc');
@@ -5749,7 +5764,11 @@
 				this.rows.unshift(r);
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return this.rows.length;
 		}
@@ -5771,7 +5790,11 @@
 				this.rows.push(r);
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return this.rows.length;
 		}
@@ -5843,7 +5866,11 @@
 				}
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return removes;
 		}
@@ -6141,7 +6168,11 @@
 				
 				for (j = 0; j < cl; j++) {
 					col  = this.cols[j];
-					cell = !!row.cell[col.key] ? row.cell[col.key] : (row.cell[col.key] = {});
+					cell = (row.cell[col.key] === void 0) ? (row.cell[col.key] = {}) : row.cell[col.key];
+					
+					if (typeof cell === 'string') {
+						cell = row.cell[col.key] = { text: cell };
+					}
 					
 					if (!cell._td) { cell._td = new Element('td'); }
 					cell._td.insertTo(row._tr);
