@@ -5461,7 +5461,7 @@
 	 *  * `className`                (String):
 	 *  * `attribute`                (Object):
 	 *  * `style`                    (Object): styling of `tr` (using flagrate.Element.setStyle)
-	 *  * `cell`                     (Object; default `{}`): of cell object.
+	 *  * `cell`                     (Object|String; default `{}`): of cell object. or String for text.
 	 *  * `menuItems`                (Array): of Menu items.
 	 *  * `isSelected`               (Boolean):
 	 *  * `onSelect`                 (Function):
@@ -6141,7 +6141,11 @@
 				
 				for (j = 0; j < cl; j++) {
 					col  = this.cols[j];
-					cell = !!row.cell[col.key] ? row.cell[col.key] : (row.cell[col.key] = {});
+					cell = (row.cell[col.key] === void 0) ? (row.cell[col.key] = {}) : row.cell[col.key];
+					
+					if (typeof cell === 'string') {
+						cell = row.cell[col.key] = { text: cell };
+					}
 					
 					if (!cell._td) { cell._td = new Element('td'); }
 					cell._td.insertTo(row._tr);
