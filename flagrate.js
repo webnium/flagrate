@@ -5526,6 +5526,16 @@
 			this.disableResize = true;
 		}
 		
+		/*?
+		 *  flagrate.Grid#sortedByKey -> String | null
+		 *  readonly.
+		 *
+		 *  flagrate.Grid#sortedByAsc -> Boolean | null
+		 *  readonly.
+		**/
+		this.sortedByKey = null;
+		this.sortedByAsc = null;
+		
 		return this._create()._requestRender();
 	};
 	
@@ -5677,13 +5687,15 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#sort(key, isAsc) -> flagrate.Grid
+		 *  flagrate.Grid#sort(key[, isAsc = true]) -> flagrate.Grid
 		 *  - key   (String)
 		 *  - isAsc (Boolean)
 		 *
 		 *  sort rows by key
 		**/
 		sort: function (key, isAsc) {
+			
+			if (isAsc === void 0) { isAsc = true; }
 			
 			this.rows.sort(function (a, b) {
 				
@@ -5700,7 +5712,7 @@
 				return A === B ? 0 : (A > B ? 1 : -1);
 			});
 			
-			if (!isAsc) { this.rows.reverse(); }
+			if (isAsc === false) { this.rows.reverse(); }
 			
 			var i, l;
 			for (i = 0, l = this.cols.length; i < l; i++) {
@@ -5716,7 +5728,10 @@
 					}
 					
 					this.cols[i].isSorted = true;
-					this.cols[i].isAsc    = !!isAsc;
+					this.cols[i].isAsc    = isAsc;
+					
+					this.sortedByKey = key;
+					this.sortedByAsc = isAsc;
 				} else {
 					if (this.cols[i].isSorted && this.cols[i]._th) {
 						this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-asc').removeClassName(flagrate.className + '-grid-col-sorted-desc');
@@ -5749,7 +5764,11 @@
 				this.rows.unshift(r);
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return this.rows.length;
 		}
@@ -5771,7 +5790,11 @@
 				this.rows.push(r);
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return this.rows.length;
 		}
@@ -5843,7 +5866,11 @@
 				}
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return removes;
 		}
