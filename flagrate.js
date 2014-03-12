@@ -5194,6 +5194,7 @@
 			var active = document.activeElement.tagName;
 			
 			if (active !== 'BODY' && active !== 'DIV') { return; }
+			if (window.getSelection().toString() !== '') { return; }
 			
 			e.stopPropagation();
 			e.preventDefault();
