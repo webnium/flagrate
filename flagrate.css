@@ -1225,7 +1225,11 @@ div.flagrate-grid.flagrate-grid-fill {
 						height        : 30px;
 						text-align    : left;
 						overflow      : hidden;
-						vertical-align: top; }
+						vertical-align: top;
+						-webkit-user-select: none;
+						-moz-user-select: none;
+						-ms-user-select: none;
+						user-select: none; }
 					
 					div.flagrate-grid > div > table > thead > tr > th:last-child,
 					div.flagrate-grid > div > table > tbody > tr > td:last-child {
@@ -1334,6 +1338,12 @@ div.flagrate-grid.flagrate-grid-fill {
 							margin-top      : 6px;
 							font-size       : 11px;
 							font-weight     : normal; }
+						
+						div.flagrate-grid > div > table > tbody > tr > td > div {
+							-webkit-user-select: text;
+							-moz-user-select: text;
+							-ms-user-select: text;
+							user-select: text; }
 						
 						div.flagrate-grid > div > table > thead > tr > th > div.flagrate-icon,
 						div.flagrate-grid > div > table > tbody > tr > td > div.flagrate-icon {
