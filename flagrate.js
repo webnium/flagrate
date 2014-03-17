@@ -3869,6 +3869,7 @@
 	 *  * `tabs`          (Array): Array of **tab** object.
 	 *  * `selectedIndex` (Number):
 	 *  * `fill`          (Boolean; default `false`):
+	 *  * `bodyless`      (Boolean; default `false`):
 	 *  * `onSelect`      (Function): Triggered whenever select the tab.
 	 *  
 	 *  #### tab
@@ -3890,6 +3891,12 @@
 		 *  This is readonly property for array of tab.
 		**/
 		this.tabs = opt.tabs || [];
+		
+		/*?
+		 *  flagrate.Tab#bodyless -> Boolean
+		 *  readonly.
+		**/
+		this.bodyless = opt.bodyless || false;
 		
 		/*?
 		 *  flagrate.Tab#onSelect -> Function
@@ -4131,7 +4138,12 @@
 		_create: function () {
 			
 			this._head = new Element('div', { 'class': flagrate.className + '-tab-head' }).insertTo(this);
-			this._body = new Element('div', { 'class': flagrate.className + '-tab-body' }).insertTo(this);
+			
+			if (this.bodyless === true) {
+				this._body = new Element();
+			} else {
+				this._body = new Element('div', { 'class': flagrate.className + '-tab-body' }).insertTo(this);
+			}
 			
 			return this;
 		}
