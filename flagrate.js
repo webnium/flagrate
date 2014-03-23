@@ -7207,9 +7207,9 @@
 				if (field.input.isRequired === true) {
 					if (val === void 0) {
 						hasError = true;
-					} else if ((val.length !== void 0) && val.length === 0) {
+					} else if (val === false || val === null || isNaN(val) === true) {
 						hasError = true;
-					} else if (val === false || val === null) {
+					} else if ((val.length !== void 0) && val.length === 0) {
 						hasError = true;
 					}
 				}
