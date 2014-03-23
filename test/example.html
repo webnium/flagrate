@@ -769,9 +769,10 @@
 				},
 				{
 					key  : 'saveCredentials',
+					label: 'E-Mail Notification',
 					input: {
-						type : 'checkbox',
-						label: 'Keep me signed-in on this computer.'
+						type: 'switch',
+						val : true
 					},
 					depends: [
 						{ key: 'agree', val: true }
