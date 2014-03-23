@@ -2651,6 +2651,17 @@
 			};
 		};
 		
+		// normalize items
+		var i, l;
+		for (i = 0, l = this.items.length; i < l; i++) {
+			if (typeof this.items[i] !== 'object') {
+				this.items[i] = {
+					label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
+					value: this.items[i]
+				};
+			}
+		}
+		
 		if (this.isPulldown) {
 			that._pulldown = new Pulldown({
 				label    : '-',
@@ -3381,6 +3392,14 @@
 		
 		var i, l;
 		for (i = 0, l = this.items.length; i < l; i++) {
+			// normalize items
+			if (typeof this.items[i] !== 'object') {
+				this.items[i] = {
+					label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
+					value: this.items[i]
+				};
+			}
+			
 			this.items[i]._radio = new Radio({
 				label: this.items[i].label,
 				icon : this.items[i].icon,
