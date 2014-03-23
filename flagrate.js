@@ -7444,6 +7444,7 @@
 	 *  * [number](#number-number-) -> `Number`
 	 *  * [combobox](#combobox-string-) -> `String`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
+	 *  * [switch](#switch-boolean-) -> `Boolean`
 	 *  * [radios](#radios-any-) -> `any`
 	 *  * [select](#select-any-array-) -> `any`|`Array`
 	 *  * [file](#file-file-) -> `File`
@@ -7614,6 +7615,28 @@
 				this.element.check();
 			} else {
 				this.element.uncheck();
+			}
+		},
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### switch -> `Boolean`
+	 *  Switch input. (uses flagrate.Switch)
+	**/
+	Form.inputType['switch'] = {
+		create: function () {
+			return new Switch();
+		},
+		getVal: function () {
+			return this.element.isOn();
+		},
+		setVal: function (value) {
+			if (value) {
+				this.element.switchOn();
+			} else {
+				this.element.switchOff();
 			}
 		},
 		enable: Form.inputType.text.enable,
