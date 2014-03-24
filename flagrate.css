@@ -507,6 +507,20 @@ div.flagrate-tokenizer.flagrate-icon {
 div.flagrate-select {
 	display         : inline-block;
 	max-width       : 240px; }
+
+div.flagrate-select.flagrate-select-list-view {
+	max-height      : 100px;
+	border          : 1px solid rgba(0,0,0,0.35);
+	overflow-y      : auto; }
+
+div.flagrate-has-success div.flagrate-select.flagrate-select-list-view {
+	border-color    : #449b44; }
+
+div.flagrate-has-warning div.flagrate-select.flagrate-select-list-view {
+	border-color    : #e08505; }
+
+div.flagrate-has-error div.flagrate-select.flagrate-select-list-view {
+	border-color    : #b82b27; }
 	
 	div.flagrate-select > button.flagrate-pulldown {
 		display         : block;
@@ -580,21 +594,6 @@ div.flagrate-select {
 		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:active {
 			color           : #000;
 			background-color: #ddd; }
-	
-	div.flagrate-select > div.flagrate-grid {
-		border: 1px solid rgba(0,0,0,0.35); }
-
-	div.flagrate-has-success div.flagrate-select > div.flagrate-grid {
-		border-color    : #449b44; }
-
-	div.flagrate-has-warning div.flagrate-select > div.flagrate-grid {
-		border-color    : #e08505; }
-
-	div.flagrate-has-error div.flagrate-select > div.flagrate-grid {
-		border-color    : #b82b27; }
-		
-		div.flagrate-select > div.flagrate-grid > div.flagrate-grid-body {
-			max-height: 100px; }
 
 div.flagrate-combobox {
 	display         : inline-block;

@@ -2718,6 +2718,7 @@
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-select');
+		if (!that.isPulldown) { that.addClassName(flagrate.className + '-select-list-view'); }
 		if (opt.className) { that.addClassName(opt.className); }
 		
 		if (opt.style) { that.setStyle(opt.style); }
