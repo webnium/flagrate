@@ -310,19 +310,15 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// Checkbox
-		flagrate.createCheckbox({ label: 'Checkbox' }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', isChecked: true }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', isChecked: true, isDisabled: true }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		// Checkboxes
+		flagrate.createCheckboxes({ items: ['CheckboxA', 'CheckboxB'] }).addValue('CheckboxB').insertTo(c);
+		flagrate.createCheckboxes({ items: ['CheckboxA', { label: 'CheckboxB', value: 'B', icon: 'icon.png' }] }).addValue('CheckboxA').disable().insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// Radio
-		flagrate.createRadio({ label: 'Radio', name: 'radio' }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', name: 'radio', isChecked: true }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', isChecked: true, isDisabled: true }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		// Radios
+		flagrate.createRadios({ items: ['RadioA', 'RadioB'] }).setValue('RadioA').insertTo(c);
+		flagrate.createRadios({ items: ['RadioA', { label: 'RadioB', value: 'B', icon: 'icon.png' }] }).setValue('B').disable().insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
@@ -710,6 +706,23 @@
 								label: 'Bitcoin',
 								value: 'bitcoin'
 							}
+						]
+					},
+					depends: [
+						[
+							{ key: 'plan', val: 'pro' },
+							{ key: 'plan', val: 'enterprise' }
+						]
+					]
+				},
+				{
+					key  : 'paymentOptions',
+					label: 'Payment Options',
+					input: {
+						type : 'checkboxes',
+						items: [
+							'Send me a Receipt',
+							'Donate 1% to the UNICEF'
 						]
 					},
 					depends: [

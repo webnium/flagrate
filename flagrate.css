@@ -660,7 +660,7 @@ div.flagrate-combobox {
 label.flagrate-checkbox,
 label.flagrate-radio {
 	display            : inline-block;
-	vertical-align     : top;
+	vertical-align     : inherit;
 	height             : 20px;
 	line-height        : 20px;
 	margin             : 0;
@@ -756,6 +756,11 @@ label.flagrate-radio.flagrate-icon {
 	label.flagrate-radio.flagrate-disabled > input:checked+div,
 	label.flagrate-radio.flagrate-disabled > input:checked:active+div {
 		border-color    : rgba(255,255,255,0.3); }
+
+div.flagrate-checkboxes,
+div.flagrate-radios {
+	display: inline-block;
+}
 
 button.flagrate-switch,
 button.flagrate-switch:disabled {

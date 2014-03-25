@@ -3238,6 +3238,196 @@
 	};
 	
 	/*?
+	 *  class flagrate.Checkboxes
+	**/
+	
+	/*?
+	 *  flagrate.createCheckboxes(option)
+	 *  new flagrate.Checkboxes(option)
+	 *  - option (Object) - options.
+	**/
+	var Checkboxes = flagrate.Checkboxes = function (opt) {
+		
+		opt = opt || {};
+		
+		this.items    = opt.items    || [];
+		//this.onChange = opt.onChange || emptyFunction;
+		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) { attr.id = opt.id; }
+		
+		//create
+		var that = new Element('div', attr);
+		
+		var i, l;
+		for (i = 0, l = this.items.length; i < l; i++) {
+			// normalize items
+			if (typeof this.items[i] !== 'object') {
+				this.items[i] = {
+					label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
+					value: this.items[i]
+				};
+			}
+			
+			this.items[i]._checkbox = new Checkbox({
+				label    : this.items[i].label,
+				icon     : this.items[i].icon,
+				isChecked: this.items[i].isChecked,
+				onCheck  : this.items[i].onCheck,
+				onUncheck: this.items[i].onUncheck
+			}).insertTo(that);
+		}
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-checkboxes');
+		if (opt.className) { that.addClassName(opt.className); }
+		
+		if (opt.style) { that.setStyle(opt.style); }
+		
+		if (opt.isDisabled) { that.disable(); }
+		
+		if (opt.values) {
+			that.setValues(opt.values);
+		}
+		
+		return that;
+	};
+	
+	flagrate.createCheckboxes = function (a) {
+		return new Checkboxes(a);
+	};
+	
+	Checkboxes.prototype = {
+		/*?
+		 *  flagrate.Checkboxes#select(index) -> flagrate.Checkboxes
+		**/
+		select: function (index) {
+			
+			if (this.items[index]) {
+				this.items[index]._checkbox.check();
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#deselect(index) -> flagrate.Checkboxes
+		**/
+		deselect: function (index) {
+			
+			if (this.items[index]) {
+				this.items[index]._checkbox.uncheck();
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#getValues() -> Array
+		**/
+		getValues: function () {
+			
+			var values = [];
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (this.items[i]._checkbox.isChecked() === true) {
+					values.push(this.items[i].value);
+				}
+			}
+			
+			return values;
+		},
+		/*?
+		 *  flagrate.Checkboxes#addValue(value) -> flagrate.Checkboxes
+		**/
+		addValue: function (value) {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (this.items[i].value === value) {
+					this.select(i);
+					break;
+				}
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#removeValue(value) -> flagrate.Checkboxes
+		**/
+		removeValue: function (value) {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (this.items[i].value === value) {
+					this.deselect(i);
+					break;
+				}
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#setValues(values) -> flagrate.Checkboxes
+		**/
+		setValues: function (values) {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (values.indexOf(this.items[i].value) === -1) {
+					this.deselect(i);
+				} else {
+					this.select(i);
+				}
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#selectAll() -> flagrate.Checkboxes
+		**/
+		selectAll: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.select(i);
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#deselectAll() -> flagrate.Checkboxes
+		**/
+		deselectAll: function () {
+			return this.setValues([]);
+		},
+		/*?
+		 *  flagrate.Checkboxes#enable() -> flagrate.Checkboxes
+		**/
+		enable: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.items[i]._checkbox.enable();
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#disable() -> flagrate.Checkboxes
+		**/
+		disable: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.items[i]._checkbox.disable();
+			}
+			
+			return this;
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Radio
 	**/
 	
@@ -3454,7 +3644,7 @@
 			}
 		},
 		/*?
-		 *  flagrate.Radios#setValue() -> flagrate.Radios
+		 *  flagrate.Radios#setValue(value) -> flagrate.Radios
 		**/
 		setValue: function (value) {
 			
@@ -7445,6 +7635,7 @@
 	 *  * [number](#number-number-) -> `Number`
 	 *  * [combobox](#combobox-string-) -> `String`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
+	 *  * [checkboxes](#checkboxes-array-) -> `Array`
 	 *  * [switch](#switch-boolean-) -> `Boolean`
 	 *  * [radios](#radios-any-) -> `any`
 	 *  * [select](#select-any-array-) -> `any`|`Array`
@@ -7617,6 +7808,28 @@
 			} else {
 				this.element.uncheck();
 			}
+		},
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### checkboxes -> `Array`
+	 *  Checkboxes input. (uses flagrate.Checkboxes)
+	 *
+	 *  * `items` (Array):
+	**/
+	Form.inputType.checkboxes = {
+		create: function () {
+			return new Checkboxes({
+				items: this.items
+			});
+		},
+		getVal: function () {
+			return this.element.getValues();
+		},
+		setVal: function (values) {
+			this.element.setValues(values);
 		},
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
