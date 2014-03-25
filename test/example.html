@@ -318,11 +318,9 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// Radio
-		flagrate.createRadio({ label: 'Radio', name: 'radio' }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', name: 'radio', isChecked: true }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', isChecked: true, isDisabled: true }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		// Radios
+		flagrate.createRadios({ items: ['RadioA', 'RadioB'] }).setValue('RadioA').insertTo(c);
+		flagrate.createRadios({ items: ['RadioA', { label: 'RadioB', value: 'B', icon: 'icon.png' }] }).setValue('B').disable().insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		

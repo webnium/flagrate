@@ -757,6 +757,10 @@ label.flagrate-radio.flagrate-icon {
 	label.flagrate-radio.flagrate-disabled > input:checked:active+div {
 		border-color    : rgba(255,255,255,0.3); }
 
+div.flagrate-radios {
+	display: inline-block;
+}
+
 button.flagrate-switch,
 button.flagrate-switch:disabled {
 	display         : inline-block;
