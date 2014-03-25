@@ -3644,7 +3644,7 @@
 			}
 		},
 		/*?
-		 *  flagrate.Radios#setValue() -> flagrate.Radios
+		 *  flagrate.Radios#setValue(value) -> flagrate.Radios
 		**/
 		setValue: function (value) {
 			
