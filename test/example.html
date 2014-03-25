@@ -716,6 +716,23 @@
 					]
 				},
 				{
+					key  : 'paymentOptions',
+					label: 'Payment Options',
+					input: {
+						type : 'checkboxes',
+						items: [
+							'Send me a Receipt',
+							'Donate 1% to the UNICEF'
+						]
+					},
+					depends: [
+						[
+							{ key: 'plan', val: 'pro' },
+							{ key: 'plan', val: 'enterprise' }
+						]
+					]
+				},
+				{
 					key  : 'country',
 					label: 'Country',
 					input: {

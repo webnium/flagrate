@@ -7635,6 +7635,7 @@
 	 *  * [number](#number-number-) -> `Number`
 	 *  * [combobox](#combobox-string-) -> `String`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
+	 *  * [checkboxes](#checkboxes-array-) -> `Array`
 	 *  * [switch](#switch-boolean-) -> `Boolean`
 	 *  * [radios](#radios-any-) -> `any`
 	 *  * [select](#select-any-array-) -> `any`|`Array`
@@ -7807,6 +7808,28 @@
 			} else {
 				this.element.uncheck();
 			}
+		},
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### checkboxes -> `Array`
+	 *  Checkboxes input. (uses flagrate.Checkboxes)
+	 *
+	 *  * `items` (Array):
+	**/
+	Form.inputType.checkboxes = {
+		create: function () {
+			return new Checkboxes({
+				items: this.items
+			});
+		},
+		getVal: function () {
+			return this.element.getValues();
+		},
+		setVal: function (values) {
+			this.element.setValues(values);
 		},
 		enable: Form.inputType.text.enable,
 		disable: Form.inputType.text.disable
