@@ -310,11 +310,9 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// Checkbox
-		flagrate.createCheckbox({ label: 'Checkbox' }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', isChecked: true }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', isChecked: true, isDisabled: true }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		// Checkboxes
+		flagrate.createCheckboxes({ items: ['CheckboxA', 'CheckboxB'] }).addValue('CheckboxB').insertTo(c);
+		flagrate.createCheckboxes({ items: ['CheckboxA', { label: 'CheckboxB', value: 'B', icon: 'icon.png' }] }).addValue('CheckboxA').disable().insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
