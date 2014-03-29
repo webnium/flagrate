@@ -273,27 +273,30 @@ div.flagrate-tab.flagrate-tab-fill {
 		right        : 0;
 		left         : 0;
 		overflow     : hidden; }
+	
+	div.flagrate-tab > div.flagrate-tab-head {
+		box-shadow: inset 0 -2px 0 #388dd6; }
 		
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button {
-			background-color: #eee;
-			color           : #777;
+			background-color: transparent;
+			color           : #555;
 			box-shadow      : none;
 			border-color    : transparent; }
 		
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:hover,
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:focus {
-			background-color: #ddd;
-			color           : #555;
+			background-color: rgba(0,0,0,0.1);
+			color           : #000;
 			outline         : none; }
 		
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button.flagrate-tab-selected {
-			background-color: #fff;
-			color           : #000;
+			background-color: #388dd6;
+			color           : #fff;
 			cursor          : default; }
 	
 	div.flagrate-tab > div.flagrate-tab-body {
-		background-color: #fff;
-		padding         : 10px; }
+		background-color: inherit;
+		padding         : 10px 0; }
 	
 	div.flagrate-tab.flagrate-tab-fill > div.flagrate-tab-body {
 		position     : absolute;
