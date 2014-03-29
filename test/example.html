@@ -474,7 +474,10 @@
 			color   : '@orange',
 			label   : 'click to create Notify',
 			onSelect: function() {
-				notify.create({ message: 'message' });
+				notify.create({
+					icon: 'icon.png',
+					text: 'Hi there!'
+				});
 			}
 		}).insertTo(c);
 		

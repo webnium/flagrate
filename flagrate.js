@@ -5000,7 +5000,7 @@
 	Notify.prototype = {
 		/*?
 		 *  flagrate.Notify#create(option) -> flagrate.Notify
-		 *  - option (Object) - configuration for the notification.
+		 *  - option (Object|String) - configuration for the notification.
 		 *  
 		 *  Create and show the notification.
 		 *  
@@ -5008,6 +5008,7 @@
 		 *  
 		 *  * `title`   (String; default `"Notify"`):
 		 *  * `text`    (String; required):
+		 *  * `icon`    (String): The URL of the image used as an icon.
 		 *  * `onClick` (Function):
 		 *  * `onClose` (Function):
 		 *  * `timeout` (Number; default `5`):
@@ -5015,6 +5016,13 @@
 		create: function (opt) {
 			
 			opt = opt || {};
+			
+			// sugar
+			if (typeof opt === 'string') {
+				opt = {
+					text: opt
+				};
+			}
 			
 			/*- Desktop notify -*/
 			if (this.disableDesktopNotify === false) {
@@ -5053,6 +5061,11 @@
 			new Element('div', { 'class': 'title' }).insertText(title).insertTo(notify);
 			new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
 			var notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
+			
+			if (opt.icon) {
+				notify.addClassName(flagrate.className + '-notify-icon');
+				new Element('div', { 'class': 'icon' }).setStyle({ 'backgroundImage': 'url(' + opt.icon + ')' }).insertTo(notify);
+			}
 			
 			/*- Remove a notify element -*/
 			var closeNotify = function () {
@@ -5164,6 +5177,7 @@
 				}
 				
 				notify = new window.Notification(title, {
+					icon: opt.icon,
 					body: message
 				});
 			}
