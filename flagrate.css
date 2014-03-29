@@ -763,6 +763,7 @@ label.flagrate-radio.flagrate-icon {
 div.flagrate-checkboxes,
 div.flagrate-radios {
 	display: inline-block;
+	line-height: 25px;
 }
 
 button.flagrate-switch,
