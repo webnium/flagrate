@@ -168,7 +168,7 @@
 	 *      // The new way:
 	 *      var a = flagrate.createElement('a', { 'class': 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
 	**/
-	var Element = flagrate.Element = function flagrateElement(tagName, attr) {
+	var Element = flagrate.Element = function (tagName, attr) {
 		
 		tagName = tagName || 'div';
 		attr    = attr    || null;
@@ -291,12 +291,12 @@
 		},
 		
 		/*?
-		 *  flagrate.Element#insertTo(element) -> flagrate.Element
+		 *  flagrate.Element#insertTo(element[, position = "bottom"]) -> flagrate.Element
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function (element) {
-			return Element.insertTo(this, element);
+		insertTo: function (element, pos) {
+			return Element.insertTo(this, element, pos);
 		},
 		
 		/*?
@@ -670,13 +670,22 @@
 	};
 	
 	/*?
-	 *  flagrate.Element.insertTo(element, to) -> Element
+	 *  flagrate.Element.insertTo(element, to[, position = "bottom"]) -> Element
 	 *  - element (Element) - insert this.
 	 *  - to (Element) - insert to this element.
+	 *  - position (String) - `before` or `top` or `bottom` or `after`.
 	**/
-	Element.insertTo = function (element, to) {
+	Element.insertTo = function (element, to, pos) {
 		
-		Element.insert(to, element);
+		var insertion = {};
+		
+		if (pos) {
+			insertion[pos] = element;
+		} else {
+			insertion.bottom = element;
+		}
+		
+		Element.insert(to, insertion);
 		
 		return element;
 	};
@@ -945,12 +954,12 @@
 	**/
 	Element.getStyle = function (element, style) {
 		
-		if (style === 'float') { style = 'cssFloat'; }
+		style = style === 'float' ? 'cssFloat' : style.replace(/-+([a-z])?/g, function (m, s) { return s ? s.toUpperCase() : ''; });
 		
 		var value = element.style[style];
 		if (!value || value === 'auto') {
 			var css = document.defaultView.getComputedStyle(element, null);
-			value = css ? css[style] : null;
+			value = css && (css[style] !== void 0) && css[style] !== "" ? css[style] : null;
 		}
 		
 		if (style === 'opacity') { return value ? parseFloat(value) : 1.0; }
@@ -1115,7 +1124,7 @@
 	 *  * `onSelect`                 (Function):
 	 *  * `onRemove`                 (Function):
 	**/
-	var Button = flagrate.Button = function flagrateButton(opt) {
+	var Button = flagrate.Button = function (opt) {
 		
 		opt = opt || {};
 		
@@ -1255,7 +1264,7 @@
 			if (this._removeButton && e && e.layerX) {
 				var bw = this.getWidth();
 				var bh = this.getHeight();
-				var bp = parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
+				var bp = this._removeButton.getStyle('margin-right') === null ? 0 : parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
 				var rw = this._removeButton.getWidth();
 				var rh = this._removeButton.getHeight();
 				var lx = e.layerX;
@@ -1342,7 +1351,7 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	var Buttons = flagrate.Buttons = function flagrateButtons(opt) {
+	var Buttons = flagrate.Buttons = function (opt) {
 		
 		opt = opt || {};
 		
@@ -1504,7 +1513,7 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	var Menu = flagrate.Menu = function flagrateMenu(opt) {
+	var Menu = flagrate.Menu = function (opt) {
 		
 		opt = opt || {};
 		
@@ -1636,7 +1645,7 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onSelect`                 (Function):
 	**/
-	var Pulldown = flagrate.Pulldown = function flagratePulldown(opt) {
+	var Pulldown = flagrate.Pulldown = function (opt) {
 		
 		opt = opt || {};
 		
@@ -1754,7 +1763,7 @@
 	 *  * `target`                   (Element):
 	 *  * `items`                    (Array): of item (see: flagrate.Menu)
 	**/
-	var ContextMenu = flagrate.ContextMenu = function flagrateContextMenu(opt) {
+	var ContextMenu = flagrate.ContextMenu = function (opt) {
 		
 		opt = opt || {};
 		
@@ -1886,7 +1895,7 @@
 	 *  * `key`                      (String):
 	 *  * `element`                  (Element):
 	**/
-	var Toolbar = flagrate.Toolbar = function flagrateToolbar(opt) {
+	var Toolbar = flagrate.Toolbar = function (opt) {
 		
 		opt = opt || {};
 		
@@ -1986,7 +1995,7 @@
 	 *  * `regexp`                   (RegExp):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var TextInput = flagrate.TextInput = function flagrateTextInput(opt) {
+	var TextInput = flagrate.TextInput = function (opt) {
 		
 		opt = opt || {};
 		
@@ -2107,7 +2116,7 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
 	**/
-	var Tokenizer = flagrate.Tokenizer = function flagrateTokenizer(opt) {
+	var Tokenizer = flagrate.Tokenizer = function (opt) {
 		
 		opt = opt || {};
 		
@@ -2254,13 +2263,13 @@
 			}
 			
 			var vw = this.getWidth();
-			var bw = parseInt(this.getStyle('border-width').replace('px', ''), 10)  || 2;
-			var pl = parseInt(this.getStyle('padding-left').replace('px', ''), 10)  || 4;
-			var pr = parseInt(this.getStyle('padding-right').replace('px', ''), 10) || 4;
+			var bw = this.getStyle('border-width') === null ? 2 : parseInt(this.getStyle('border-width').replace('px', ''), 10);
+			var pl = this.getStyle('padding-left') === null ? 4 : parseInt(this.getStyle('padding-left').replace('px', ''), 10);
+			var pr = this.getStyle('padding-right') === null ? 4 : parseInt(this.getStyle('padding-right').replace('px', ''), 10);
 			var tw = this._tokens.getWidth();
-			var tm = parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10) || 2;
-			var im = parseInt(this._input.getStyle('margin-left').replace('px', ''), 10) || 2;
-			var ip = parseInt(this._input.getStyle('padding-left').replace('px', ''), 10) || 2;
+			var tm = this._tokens.getStyle('margin-left') === null ? 2 : parseInt(this._tokens.getStyle('margin-left').replace('px', ''), 10);
+			var im = this._input.getStyle('margin-left') === null ? 2 : parseInt(this._input.getStyle('margin-left').replace('px', ''), 10);
+			var ip = this._input.getStyle('padding-left') === null ? 2 : parseInt(this._input.getStyle('padding-left').replace('px', ''), 10);
 			var aw = vw - pl - pr - tw - tm - im - ip - (bw * 2) - 2;
 			
 			if (aw > 30) {
@@ -2470,7 +2479,7 @@
 	 *  * `regexp`                   (RegExp):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var TextArea = flagrate.TextArea = function flagrateTextArea(opt) {
+	var TextArea = flagrate.TextArea = function (opt) {
 		
 		opt = opt || {};
 		
@@ -2592,7 +2601,7 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `onChange`                 (Function):
 	**/
-	var Select = flagrate.Select = function flagrateSelect(opt) {
+	var Select = flagrate.Select = function (opt) {
 		
 		opt = opt || {};
 		
@@ -2641,6 +2650,17 @@
 				that.deselect(i);
 			};
 		};
+		
+		// normalize items
+		var i, l;
+		for (i = 0, l = this.items.length; i < l; i++) {
+			if (typeof this.items[i] !== 'object') {
+				this.items[i] = {
+					label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
+					value: this.items[i]
+				};
+			}
+		}
 		
 		if (this.isPulldown) {
 			that._pulldown = new Pulldown({
@@ -2698,6 +2718,7 @@
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-select');
+		if (!that.isPulldown) { that.addClassName(flagrate.className + '-select-list-view'); }
 		if (opt.className) { that.addClassName(opt.className); }
 		
 		if (opt.style) { that.setStyle(opt.style); }
@@ -2736,7 +2757,10 @@
 						this._grid.deselect(index);
 					}
 					return this;
-				} 
+				}
+				if (this.selectedIndexes.indexOf(index) !== -1) {
+					return this;
+				}
 				this.selectedIndexes.push(index);
 			} else {
 				this.selectedIndex = index;
@@ -2753,7 +2777,7 @@
 				
 				this.fire('change');
 			} else {
-				if (this._grid.rows[index].isSelected === false) {
+				if (!this._grid.rows[index].isSelected) {
 					this._grid.select(index);
 				}
 			}
@@ -2799,6 +2823,12 @@
 			
 			if (this.multiple) {
 				this._grid.selectAll();
+				this.selectedIndexes = [];
+				
+				var i, l;
+				for (i = 0, l = this.items.length; i < l; i++) {
+					this.selectedIndexes.push(i);
+				}
 			}
 			
 			return this;
@@ -2811,6 +2841,7 @@
 			
 			if (this.multiple) {
 				this._grid.deselectAll();
+				this.selectedIndexes = [];
 			} else {
 				this.deselect();
 			}
@@ -2908,7 +2939,7 @@
 	 *  * `regexp`                   (RegExp):
 	 *  * `isDisabled`               (Boolean; default `false`):
 	**/
-	var ComboBox = flagrate.ComboBox = function flagrateComboBox(opt) {
+	var ComboBox = flagrate.ComboBox = function (opt) {
 		
 		opt = opt || {};
 		
@@ -3090,7 +3121,7 @@
 	 *  new flagrate.Checkbox(option)
 	 *  - option (Object) - options.
 	**/
-	var Checkbox = flagrate.Checkbox = function flagrateCheckbox(opt) {
+	var Checkbox = flagrate.Checkbox = function (opt) {
 		
 		var id = 'flagrate-checkbox-' + (++Checkbox.idCounter).toString(10);
 		
@@ -3207,6 +3238,196 @@
 	};
 	
 	/*?
+	 *  class flagrate.Checkboxes
+	**/
+	
+	/*?
+	 *  flagrate.createCheckboxes(option)
+	 *  new flagrate.Checkboxes(option)
+	 *  - option (Object) - options.
+	**/
+	var Checkboxes = flagrate.Checkboxes = function (opt) {
+		
+		opt = opt || {};
+		
+		this.items    = opt.items    || [];
+		//this.onChange = opt.onChange || emptyFunction;
+		
+		var attr = opt.attribute || {};
+		
+		if (opt.id) { attr.id = opt.id; }
+		
+		//create
+		var that = new Element('div', attr);
+		
+		var i, l;
+		for (i = 0, l = this.items.length; i < l; i++) {
+			// normalize items
+			if (typeof this.items[i] !== 'object') {
+				this.items[i] = {
+					label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
+					value: this.items[i]
+				};
+			}
+			
+			this.items[i]._checkbox = new Checkbox({
+				label    : this.items[i].label,
+				icon     : this.items[i].icon,
+				isChecked: this.items[i].isChecked,
+				onCheck  : this.items[i].onCheck,
+				onUncheck: this.items[i].onUncheck
+			}).insertTo(that);
+		}
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-checkboxes');
+		if (opt.className) { that.addClassName(opt.className); }
+		
+		if (opt.style) { that.setStyle(opt.style); }
+		
+		if (opt.isDisabled) { that.disable(); }
+		
+		if (opt.values) {
+			that.setValues(opt.values);
+		}
+		
+		return that;
+	};
+	
+	flagrate.createCheckboxes = function (a) {
+		return new Checkboxes(a);
+	};
+	
+	Checkboxes.prototype = {
+		/*?
+		 *  flagrate.Checkboxes#select(index) -> flagrate.Checkboxes
+		**/
+		select: function (index) {
+			
+			if (this.items[index]) {
+				this.items[index]._checkbox.check();
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#deselect(index) -> flagrate.Checkboxes
+		**/
+		deselect: function (index) {
+			
+			if (this.items[index]) {
+				this.items[index]._checkbox.uncheck();
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#getValues() -> Array
+		**/
+		getValues: function () {
+			
+			var values = [];
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (this.items[i]._checkbox.isChecked() === true) {
+					values.push(this.items[i].value);
+				}
+			}
+			
+			return values;
+		},
+		/*?
+		 *  flagrate.Checkboxes#addValue(value) -> flagrate.Checkboxes
+		**/
+		addValue: function (value) {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (this.items[i].value === value) {
+					this.select(i);
+					break;
+				}
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#removeValue(value) -> flagrate.Checkboxes
+		**/
+		removeValue: function (value) {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (this.items[i].value === value) {
+					this.deselect(i);
+					break;
+				}
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#setValues(values) -> flagrate.Checkboxes
+		**/
+		setValues: function (values) {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				if (values.indexOf(this.items[i].value) === -1) {
+					this.deselect(i);
+				} else {
+					this.select(i);
+				}
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#selectAll() -> flagrate.Checkboxes
+		**/
+		selectAll: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.select(i);
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#deselectAll() -> flagrate.Checkboxes
+		**/
+		deselectAll: function () {
+			return this.setValues([]);
+		},
+		/*?
+		 *  flagrate.Checkboxes#enable() -> flagrate.Checkboxes
+		**/
+		enable: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.items[i]._checkbox.enable();
+			}
+			
+			return this;
+		},
+		/*?
+		 *  flagrate.Checkboxes#disable() -> flagrate.Checkboxes
+		**/
+		disable: function () {
+			
+			var i, l;
+			for (i = 0, l = this.items.length; i < l; i++) {
+				this.items[i]._checkbox.disable();
+			}
+			
+			return this;
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Radio
 	**/
 	
@@ -3215,7 +3436,7 @@
 	 *  new flagrate.Radio(option)
 	 *  - option (Object) - options.
 	**/
-	var Radio = flagrate.Radio = function flagrateRadio(opt) {
+	var Radio = flagrate.Radio = function (opt) {
 		
 		var id = 'flagrate-radio-' + (++Radio.idCounter).toString(10);
 		
@@ -3331,7 +3552,7 @@
 	 *  new flagrate.Radios(option)
 	 *  - option (Object) - options.
 	**/
-	var Radios = flagrate.Radios = function flagrateRadios(opt) {
+	var Radios = flagrate.Radios = function (opt) {
 		
 		opt = opt || {};
 		
@@ -3362,6 +3583,14 @@
 		
 		var i, l;
 		for (i = 0, l = this.items.length; i < l; i++) {
+			// normalize items
+			if (typeof this.items[i] !== 'object') {
+				this.items[i] = {
+					label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
+					value: this.items[i]
+				};
+			}
+			
 			this.items[i]._radio = new Radio({
 				label: this.items[i].label,
 				icon : this.items[i].icon,
@@ -3415,7 +3644,7 @@
 			}
 		},
 		/*?
-		 *  flagrate.Radios#setValue() -> flagrate.Radios
+		 *  flagrate.Radios#setValue(value) -> flagrate.Radios
 		**/
 		setValue: function (value) {
 			
@@ -3497,7 +3726,7 @@
 	 *  new flagrate.Switch(option)
 	 *  - option (Object) - options.
 	**/
-	var Switch = flagrate.Switch = function flagrateSwitch(opt) {
+	var Switch = flagrate.Switch = function (opt) {
 		
 		opt = opt || {};
 		
@@ -3600,7 +3829,7 @@
 	 *  new flagrate.Progress(option)
 	 *  - option (Object) - options.
 	**/
-	var Progress = flagrate.Progress = function flagrateProgress(opt) {
+	var Progress = flagrate.Progress = function (opt) {
 		
 		opt = opt || {};
 		
@@ -3617,6 +3846,8 @@
 		extendObject(that, this);
 		
 		that.addClassName(flagrate.className + ' ' + flagrate.className + '-progress');
+		
+		that._bar = new Element().insertTo(that);
 		
 		that._updateProgress();
 		
@@ -3653,9 +3884,7 @@
 			
 			var percentage = Math.max(0, Math.min(100, this.value / this.max * 100));
 			
-			this.update(
-				new Element().setStyle({ width: percentage + '%' })
-			);
+			this._bar.setStyle({ width: percentage + '%' });
 			
 			return this;
 		}
@@ -3679,7 +3908,7 @@
 	 *  new flagrate.Slider(option)
 	 *  - option (Object) - options.
 	**/
-	var Slider = flagrate.Slider = function flagrateSlider(opt) {
+	var Slider = flagrate.Slider = function (opt) {
 		
 		opt = opt || {};
 		
@@ -3850,6 +4079,7 @@
 	 *  * `tabs`          (Array): Array of **tab** object.
 	 *  * `selectedIndex` (Number):
 	 *  * `fill`          (Boolean; default `false`):
+	 *  * `bodyless`      (Boolean; default `false`):
 	 *  * `onSelect`      (Function): Triggered whenever select the tab.
 	 *  
 	 *  #### tab
@@ -3862,7 +4092,7 @@
 	 *  * `element`       (Element):
 	 *  * `onSelect`      (Function):
 	**/
-	var Tab = flagrate.Tab = function flagrateTab(opt) {
+	var Tab = flagrate.Tab = function (opt) {
 		
 		opt = opt || {};
 		
@@ -3871,6 +4101,12 @@
 		 *  This is readonly property for array of tab.
 		**/
 		this.tabs = opt.tabs || [];
+		
+		/*?
+		 *  flagrate.Tab#bodyless -> Boolean
+		 *  readonly.
+		**/
+		this.bodyless = opt.bodyless || false;
 		
 		/*?
 		 *  flagrate.Tab#onSelect -> Function
@@ -3921,15 +4157,16 @@
 			
 			var index = (typeof a === 'number') ? a : this.indexOf(a);
 			
-			if (index === -1) { return this; }
+			if (index < 0 || index >= this.tabs.length) { return this; }
 			
-			if (this.tabs[this.selectedIndex]._button) {
+			if (0 <= this.selectedIndex && this.selectedIndex < this.tabs.length && this.tabs[this.selectedIndex]._button) {
 				this.tabs[this.selectedIndex]._button.removeClassName(flagrate.className + '-tab-selected');
 			}
 			
 			this.selectedIndex = index;
 			
 			var tab = this.tabs[index];
+			if (!tab || !tab._button) { return this; }
 			
 			tab._button.addClassName(flagrate.className + '-tab-selected');
 			
@@ -4060,12 +4297,12 @@
 		}
 		,
 		/*?
-		 *  flagrate.Tab#delete(tab) -> Object|Array
+		 *  flagrate.Tab#removeTab(tab) -> Object|Array
 		 *  - tab (Array|Object|String|Number) - tab to locate in the flagrate.Tab#tabs.
 		 *
-		 *  delete tab(s).
+		 *  remove tab(s).
 		**/
-		'delete': function (a) {
+		removeTab: function (a) {
 			
 			var removes = [];
 			var bulk    = false;
@@ -4111,7 +4348,12 @@
 		_create: function () {
 			
 			this._head = new Element('div', { 'class': flagrate.className + '-tab-head' }).insertTo(this);
-			this._body = new Element('div', { 'class': flagrate.className + '-tab-body' }).insertTo(this);
+			
+			if (this.bodyless === true) {
+				this._body = new Element();
+			} else {
+				this._body = new Element('div', { 'class': flagrate.className + '-tab-body' }).insertTo(this);
+			}
 			
 			return this;
 		}
@@ -4168,7 +4410,7 @@
 	 *  * `element`   (Element):
 	 *  * `className` (String):
 	**/
-	var Popover = flagrate.Popover = function flagratePopover(opt) {
+	var Popover = flagrate.Popover = function (opt) {
 		
 		opt = opt || {};
 		
@@ -4394,7 +4636,7 @@
 	 *        // ...
 	 *      }
 	**/
-	var Tutorial = flagrate.Tutorial = function flagrateTutorial(opt) {
+	var Tutorial = flagrate.Tutorial = function (opt) {
 		
 		opt = opt || {};
 		
@@ -4692,7 +4934,7 @@
 	 *  * `timeout`               (Number;  default `5`):
 	 *  * `title`                 (String;  default `"Notify"`):
 	**/
-	var Notify = flagrate.Notify = function flagrateNotify(opt) {
+	var Notify = flagrate.Notify = function (opt) {
 		
 		opt = opt || {};
 		
@@ -4758,7 +5000,7 @@
 	Notify.prototype = {
 		/*?
 		 *  flagrate.Notify#create(option) -> flagrate.Notify
-		 *  - option (Object) - configuration for the notification.
+		 *  - option (Object|String) - configuration for the notification.
 		 *  
 		 *  Create and show the notification.
 		 *  
@@ -4766,13 +5008,21 @@
 		 *  
 		 *  * `title`   (String; default `"Notify"`):
 		 *  * `text`    (String; required):
+		 *  * `icon`    (String): The URL of the image used as an icon.
 		 *  * `onClick` (Function):
 		 *  * `onClose` (Function):
 		 *  * `timeout` (Number; default `5`):
 		**/
-		create: function _create(opt) {
+		create: function (opt) {
 			
 			opt = opt || {};
+			
+			// sugar
+			if (typeof opt === 'string') {
+				opt = {
+					text: opt
+				};
+			}
 			
 			/*- Desktop notify -*/
 			if (this.disableDesktopNotify === false) {
@@ -4811,6 +5061,11 @@
 			new Element('div', { 'class': 'title' }).insertText(title).insertTo(notify);
 			new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
 			var notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
+			
+			if (opt.icon) {
+				notify.addClassName(flagrate.className + '-notify-icon');
+				new Element('div', { 'class': 'icon' }).setStyle({ 'backgroundImage': 'url(' + opt.icon + ')' }).insertTo(notify);
+			}
 			
 			/*- Remove a notify element -*/
 			var closeNotify = function () {
@@ -4901,7 +5156,7 @@
 			return this;
 		}
 		,
-		createDesktopNotify: function _createDesktopNotify(opt) {
+		createDesktopNotify: function (opt) {
 			/*- Setting up -*/
 			var title   = opt.title   || this.title;
 			var message = opt.message || opt.body || opt.content || opt.text || null;
@@ -4922,6 +5177,7 @@
 				}
 				
 				notify = new window.Notification(title, {
+					icon: opt.icon,
 					body: message
 				});
 			}
@@ -4985,7 +5241,7 @@
 			return true;
 		}
 		,
-		positioner: function _positioner() {
+		positioner: function () {
 			var tH = (this.target === document.body) ? (window.innerHeight || document.body.clientHeight) : this.target.offsetHeight;
 			var pX = 0;
 			var pY = 0;
@@ -5063,7 +5319,7 @@
 	 *  * `isDisabled`               (Boolean; default `false`):
 	 *  * `className`                (String):
 	**/
-	var Modal = flagrate.Modal = function flagrateModal(opt) {
+	var Modal = flagrate.Modal = function (opt) {
 		
 		opt = opt || {};
 		
@@ -5174,6 +5430,7 @@
 			var active = document.activeElement.tagName;
 			
 			if (active !== 'BODY' && active !== 'DIV') { return; }
+			if (window.getSelection().toString() !== '') { return; }
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -5204,7 +5461,7 @@
 		 *  
 		 *  Tells weather modal is visible
 		**/
-		visible: function _visible() {
+		visible: function () {
 			return this._base.hasClassName(flagrate.className + '-modal-visible');
 		}
 		,
@@ -5213,11 +5470,13 @@
 		 *  
 		 *  Open the modal.
 		**/
-		open: function _show() {
+		open: function () {
 			
 			if (this.visible() === true) { return this; }
 			
+			// make free
 			if (document.activeElement) { document.activeElement.blur(); }
+			window.getSelection().removeAllRanges();
 			
 			if (this.closingTimer) { clearTimeout(this.closingTimer); }
 			
@@ -5298,12 +5557,12 @@
 		}
 		,
 		// DEPRECATED
-		show: function _show() {
+		show: function () {
 			return this.open();
 		}
 		,
 		// DEPRECATED
-		render: function _render() {
+		render: function () {
 			return this.open();
 		}
 		,
@@ -5312,7 +5571,7 @@
 		 *  
 		 *  Close the modal.
 		**/
-		close: function _close(e) {
+		close: function (e) {
 			
 			if (this.visible() === false) { return this; }
 			
@@ -5441,7 +5700,7 @@
 	 *  * `className`                (String):
 	 *  * `attribute`                (Object):
 	 *  * `style`                    (Object): styling of `tr` (using flagrate.Element.setStyle)
-	 *  * `cell`                     (Object; default `{}`): of cell object.
+	 *  * `cell`                     (Object|String; default `{}`): of cell object. or String for text.
 	 *  * `menuItems`                (Array): of Menu items.
 	 *  * `isSelected`               (Boolean):
 	 *  * `onSelect`                 (Function):
@@ -5465,7 +5724,7 @@
 	 *  * `onDblClick`               (Function):
 	 *  * `postProcess`              (Function):
 	**/
-	var Grid = flagrate.Grid = function flagrateGrid(opt) {
+	var Grid = flagrate.Grid = function (opt) {
 		
 		opt = opt || {};
 		
@@ -5506,6 +5765,16 @@
 			this.disableResize = true;
 		}
 		
+		/*?
+		 *  flagrate.Grid#sortedByKey -> String | null
+		 *  readonly.
+		 *
+		 *  flagrate.Grid#sortedByAsc -> Boolean | null
+		 *  readonly.
+		**/
+		this.sortedByKey = null;
+		this.sortedByAsc = null;
+		
 		return this._create()._requestRender();
 	};
 	
@@ -5517,12 +5786,12 @@
 	
 	Grid.prototype = {
 		/*?
-		 *  flagrate.Grid#insertTo(element) -> flagrate.Grid
+		 *  flagrate.Grid#insertTo(element[, position = "bottom"]) -> flagrate.Grid
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function (element) {
-			return this.element.insertTo(element) && this;
+		insertTo: function (element, pos) {
+			return this.element.insertTo(element, pos) && this;
 		}
 		,
 		/*?
@@ -5657,13 +5926,15 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#sort(key, isAsc) -> flagrate.Grid
+		 *  flagrate.Grid#sort(key[, isAsc = true]) -> flagrate.Grid
 		 *  - key   (String)
 		 *  - isAsc (Boolean)
 		 *
 		 *  sort rows by key
 		**/
 		sort: function (key, isAsc) {
+			
+			if (isAsc === void 0) { isAsc = true; }
 			
 			this.rows.sort(function (a, b) {
 				
@@ -5680,7 +5951,7 @@
 				return A === B ? 0 : (A > B ? 1 : -1);
 			});
 			
-			if (!isAsc) { this.rows.reverse(); }
+			if (isAsc === false) { this.rows.reverse(); }
 			
 			var i, l;
 			for (i = 0, l = this.cols.length; i < l; i++) {
@@ -5696,7 +5967,10 @@
 					}
 					
 					this.cols[i].isSorted = true;
-					this.cols[i].isAsc    = !!isAsc;
+					this.cols[i].isAsc    = isAsc;
+					
+					this.sortedByKey = key;
+					this.sortedByAsc = isAsc;
 				} else {
 					if (this.cols[i].isSorted && this.cols[i]._th) {
 						this.cols[i]._th.removeClassName(flagrate.className + '-grid-col-sorted-asc').removeClassName(flagrate.className + '-grid-col-sorted-desc');
@@ -5729,7 +6003,11 @@
 				this.rows.unshift(r);
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return this.rows.length;
 		}
@@ -5751,7 +6029,11 @@
 				this.rows.push(r);
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return this.rows.length;
 		}
@@ -5823,7 +6105,11 @@
 				}
 			}
 			
-			this._requestRender();
+			if (this.sortedByKey === null) {
+				this._requestRender();
+			} else {
+				this.sort(this.sortedByKey, this.sortedByAsc);
+			}
 			
 			return removes;
 		}
@@ -5840,12 +6126,12 @@
 		}
 		,
 		/*?
-		 *  flagrate.Grid#delete(row) -> Object|Array
+		 *  flagrate.Grid#removeRow(row) -> Object|Array
 		 *  - row (Object|Array) - row to locate in the flagrate.Grid.
 		 *
-		 *  delete row(s).
+		 *  remove row(s).
 		**/
-		'delete': function (r) {
+		removeRow: function (r) {
 			
 			var removes = [];
 			var bulk    = false;
@@ -6121,7 +6407,11 @@
 				
 				for (j = 0; j < cl; j++) {
 					col  = this.cols[j];
-					cell = !!row.cell[col.key] ? row.cell[col.key] : (row.cell[col.key] = {});
+					cell = (row.cell[col.key] === void 0) ? (row.cell[col.key] = {}) : row.cell[col.key];
+					
+					if (typeof cell === 'string') {
+						cell = row.cell[col.key] = { text: cell };
+					}
 					
 					if (!cell._td) { cell._td = new Element('td'); }
 					cell._td.insertTo(row._tr);
@@ -6515,7 +6805,7 @@
 	 *
 	 *  see flagrate.Form.inputValidator to read more documents.
 	**/
-	var Form = flagrate.Form = function flagrateForm(opt) {
+	var Form = flagrate.Form = function (opt) {
 		
 		opt = opt || {};
 		
@@ -6545,12 +6835,12 @@
 	
 	Form.prototype = {
 		/*?
-		 *  flagrate.Form#insertTo(element) -> flagrate.Form
+		 *  flagrate.Form#insertTo(element[, position = "bottom"]) -> flagrate.Form
 		 *
 		 *  please refer to flagrate.Element.insertTo
 		**/
-		insertTo: function (element) {
-			return this.element.insertTo(element) && this;
+		insertTo: function (element, pos) {
+			return this.element.insertTo(element, pos) && this;
 		},
 		
 		/*?
@@ -6750,12 +7040,12 @@
 		},
 		
 		/*?
-		 *  flagrate.Form#delete(field) -> Object|Array
+		 *  flagrate.Form#removeField(field) -> Object|Array
 		 *  - field (Object|Array|String|Number) - field to locale in the flagrate.Form#fields. String is field#key.
 		 *
-		 *  delete field(s)
+		 *  remove field(s)
 		**/
-		'delete': function (f) {
+		removeField: function (f) {
 			
 			var removes = [];
 			var bulk    = false;
@@ -7143,9 +7433,11 @@
 				if (field.input.isRequired === true) {
 					if (val === void 0) {
 						hasError = true;
-					} else if ((val.length !== void 0) && val.length === 0) {
-						hasError = true;
 					} else if (val === false || val === null) {
+						hasError = true;
+					} else if (typeof val === 'number' && isNaN(val) === true) {
+						hasError = true;
+					} else if ((val.length !== void 0) && val.length === 0) {
 						hasError = true;
 					}
 				}
@@ -7359,6 +7651,8 @@
 	 *  * [number](#number-number-) -> `Number`
 	 *  * [combobox](#combobox-string-) -> `String`
 	 *  * [checkbox](#checkbox-boolean-) -> `Boolean`
+	 *  * [checkboxes](#checkboxes-array-) -> `Array`
+	 *  * [switch](#switch-boolean-) -> `Boolean`
 	 *  * [radios](#radios-any-) -> `any`
 	 *  * [select](#select-any-array-) -> `any`|`Array`
 	 *  * [file](#file-file-) -> `File`
@@ -7529,6 +7823,50 @@
 				this.element.check();
 			} else {
 				this.element.uncheck();
+			}
+		},
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### checkboxes -> `Array`
+	 *  Checkboxes input. (uses flagrate.Checkboxes)
+	 *
+	 *  * `items` (Array):
+	**/
+	Form.inputType.checkboxes = {
+		create: function () {
+			return new Checkboxes({
+				items: this.items
+			});
+		},
+		getVal: function () {
+			return this.element.getValues();
+		},
+		setVal: function (values) {
+			this.element.setValues(values);
+		},
+		enable: Form.inputType.text.enable,
+		disable: Form.inputType.text.disable
+	};
+	
+	/*?
+	 *  #### switch -> `Boolean`
+	 *  Switch input. (uses flagrate.Switch)
+	**/
+	Form.inputType['switch'] = {
+		create: function () {
+			return new Switch();
+		},
+		getVal: function () {
+			return this.element.isOn();
+		},
+		setVal: function (value) {
+			if (value) {
+				this.element.switchOn();
+			} else {
+				this.element.switchOff();
 			}
 		},
 		enable: Form.inputType.text.enable,

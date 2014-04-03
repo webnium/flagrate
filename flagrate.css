@@ -273,27 +273,30 @@ div.flagrate-tab.flagrate-tab-fill {
 		right        : 0;
 		left         : 0;
 		overflow     : hidden; }
+	
+	div.flagrate-tab > div.flagrate-tab-head {
+		box-shadow: inset 0 -2px 0 #388dd6; }
 		
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button {
-			background-color: #eee;
-			color           : #777;
+			background-color: transparent;
+			color           : #555;
 			box-shadow      : none;
 			border-color    : transparent; }
 		
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:hover,
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button:focus {
-			background-color: #ddd;
-			color           : #555;
+			background-color: rgba(0,0,0,0.1);
+			color           : #000;
 			outline         : none; }
 		
 		div.flagrate-tab > div.flagrate-tab-head > button.flagrate-button.flagrate-tab-selected {
-			background-color: #fff;
-			color           : #000;
+			background-color: #388dd6;
+			color           : #fff;
 			cursor          : default; }
 	
 	div.flagrate-tab > div.flagrate-tab-body {
-		background-color: #fff;
-		padding         : 10px; }
+		background-color: inherit;
+		padding         : 10px 0; }
 	
 	div.flagrate-tab.flagrate-tab-fill > div.flagrate-tab-body {
 		position     : absolute;
@@ -507,6 +510,20 @@ div.flagrate-tokenizer.flagrate-icon {
 div.flagrate-select {
 	display         : inline-block;
 	max-width       : 240px; }
+
+div.flagrate-select.flagrate-select-list-view {
+	max-height      : 100px;
+	border          : 1px solid rgba(0,0,0,0.35);
+	overflow-y      : auto; }
+
+div.flagrate-has-success div.flagrate-select.flagrate-select-list-view {
+	border-color    : #449b44; }
+
+div.flagrate-has-warning div.flagrate-select.flagrate-select-list-view {
+	border-color    : #e08505; }
+
+div.flagrate-has-error div.flagrate-select.flagrate-select-list-view {
+	border-color    : #b82b27; }
 	
 	div.flagrate-select > button.flagrate-pulldown {
 		display         : block;
@@ -580,21 +597,6 @@ div.flagrate-select {
 		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:active {
 			color           : #000;
 			background-color: #ddd; }
-	
-	div.flagrate-select > div.flagrate-grid {
-		border: 1px solid rgba(0,0,0,0.35); }
-
-	div.flagrate-has-success div.flagrate-select > div.flagrate-grid {
-		border-color    : #449b44; }
-
-	div.flagrate-has-warning div.flagrate-select > div.flagrate-grid {
-		border-color    : #e08505; }
-
-	div.flagrate-has-error div.flagrate-select > div.flagrate-grid {
-		border-color    : #b82b27; }
-		
-		div.flagrate-select > div.flagrate-grid > div.flagrate-grid-body {
-			max-height: 100px; }
 
 div.flagrate-combobox {
 	display         : inline-block;
@@ -661,7 +663,7 @@ div.flagrate-combobox {
 label.flagrate-checkbox,
 label.flagrate-radio {
 	display            : inline-block;
-	vertical-align     : top;
+	vertical-align     : inherit;
 	height             : 20px;
 	line-height        : 20px;
 	margin             : 0;
@@ -757,6 +759,12 @@ label.flagrate-radio.flagrate-icon {
 	label.flagrate-radio.flagrate-disabled > input:checked+div,
 	label.flagrate-radio.flagrate-disabled > input:checked:active+div {
 		border-color    : rgba(255,255,255,0.3); }
+
+div.flagrate-checkboxes,
+div.flagrate-radios {
+	display: inline-block;
+	line-height: 25px;
+}
 
 button.flagrate-switch,
 button.flagrate-switch:disabled {
@@ -857,7 +865,12 @@ div.flagrate-progress {
 	div.flagrate-progress > div {
 		height          : 100%;
 		width           : 0%;
-		background-color: #388dd6; }
+		background-color: #388dd6;
+		-webkit-transition: width 0.2s ease;
+		-moz-transition   : width 0.2s ease;
+		-ms-transition    : width 0.2s ease;
+		-o-transition     : width 0.2s ease;
+		transition        : width 0.2s ease; }
 
 div.flagrate-slider {
 	cursor            : pointer;
@@ -867,6 +880,13 @@ div.flagrate-slider.flagrate-disabled { }
 	
 	div.flagrate-slider.flagrate-disabled > div {
 		background-color  : #888; }
+	
+	div.flagrate-slider > div {
+		-webkit-transition: width 0.1s ease;
+		-moz-transition   : width 0.1s ease;
+		-ms-transition    : width 0.1s ease;
+		-o-transition     : width 0.1s ease;
+		transition        : width 0.1s ease; }
 	
 	div.flagrate-slider > div::after {
 		content         : '';
@@ -884,14 +904,13 @@ div.flagrate-slider.flagrate-disabled { }
 
 div.flagrate-notify {
 	z-index           : 10000;
-	background-color  : rgba(0,0,0,0.5);
+	background-color  : rgba(0,0,0,0.7);
 	background-repeat : no-repeat;
-	padding           : 10px;
-	border            : 1px solid rgba(0,0,0,0.2);
+	padding           : 10px 20px;
 	color             : rgba(255,255,255,0.8);
-	box-shadow        : 0 0 2px 0 rgba(0,0,0,0.4);
-	line-height       : 15px;
-	width             : 230px;
+	line-height       : 14px;
+	width             : 270px;
+	min-height        : 80px;
 	opacity           : 0;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition   : all 0.2s ease;
@@ -904,9 +923,9 @@ div.flagrate-notify:hover {
 	color             : #fff; }
 	
 	div.flagrate-notify > div.title {
-		font-weight: bold;
-		font-size  : 13px;
-		text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+		font-weight: normal;
+		font-size  : 15px;
+		line-height: 1.25em;
 		color      : #fff;
 		word-break : break-all; }
 	
@@ -914,10 +933,15 @@ div.flagrate-notify:hover {
 		margin-top : 5px;
 		font-weight: normal;
 		font-size  : 12px;
-		line-height: 14px; }
+		line-height: 1.5em; }
 	
 	div.flagrate-notify > div.close {
-		display    : none; }
+		display            : none;
+		-webkit-box-sizing : border-box;
+		-moz-box-sizing    : border-box;
+		-ms-box-sizing     : border-box;
+		-o-box-sizing      : border-box;
+		box-sizing         : border-box; }
 	
 	div.flagrate-notify:hover > div.close {
 		display    : block;
@@ -925,22 +949,32 @@ div.flagrate-notify:hover {
 		position   : absolute;
 		top        : 0;
 		right      : 0;
+		height     : 20px;
+		width      : 20px;
 		color      : #fff;
-		background : #111;
+		background : rgba(0,0,0,0.25);
 		font-weight: bold;
-		font-size  : 10px;
+		font-size  : 11px;
 		line-height: 12px;
-		padding    : 2px 4px; }
+		padding    : 5px 5px; }
 	
 	div.flagrate-notify:hover > div.close:hover {
-		cursor     : pointer;
-		position   : absolute;
-		top        : 0;
-		right      : 0;
-		color      : #fff;
-		background : #ff6571;
-		font-weight: bold;
-		font-size  : 10px; }
+		background : #ff6571; }
+
+div.flagrate-notify.flagrate-notify-icon {
+	padding-left      : 100px;
+	width             : 350px; }
+	
+	div.flagrate-notify.flagrate-notify-icon > div.icon {
+		position           : absolute;
+		top                : 0;
+		left               : 0;
+		width              : 80px;
+		height             : 100%;
+		background-color   : rgba(255,255,255,0.1);
+		background-repeat  : no-repeat;
+		background-size    : 40px 40px;
+		background-position: center center; }
 
 div.flagrate-modal {
 	z-index           : 10000;
@@ -971,13 +1005,7 @@ div.flagrate-modal.flagrate-modal-visible {
 		position          : absolute;
 		right             : 0;
 		left              : 0;
-		height            : auto;
-		
-		-webkit-transition: opacity 0.2s ease;
-		-moz-transition   : opacity 0.2s ease;
-		-ms-transition    : opacity 0.2s ease;
-		-o-transition     : opacity 0.2s ease;
-		transition        : opacity 0.2s ease; }
+		height            : auto; }
 	
 	div.flagrate-modal.flagrate-tutorial > div {
 		background-color  : rgba(0,0,0,0.5); }
@@ -1058,7 +1086,8 @@ div.flagrate-modal.flagrate-modal-visible {
 				border          : none;
 				color           : #aaa;
 				padding         : 0;
-				height          : 10px; }
+				height          : 10px;
+				line-height     : 10px; }
 				
 				div.flagrate-modal > div > div > button > span::after {
 					display    : inline-block;
@@ -1218,7 +1247,11 @@ div.flagrate-grid.flagrate-grid-fill {
 						height        : 30px;
 						text-align    : left;
 						overflow      : hidden;
-						vertical-align: top; }
+						vertical-align: top;
+						-webkit-user-select: none;
+						-moz-user-select: none;
+						-ms-user-select: none;
+						user-select: none; }
 					
 					div.flagrate-grid > div > table > thead > tr > th:last-child,
 					div.flagrate-grid > div > table > tbody > tr > td:last-child {
@@ -1327,6 +1360,12 @@ div.flagrate-grid.flagrate-grid-fill {
 							margin-top      : 6px;
 							font-size       : 11px;
 							font-weight     : normal; }
+						
+						div.flagrate-grid > div > table > tbody > tr > td > div {
+							-webkit-user-select: text;
+							-moz-user-select: text;
+							-ms-user-select: text;
+							user-select: text; }
 						
 						div.flagrate-grid > div > table > thead > tr > th > div.flagrate-icon,
 						div.flagrate-grid > div > table > tbody > tr > td > div.flagrate-icon {

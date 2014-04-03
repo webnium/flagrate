@@ -310,19 +310,15 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// Checkbox
-		flagrate.createCheckbox({ label: 'Checkbox' }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', isChecked: true }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', isChecked: true, isDisabled: true }).insertTo(c);
-		flagrate.createCheckbox({ label: 'Checkbox', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		// Checkboxes
+		flagrate.createCheckboxes({ items: ['CheckboxA', 'CheckboxB'] }).addValue('CheckboxB').insertTo(c);
+		flagrate.createCheckboxes({ items: ['CheckboxA', { label: 'CheckboxB', value: 'B', icon: 'icon.png' }] }).addValue('CheckboxA').disable().insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
-		// Radio
-		flagrate.createRadio({ label: 'Radio', name: 'radio' }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', name: 'radio', isChecked: true }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', isChecked: true, isDisabled: true }).insertTo(c);
-		flagrate.createRadio({ label: 'Radio', icon: 'icon.png', isDisabled: true }).insertTo(c);
+		// Radios
+		flagrate.createRadios({ items: ['RadioA', 'RadioB'] }).setValue('RadioA').insertTo(c);
+		flagrate.createRadios({ items: ['RadioA', { label: 'RadioB', value: 'B', icon: 'icon.png' }] }).setValue('B').disable().insertTo(c);
 		
 		flagrate.Element.insert(c, '<br>');
 		
@@ -478,7 +474,10 @@
 			color   : '@orange',
 			label   : 'click to create Notify',
 			onSelect: function() {
-				notify.create({ message: 'message' });
+				notify.create({
+					icon: 'icon.png',
+					text: 'Hi there!'
+				});
 			}
 		}).insertTo(c);
 		
@@ -523,12 +522,8 @@
 			rows: [
 				{
 					cell: {
-						id: {
-							text: '0'
-						},
-						name: {
-							text: 'text'
-						},
+						id: '0',
+						name: 'text',
 						num: {
 							sortAlt: 1,
 							text   : '1'
@@ -543,15 +538,9 @@
 				{
 					isSelected: true,
 					cell: {
-						id: {
-							text: '1'
-						},
-						name: {
-							text: 'text'
-						},
-						desc: {
-							text: '<b>text</b>'
-						},
+						id: '1',
+						name: 'text',
+						desc: '<b>text</b>',
 						num: {
 							sortAlt: 22,
 							text   : '22'
@@ -574,9 +563,7 @@
 				},
 				{
 					cell: {
-						id: {
-							text: '2'
-						},
+						id: '2',
 						desc: {
 							html: '<b>html</b>'
 						},
@@ -732,6 +719,23 @@
 					]
 				},
 				{
+					key  : 'paymentOptions',
+					label: 'Payment Options',
+					input: {
+						type : 'checkboxes',
+						items: [
+							'Send me a Receipt',
+							'Donate 1% to the UNICEF'
+						]
+					},
+					depends: [
+						[
+							{ key: 'plan', val: 'pro' },
+							{ key: 'plan', val: 'enterprise' }
+						]
+					]
+				},
+				{
 					key  : 'country',
 					label: 'Country',
 					input: {
@@ -781,9 +785,10 @@
 				},
 				{
 					key  : 'saveCredentials',
+					label: 'E-Mail Notification',
 					input: {
-						type : 'checkbox',
-						label: 'Keep me signed-in on this computer.'
+						type: 'switch',
+						val : true
 					},
 					depends: [
 						{ key: 'agree', val: true }
