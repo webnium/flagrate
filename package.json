@@ -1,0 +1,38 @@
+{
+  "name": "flagrate",
+  "description": "JavaScript UI library",
+  "version": "0.0.0",
+  "main": "flagrate.js",
+  "homepage": "https://flagrate.org",
+  "scripts": {
+    "test": "gulp",
+    "build": "gulp",
+    "watch": "gulp watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/webnium/flagrate.git"
+  },
+  "keywords": [
+    "flagrate",
+    "javascript",
+    "library"
+  ],
+  "bugs": {
+    "url": "https://github.com/webnium/flagrate/issues?labels=bug"
+  },
+  "author": "Webnium",
+  "licenses": {
+    "type": "MIT",
+    "url": "https://github.com/webnium/flagrate/blob/master/LICENSE"
+  },
+  "devDependencies": {
+    "gulp": "^3.6.0",
+    "gulp-mocha": "^0.4.1",
+    "typescript": "^1.0.0",
+    "gulp-include": "^0.2.2",
+    "gulp-tsc": "^0.7.0",
+    "gulp-closure-compiler": "^0.1.2",
+    "gulp-rename": "^1.2.0"
+  }
+}
