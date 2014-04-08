@@ -30,6 +30,7 @@ function isElement(object): boolean {
 export interface IElementClass {
     new? (tagName?: string, attribute?: Object): IElement;
     (tagName?: string, attribute?: Object): void;
+    prototype?: IElementInstance;
 
     cache?: Object;
 
@@ -84,7 +85,9 @@ export interface IElementClass {
     extend? <T extends HTMLElement>(element: T): IElement;
 }
 
-export interface IElement extends HTMLElement {
+export interface IElement extends IElementInstance, HTMLElement {}
+
+export interface IElementInstance {
     isFlagrated?: boolean;
 
     visible? (): boolean;
@@ -216,7 +219,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.visible
     **/
     visible() {
-        return Element.visible(this);
+        return Element.visible(<IElement>this);
     },
 
     /*?
@@ -225,7 +228,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.exists
     **/
     exists() {
-        return Element.exists(this);
+        return Element.exists(<IElement>this);
     },
 
     /*?
@@ -234,7 +237,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.toggle
     **/
     toggle() {
-        return Element.toggle(this);
+        return Element.toggle(<IElement>this);
     },
 
     /*?
@@ -243,7 +246,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.hide
     **/
     hide() {
-        return Element.hide(this);
+        return Element.hide(<IElement>this);
     },
 
     /*?
@@ -252,7 +255,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.show
     **/
     show() {
-        return Element.show(this);
+        return Element.show(<IElement>this);
     },
 
     /*?
@@ -261,7 +264,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.remove
     **/
     remove() {
-        return Element.remove(this);
+        return Element.remove(<IElement>this);
     },
 
     /*?
@@ -270,7 +273,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.update
     **/
     update(content) {
-        return Element.update(this, content);
+        return Element.update(<IElement>this, content);
     },
 
     /*?
@@ -279,7 +282,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.updateText
     **/
     updateText(text) {
-        return Element.updateText(this, text);
+        return Element.updateText(<IElement>this, text);
     },
 
     /*?
@@ -288,7 +291,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.insert
     **/
     insert(content) {
-        return Element.insert(this, content);
+        return Element.insert(<IElement>this, content);
     },
 
     /*?
@@ -297,7 +300,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.insertText
     **/
     insertText(text) {
-        return Element.insertText(this, text);
+        return Element.insertText(<IElement>this, text);
     },
 
     /*?
@@ -306,7 +309,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.insertTo
     **/
     insertTo(element, pos) {
-        return Element.insertTo(this, element, pos);
+        return Element.insertTo(<IElement>this, element, pos);
     },
 
     /*?
@@ -315,7 +318,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.readAttribute
     **/
     readAttribute(name) {
-        return Element.readAttribute(this, name);
+        return Element.readAttribute(<IElement>this, name);
     },
 
     /*?
@@ -323,8 +326,8 @@ Element.prototype = {
      *
      *  please refer to flagrate.Element.writeAttribute
     **/
-    writeAttribute(name, value) {
-        return Element.writeAttribute(this, name, value);
+    writeAttribute(name, value?): IElement {
+        return Element.writeAttribute(<IElement>this, name, value);
     },
 
     /*?
@@ -333,7 +336,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.getDimensions
     **/
     getDimensions() {
-        return Element.getDimensions(this);
+        return Element.getDimensions(<IElement>this);
     },
 
     /*?
@@ -342,7 +345,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.getHeight
     **/
     getHeight() {
-        return Element.getHeight(this);
+        return Element.getHeight(<IElement>this);
     },
 
     /*?
@@ -351,7 +354,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.getWidth
     **/
     getWidth() {
-        return Element.getWidth(this);
+        return Element.getWidth(<IElement>this);
     },
 
     /*?
@@ -360,7 +363,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.cumulativeOffset
     **/
     cumulativeOffset() {
-        return Element.cumulativeOffset(this);
+        return Element.cumulativeOffset(<IElement>this);
     },
 
     /*?
@@ -369,7 +372,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.cumulativeScrollOffset
     **/
     cumulativeScrollOffset() {
-        return Element.cumulativeScrollOffset(this);
+        return Element.cumulativeScrollOffset(<IElement>this);
     },
 
     /*?
@@ -378,7 +381,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.hasClassName
     **/
     hasClassName(className) {
-        return Element.hasClassName(this, className);
+        return Element.hasClassName(<IElement>this, className);
     },
 
     /*?
@@ -387,7 +390,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.addClassName
     **/
     addClassName(className) {
-        return Element.addClassName(this, className);
+        return Element.addClassName(<IElement>this, className);
     },
 
     /*?
@@ -396,7 +399,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.removeClassName
     **/
     removeClassName(className) {
-        return Element.removeClassName(this, className);
+        return Element.removeClassName(<IElement>this, className);
     },
 
     /*?
@@ -405,7 +408,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.toggleClassName
     **/
     toggleClassName(className) {
-        return Element.toggleClassName(this, className);
+        return Element.toggleClassName(<IElement>this, className);
     },
 
     /*?
@@ -414,7 +417,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.getStyle
     **/
     getStyle(propertyName) {
-        return Element.getStyle(this, propertyName);
+        return Element.getStyle(<IElement>this, propertyName);
     },
 
     /*?
@@ -423,7 +426,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.setStyle
     **/
     setStyle(style) {
-        return Element.setStyle(this, style);
+        return Element.setStyle(<IElement>this, style);
     },
 
     /*?
@@ -432,7 +435,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.on
     **/
     on(name, listener, useCapture) {
-        return Element.on(this, name, listener, useCapture);
+        return Element.on(<IElement>this, name, listener, useCapture);
     },
 
     /*?
@@ -441,7 +444,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.off
     **/
     off(name, listener, useCapture) {
-        return Element.off(this, name, listener, useCapture);
+        return Element.off(<IElement>this, name, listener, useCapture);
     },
 
     /*?
@@ -450,7 +453,7 @@ Element.prototype = {
      *  please refer to flagrate.Element.fire
     **/
     fire(name, property) {
-        return Element.fire(this, name, property);
+        return Element.fire(<IElement>this, name, property);
     }
 };
 
