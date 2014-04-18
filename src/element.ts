@@ -1,5 +1,3 @@
-import extendObject = Flagrate.extendObject;
-
 function isElement(object): boolean {
     return !!(object && object.nodeType === 1);
 }
@@ -28,19 +26,76 @@ function isElement(object): boolean {
  *  * [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) (MDN)
 **/
 export interface IElementClass {
-    new? (tagName?: string, attribute?: Object): IElement;
-    (tagName?: string, attribute?: Object): void;
+    new? (tagName?: string, attribute?: any): IElement;
+    (tagName?: string, attribute?: any): void;
     prototype?: IElementInstance;
 
     cache?: Object;
 
     _insertionTranslation?: IElementInsertion;
 
+    /*?
+     *  Flagrate.Element.visible(element) -> Boolean
+     *
+     *  This method is similar to http://api.prototypejs.org/dom/Element/visible/
+    **/
+    /**
+     *  Tells whether `element` is visible
+     *  @param element target.
+    **/
     visible? <T extends HTMLElement>(element: T): boolean;
+
+    /*?
+     *  Flagrate.Element.exists(element) -> Boolean
+    **/
+    /**
+     *  Tells whether `element` is exists on document.
+     *  @param element target.
+    **/
     exists? <T extends HTMLElement>(element: T): boolean;
+
+    /*?
+     *  Flagrate.Element.toggle(element) -> Element
+     *
+     *  This method is similar to http://api.prototypejs.org/dom/Element/toggle/
+    **/
+    /**
+     *  Toggles the visibility of `element`. Returns `element`.
+     *  @param element target.
+    **/
     toggle? <T extends HTMLElement>(element: T): T;
+
+    /*?
+     *  Flagrate.Element.hide(element) -> Element
+     *
+     *  This method is similar to http://api.prototypejs.org/dom/Element/hide/
+    **/
+    /**
+     *  Sets `display: none` on `element`. Returns `element`.
+     *  @param element target.
+    **/
     hide? <T extends HTMLElement>(element: T): T;
+
+    /*?
+     *  Flagrate.Element.show(element) -> Element
+     *
+     *  This method is similar to http://api.prototypejs.org/dom/Element/show/
+    **/
+    /**
+     *  Removes `display: none` on `element`. Returns `element`.
+     *  @param element target.
+    **/
     show? <T extends HTMLElement>(element: T): T;
+
+    /*?
+     *  Flagrate.Element.remove(element) -> Element
+     *
+     *  This method is similar to http://api.prototypejs.org/dom/Element/remove/
+    **/
+    /**
+     *  Completely removes `element` from the document and returns it.
+     *  @param element target.
+    **/
     remove? <T extends HTMLElement>(element: T): T;
     update? <T extends HTMLElement>(element: T, content?: string): T;
     update? <T extends HTMLElement>(element: T, content?: number): T;
@@ -59,12 +114,12 @@ export interface IElementClass {
     insertTo? <T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position: 'bottom'): T;
     insertTo? <T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position: 'after'): T;
     insertTo? <T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position?): T;
-    wrap? <T extends HTMLElement, U extends HTMLElement>(element: T, wrapper?: U, attribute?: Object): T;
-    wrap? <T extends HTMLElement>(element: T, wrapper?: string, attribute?: Object): T;
+    wrap? <T extends HTMLElement, U extends HTMLElement>(element: T, wrapper?: U, attribute?: any): T;
+    wrap? <T extends HTMLElement>(element: T, wrapper?: string, attribute?: any): T;
     readAttribute? <T extends HTMLElement>(element: T, name: string): string;
     writeAttribute? <T extends HTMLElement>(element: T, attributeName: string, value?: boolean): T;
     writeAttribute? <T extends HTMLElement>(element: T, attributeName: string, value?: string): T;
-    writeAttribute? <T extends HTMLElement>(element: T, attribute: Object): T;
+    writeAttribute? <T extends HTMLElement>(element: T, attribute: any): T;
     getDimensions? <T extends HTMLElement>(element: T): IElementDimension;
     getHeight? <T extends HTMLElement>(element: T): number;
     getWidth? <T extends HTMLElement>(element: T): number;
@@ -77,7 +132,7 @@ export interface IElementClass {
     getStyle? <T extends HTMLElement>(element: T, propertyName: string): any;
     getStyle? <T extends HTMLElement>(element: T, propertyName: 'opacity'): number;
     getStyle? <T extends HTMLElement>(element: T, propertyName: any): any;
-    setStyle? <T extends HTMLElement>(element: T, style: CSSStyleDeclaration): T;
+    setStyle? <T extends HTMLElement>(element: T, style: any): T;
     on? <T extends HTMLElement>(element: T, eventType: string, listener: EventListener, useCapture?: boolean): T;
     off? <T extends HTMLElement>(element: T, eventType: string, listener?: EventListener, useCapture?: boolean): T;
     fire? <T extends HTMLElement>(element: T, eventType: string, property?: any): T;
@@ -90,12 +145,54 @@ export interface IElement extends IElementInstance, HTMLElement {}
 export interface IElementInstance {
     isFlagrated?: boolean;
 
+    /*?
+     *  Flagrate.Element#visible() -> Boolean
+     *
+     *  ref: Flagrate.Element.visible
+    **/
+    /** Tells whether the visibility. */
     visible? (): boolean;
+
+    /*?
+     *  Flagrate.Element#exists() -> Boolean
+     *
+     *  ref: Flagrate.Element.exists
+    **/
+    /** Tells whether `element` is exists on document. */
     exists? (): boolean;
+
+    /*?
+     *  Flagrate.Element#toggle() -> Flagrate.Element
+     *
+     *  ref: Flagrate.Element.toggle
+    **/
+    /** Toggles the visibility of `element`. Returns `element`. */
     toggle? (): IElement;
+
+    /*?
+     *  Flagrate.Element#hide() -> Flagrate.Element
+     *
+     *  ref: Flagrate.Element.hide
+    **/
+    /** Sets `display: none` on `element`. Returns `element`. */
     hide? (): IElement;
+
+    /*?
+     *  Flagrate.Element#show() -> Flagrate.Element
+     *
+     *  ref: Flagrate.Element.show
+    **/
+    /** Removes `display: none` on `element`. Returns `element`. */
     show? (): IElement;
+
+    /*?
+     *  Flagrate.Element#remove() -> Flagrate.Element
+     *
+     *  ref: Flagrate.Element.remove
+    **/
+    /** Completely removes `element` from the document and returns it. */
     remove? (): IElement;
+
     update? (content?: string): IElement;
     update? (content?: number): IElement;
     update? <T extends HTMLElement>(content?: T): IElement;
@@ -113,12 +210,12 @@ export interface IElementInstance {
     insertTo? <T extends HTMLElement>(to: T, position: 'bottom'): IElement;
     insertTo? <T extends HTMLElement>(to: T, position: 'after'): IElement;
     insertTo? <T extends HTMLElement>(to: T, position?): IElement;
-    wrap? <T extends HTMLElement>(wrapper?: T, attribute?: Object): IElement;
-    wrap? (wrapper?: string, attribute?: Object): IElement;
+    wrap? <T extends HTMLElement>(wrapper?: T, attribute?: any): IElement;
+    wrap? (wrapper?: string, attribute?: any): IElement;
     readAttribute? (name: string): string;
     writeAttribute? (attributeName: string, value?: boolean): IElement;
     writeAttribute? (attributeName: string, value?: string): IElement;
-    writeAttribute? (attribute: Object): IElement;
+    writeAttribute? (attribute: any): IElement;
     getDimensions? (): IElementDimension;
     getHeight? (): number;
     getWidth? (): number;
@@ -131,7 +228,7 @@ export interface IElementInstance {
     getStyle? (propertyName: string): any;
     getStyle? (propertyName: 'opacity'): number;
     getStyle? (propertyName: any): any;
-    setStyle? (style: CSSStyleDeclaration): IElement;
+    setStyle? (style: any): IElement;
     on? (eventType: string, listener: EventListener, useCapture?: boolean): IElement;
     off? (eventType: string, listener?: EventListener, useCapture?: boolean): IElement;
     fire? (eventType: string, property?: any): IElement;
@@ -158,10 +255,6 @@ export interface IElementInsertion {
 /*?
  *  Flagrate.createElement([tagName = "div", attribute])
  *  new Flagrate.Element([tagName = "div", attribute])
- *  - tagName (String) - The name of the HTML element to create.
- *  - attribute (Object) - An optional group of attribute/value pairs to set on the element.
- *
- *  Creates an HTML element with `tagName` as the tag name, optionally with the given attributes.
  *
  *  #### Example
  *
@@ -175,12 +268,7 @@ export interface IElementInsertion {
  *      // The new way:
  *      var a = Flagrate.createElement('a', { 'class': 'foo', href: '/foo.html' }).insert("Next page").insertTo(x);
 **/
-/**
- *  @class Flagrate.Element
- *  @param {string} [tagName=div]
- *  @param {Flagrate.ElementPropertyAttribute} [attribute]
-**/
-export var Element: IElementClass = function(tagName = 'div', attribute?: Object): IElement {
+export var Element: IElementClass = function(tagName = 'div', attribute?: any): IElement {
 
     var node: IElement;
 
@@ -193,18 +281,17 @@ export var Element: IElementClass = function(tagName = 'div', attribute?: Object
         Element.cache[tagName] = node.cloneNode(false);
     }
 
-    extendObject(node, this);
+    Flagrate.extendObject(node, this);
 
     return attribute ? node.writeAttribute(attribute) : node;
 };
 
 /**
  *  Creates an HTML element with `tagName` as the tag name, optionally with the given attributes.
- *  @class Flagrate.Element
- *  @param {string} [tagName=div]
- *  @param {Flagrate.ElementPropertyAttribute} [attribute]
+ *  @param tagName The name of the HTML element to create.
+ *  @param attribute An optional group of attribute/value pairs to set on the element.
 **/
-export function createElement(tagName?: string, attribute?: Object): IElement {
+export function createElement(tagName?: string, attribute?: any): IElement {
     return new Element(tagName, attribute);
 }
 
@@ -213,274 +300,230 @@ Element.cache = {};
 Element.prototype = {
     isFlagrated: true,
 
-    /*?
-     *  flagrate.Element#visible() -> Boolean
-     *
-     *  please refer to flagrate.Element.visible
-    **/
-    visible() {
+    visible () {
         return Element.visible(<IElement>this);
     },
 
-    /*?
-     *  flagrate.Element#exists() -> Boolean
-     *
-     *  please refer to flagrate.Element.exists
-    **/
-    exists() {
+    exists () {
         return Element.exists(<IElement>this);
     },
 
-    /*?
-     *  flagrate.Element#toggle() -> flagrate.Element
-     *
-     *  please refer to flagrate.Element.toggle
-    **/
-    toggle() {
+    toggle () {
         return Element.toggle(<IElement>this);
     },
 
-    /*?
-     *  flagrate.Element#hide() -> flagrate.Element
-     *
-     *  please refer to flagrate.Element.hide
-    **/
-    hide() {
+    hide () {
         return Element.hide(<IElement>this);
     },
 
-    /*?
-     *  flagrate.Element#show() -> flagrate.Element
-     *
-     *  please refer to flagrate.Element.show
-    **/
-    show() {
+    show () {
         return Element.show(<IElement>this);
     },
 
-    /*?
-     *  flagrate.Element#remove() -> flagrate.Element
-     *
-     *  please refer to flagrate.Element.remove
-    **/
-    remove() {
+    remove () {
         return Element.remove(<IElement>this);
     },
 
     /*?
-     *  flagrate.Element#update([newContent]) -> flagrate.Element
+     *  Flagrate.Element#update([newContent]) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.update
+     *  please refer to Flagrate.Element.update
     **/
-    update(content) {
+    update (content) {
         return Element.update(<IElement>this, content);
     },
 
     /*?
-     *  flagrate.Element#updateText([newContent]) -> flagrate.Element
+     *  Flagrate.Element#updateText([newContent]) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.updateText
+     *  please refer to Flagrate.Element.updateText
     **/
-    updateText(text) {
+    updateText (text) {
         return Element.updateText(<IElement>this, text);
     },
 
     /*?
-     *  flagrate.Element#insert(content) -> flagrate.Element
+     *  Flagrate.Element#insert(content) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.insert
+     *  please refer to Flagrate.Element.insert
     **/
-    insert(content) {
+    insert (content) {
         return Element.insert(<IElement>this, content);
     },
 
     /*?
-     *  flagrate.Element#insertText(content) -> flagrate.Element
+     *  Flagrate.Element#insertText(content) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.insertText
+     *  please refer to Flagrate.Element.insertText
     **/
-    insertText(text) {
+    insertText (text) {
         return Element.insertText(<IElement>this, text);
     },
 
     /*?
-     *  flagrate.Element#insertTo(element[, position = "bottom"]) -> flagrate.Element
+     *  Flagrate.Element#insertTo(element[, position = "bottom"]) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.insertTo
+     *  please refer to Flagrate.Element.insertTo
     **/
-    insertTo(element, pos) {
+    insertTo (element, pos) {
         return Element.insertTo(<IElement>this, element, pos);
     },
 
     /*?
-     *  flagrate.Element#readAttribute(attributeName) -> flagrate.Element
+     *  Flagrate.Element#readAttribute(attributeName) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.readAttribute
+     *  please refer to Flagrate.Element.readAttribute
     **/
-    readAttribute(name) {
+    readAttribute (name) {
         return Element.readAttribute(<IElement>this, name);
     },
 
     /*?
-     *  flagrate.Element#writeAttribute(attribute[, value = true]) -> flagrate.Element
+     *  Flagrate.Element#writeAttribute(attribute[, value = true]) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.writeAttribute
+     *  please refer to Flagrate.Element.writeAttribute
     **/
-    writeAttribute(name, value?): IElement {
+    writeAttribute (name, value?): IElement {
         return Element.writeAttribute(<IElement>this, name, value);
     },
 
     /*?
-     *  flagrate.Element#getDimensions() -> Object
+     *  Flagrate.Element#getDimensions() -> Object
      *
-     *  please refer to flagrate.Element.getDimensions
+     *  please refer to Flagrate.Element.getDimensions
     **/
-    getDimensions() {
+    getDimensions () {
         return Element.getDimensions(<IElement>this);
     },
 
     /*?
-     *  flagrate.Element#getHeight() -> Number
+     *  Flagrate.Element#getHeight() -> Number
      *
-     *  please refer to flagrate.Element.getHeight
+     *  please refer to Flagrate.Element.getHeight
     **/
-    getHeight() {
+    getHeight () {
         return Element.getHeight(<IElement>this);
     },
 
     /*?
-     *  flagrate.Element#getWidth() -> Number
+     *  Flagrate.Element#getWidth() -> Number
      *
-     *  please refer to flagrate.Element.getWidth
+     *  please refer to Flagrate.Element.getWidth
     **/
-    getWidth() {
+    getWidth () {
         return Element.getWidth(<IElement>this);
     },
 
     /*?
-     *  flagrate.Element#cumulativeOffset() -> Object
+     *  Flagrate.Element#cumulativeOffset() -> Object
      *
-     *  please refer to flagrate.Element.cumulativeOffset
+     *  please refer to Flagrate.Element.cumulativeOffset
     **/
-    cumulativeOffset() {
+    cumulativeOffset () {
         return Element.cumulativeOffset(<IElement>this);
     },
 
     /*?
-     *  flagrate.Element#cumulativeScrollOffset() -> Object
+     *  Flagrate.Element#cumulativeScrollOffset() -> Object
      *
-     *  please refer to flagrate.Element.cumulativeScrollOffset
+     *  please refer to Flagrate.Element.cumulativeScrollOffset
     **/
-    cumulativeScrollOffset() {
+    cumulativeScrollOffset () {
         return Element.cumulativeScrollOffset(<IElement>this);
     },
 
     /*?
-     *  flagrate.Element#hasClassName(className) -> Boolean
+     *  Flagrate.Element#hasClassName(className) -> Boolean
      *
-     *  please refer to flagrate.Element.hasClassName
+     *  please refer to Flagrate.Element.hasClassName
     **/
-    hasClassName(className) {
+    hasClassName (className) {
         return Element.hasClassName(<IElement>this, className);
     },
 
     /*?
-     *  flagrate.Element#addClassName(className) -> flagrate.Element
+     *  Flagrate.Element#addClassName(className) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.addClassName
+     *  please refer to Flagrate.Element.addClassName
     **/
-    addClassName(className) {
+    addClassName (className) {
         return Element.addClassName(<IElement>this, className);
     },
 
     /*?
-     *  flagrate.Element#removeClassName(className) -> flagrate.Element
+     *  Flagrate.Element#removeClassName(className) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.removeClassName
+     *  please refer to Flagrate.Element.removeClassName
     **/
-    removeClassName(className) {
+    removeClassName (className) {
         return Element.removeClassName(<IElement>this, className);
     },
 
     /*?
-     *  flagrate.Element#toggleClassName(className) -> flagrate.Element
+     *  Flagrate.Element#toggleClassName(className) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.toggleClassName
+     *  please refer to Flagrate.Element.toggleClassName
     **/
-    toggleClassName(className) {
+    toggleClassName (className) {
         return Element.toggleClassName(<IElement>this, className);
     },
 
     /*?
-     *  flagrate.Element#getStyle(propertyName) -> String | Number | null
+     *  Flagrate.Element#getStyle(propertyName) -> String | Number | null
      *
-     *  please refer to flagrate.Element.getStyle
+     *  please refer to Flagrate.Element.getStyle
     **/
-    getStyle(propertyName) {
+    getStyle (propertyName) {
         return Element.getStyle(<IElement>this, propertyName);
     },
 
     /*?
-     *  flagrate.Element#setStyle(style) -> flagrate.Element
+     *  Flagrate.Element#setStyle(style) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.setStyle
+     *  please refer to Flagrate.Element.setStyle
     **/
-    setStyle(style) {
+    setStyle (style) {
         return Element.setStyle(<IElement>this, style);
     },
 
     /*?
-     *  flagrate.Element#on(eventName, listener[, useCapture = false]) -> flagrate.Element
+     *  Flagrate.Element#on(eventName, listener[, useCapture = false]) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.on
+     *  please refer to Flagrate.Element.on
     **/
-    on(name, listener, useCapture) {
+    on (name, listener, useCapture) {
         return Element.on(<IElement>this, name, listener, useCapture);
     },
 
     /*?
-     *  flagrate.Element#off(eventName, listener[, useCapture = false]) -> flagrate.Element
+     *  Flagrate.Element#off(eventName, listener[, useCapture = false]) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.off
+     *  please refer to Flagrate.Element.off
     **/
-    off(name, listener, useCapture) {
+    off (name, listener, useCapture) {
         return Element.off(<IElement>this, name, listener, useCapture);
     },
 
     /*?
-     *  flagrate.Element#fire(eventName[, property]) -> flagrate.Element
+     *  Flagrate.Element#fire(eventName[, property]) -> Flagrate.Element
      *
-     *  please refer to flagrate.Element.fire
+     *  please refer to Flagrate.Element.fire
     **/
-    fire(name, property) {
+    fire (name, property) {
         return Element.fire(<IElement>this, name, property);
     }
 };
 
 /*?
- *  flagrate.Element#emit(eventName[, property]) -> flagrate.Element
- *  Alias of: flagrate.Element#fire
+ *  Flagrate.Element#emit(eventName[, property]) -> Flagrate.Element
+ *  Alias of: Flagrate.Element#fire
 **/
 Element.prototype.emit = Element.prototype.fire;
 
-/*?
- *  flagrate.Element.visible(element) -> Boolean
- *  - element (Element) - instance of Element.
- *  
- *  Tells whether `element` is visible
- *  
- *  This method is similar to http://api.prototypejs.org/dom/Element/visible/
-**/
 Element.visible = (element) => {
     return element.style.display !== 'none';
 };
 
-/*?
- *  flagrate.Element.exists(element) -> Boolean
- *  - element (Element) - instance of Element.
- *  
- *  Tells whether `element` is exists on document.
-**/
 Element.exists = (element) => {
 
     if (element.parentNode) {
@@ -494,55 +537,23 @@ Element.exists = (element) => {
     return false;
 };
 
-/*?
- *  flagrate.Element.toggle(element) -> Element
- *  - element (Element) - instance of Element.
- *  
- *  Toggles the visibility of `element`. Returns `element`.
- *  
- *  This method is similar to http://api.prototypejs.org/dom/Element/toggle/
-**/
 Element.toggle = (element) => {
 
     return Element[Element.visible(element) ? 'hide' : 'show'](element);
 };
 
-/*?
- *  flagrate.Element.hide(element) -> Element
- *  - element (Element) - instance of Element.
- *  
- *  Sets `display: none` on `element`. Returns `element`.
- *  
- *  This method is similar to http://api.prototypejs.org/dom/Element/hide/
-**/
 Element.hide = (element) => {
 
     element.style.display = 'none';
     return element;
 };
 
-/*?
- *  flagrate.Element.show(element) -> Element
- *  - element (Element) - instance of Element.
- *  
- *  Removes `display: none` on `element`. Returns `element`.
- *  
- *  This method is similar to http://api.prototypejs.org/dom/Element/show/
-**/
 Element.show = (element) => {
 
     element.style.display = '';
     return element;
 };
 
-/*?
- *  flagrate.Element.remove(element) -> Element
- *  - element (Element) - instance of Element.
- *  
- *  Completely removes `element` from the document and returns it.
- *  
- *  This method is similar to http://api.prototypejs.org/dom/Element/remove/
-**/
 Element.remove = (element) => {
 
     if (element.parentNode) { element.parentNode.removeChild(element); }
@@ -550,7 +561,7 @@ Element.remove = (element) => {
 };
 
 /*?
- *  flagrate.Element.update(element[, newContent]) -> Element
+ *  Flagrate.Element.update(element[, newContent]) -> Element
  *  - element (Element) - instance of Element.
  *  - newContent (String|Number|Element) - new content.
  *  
@@ -583,7 +594,7 @@ Element.update = (element, content) => {
 };
 
 /*?
- *  flagrate.Element.updateText(element[, newContent]) -> Element
+ *  Flagrate.Element.updateText(element[, newContent]) -> Element
  *  - element (Element) - instance of Element.
  *  - newContent (String|Number) - new text content.
 **/
@@ -610,7 +621,7 @@ Element.updateText = (element, content) => {
 };
 
 /*?
- *  flagrate.Element.insert(element, content) -> Element
+ *  Flagrate.Element.insert(element, content) -> Element
  *  - element (Element) - instance of Element.
  *  - content (String|Number|Element|Object) - The content to insert
  *  
@@ -652,7 +663,7 @@ Element.insert = (element, insertion) => {
 };
 
 /*?
- *  flagrate.Element.insertText(element, content) -> Element
+ *  Flagrate.Element.insertText(element, content) -> Element
  *  - element (Element) - instance of Element.
  *  - content (String|Number|Object) - The content to insert
  *  
@@ -682,7 +693,7 @@ Element.insertText = (element, insertion) => {
 };
 
 /*?
- *  flagrate.Element.insertTo(element, to[, position = "bottom"]) -> Element
+ *  Flagrate.Element.insertTo(element, to[, position = "bottom"]) -> Element
  *  - element (Element) - insert this.
  *  - to (Element) - insert to this element.
  *  - position (String) - `before` or `top` or `bottom` or `after`.
@@ -703,10 +714,10 @@ Element.insertTo = (element, to, position = 'bottom') => {
 };
 
 /*?
- *  flagrate.Element.wrap(element, wrapper[, attribute]) -> Element
+ *  Flagrate.Element.wrap(element, wrapper[, attribute]) -> Element
  *  - element (Element) - 
  *  - wrapper (Element|String) - An element to wrap `element` inside, or else a string representing the tag name of an element to be created.
- *  - attribute (Object) - A set of attributes to apply to the wrapper element. Refer to the flagrate.Element constructor for usage.
+ *  - attribute (Object) - A set of attributes to apply to the wrapper element. Refer to the Flagrate.Element constructor for usage.
  *  
  *  Wraps an element inside another, then returns the wrapper.
  *  
@@ -730,7 +741,7 @@ Element.wrap = (element, wrapper, attr) => {
 };
 
 /*?
- *  flagrate.Element.readAttribute(element, attributeName) -> String | null
+ *  Flagrate.Element.readAttribute(element, attributeName) -> String | null
  *  - element (Element) - instance of Element.
  *  - attributeName (String) - attribute name.
  *  
@@ -747,7 +758,7 @@ Element.readAttribute = (element, name) => {
 };
 
 /*?
- *  flagrate.Element.writeAttribute(element, attribute[, value = true]) -> Element
+ *  Flagrate.Element.writeAttribute(element, attribute[, value = true]) -> Element
  *  - element (Element) - instance of Element.
  *  - attribute (String|Object) - attribute name or name/value pairs object.
  *  - value (Boolean|String) - value of attribute.
@@ -784,7 +795,7 @@ Element.writeAttribute = (element, name, value?) => {
 };
 
 /*?
- *  flagrate.Element.getDimensions(element) -> Object
+ *  Flagrate.Element.getDimensions(element) -> Object
  *  - element (Element) - instance of Element.
  *  
  *  Finds the computed width and height of `element` and returns them as
@@ -827,7 +838,7 @@ Element.getDimensions = (element) => {
 };
 
 /*?
- *  flagrate.Element.getHeight(element) -> Number
+ *  Flagrate.Element.getHeight(element) -> Number
  *  - element (Element) - instance of Element.
  *  
  *  This method is similar to http://api.prototypejs.org/dom/Element/getHeight/
@@ -838,7 +849,7 @@ Element.getHeight = (element) => {
 };
 
 /*?
- *  flagrate.Element.getWidth(element) -> Number
+ *  Flagrate.Element.getWidth(element) -> Number
  *  - element (Element) - instance of Element.
  *  
  *  This method is similar to http://api.prototypejs.org/dom/Element/getWidth/
@@ -849,7 +860,7 @@ Element.getWidth = (element) => {
 };
 
 /*?
- *  flagrate.Element.cumulativeOffset(element) -> Object
+ *  Flagrate.Element.cumulativeOffset(element) -> Object
  *  - element (Element) - instance of Element.
  *  
  *  This method is similar to http://api.prototypejs.org/dom/Element/cumulativeOffset/
@@ -874,7 +885,7 @@ Element.cumulativeOffset = (element) => {
 };
 
 /*?
- *  flagrate.Element.cumulativeScrollOffset(element) -> Object
+ *  Flagrate.Element.cumulativeScrollOffset(element) -> Object
  *  - element (Element) - instance of Element.
  *  
  *  This method is similar to http://api.prototypejs.org/dom/Element/cumulativeScrollOffset/
@@ -902,7 +913,7 @@ Element.cumulativeScrollOffset = (element: any) => {
 };
 
 /*?
- *  flagrate.Element.hasClassName(element, className) -> Boolean
+ *  Flagrate.Element.hasClassName(element, className) -> Boolean
  *  - element (Element) - instance of Element.
  *  - className (String) - 
  *  
@@ -914,7 +925,7 @@ Element.hasClassName = (element, className) => {
 };
 
 /*?
- *  flagrate.Element.addClassName(element, className) -> Element
+ *  Flagrate.Element.addClassName(element, className) -> Element
  *  - element (Element) - instance of Element.
  *  - className (String) - The class name to add.
  *  
@@ -930,7 +941,7 @@ Element.addClassName = (element, className) => {
 };
 
 /*?
- *  flagrate.Element.removeClassName(element, className) -> Element
+ *  Flagrate.Element.removeClassName(element, className) -> Element
  *  - element (Element) - instance of Element.
  *  - className (String) -
  *  
@@ -946,7 +957,7 @@ Element.removeClassName = (element, className) => {
 };
 
 /*?
- *  flagrate.Element.toggleClassName(element, className) -> Element
+ *  Flagrate.Element.toggleClassName(element, className) -> Element
  *  - element (Element) - instance of Element.
  *  - className (String) -
  *  
@@ -958,7 +969,7 @@ Element.toggleClassName = (element, className) => {
 };
 
 /*?
- *  flagrate.Element.getStyle(element, propertyName) -> String | Number | null
+ *  Flagrate.Element.getStyle(element, propertyName) -> String | Number | null
  *  - element (Element) - instance of Element.
  *  - propertyName (String) - The property name of style to be retrieved.
  *  
@@ -980,7 +991,7 @@ Element.getStyle = (element, style) => {
 };
 
 /*?
- *  flagrate.Element.setStyle(element, style) -> Element
+ *  Flagrate.Element.setStyle(element, style) -> Element
  *  - element (Element) - instance of Element.
  *  - style (Object) -
  *  
@@ -999,7 +1010,7 @@ Element.setStyle = (element, style) => {
 };
 
 /*?
- *  flagrate.Element.on(element, eventName, listener[, useCapture = false]) -> Element
+ *  Flagrate.Element.on(element, eventName, listener[, useCapture = false]) -> Element
  *  - element (Element) - instance of Element.
  *  - eventName (String) - name of event.
  *  - listener (Function) - The function to call when the event occurs.
@@ -1015,7 +1026,7 @@ Element.on = (element, name, listener, useCapture) => {
 };
 
 /*?
- *  flagrate.Element.off(element, eventName, listener[, useCapture = false]) -> Element
+ *  Flagrate.Element.off(element, eventName, listener[, useCapture = false]) -> Element
  *  - element (Element) - instance of Element.
  *  - eventName (String) - name of event.
  *  - listener (Function) - The function to call when the event occurs.
@@ -1031,7 +1042,7 @@ Element.off = (element, name, listener, useCapture) => {
 };
 
 /*?
- *  flagrate.Element.fire(element, eventName[, property]) -> Element
+ *  Flagrate.Element.fire(element, eventName[, property]) -> Element
  *  - element (Element) - instance of Element.
  *  - eventName (String) - name of event.
  *  - property (Object) -
@@ -1042,31 +1053,31 @@ Element.fire = (element, name, property) => {
 
     var event = document.createEvent('HTMLEvents');
     event.initEvent(name, true, true);
-    if (property) { extendObject(event, property); }
+    if (property) { Flagrate.extendObject(event, property); }
     element.dispatchEvent(event);
 
     return element;
 };
 
 /*?
- *  flagrate.Element.emit(element, eventName[, property]) -> Element
- *  Alias of: flagrate.Element.fire
+ *  Flagrate.Element.emit(element, eventName[, property]) -> Element
+ *  Alias of: Flagrate.Element.fire
 **/
 Element.emit = Element.fire;
 
 /*?
- *  flagrate.Element.extend(element) -> flagrate.Element
+ *  Flagrate.Element.extend(element) -> Flagrate.Element
  *  - element (Element) - instance of Element.
  *  
  *  Extends the given `element` instance.
  *  
- *  **Caution**: This method will add flagrate.Element instance methods to given element instance.
+ *  **Caution**: This method will add Flagrate.Element instance methods to given element instance.
 **/
 Element.extend = (element) => {
 
     if (element.isFlagrated) { return element; }
 
-    extendObject(element, Element.prototype);
+    Flagrate.extendObject(element, Element.prototype);
 
     return element;
 };
