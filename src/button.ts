@@ -36,7 +36,6 @@ export interface IButtonInstance extends Flagrate.IElementInstance {
     select(): IButton;
     disable(): IButton;
     enable(): IButton;
-    //isDisabled(): boolean;
     isEnabled(): boolean;
     setColor(color?: string): IButton;
     getColor(): string;
@@ -215,7 +214,7 @@ Button.prototype = {
 
         if (this.isEnabled() === false) { return; }
 
-        //for Firefox
+        // for Firefox <- until when..?
         if (this._removeButton && e && e.layerX) {
             var bw = this.getWidth();
             var bh = this.getHeight();
