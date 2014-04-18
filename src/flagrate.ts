@@ -18,6 +18,7 @@ module Flagrate {
     
     //= include json-pointer.ts
     //= include element.ts
+    //= include button.ts
 
 }
 
