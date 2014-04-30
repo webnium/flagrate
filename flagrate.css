@@ -1507,15 +1507,16 @@ form.flagrate-form.flagrate-form-vertical {
 				max-height : 0;
 				opacity    : 0;
 				list-style : disc inside;
-				transition : opacity 0.3s ease, max-height 0.2s ease, height 0.2s ease; }
+				transition : opacity 0.3s ease, max-height 0.5s ease, height 0.5s ease; }
 
 			form.flagrate-form > div.flagrate-has-result > div > ul.flagrate-form-field-result {
 				padding    : 10px;
-				overflow   : visible;
+				overflow   : auto;
 				height     : auto;
-				max-height : 100px;
+				max-height : 200px;
 				border-top : 1px solid #ddd;
-				opacity    : 1; }
+				opacity    : 1;
+				white-space: pre-wrap; }
 
 			form.flagrate-form.flagrate-form-nolabel > div.flagrate-has-result > div > ul.flagrate-form-field-result,
 			form.flagrate-form.flagrate-form-vertical > div.flagrate-has-result > div > ul.flagrate-form-field-result {
