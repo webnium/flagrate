@@ -6734,7 +6734,7 @@
 	 *  #### field
 	 *  
 	 *  * `key`                      (String):
-	 *  * `point`                    (String; experimental):
+	 *  * `point`                    (String):
 	 *  * `label`                    (String; default `""`):
 	 *  * `icon`                     (String):
 	 *  * `text`                     (String):
@@ -6763,7 +6763,8 @@
 	 *
 	 *  #### depend
 	 *
-	 *  * `key`                      (String; **required**):
+	 *  * `key`                      (String):
+	 *  * `point`                    (String):
 	 *  * `val`                      (any):
 	 *  * `op`                       (String): `===`, `!==`, `>=`, `<=`, `>`, `<`
 	 *
@@ -6856,7 +6857,7 @@
 			for (i = 0, l = this.fields.length; i < l; i++) {
 				field = this.fields[i];
 				
-				if ((!field.key && !field.point) || field.visible() === false) { continue; }
+				if ((!field.key && !field.point) || field._dependsIsOk !== true) { continue; }
 				
 				if (field.point) {
 					jsonPointer.set(result, field.point, field.getVal());
@@ -7150,7 +7151,7 @@
 			
 			field._refs = [];
 			
-			if (!field.key) {
+			if (!field.key && !field.point) {
 				return this;
 			}
 			
@@ -7167,9 +7168,19 @@
 						s = false;
 						
 						for (k = 0, n = fi.depends[j].length; k < n; k++) {
-							if (field.key === fi.depends[j][k].key) {
+							if (fi.depends[j][k].key === field.key) {
 								s = true;
 								break;
+							}
+							if (fi.depends[j][k].point) {
+								if (fi.depends[j][k].point === field.point) {
+									s = true;
+									break;
+								}
+								if (fi.depends[j][k].point === '/' + field.key) {
+									s = true;
+									break;
+								}
 							}
 						}
 						
@@ -7178,9 +7189,19 @@
 						}
 						break;
 					} else {
-						if (field.key === fi.depends[j].key) {
+						if (fi.depends[j].key === field.key) {
 							field._refs.push(fi);
 							break;
+						}
+						if (fi.depends[j].point) {
+							if (fi.depends[j].point === field.point) {
+								field._refs.push(fi);
+								break;
+							}
+							if (fi.depends[j].point === '/' + field.key) {
+								field._refs.push(fi);
+								break;
+							}
 						}
 					}
 				}
@@ -7190,30 +7211,38 @@
 		},
 		_compareDepend: function (d) {
 			
-			var f = this.getField(d.key);
+			var v;
 			
-			if (f === null) {
-				return false;
-			} else {
-				if (f._dependsIsOk === false) {
-					return false;
-				}
-				if (d.val === void 0) {
-					return true;
-				}
-				if (d.op) {
-					if (d.op === '===' && d.val === f.getVal()) { return true; }
-					if (d.op === '!==' && d.val !== f.getVal()) { return true; }
-					//if (d.op === '==' && d.val == f.getVal()) { return true; }
-					//if (d.op === '!=' && d.val != f.getVal()) { return true; }
-					if (d.op === '>=' && d.val >= f.getVal()) { return true; }
-					if (d.op === '<=' && d.val <= f.getVal()) { return true; }
-					if (d.op === '>' && d.val > f.getVal()) { return true; }
-					if (d.op === '<' && d.val < f.getVal()) { return true; }
-				} else {
-					if (d.val === f.getVal()) {
+			if (d.key) {
+				var f = this.getField(d.key);
+				if (f !== null) {
+					if (!d.op && d.val === void 0) {
 						return true;
 					}
+					if (f._dependsIsOk === true) {
+						v = f.getVal();
+					}
+				}
+			} else if (d.point) {
+				try {
+					v = jsonPointer.get(this.getResult(), d.point);
+				} catch (e) {
+					// undefined
+				}
+			} else {
+				return true;
+			}
+			
+			if (d.op) {
+				if (d.op === '===' && d.val === v) { return true; }
+				if (d.op === '!==' && d.val !== v) { return true; }
+				if (d.op === '>=' && d.val >= v) { return true; }
+				if (d.op === '<=' && d.val <= v) { return true; }
+				if (d.op === '>' && d.val > v) { return true; }
+				if (d.op === '<' && d.val < v) { return true; }
+			} else {
+				if (d.val === v) {
+					return true;
 				}
 			}
 			
