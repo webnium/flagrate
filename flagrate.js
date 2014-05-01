@@ -6734,7 +6734,7 @@
 	 *  #### field
 	 *  
 	 *  * `key`                      (String):
-	 *  * `point`                    (String):
+	 *  * `pointer`                  (String|null):
 	 *  * `label`                    (String; default `""`):
 	 *  * `icon`                     (String):
 	 *  * `text`                     (String):
@@ -6764,7 +6764,7 @@
 	 *  #### depend
 	 *
 	 *  * `key`                      (String):
-	 *  * `point`                    (String):
+	 *  * `pointer`                  (String):
 	 *  * `val`                      (any):
 	 *  * `op`                       (String): `===`, `!==`, `>=`, `<=`, `>`, `<`
 	 *
@@ -6857,10 +6857,12 @@
 			for (i = 0, l = this.fields.length; i < l; i++) {
 				field = this.fields[i];
 				
-				if ((!field.key && !field.point) || field._dependsIsOk !== true) { continue; }
+				if ((!field.key && !field.pointer) || field._dependsIsOk !== true) { continue; }
 				
-				if (field.point) {
-					jsonPointer.set(result, field.point, field.getVal());
+				if (field.pointer === null) { continue; }
+				
+				if (field.pointer) {
+					jsonPointer.set(result, field.pointer, field.getVal());
 				} else if (field.key) {
 					result[field.key] = field.getVal();
 				}
@@ -7151,7 +7153,11 @@
 			
 			field._refs = [];
 			
-			if (!field.key && !field.point) {
+			if (field.point) {
+				field.pointer = field.point;
+				delete field.point;
+			}
+			if (!field.key && !field.pointer) {
 				return this;
 			}
 			
@@ -7173,11 +7179,15 @@
 								break;
 							}
 							if (fi.depends[j][k].point) {
-								if (fi.depends[j][k].point === field.point) {
+								fi.depends[j][k].pointer = fi.depends[j][k].point;
+								delete fi.depends[j][k].point;
+							}
+							if (fi.depends[j][k].pointer) {
+								if (fi.depends[j][k].pointer === field.pointer) {
 									s = true;
 									break;
 								}
-								if (fi.depends[j][k].point === '/' + field.key) {
+								if (fi.depends[j][k].pointer === '/' + field.key) {
 									s = true;
 									break;
 								}
@@ -7194,11 +7204,15 @@
 							break;
 						}
 						if (fi.depends[j].point) {
-							if (fi.depends[j].point === field.point) {
+							fi.depends[j].pointer = fi.depends[j].point;
+							delete fi.depends[j].point;
+						}
+						if (fi.depends[j].pointer) {
+							if (fi.depends[j].pointer === field.pointer) {
 								field._refs.push(fi);
 								break;
 							}
-							if (fi.depends[j].point === '/' + field.key) {
+							if (fi.depends[j].pointer === '/' + field.key) {
 								field._refs.push(fi);
 								break;
 							}
@@ -7223,9 +7237,9 @@
 						v = f.getVal();
 					}
 				}
-			} else if (d.point) {
+			} else if (d.pointer) {
 				try {
-					v = jsonPointer.get(this.getResult(), d.point);
+					v = jsonPointer.get(this.getResult(), d.pointer);
 				} catch (e) {
 					// undefined
 				}
