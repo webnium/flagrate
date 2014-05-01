@@ -2621,7 +2621,7 @@
 		if (this.multiple) {
 			this.selectedIndexes = opt.selectedIndexes || [];
 		} else {
-			this.selectedIndex = opt.selectedIndex || -1;
+			this.selectedIndex = typeof opt.selectedIndex === 'undefined' ? -1 : opt.selectedIndex;
 		}
 		
 		var attr = opt.attribute || {};
@@ -7587,24 +7587,32 @@
 				run();
 			};
 			
+			field._checkRefs = function () {
+				
+				var rerend = false;
+				
+				var i, l, refField;
+				for (i = 0, l = field._refs.length; i < l; i++) {
+					refField = field._refs[i];
+					if (refField._dependsIsOk !== this._checkFieldDepends(refField)) {
+						refField._checkRefs();
+						rerend = true;
+					}
+				}
+				
+				if (rerend === true) {
+					this._requestRender();
+				}
+			}.bind(this);
+			
 			field._inputOnChange = function () {
 				
 				// validation
 				field.validate();
 				
 				// dependency
-				var rerend = false;
-				
-				field._refs.forEach(function (refField) {
-					if (refField._dependsIsOk !== this._checkFieldDepends(refField)) {
-						rerend = true;
-					}
-				}.bind(this));
-				
-				if (rerend === true) {
-					this._requestRender();
-				}
-			}.bind(this);
+				field._checkRefs();
+			};
 			
 			// listen change event
 			if (field.input && field.input._type) {
