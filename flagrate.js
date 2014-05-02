@@ -6763,10 +6763,11 @@
 	 *
 	 *  #### depend
 	 *
-	 *  * `key`                      (String):
+	 *  * `key`                      (String): unique key for identifying fields. if looking result, must change to use the pointer.
 	 *  * `pointer`                  (String):
 	 *  * `val`                      (any):
-	 *  * `op`                       (String): `===`, `!==`, `>=`, `<=`, `>`, `<`
+	 *  * `op`                       (String): `===`, `!==`, `>=`, `<=`, `>`, `<`, `in`
+	 *  * `tester`                   (Function): alternate testing function. this disables normal testing. (only sync)
 	 *
 	 *  #### inputType
 	 *
@@ -7230,7 +7231,7 @@
 			if (d.key) {
 				var f = this.getField(d.key);
 				if (f !== null) {
-					if (!d.op && d.val === void 0) {
+					if (!d.op && !d.tester && d.val === void 0) {
 						return true;
 					}
 					if (f._dependsIsOk === true) {
@@ -7247,6 +7248,10 @@
 				return true;
 			}
 			
+			if (typeof d.tester === 'function') {
+				return !!d.tester(v, d);
+			}
+			
 			if (d.op) {
 				if (d.op === '===' && d.val === v) { return true; }
 				if (d.op === '!==' && d.val !== v) { return true; }
@@ -7254,6 +7259,7 @@
 				if (d.op === '<=' && d.val <= v) { return true; }
 				if (d.op === '>' && d.val > v) { return true; }
 				if (d.op === '<' && d.val < v) { return true; }
+				if (d.op === 'in' && typeof v[d.val] !== 'undefined') { return true; }
 			} else {
 				if (d.val === v) {
 					return true;
