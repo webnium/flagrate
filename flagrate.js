@@ -4278,7 +4278,7 @@
 		**/
 		splice: function (index, c, t) {
 			
-			c = c || this.tabs.length - index;
+			c = typeof c === 'undefined' ? this.tabs.length - index : c;
 			
 			var removes = this.tabs.splice(index, c);
 			
@@ -6092,7 +6092,7 @@
 		**/
 		splice: function (index, c, r) {
 			
-			c = c || this.rows.length - index;
+			c = typeof c === 'undefined' ? this.rows.length - index : c;
 			
 			var removes = this.rows.splice(index, c);
 			
@@ -7020,9 +7020,16 @@
 			
 			var i, l;
 			
-			c = c || this.fields.length - index;
+			c = typeof c === 'undefined' ? this.fields.length - index : c;
 			
 			var removes = this.fields.splice(index, c);
+			
+			for (i = 0, l = removes.length; i < l; i++) {
+				if (removes[i]._div) {
+					removes[i]._div.remove();
+					delete removes[i]._div;
+				}
+			}
 			
 			if (f) {
 				if (f instanceof Array === false) { f = [f]; }
