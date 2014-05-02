@@ -116,11 +116,16 @@
 			return jsonPointer.traverse(obj, pointer);
 		},
 		set: function (obj, pointer, value) {
-			pointer = jsonPointer.validate_input(obj, pointer);
-			if (pointer.length === 0) {
-				throw new Error("Invalid JSON pointer for set.");
+			if (pointer === '' && typeof value === 'object') {
+				flagrate.extendObject(obj, value);
+				return value;
+			} else {
+				pointer = jsonPointer.validate_input(obj, pointer);
+				if (pointer.length === 0) {
+					throw new Error("Invalid JSON pointer for set.");
+				}
+				return jsonPointer.traverse(obj, pointer, value, true);
 			}
-			return jsonPointer.traverse(obj, pointer, value, true);
 		}
 	};
 	
@@ -6858,11 +6863,11 @@
 			for (i = 0, l = this.fields.length; i < l; i++) {
 				field = this.fields[i];
 				
-				if ((!field.key && !field.pointer) || field._dependsIsOk !== true) { continue; }
+				if ((!field.key && typeof field.pointer !== 'string') || field._dependsIsOk !== true) { continue; }
 				
 				if (field.pointer === null) { continue; }
 				
-				if (field.pointer) {
+				if (typeof field.pointer === 'string') {
 					jsonPointer.set(result, field.pointer, field.getVal());
 				} else if (field.key) {
 					result[field.key] = field.getVal();
@@ -7161,11 +7166,11 @@
 			
 			field._refs = [];
 			
-			if (field.point) {
+			if (typeof field.point !== 'undefined') {
 				field.pointer = field.point;
 				delete field.point;
 			}
-			if (!field.key && !field.pointer) {
+			if (!field.key && typeof field.pointer !== 'string') {
 				return this;
 			}
 			
@@ -7186,11 +7191,11 @@
 								s = true;
 								break;
 							}
-							if (fi.depends[j][k].point) {
+							if (typeof fi.depends[j][k].point === 'string') {
 								fi.depends[j][k].pointer = fi.depends[j][k].point;
 								delete fi.depends[j][k].point;
 							}
-							if (fi.depends[j][k].pointer) {
+							if (typeof fi.depends[j][k].pointer === 'string') {
 								if (fi.depends[j][k].pointer === field.pointer) {
 									s = true;
 									break;
@@ -7211,11 +7216,11 @@
 							field._refs.push(fi);
 							break;
 						}
-						if (fi.depends[j].point) {
+						if (typeof fi.depends[j].point === 'string') {
 							fi.depends[j].pointer = fi.depends[j].point;
 							delete fi.depends[j].point;
 						}
-						if (fi.depends[j].pointer) {
+						if (typeof fi.depends[j].pointer === 'string') {
 							if (fi.depends[j].pointer === field.pointer) {
 								field._refs.push(fi);
 								break;
@@ -7245,7 +7250,7 @@
 						v = f.getVal();
 					}
 				}
-			} else if (d.pointer) {
+			} else if (typeof d.pointer === 'string') {
 				try {
 					v = jsonPointer.get(this.getResult(), d.pointer);
 				} catch (e) {
