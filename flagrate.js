@@ -6765,6 +6765,7 @@
 	 *  * `toString`                 (Boolean; default `false`):
 	 *  * `trim`                     (Boolean; default `false`):
 	 *  * `toNumber`                 (Boolean; default `false`):
+	 *  * `transform`                (Function): alternate result transform/converting function. (only sync)
 	 *
 	 *  #### depend
 	 *
@@ -7463,6 +7464,10 @@
 					} else if (typeof result === 'boolean') {
 						result = (result === true) ? 1 : 0;
 					}
+				}
+				
+				if (typeof field.input.transform === 'function') {
+					result = field.input.transform.call(field.input, result);
 				}
 				
 				return result;
