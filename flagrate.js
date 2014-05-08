@@ -7158,7 +7158,33 @@
 			}
 			
 			if (active) {
-				active.focus();
+				if (/Trident/.test(window.navigator.userAgent) === true) {
+					setTimeout(function () {
+						active.focus();
+						
+						var reselect = (
+							(
+								active.tagName === 'INPUT' && (
+									active.type === 'text' ||
+									active.type === 'password' ||
+									active.type === 'number'
+								)
+							) ||
+							active.tagName === 'TEXTAREA'
+						);
+						if (reselect) {
+							if (typeof active.selectionStart === 'number') {
+								active.selectionStart = active.selectionEnd = active.value.length;
+							} else if (typeof active.createTextRange !== 'undefined') {
+								var range = active.createTextRange();
+								range.collapse(false);
+								range.select();
+							}
+						}
+					}, 0);
+				} else {
+					active.focus();
+				}
 			}
 			
 			return this;
