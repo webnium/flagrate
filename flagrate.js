@@ -2757,7 +2757,7 @@
 			if (this.items.length <= index) { return this; }
 			
 			if (this.multiple) {
-				if (this.max > -1 && this.selectedIndex.length >= this.max) {
+				if (this.max > -1 && this.selectedIndexes.length >= this.max) {
 					if (this._grid.rows[index].isSelected === true) {
 						this._grid.deselect(index);
 					}
