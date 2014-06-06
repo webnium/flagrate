@@ -2813,8 +2813,11 @@
 				
 				this.fire('change');
 			} else {
-				if (this._grid.rows[index].isSelected === true) {
-					this._grid.deselect(index);
+				var i, l;
+				for (i = 0, l = this.items.length; i < l; i++) {
+					if (this._grid.rows[i].isSelected === true) {
+						this._grid.deselect(i);
+					}
 				}
 			}
 			
