@@ -508,8 +508,7 @@ div.flagrate-tokenizer.flagrate-icon {
 		margin-top: -2px; }
 
 div.flagrate-select {
-	display         : inline-block;
-	max-width       : 240px; }
+	display         : inline-block; }
 
 div.flagrate-select.flagrate-select-list-view {
 	max-height      : 100px;
