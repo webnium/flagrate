@@ -219,6 +219,8 @@ div.flagrate-context-menu {
 	div.flagrate-menu > button.flagrate-button:focus {
 		display         : block;
 		width           : 100%;
+		width           : -moz-calc(100% + 60px);
+		margin-right    : -moz-calc(45px);
 		background-color: transparent;
 		color           : #222;
 		border          : none;
@@ -508,8 +510,7 @@ div.flagrate-tokenizer.flagrate-icon {
 		margin-top: -2px; }
 
 div.flagrate-select {
-	display         : inline-block;
-	max-width       : 240px; }
+	display         : inline-block; }
 
 div.flagrate-select.flagrate-select-list-view {
 	max-height      : 100px;

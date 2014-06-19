@@ -2813,10 +2813,16 @@
 				
 				this.fire('change');
 			} else {
-				var i, l;
-				for (i = 0, l = this.items.length; i < l; i++) {
-					if (this._grid.rows[i].isSelected === true) {
-						this._grid.deselect(i);
+				if (this.multiple) {
+					if (this._grid.rows[index].isSelected === true) {
+						this._grid.deselect(index);
+					}
+				} else {
+					var i, l;
+					for (i = 0, l = this.items.length; i < l; i++) {
+						if (this._grid.rows[i].isSelected === true) {
+							this._grid.deselect(i);
+						}
 					}
 				}
 			}
