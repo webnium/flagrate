@@ -37,6 +37,7 @@ export interface IButtonInstance extends Flagrate.IElementInstance {
     disable(): IButton;
     enable(): IButton;
     isEnabled(): boolean;
+    setLabel(label: string): IButton;
     setColor(color?: string): IButton;
     getColor(): string;
     setIcon(url?: string): IButton;
