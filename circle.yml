@@ -51,4 +51,4 @@ deployment:
       
       - git push || true
       
-      - rsync -rlptz --delete -e "ssh -p 10022" ./ grandma@bakery.flagrate.org:~/www/
+      #- rsync -rlptz --delete -e "ssh -p 10022" ./ grandma@bakery.flagrate.org:~/www/
