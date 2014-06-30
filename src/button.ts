@@ -84,12 +84,6 @@ export interface IButtonOption {
     onRemove? (event?: any, button?: IButton): void;
 }
 
-/*?
- *  Flagrate.createButton([option])
- *  new Flagrate.Button([option])
- *  
- *  Button.
-**/
 export var Button: IButtonClass = function (option: IButtonOption = {}): IButton {
 
     option.label = option.label || '';
@@ -135,9 +129,6 @@ export var Button: IButtonClass = function (option: IButtonOption = {}): IButton
     return button;
 };
 
-/**
- *  @param option options.
-**/
 export function createButton(option?: IButtonOption): IButton {
     return new Button(option);
 }
