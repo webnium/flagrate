@@ -76,15 +76,16 @@ export var Buttons: IButtonsClass = function (option: IButtonsOption = {}): IBut
     this.onSelect = option.onSelect || Flagrate.emptyFunction;
 
     var attr = option.attribute || {};
-
-    attr.id = option.id;
-    attr['class'] = option.className;
+    if (option.id) { attr.id = option.id; }
 
     // create a container
     var container = <IButtons>new Flagrate.Element('div', attr);
     Flagrate.extendObject(container, this);
 
     container.addClassName(Flagrate.className + ' ' + Flagrate.className + '-buttons');
+    if (option.className) { container.addClassName(option.className); }
+
+    if (option.style) { container.setStyle(option.style); }
 
     var i, l;
     for (i = 0, l = option.items.length; i < l; i++) {
@@ -96,8 +97,6 @@ export var Buttons: IButtonsClass = function (option: IButtonsOption = {}): IBut
         e.stopPropagation();
         e.preventDefault();
     });
-
-    if (option.style) { container.setStyle(option.style); }
 
     return container;
 };
