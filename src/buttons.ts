@@ -1,9 +1,9 @@
 /*?
- *  class flagrate.Buttons
+ *  class Flagrate.Buttons
  *  
  *  #### Example
  *  
- *      var button = flagrate.createButtons({
+ *      var button = Flagrate.createButtons({
  *        items: [
  *          { label: 'Left' },
  *          { label: 'Middle' },
@@ -27,7 +27,8 @@
  *  
  *  #### Inheritances
  *  
- *  * flagrate.Element
+ *  * Flagrate.Button
+ *  * Flagrate.Element
  *  * [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement) (MDN)
 **/
 export interface IButtonsClass {
@@ -39,7 +40,9 @@ export interface IButtonsClass {
 export interface IButtons extends IButtonsInstance, Flagrate.IElement { }
 
 export interface IButtonsInstance extends Flagrate.IElementInstance {
-    push(button: Flagrate.IButtonOption): IButtons;
+    push(button: Flagrate.IButtonsItemOption): IButtons;
+    getButtonByKey(key: string): Flagrate.IButton;
+    getButtons(): Flagrate.IButton[];
 }
 
 export interface IButtonsOption {
@@ -56,35 +59,16 @@ export interface IButtonsOption {
     style?: any;
 
     /** Button items */
-    items?: Flagrate.IButtonOption[];
+    items?: IButtonsItemOption[];
 
-    onSelect? (event?: any, button?: IButtons): void;
+    onSelect? (event?: any, buttons?: IButtons): void;
 }
 
-/*?
- *  flagrate.createButtons(option)
- *  new flagrate.Buttons(option)
- *  - option (Object) - options.
- *  
- *  Button group.
- *  
- *  #### option
- *  
- *  * `id`                       (String): `id` attribute of container element.
- *  * `className`                (String):
- *  * `attribute`                (Object):
- *  * `items`                    (Array): of item
- *  * `onSelect`                 (Function):
- *  
- *  #### item
- *  
- *  * `key`                      (String):
- *  * `label`                    (String; default `""`):
- *  * `icon`                     (String):
- *  * `color`                    (String):
- *  * `isDisabled`               (Boolean; default `false`):
- *  * `onSelect`                 (Function):
-**/
+export interface IButtonsItemOption extends Flagrate.IButtonOption {
+    /** key */
+    key?: string;
+}
+
 export var Buttons: IButtonsClass = function (option: IButtonsOption = {}): IButtons {
 
     option.items = option.items || [];
@@ -100,7 +84,7 @@ export var Buttons: IButtonsClass = function (option: IButtonsOption = {}): IBut
     var container = <IButtons>new Flagrate.Element('div', attr);
     Flagrate.extendObject(container, this);
 
-    container.addClassName(flagrate.className + ' ' + flagrate.className + '-buttons');
+    container.addClassName(Flagrate.className + ' ' + Flagrate.className + '-buttons');
 
     var i, l;
     for (i = 0, l = option.items.length; i < l; i++) {
@@ -113,9 +97,57 @@ export var Buttons: IButtonsClass = function (option: IButtonsOption = {}): IBut
         e.preventDefault();
     });
 
+    if (option.style) { container.setStyle(option.style); }
+
     return container;
 };
 
-export function createButtons(a) {
-    return new Buttons(a);
+export function createButtons(option?: IButtonsOption): IButtons {
+    return new Buttons(option);
+};
+
+Buttons.prototype = {
+    push (option: IButtonsItemOption) {
+
+        if (option.onSelect) {
+            var _onSelect = option.onSelect;
+        }
+
+        option.onSelect = (e) => {
+
+            if (_onSelect) {
+                _onSelect(e);
+            }
+
+            this.onSelect(e);
+        };
+
+        var button = Flagrate.createButton(option).insertTo(this);
+
+        if (option.key) {
+            button.dataset['_key'] = option.key;
+        }
+
+        return this;
+    },
+
+    getButtonByKey (key: string) {
+
+        var result = null;
+
+        var elements = this.childNodes;
+        var i, l;
+        for (i = 0, l = elements.length; i < l; i++) {
+            if (elements[i].dataset['_key'] === key) {
+                result = elements[i];
+                break;
+            }
+        }
+
+        return result;
+    },
+
+    getButtons () {
+        return this.childNodes || [];
+    }
 };
