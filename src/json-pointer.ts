@@ -11,19 +11,24 @@
 export module jsonPointer {
 
     export function get(object: Object, pointer: string): any {
-        var pointers = validate_input(object, pointer);
-        if (pointers.length === 0) {
+        var pts = validate_input(object, pointer);
+        if (pts.length === 0) {
             return object;
         }
-        return traverse(object, pointers);
+        return traverse(object, pts);
     }
 
     export function set<T>(object: Object, pointer: string, value: T): T {
-        var pointers = validate_input(object, pointer);
-        if (pointer.length === 0) {
-            throw new Error('Invalid JSON pointer for set.');
+        if (pointer === '' && typeof value === 'object') {
+            flagrate.extendObject(object, value);
+            return value;
+        } else {
+            var pts = validate_input(object, pointer);
+            if (pts.length === 0) {
+                throw new Error('Invalid JSON pointer for set.');
+            }
+            return traverse(object, pts, value, true);
         }
-        return traverse(object, pointers, value, true);
     }
 
     function untilde(str: string): string {
@@ -38,15 +43,15 @@ export module jsonPointer {
         });
     }
 
-    function traverse<T>(object: Object, pointers: string[], value?: T, isSet?: boolean): T;
-    function traverse(object: Object, pointers: string[], value?, isSet?): any {
-        var part = untilde(pointers.shift());
+    function traverse<T>(object: Object, pts: string[], value?: T, isSet?: boolean): T;
+    function traverse(object: Object, pts: string[], value?, isSet?): any {
+        var part = untilde(pts.shift());
 
-        if (pointers.length !== 0) {// keep traversin!
+        if (pts.length !== 0) {// keep traversin!
             if (isSet && typeof object[part] !== 'object') {
                 object[part] = {};
             }
-            return traverse(object[part], pointers, value, isSet);
+            return traverse(object[part], pts, value, isSet);
         }
         // we're done
         if (value === void 0) {
@@ -75,13 +80,12 @@ export module jsonPointer {
             throw new Error('Invalid JSON pointer.');
         }
 
-        var pointers = pointer.split('/');
-        var first = pointers.shift();
-        if (first !== '') {
+        var pts = pointer.split('/');
+        if (pts.shift() !== '') {
             throw new Error('Invalid JSON pointer.');
         }
 
-        return pointers;
+        return pts;
     }
 
 }
