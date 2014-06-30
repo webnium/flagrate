@@ -20,6 +20,7 @@ module Flagrate {
     //= include element.ts
     //= include button.ts
     //= include buttons.ts
+    //= include menu.ts
 
 }
 
