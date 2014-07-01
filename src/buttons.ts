@@ -27,9 +27,8 @@
  *  
  *  #### Inheritances
  *  
- *  * Flagrate.Button
  *  * Flagrate.Element
- *  * [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement) (MDN)
+ *  * Flagrate.Button
 **/
 export interface IButtonsClass {
     new? (option?: IButtonsOption): IButtons;
