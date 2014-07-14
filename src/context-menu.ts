@@ -7,17 +7,17 @@ export interface IContextMenuClass {
     prototype: IContextMenuInstance;
 }
 
-export interface IContextMenu extends IContextMenuInstance {}
+export interface IContextMenu extends IContextMenuInstance { }
 
 export interface IContextMenuInstance {
     open? (): IContextMenu;
     close? (): IContextMenu;
     
     /** Tells whether the visibility. */
-    visible? (): boolean;
+    visible (): boolean;
 
     /** remove the elements and listeners. */
-    remove? (): void;
+    remove (): void;
 }
 
 export interface IContextMenuOption {
