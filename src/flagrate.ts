@@ -22,6 +22,7 @@ module Flagrate {
     //= include buttons.ts
     //= include menu.ts
     //= include pulldown.ts
+    //= include context-menu.ts
 
 }
 
