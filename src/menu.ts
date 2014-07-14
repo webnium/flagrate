@@ -38,7 +38,7 @@
  *        <button class="flagrate flagrate-button flagrate-disabled" disabled="disabled">disabled button</button>
  *      </div>
  *  
- *  `button` elements are created with flagrate.Button
+ *  `button` elements are created with Flagrate.Button
  *  
  *  #### Inheritances
  *  
