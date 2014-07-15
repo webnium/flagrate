@@ -25,6 +25,8 @@ function isElement(object): boolean {
  *
  *  * [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) (MDN)
 **/
+export interface IElement extends IElementInstance, HTMLElement { }
+
 export interface IElementClass {
     new? (tagName?: string, attribute?: any): IElement;
     (tagName?: string, attribute?: any): void;
@@ -139,8 +141,6 @@ export interface IElementClass {
     emit? <T extends HTMLElement>(element: T, eventType: string, property?: any): T;
     extend? <T extends HTMLElement>(element: T): IElement;
 }
-
-export interface IElement extends IElementInstance, HTMLElement {}
 
 export interface IElementInstance {
     isFlagrated?: boolean;

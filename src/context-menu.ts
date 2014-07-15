@@ -1,13 +1,13 @@
 /*?
  *  class Flagrate.ContextMenu
 **/
+export interface IContextMenu extends IContextMenuInstance { }
+
 export interface IContextMenuClass {
     new? (option?: IContextMenuOption): IContextMenu;
     (option?: IContextMenuOption): void;
     prototype: IContextMenuInstance;
 }
-
-export interface IContextMenu extends IContextMenuInstance { }
 
 export interface IContextMenuInstance {
     open? (): IContextMenu;

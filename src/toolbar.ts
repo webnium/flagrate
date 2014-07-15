@@ -1,13 +1,13 @@
 /*?
  *  class Flagrate.Toolbar
 **/
+export interface IToolbar extends IToolbarInstance, Flagrate.IElement { }
+
 export interface IToolbarClass {
     new? (option?: IToolbarOption): IToolbar;
     (option?: IToolbarOption): void;
     prototype: IToolbarInstance;
 }
-
-export interface IToolbar extends IToolbarInstance, Flagrate.IElement { }
 
 export interface IToolbarInstance {
     push(item: IToolbarItemOption): IToolbar;

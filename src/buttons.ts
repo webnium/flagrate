@@ -30,13 +30,13 @@
  *  * Flagrate.Element
  *  * Flagrate.Button
 **/
+export interface IButtons extends IButtonsInstance, Flagrate.IElement { }
+
 export interface IButtonsClass {
     new? (option?: IButtonsOption): IButtons;
     (option?: IButtonsOption): void;
     prototype: IButtonsInstance;
 }
-
-export interface IButtons extends IButtonsInstance, Flagrate.IElement { }
 
 export interface IButtonsInstance extends Flagrate.IElementInstance {
     push(button: Flagrate.IButtonsItemOption): IButtons;

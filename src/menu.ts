@@ -45,13 +45,13 @@
  *  * Flagrate.Element
  *  * Flagrate.Button
 **/
+export interface IMenu extends IMenuInstance, Flagrate.IElement { }
+
 export interface IMenuClass {
     new? (option?: IMenuOption): IMenu;
     (option?: IMenuOption): void;
     prototype: IMenuInstance;
 }
-
-export interface IMenu extends IMenuInstance, Flagrate.IElement { }
 
 export interface IMenuInstance extends Flagrate.IElementInstance {
     push(item: IMenuItemOption): IMenu;

@@ -24,13 +24,13 @@
  *  * Flagrate.Element
  *  * [HTMLButtonElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement) (MDN)
 **/
+export interface IButton extends IButtonInstance, Flagrate.IElement { }
+
 export interface IButtonClass {
     new? (option?: IButtonOption): IButton;
     (option?: IButtonOption): void;
     prototype: IButtonInstance;
 }
-
-export interface IButton extends IButtonInstance, Flagrate.IElement {}
 
 export interface IButtonInstance extends Flagrate.IElementInstance {
     select(): IButton;
@@ -131,7 +131,7 @@ export var Button: IButtonClass = function (option: IButtonOption = {}): IButton
 
 export function createButton(option?: IButtonOption): IButton {
     return new Button(option);
-}
+};
 
 Button.prototype = {
     select () {

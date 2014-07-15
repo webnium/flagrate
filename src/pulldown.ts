@@ -30,13 +30,13 @@
  *  * Flagrate.Button
  *  * Flagrate.Menu
 **/
+export interface IPulldown extends IPulldownInstance, Flagrate.IButton { }
+
 export interface IPulldownClass {
     new? (option?: IPulldownOption): IPulldown;
     (option?: IPulldownOption): void;
     prototype: IPulldownInstance;
 }
-
-export interface IPulldown extends IPulldownInstance, Flagrate.IButton { }
 
 export interface IPulldownInstance extends Flagrate.IButtonInstance {
     _menu?: Flagrate.IMenu;
