@@ -24,6 +24,7 @@ module Flagrate {
     //= include pulldown.ts
     //= include context-menu.ts
     //= include toolbar.ts
+    //= include text-input.ts
 
 }
 
