@@ -1682,17 +1682,18 @@
 				return;
 			}
 			
-			var menu = that._menu = new Menu(
-				{
-					className: flagrate.className + '-pulldown-menu',
-					items    : opt.items,
-					onSelect : function () {
-						
-						opt.onSelect();
-						menu.remove();
-						delete that._menu;
+			var menu = that._menu = new Element('div', {'class': flagrate.className + '-pulldown-menu'}).insert(
+				new Menu(
+					{
+						items    : opt.items,
+						onSelect : function () {
+
+							opt.onSelect();
+							menu.remove();
+							delete that._menu;
+						}
 					}
-				}
+				)
 			);
 			
 			menu.style.top  = that.offsetTop + that.getHeight() + 'px';

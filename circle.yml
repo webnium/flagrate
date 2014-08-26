@@ -37,7 +37,7 @@ deployment:
       - git add flagrate.min.js
       
       - git rm --ignore-unmatch flagrate.min.css
-      - wget -O yuicompressor.zip https://github.com/downloads/yui/yuicompressor/yuicompressor-2.4.7.zip
+      - curl -L -o yuicompressor.zip https://github.com/downloads/yui/yuicompressor/yuicompressor-2.4.7.zip
       - unzip -p yuicompressor.zip yuicompressor-2.4.7/build/* > yuicompressor.jar
       - java -jar yuicompressor.jar --type css flagrate.css > flagrate.min.css
       - git add flagrate.min.css

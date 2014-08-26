@@ -194,10 +194,15 @@ div.flagrate-menu {
 div.flagrate-pulldown-menu {
 	position          : absolute;
 	margin            : 4px 0 0 0;
-	background-color  : #555;
-	overflow-x        : hidden;
-	overflow-y        : auto;
-	max-height        : 200px; }
+	overflow-x        : visible;
+	overflow-y        : visible; }
+
+	div.flagrate-pulldown-menu > div.flagrate-menu {
+		position          : relative;
+		background-color  : #555;
+		overflow-x        : hidden;
+		overflow-y        : auto;
+		max-height        : 200px; }
 
 div.flagrate-context-menu {
 	z-index           : 99999999;
@@ -211,7 +216,7 @@ div.flagrate-context-menu {
 		background-color: #ddd;
 		margin          : 4px 2px; }
 	
-	div.flagrate-pulldown-menu > hr {
+	div.flagrate-pulldown-menu > div.flagrate-menu > hr {
 		background-color: #444; }
 	
 	div.flagrate-menu > button.flagrate-button,
@@ -219,40 +224,38 @@ div.flagrate-context-menu {
 	div.flagrate-menu > button.flagrate-button:focus {
 		display         : block;
 		width           : 100%;
-		width           : -moz-calc(100% + 60px);
-		margin-right    : -moz-calc(45px);
 		background-color: transparent;
 		color           : #222;
 		border          : none;
 		box-shadow      : none;
-		padding         : 0 30px 0 30px;
+		padding         : 0;
 		text-align      : left;
 		outline         : none; }
 	
 		div.flagrate-menu > button.flagrate-button > span {
-			overflow: visible; }
+			padding : 0 30px; }
 	
 	div.flagrate-menu > button.flagrate-button.flagrate-icon {
 		background-position: 8px center; }
 	
-	div.flagrate-pulldown-menu > button.flagrate-button,
-	div.flagrate-pulldown-menu > button.flagrate-button:hover,
-	div.flagrate-pulldown-menu > button.flagrate-button:focus {
+	div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button,
+	div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:hover,
+	div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:focus {
 		color           : #ddd; }
 	
 	div.flagrate-menu > button.flagrate-button:hover,
 	div.flagrate-menu > button.flagrate-button:focus {
 		background-color: #eee; }
 	
-	div.flagrate-pulldown-menu > button.flagrate-button:hover,
-	div.flagrate-pulldown-menu > button.flagrate-button:focus {
+	div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:hover,
+	div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:focus {
 		background-color: #444; }
 	
 	div.flagrate-menu > button.flagrate-button:active {
 		color           : #000;
 		background-color: #ddd; }
 	
-	div.flagrate-pulldown-menu > button.flagrate-button:active {
+	div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:active {
 		color           : #fff;
 		background-color: #333; }
 	
@@ -579,23 +582,24 @@ div.flagrate-has-error div.flagrate-select.flagrate-select-list-view {
 		
 		div.flagrate-select > button.flagrate-pulldown.flagrate-disabled > span.flagrate-pulldown-triangle {
 			color: rgba(0,0,0,0.25); }
-	
-	div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu {
-		background-color: #fff; }
+
+	div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu {
+		background-color: #fff;
+		min-width       : -moz-calc(160px); }
 		
-		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button {
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button {
 			text-align      : left; }
 		
-		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button,
-		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:hover,
-		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:focus {
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:hover,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:focus {
 			color           : #222; }
 		
-		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:hover,
-		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:focus {
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:hover,
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:focus {
 			background-color: #eee; }
 		
-		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > button.flagrate-button:active {
+		div.flagrate-select > button.flagrate-pulldown+div.flagrate-pulldown-menu > div.flagrate-menu > button.flagrate-button:active {
 			color           : #000;
 			background-color: #ddd; }
 
