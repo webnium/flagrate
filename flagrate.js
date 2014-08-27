@@ -67,20 +67,28 @@
 		},
 		traverse: function (obj, pointer, value, isSet) {
 			var part = jsonPointer.untilde(pointer.shift());
+			if (part.match(/^\d+$/)) part = parseInt(part);
 			
 			if (pointer.length !== 0) {// keep traversin!
 				if (isSet && typeof obj[part] !== 'object') {
-					obj[part] = {};
+					if (value == null) {
+						return value;
+					}
+					if (pointer[0].match(/^\d+$/)) {
+						obj[part] = [];
+					} else {
+						obj[part] = {};
+					}
 				}
 				return jsonPointer.traverse(obj[part], pointer, value, isSet);
 			}
 			// we're done
-			if (value === void 0) {
+			if (!isSet) {
 				// just reading
 				return obj[part];
 			}
 			// set new value, and return
-			if (value === null) {
+			if (value == null) {
 				delete obj[part];
 			} else {
 				obj[part] = value;
