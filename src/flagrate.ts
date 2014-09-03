@@ -25,6 +25,7 @@ module Flagrate {
     //= include context-menu.ts
     //= include toolbar.ts
     //= include text-input.ts
+    //= include tokenizer.ts
 
 }
 
