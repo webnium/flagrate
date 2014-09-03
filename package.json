@@ -34,5 +34,8 @@
     "gulp-tsc": "^0.7.0",
     "gulp-closure-compiler": "^0.1.2",
     "gulp-rename": "^1.2.0"
+  },
+  "dependencies": {
+    "typescript": "^1.0.1"
   }
 }
