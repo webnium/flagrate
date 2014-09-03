@@ -20,7 +20,7 @@ export module jsonPointer {
 
     export function set<T>(object: Object, pointer: string, value: T): T {
         if (pointer === '' && typeof value === 'object') {
-            flagrate.extendObject(object, value);
+            Flagrate.extendObject(object, value);
             return value;
         } else {
             var pts = validate_input(object, pointer);
