@@ -46,14 +46,15 @@ export module jsonPointer {
     function traverse<T>(object: Object, pts: string[], value?: T, isSet?: boolean): T;
     function traverse(object: Object, pts: string[], value?, isSet?): any {
         var part:any = untilde(pts.shift());
-        if (part.match(/^\d+$/)) part = parseInt(part);
-
+        if (/^\d+$/.test(part)) {
+            part = parseInt(part, 10);
+        }
         if (pts.length !== 0) {// keep traversin!
             if (isSet && typeof object[part] !== 'object') {
-                if (value == null) {
+                if (value === void 0) {
                     return value;
                 }
-                if (pts[0].match(/^\d+$/)) {
+                if (/^\d+$/.test(pts[0])) {
                     object[part] = [];
                 } else {
                     object[part] = {};
@@ -67,7 +68,7 @@ export module jsonPointer {
             return object[part];
         }
         // set new value, and return
-        if (value == null) {
+        if (value === void 0) {
             delete object[part];
         } else {
             object[part] = value;
