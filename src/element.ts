@@ -116,8 +116,6 @@ export interface IElementClass {
     insertTo? <T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position: 'bottom'): T;
     insertTo? <T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position: 'after'): T;
     insertTo? <T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position?): T;
-    wrap? <T extends HTMLElement, U extends HTMLElement>(element: T, wrapper?: U, attribute?: any): T;
-    wrap? <T extends HTMLElement>(element: T, wrapper?: string, attribute?: any): T;
     readAttribute? <T extends HTMLElement>(element: T, name: string): string;
     writeAttribute? <T extends HTMLElement>(element: T, attributeName: string, value?: boolean): T;
     writeAttribute? <T extends HTMLElement>(element: T, attributeName: string, value?: string): T;
@@ -210,8 +208,6 @@ export interface IElementInstance {
     insertTo? <T extends HTMLElement>(to: T, position: 'bottom'): IElement;
     insertTo? <T extends HTMLElement>(to: T, position: 'after'): IElement;
     insertTo? <T extends HTMLElement>(to: T, position?): IElement;
-    wrap? <T extends HTMLElement>(wrapper?: T, attribute?: any): IElement;
-    wrap? (wrapper?: string, attribute?: any): IElement;
     readAttribute? (name: string): string;
     writeAttribute? (attributeName: string, value?: boolean): IElement;
     writeAttribute? (attributeName: string, value?: string): IElement;
@@ -711,33 +707,6 @@ Element.insertTo = (element, to, position = 'bottom') => {
     Element.insert(to, insertion);
 
     return element;
-};
-
-/*?
- *  Flagrate.Element.wrap(element, wrapper[, attribute]) -> Element
- *  - element (Element) - 
- *  - wrapper (Element|String) - An element to wrap `element` inside, or else a string representing the tag name of an element to be created.
- *  - attribute (Object) - A set of attributes to apply to the wrapper element. Refer to the Flagrate.Element constructor for usage.
- *  
- *  Wraps an element inside another, then returns the wrapper.
- *  
- *  This method is similar to http://api.prototypejs.org/dom/Element/wrap/
-**/
-Element.wrap = (element, wrapper, attr) => {
-
-    if (isElement(wrapper) === true) {
-        if (attr) { Element.writeAttribute(wrapper, attr); }
-    } else if (typeof wrapper === 'string') {
-        wrapper = new Element(wrapper, attr);
-    } else {
-        wrapper = new Element('div', wrapper);
-    }
-
-    if (element.parentNode) { element.parentNode.replaceChild(wrapper, element); }
-
-    wrapper.appendChild(element);
-
-    return wrapper;
 };
 
 /*?
