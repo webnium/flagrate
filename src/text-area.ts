@@ -21,7 +21,7 @@ export interface ITextAreaInstance {
     enable(): ITextArea;
     isEnabled(): boolean;
     setValue(value: string): ITextArea;
-    getValue(): ITextArea;
+    getValue(): string;
     setIcon(url?: string): ITextArea;
     getIcon(): string;
     isValid(): boolean;

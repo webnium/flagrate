@@ -21,7 +21,7 @@ export interface ITextInputInstance extends Flagrate.IElementInstance {
     enable(): ITextInput;
     isEnabled(): boolean;
     setValue(value: string): ITextInput;
-    getValue(): ITextInput;
+    getValue(): string;
     setIcon(url?: string): ITextInput;
     getIcon(): string;
     isValid(): boolean;
