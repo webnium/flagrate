@@ -5451,7 +5451,7 @@
 		
 		this._onKeydownHandler = function (e) {
 			
-			var active = document.activeElement.tagName;
+			var active = document.activeElement && document.activeElement.tagName;
 			
 			if (active !== 'BODY' && active !== 'DIV' && active !== 'BUTTON') { return; }
 			if (window.getSelection().toString() !== '') { return; }
@@ -7176,7 +7176,7 @@
 		},
 		_render: function () {
 			
-			var active = document.activeElement;
+			var active = document.activeElement || {};
 			
 			var i, l, field;
 			for (i = 0, l = this.fields.length; i < l; i++) {
