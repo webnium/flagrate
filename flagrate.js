@@ -5453,23 +5453,37 @@
 			
 			var active = document.activeElement.tagName;
 			
-			if (active !== 'BODY' && active !== 'DIV') { return; }
+			if (active !== 'BODY' && active !== 'DIV' && active !== 'BUTTON') { return; }
 			if (window.getSelection().toString() !== '') { return; }
 			
-			e.stopPropagation();
-			e.preventDefault();
+			var activated = false;
 			
 			// TAB:9
-			if (e.keyCode === 9) {
-				if (this._closeButton) { return this._closeButton.focus(); }
-				if (this.buttons[0])   { return this.buttons[0].button.focus(); }
+			if (e.keyCode === 9 && active !== 'BUTTON') {
+				activated = true;
+				if (this._closeButton) {
+					this._closeButton.focus();
+				} else if (this.buttons[0]) {
+					this.buttons[0].button.focus();
+				}
 			}
 			
 			// ENTER:13
-			if (e.keyCode === 13 && this.buttons[0]) { return this.buttons[0].button.click(); }
+			if (e.keyCode === 13 && this.buttons[0] && active !== 'BUTTON') {
+				activated = true;
+				this.buttons[0].button.click();
+			}
 			
 			// ESC:27
-			if (e.keyCode === 27) { return this.close(); }
+			if (e.keyCode === 27 && this.disableCloseByEsc === false) {
+				activated = true;
+				this.close();
+			}
+			
+			if (activated === true) {
+				e.stopPropagation();
+				e.preventDefault();
+			}
 		}.bind(this);
 		
 		return this;
@@ -5573,9 +5587,10 @@
 			};
 			this.positioningTimer = setTimeout(positioning.bind(this), 0);
 			
-			if (this.disableCloseByEsc === false) {
-				window.addEventListener('keydown', this._onKeydownHandler);
-			}
+			// focus to primary button
+			if (this.buttons[0]) { this.buttons[0].button.focus(); }
+			
+			window.addEventListener('keydown', this._onKeydownHandler, true);
 			
 			return this;
 		}
