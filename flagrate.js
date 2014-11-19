@@ -5513,7 +5513,7 @@
 			if (this.visible() === true) { return this; }
 			
 			// make free
-			if (document.activeElement) { document.activeElement.blur(); }
+			if (document.activeElement && document.activeElement.blur) { document.activeElement.blur(); }
 			window.getSelection().removeAllRanges();
 			
 			if (this.closingTimer) { clearTimeout(this.closingTimer); }
