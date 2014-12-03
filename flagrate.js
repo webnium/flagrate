@@ -7438,12 +7438,10 @@
 				
 				field.input.element.writeAttribute('id', field.input.id);
 				
-				// value, values is alias but it's deprecated!
+				// value, values is just alias.
 				if (field.input.value) {
-					//console.warn('field.input.value is deprecated. please use field.input.val!');
 					field.input.val = field.input.value;
 				} else if (field.input.values) {
-					//console.warn('field.input.values is deprecated. please use field.input.val!');
 					field.input.val = field.input.values;
 				}
 				
