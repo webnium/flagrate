@@ -6749,8 +6749,7 @@
 	/*?
 	 *  class flagrate.Form
 	 *
-	 *  This is **NOT** stable for now. testing.
-	 *  some required methods are missing.
+	 *  The flagrate.Form provides an interactive form UI.
 	**/
 	
 	/*?
@@ -6790,15 +6789,16 @@
 	 *
 	 *  * `type`                     (String|Object; **required**): **[inputtype](#inputType)** String or Object
 	 *  * `option`                   (Object): *(see the options for each type)*
+	 *  * `val`                      (any): default value(s) of this input.
 	 *  * `isRequired`               (Boolean; default `false`):
 	 *  * `min`                      (Number): (simple validator)
 	 *  * `max`                      (Number): (simple validator)
 	 *  * `minLength`                (Number): (simple validator)
 	 *  * `maxLength`                (Number): (simple validator)
 	 *  * `validators`               (Array): of **[inputValidator](#inputvalidator)** String or Object or Function.
-	 *  * `toString`                 (Boolean; default `false`):
-	 *  * `trim`                     (Boolean; default `false`):
-	 *  * `toNumber`                 (Boolean; default `false`):
+	 *  * `toString`                 (Boolean; default `false`): if NOT String, use [#toString()](https://developer.mozilla.org/ja/docs/toString) before resulting.
+	 *  * `trim`                     (Boolean; default `false`): if String, use [String#trim()](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/trim) before resulting.
+	 *  * `toNumber`                 (Boolean; default `false`): if NOT Number, tries to convert to Number.
 	 *  * `transform`                (Function): alternate result transform/converting function. (only sync)
 	 *
 	 *  #### depend
