@@ -1438,7 +1438,7 @@ form.flagrate-form.flagrate-form-vertical {
 		padding     : 2px 0; }
 
 	form.flagrate-form:not(.flagrate-form-vertical) > div:nth-child(even) {
-		background-color: #f7f7f7; }
+		background-color: rgba(0,0,0,0.025); }
 
 	form.flagrate-form.flagrate-form-nolabel > div,
 	form.flagrate-form.flagrate-form-vertical > div {
