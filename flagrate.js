@@ -1732,7 +1732,9 @@
 			var removeMenu = function (e) {
 				
 				document.body.removeEventListener('click', removeMenu);
-				that.parentNode.removeEventListener('click', removeMenu);
+				if (that.parentNode) {
+					that.parentNode.removeEventListener('click', removeMenu);
+				}
 				that.off('click', removeMenu);
 				
 				menu.style.opacity = '0';
