@@ -1489,7 +1489,7 @@ form.flagrate-form.flagrate-form-vertical {
 				content  : '*'; }
 
 			form.flagrate-form > div > div > div {
-				padding    : 10px 0; }
+				padding    : 10px 10px 10px 0; }
 
 			form.flagrate-form > div > div > ul.flagrate-form-field-result {
 				margin     : 0;
