@@ -6788,7 +6788,6 @@
 	 *  #### input
 	 *
 	 *  * `type`                     (String|Object; **required**): **[inputtype](#inputType)** String or Object
-	 *  * `option`                   (Object): *(see the options for each type)*
 	 *  * `val`                      (any): default value(s) of this input.
 	 *  * `isRequired`               (Boolean; default `false`):
 	 *  * `min`                      (Number): (simple validator)
