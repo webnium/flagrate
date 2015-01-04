@@ -1732,7 +1732,9 @@
 			var removeMenu = function (e) {
 				
 				document.body.removeEventListener('click', removeMenu);
-				that.parentNode.removeEventListener('click', removeMenu);
+				if (that.parentNode) {
+					that.parentNode.removeEventListener('click', removeMenu);
+				}
 				that.off('click', removeMenu);
 				
 				menu.style.opacity = '0';
@@ -2614,7 +2616,6 @@
 	 *  * `selectedIndex`            (Number):
 	 *  * `selectedIndexes`          (Array): array of Number.
 	 *  * `isDisabled`               (Boolean; default `false`):
-	 *  * `onChange`                 (Function):
 	**/
 	var Select = flagrate.Select = function (opt) {
 		
@@ -2624,7 +2625,6 @@
 		this.listView = opt.listView || false;
 		this.multiple = opt.multiple || false;
 		this.max      = opt.max      || -1;
-		this.onChange = opt.onChange || emptyFunction;
 		
 		/*?
 		 *  flagrate.Select#selectedIndexes -> Array
@@ -6788,7 +6788,6 @@
 	 *  #### input
 	 *
 	 *  * `type`                     (String|Object; **required**): **[inputtype](#inputType)** String or Object
-	 *  * `option`                   (Object): *(see the options for each type)*
 	 *  * `val`                      (any): default value(s) of this input.
 	 *  * `isRequired`               (Boolean; default `false`):
 	 *  * `min`                      (Number): (simple validator)

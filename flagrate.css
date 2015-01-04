@@ -1444,7 +1444,10 @@ form.flagrate-form.flagrate-form-vertical {
 		display     : table;
 		table-layout: fixed;
 		width       : 100%;
-		padding     : 0; }
+		padding     : 2px 0; }
+
+	form.flagrate-form > div:nth-child(even) {
+		background-color: #f7f7f7; }
 
 	form.flagrate-form.flagrate-form-nolabel > div,
 	form.flagrate-form.flagrate-form-vertical > div {
@@ -1556,8 +1559,8 @@ form.flagrate-form.flagrate-form-vertical {
 			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(4),
 			form.flagrate-form > div > div > p.flagrate-form-field-text:nth-child(5) {
 				padding    : 10px;
-				border-top : 1px solid #ddd;
-				background : #eee; }
+				border-top : 1px solid rgba(0, 0, 0, 0.08);
+				background : rgba(0, 0, 0, 0.05); }
 
 			form.flagrate-form.flagrate-form-nolabel > div > div > p.flagrate-form-field-text:nth-child(2),
 			form.flagrate-form.flagrate-form-nolabel > div > div > p.flagrate-form-field-text:nth-child(3),
