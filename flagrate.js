@@ -2616,7 +2616,6 @@
 	 *  * `selectedIndex`            (Number):
 	 *  * `selectedIndexes`          (Array): array of Number.
 	 *  * `isDisabled`               (Boolean; default `false`):
-	 *  * `onChange`                 (Function):
 	**/
 	var Select = flagrate.Select = function (opt) {
 		
@@ -2626,7 +2625,6 @@
 		this.listView = opt.listView || false;
 		this.multiple = opt.multiple || false;
 		this.max      = opt.max      || -1;
-		this.onChange = opt.onChange || emptyFunction;
 		
 		/*?
 		 *  flagrate.Select#selectedIndexes -> Array
