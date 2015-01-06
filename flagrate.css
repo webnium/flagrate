@@ -94,9 +94,6 @@ button.flagrate-button.flagrate-disabled {
 	border-color      : transparent;
 	opacity           : 0.65; }
 
-button[class*="flagrate-button-color-"] {
-	color: white; }
-
 button.flagrate-button-color-blue,
 button.flagrate-button-color-primary { background-color: #388dd6; }
 button.flagrate-button-color-blue:hover,
@@ -141,6 +138,12 @@ button.flagrate-button-color-link:hover {
 button.flagrate-button-color-link:focus > span,
 button.flagrate-button-color-link:hover > span {
 	text-decoration : underline; }
+
+button.flagrate-button[class*="flagrate-button-color-"]:not(.flagrate-button-color-transparent):not(.flagrate-button-color-link) {
+	color: white; }
+
+div.flagrate-toolbar > button:not(.flagrate-button-color-blue):not(.flagrate-button-color-primary):not(.flagrate-button-color-lightblue):not(.flagrate-button-color-info):not(.flagrate-button-color-red):not(.flagrate-button-color-danger):not(.flagrate-button-color-green) {
+	background-color: transparent; }
 
 	button.flagrate-button > button.flagrate-button-remove,
 	button.flagrate-pulldown > span.flagrate-pulldown-triangle {
@@ -825,9 +828,6 @@ div.flagrate-toolbar {
 		padding-bottom  : 1px;
 		font-size       : 12px;
 		width           : 120px; }
-	
-	div.flagrate-toolbar > button:not(*[class*="flagrate-button-color-"]) {
-		background-color: transparent; }
 	
 	div.flagrate-toolbar > button:focus {
 		outline: none; }
