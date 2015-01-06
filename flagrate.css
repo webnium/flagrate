@@ -142,7 +142,7 @@ button.flagrate-button-color-link:hover > span {
 button.flagrate-button[class*="flagrate-button-color-"]:not(.flagrate-button-color-transparent):not(.flagrate-button-color-link) {
 	color: white; }
 
-div.flagrate-toolbar > button:not(.flagrate-button-color-blue):not(.flagrate-button-color-primary):not(.flagrate-button-color-lightblue):not(.flagrate-button-color-info):not(.flagrate-button-color-red):not(.flagrate-button-color-danger):not(.flagrate-button-color-green) {
+div.flagrate-toolbar > button:not(.flagrate-button-color-blue):not(.flagrate-button-color-primary):not(.flagrate-button-color-lightblue):not(.flagrate-button-color-info):not(.flagrate-button-color-red):not(.flagrate-button-color-danger):not(.flagrate-button-color-green):not(.flagrate-button-color-success):not(.flagrate-button-color-orange):not(.flagrate-button-color-warning):not(.flagrate-button-color-pink):not(.flagrate-button-color-inverse) {
 	background-color: transparent; }
 
 	button.flagrate-button > button.flagrate-button-remove,
