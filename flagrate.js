@@ -2773,10 +2773,9 @@
 					}
 					return this;
 				}
-				if (this.selectedIndexes.indexOf(index) !== -1) {
-					return this;
+				if (this.selectedIndexes.indexOf(index) === -1) {
+					this.selectedIndexes.push(index);
 				}
-				this.selectedIndexes.push(index);
 			} else {
 				this.selectedIndex = index;
 			}
@@ -3178,18 +3177,41 @@
 		that.insert({ top: new Element() });
 		that.insert({ top: that._input });
 		
-		that._input.on('change', function (e) {
+		that._input.on('click', function (e) {
+			
+			e.stopPropagation();
 			
 			e.targetCheckbox = that;
 			
 			if (that.isChecked()) {
-				if (that.onCheck) { that.onCheck(e); }
+				that.uncheck();
 			} else {
-				if (that.onUncheck) { that.onUncheck(e); }
+				that.check();
 			}
 			
-			if (that.onChange) { that.onChange(e); }
+			if (that.isChecked()) {
+				if (that.onCheck) {
+					that.onCheck(e);
+				}
+			} else {
+				if (that.onUncheck) {
+					that.onUncheck(e);
+				}
+			}
+			
+			if (that.onChange) {
+				that.onChange(e);
+			}
+			that.fire('change');
 		});
+		
+		that._input.on('change', function (e) {
+			
+			e.stopPropagation();
+		});
+		
+		// state
+		that._checked = false;
 		
 		if (opt.isChecked)  { that.check(); }
 		if (opt.isDisabled) { that.disable(); }
@@ -3237,7 +3259,7 @@
 		 *  flagrate.Checkbox#isChecked() -> Boolean
 		**/
 		isChecked: function () {
-			return !!this._input.checked;
+			return this._checked;
 		}
 		,
 		/*?
@@ -3246,6 +3268,7 @@
 		check: function () {
 			
 			this._input.checked = true;
+			this._checked = true;
 			
 			return this;
 		}
@@ -3256,6 +3279,7 @@
 		uncheck: function () {
 			
 			this._input.checked = false;
+			this._checked = false;
 			
 			return this;
 		}
@@ -6634,6 +6658,12 @@
 						that.select(row);
 					}
 				}
+				
+				if (row._checkbox) {
+					row._checkbox.focus();
+				}
+				
+				return false;
 			};
 		}
 		,
@@ -6673,17 +6703,19 @@
 			return function (e) {
 				
 				if (that.isEnabled() === false) {
-					e.targetCheckbox.uncheck();
+					if (e.targetCheckbox.isChecked() === true) {
+						e.targetCheckbox.uncheck();
+					} else {
+						e.targetCheckbox.check();
+					}
 					return;
 				}
 				
-				e.stopPropagation();
-				
 				if (that.disableSelect === false) {
-					if (row.isSelected === true) {
-						that.deselect(row);
-					} else {
+					if (this.isChecked() === true) {
 						that.select(row);
+					} else {
+						that.deselect(row);
 					}
 				}
 			};

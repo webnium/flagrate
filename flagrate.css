@@ -665,6 +665,10 @@ label.flagrate-radio {
 	line-height        : 20px;
 	margin             : 0;
 	padding            : 0 10px 0 26px;
+	-webkit-user-select: none;
+	-moz-user-select   : none;
+	-ms-user-select    : none;
+	user-select        : none;
 	cursor             : pointer; }
 
 label.flagrate-checkbox.flagrate-disabled,
