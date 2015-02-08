@@ -4058,19 +4058,19 @@
 				e.preventDefault();
 				
 				if (window.ontouchend !== void 0) {
-					document.body.removeEventListener('touchmove', onMove);
-					document.body.removeEventListener('touchend', onUp);
-					document.body.removeEventListener('touchcancel', onUp);
+					document.removeEventListener('touchmove', onMove);
+					document.removeEventListener('touchend', onUp);
+					document.removeEventListener('touchcancel', onUp);
 				}
 				if (navigator.pointerEnabled) {
-					document.body.removeEventListener('pointermove', onMove);
-					document.body.removeEventListener('pointerup', onUp);
+					document.removeEventListener('pointermove', onMove);
+					document.removeEventListener('pointerup', onUp);
 				} else if (navigator.msPointerEnabled) {
-					document.body.removeEventListener('MSPointerUp', onUp);
-					document.body.removeEventListener('MSPointerMove', onMove);
+					document.removeEventListener('MSPointerUp', onUp);
+					document.removeEventListener('MSPointerMove', onMove);
 				} else {
-					document.body.removeEventListener('mousemove', onMove);
-					document.body.removeEventListener('mouseup', onUp);
+					document.removeEventListener('mousemove', onMove);
+					document.removeEventListener('mouseup', onUp);
 				}
 				
 				if (e.touches && e.touches[0]) {
@@ -4087,19 +4087,19 @@
 			}.bind(this);
 			
 			if (window.ontouchend !== void 0) {
-				document.body.addEventListener('touchmove', onMove);
-				document.body.addEventListener('touchend', onUp);
-				document.body.addEventListener('touchcancel', onUp);
+				document.addEventListener('touchmove', onMove);
+				document.addEventListener('touchend', onUp);
+				document.addEventListener('touchcancel', onUp);
 			}
 			if (navigator.pointerEnabled) {
-				document.body.addEventListener('pointermove', onMove);
-				document.body.addEventListener('pointerup', onUp);
+				document.addEventListener('pointermove', onMove);
+				document.addEventListener('pointerup', onUp);
 			} else if (navigator.msPointerEnabled) {
-				document.body.addEventListener('MSPointerMove', onMove);
-				document.body.addEventListener('MSPointerUp', onUp);
+				document.addEventListener('MSPointerMove', onMove);
+				document.addEventListener('MSPointerUp', onUp);
 			} else {
-				document.body.addEventListener('mousemove', onMove);
-				document.body.addEventListener('mouseup', onUp);
+				document.addEventListener('mousemove', onMove);
+				document.addEventListener('mouseup', onUp);
 			}
 			
 			this.setValue(Math.round(x / unitWidth));
@@ -6757,8 +6757,8 @@
 					
 					e.preventDefault();
 					
-					document.body.removeEventListener('mousemove', onMove, true);
-					document.body.removeEventListener('mouseup',   onUp, true);
+					document.removeEventListener('mousemove', onMove, true);
+					document.removeEventListener('mouseup',   onUp, true);
 					
 					var delta = e.clientX - origin;
 					var w     = col._th.getWidth() + delta;
@@ -6772,8 +6772,8 @@
 					that._updatePositionOfResizeHandles();
 				};
 				
-				document.body.addEventListener('mousemove', onMove, true);
-				document.body.addEventListener('mouseup',   onUp, true);
+				document.addEventListener('mousemove', onMove, true);
+				document.addEventListener('mouseup',   onUp, true);
 			};
 		}
 	};
