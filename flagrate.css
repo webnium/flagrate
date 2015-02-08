@@ -893,11 +893,11 @@ div.flagrate-slider.flagrate-disabled { }
 		display         : block;
 		position        : absolute;
 		right           : 0;
-		top             : 50%;
-		margin          : -5px -5px 0 0;
+		top             : 0;
+		margin          : 0 -5px 0 0;
 		background-color: #000;
 		width           : 10px;
-		height          : 10px; }
+		height          : 100%; }
 	
 	div.flagrate-slider.flagrate-disabled > div::after {
 		background-color  : #555; }
