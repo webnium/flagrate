@@ -1444,6 +1444,9 @@ form.flagrate-form.flagrate-form-vertical {
 	form.flagrate-form:not(.flagrate-form-vertical) > div:nth-child(even) {
 		background-color: rgba(0,0,0,0.025); }
 
+	form.flagrate-form.flagrate-form-vertical > div:not(last-child) {
+		margin-bottom: 20px; }
+
 	form.flagrate-form.flagrate-form-nolabel > div,
 	form.flagrate-form.flagrate-form-vertical > div {
 		display   : block; }
