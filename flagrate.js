@@ -5654,9 +5654,7 @@
 			
 			this.closingTimer = setTimeout(function (){ this._base.remove(); }.bind(this), 200);
 			
-			if (this.disableCloseByEsc === false) {
-				window.removeEventListener('keydown', this._onKeydownHandler);
-			}
+			window.removeEventListener('keydown', this._onKeydownHandler, true);
 			
 			// Callback: onClose
 			this.onClose(this, e);
