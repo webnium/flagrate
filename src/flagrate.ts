@@ -15,8 +15,9 @@ module Flagrate {
     }
 
     export function emptyFunction() { }
-    
+
     //= include json-pointer.ts
+
     //= include element.ts
     //= include button.ts
     //= include buttons.ts

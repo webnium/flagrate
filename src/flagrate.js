@@ -10,7 +10,7 @@
 (function (window) {
 'use strict';
 
-//= include ../flagrate.js
+//= include ../dist/flagrate.js
 
 window.Flagrate = Flagrate;
 window.flagrate = flagrate;
