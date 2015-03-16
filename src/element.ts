@@ -34,7 +34,7 @@ export interface IElementClass {
 
     cache?: Object;
 
-    _insertionTranslation?: IElementInsertion;
+    _insertionTranslation?: IElementInsertionF;
 
     /*?
      *  Flagrate.Element.visible(element) -> Boolean
@@ -242,6 +242,13 @@ export interface IElementOffset {
 }
 
 export interface IElementInsertion {
+    before?: HTMLElement;
+    top?: HTMLElement;
+    bottom?: HTMLElement;
+    after?: HTMLElement;
+}
+
+export interface IElementInsertionF {
     before? <T extends HTMLElement, U extends HTMLElement>(element: T, node: U): void;
     top? <T extends HTMLElement, U extends HTMLElement>(element: T, node: U): void;
     bottom? <T extends HTMLElement, U extends HTMLElement>(element: T, node: U): void;
