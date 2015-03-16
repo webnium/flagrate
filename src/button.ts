@@ -131,7 +131,7 @@ export var Button: IButtonClass = function (option: IButtonOption = {}): IButton
 
 export function createButton(option?: IButtonOption): IButton {
     return new Button(option);
-};
+}
 
 Button.prototype = {
     select () {
