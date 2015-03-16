@@ -39,6 +39,8 @@ export interface IPulldownClass {
 }
 
 export interface IPulldownInstance extends Flagrate.IButtonInstance {
+    items: Flagrate.IMenuItemOption[];
+
     _menu?: Flagrate.IMenu;
 }
 
