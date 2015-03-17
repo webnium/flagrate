@@ -6829,6 +6829,7 @@
 	 *  * `trim`                     (Boolean; default `false`): if String, use [String#trim()](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/trim) before resulting.
 	 *  * `toNumber`                 (Boolean; default `false`): if NOT Number, tries to convert to Number.
 	 *  * `transform`                (Function): alternate result transform/converting function. (only sync)
+	 *  * `id`                       (String): `id` attribute of input element.
 	 *
 	 *  #### depend
 	 *
