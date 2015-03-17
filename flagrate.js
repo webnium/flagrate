@@ -6829,6 +6829,7 @@
 	 *  * `trim`                     (Boolean; default `false`): if String, use [String#trim()](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/trim) before resulting.
 	 *  * `toNumber`                 (Boolean; default `false`): if NOT Number, tries to convert to Number.
 	 *  * `transform`                (Function): alternate result transform/converting function. (only sync)
+	 *  * `id`                       (String): `id` attribute of input element.
 	 *
 	 *  #### depend
 	 *
@@ -8101,11 +8102,15 @@
 	/*?
 	 *  #### file -> `File`
 	 *  File input for [File API](http://www.w3.org/TR/file-upload/)
+	 *
+	 *  * `accept` (String): pass to `accept` attribute value.
+	 *  * `acceptTypes` (Array): Array of MIME type string.
 	**/
 	Form.inputType.file = {
 		create: function () {
 			return new Element('input', {
-				type: 'file'
+				type: 'file',
+				accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(',') : void 0)
 			});
 		},
 		getVal: function () {
@@ -8125,11 +8130,15 @@
 	/*?
 	 *  #### files -> `FileList`
 	 *  File input for [File API](http://www.w3.org/TR/file-upload/)
+	 *
+	 *  * `accept` (String): pass to `accept` attribute value.
+	 *  * `acceptTypes` (Array): Array of MIME type string.
 	**/
 	Form.inputType.files = {
 		create: function () {
 			return new Element('input', {
 				type    : 'file',
+				accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(',') : void 0),
 				multiple: true
 			});
 		},
