@@ -8101,11 +8101,15 @@
 	/*?
 	 *  #### file -> `File`
 	 *  File input for [File API](http://www.w3.org/TR/file-upload/)
+	 *
+	 *  * `accept` (String): pass to `accept` attribute value.
+	 *  * `acceptTypes` (Array): Array of MIME type string.
 	**/
 	Form.inputType.file = {
 		create: function () {
 			return new Element('input', {
-				type: 'file'
+				type: 'file',
+				accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(',') : void 0)
 			});
 		},
 		getVal: function () {
@@ -8125,11 +8129,15 @@
 	/*?
 	 *  #### files -> `FileList`
 	 *  File input for [File API](http://www.w3.org/TR/file-upload/)
+	 *
+	 *  * `accept` (String): pass to `accept` attribute value.
+	 *  * `acceptTypes` (Array): Array of MIME type string.
 	**/
 	Form.inputType.files = {
 		create: function () {
 			return new Element('input', {
 				type    : 'file',
+				accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(',') : void 0),
 				multiple: true
 			});
 		},
