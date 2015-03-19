@@ -6470,7 +6470,7 @@
 					col  = this.cols[j];
 					cell = (row.cell[col.key] === void 0) ? (row.cell[col.key] = {}) : row.cell[col.key];
 					
-					if (typeof cell === 'string') {
+					if (typeof cell === 'string' || typeof cell === 'number') {
 						cell = row.cell[col.key] = { text: cell };
 					}
 					
@@ -6489,7 +6489,7 @@
 					if (!cell._div) { cell._div = new Element(); }
 					cell._div.insertTo(cell._td);
 					
-					if (cell.text)    { cell._div.updateText(cell.text); }
+					if (cell.text !== void 0) { cell._div.updateText(cell.text); }
 					if (cell.html)    { cell._div.update(cell.html); }
 					if (cell.element) { cell._div.update(cell.element); }
 					
