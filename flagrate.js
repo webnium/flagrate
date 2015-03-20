@@ -594,7 +594,7 @@
 		var i = element.childNodes.length;
 		while (i--) { flagrate.Element.remove(element.childNodes[i]); }
 		
-		if (!content) {
+		if (content === void 0) {
 			return element;
 		}
 		
