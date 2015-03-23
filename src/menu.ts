@@ -106,14 +106,12 @@ export var Menu: IMenuClass = function (option: IMenuOption = {}): IMenu {
         container.push(option.items[i]);
     }
 
-    container.on('click', function (e) {
-
+    container.on('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
     });
 
-    container.on('mouseup', function (e) {
-
+    container.on('mouseup', (e) => {
         e.stopPropagation();
     });
 
