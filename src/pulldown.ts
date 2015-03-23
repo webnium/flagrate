@@ -90,7 +90,7 @@ export var Pulldown: IPulldownClass = function (option: IPulldownOption = {}): I
         label: option.label,
         icon: option.icon,
 
-        onSelect: function () {
+        onSelect: () => {
             
             if (button._menu) {
                 removeMenu();
@@ -100,11 +100,13 @@ export var Pulldown: IPulldownClass = function (option: IPulldownOption = {}): I
             button._menu = Flagrate.createMenu({
                 className: Flagrate.className + '-pulldown-menu',
                 items: button.items,
-                onSelect: function () {
+
+                onSelect: () => {
 
                     if (option.onSelect) {
                         option.onSelect();
                     }
+
                     removeMenu();
                 }
             });
@@ -133,7 +135,7 @@ export var Pulldown: IPulldownClass = function (option: IPulldownOption = {}): I
                 }
             }
 
-            setTimeout(function () {
+            setTimeout(() => {
                 document.body.addEventListener('click', removeMenu);
                 button.parentNode.addEventListener('click', removeMenu);
                 button.on('click', removeMenu);
@@ -152,7 +154,7 @@ export var Pulldown: IPulldownClass = function (option: IPulldownOption = {}): I
 
     if (option.isDisabled) { button.disable(); }
 
-    var removeMenu = function () {
+    var removeMenu = () => {
 
         document.body.removeEventListener('click', removeMenu);
         if (button.parentNode) {
@@ -161,7 +163,8 @@ export var Pulldown: IPulldownClass = function (option: IPulldownOption = {}): I
         button.off('click', removeMenu);
 
         button._menu.style.opacity = '0';
-        setTimeout(function () {
+
+        setTimeout(() => {
 
             if (!button._menu) {
                 return;
