@@ -155,7 +155,9 @@ export var Pulldown: IPulldownClass = function (option: IPulldownOption = {}): I
     var removeMenu = function () {
 
         document.body.removeEventListener('click', removeMenu);
-        button.parentNode.removeEventListener('click', removeMenu);
+        if (button.parentNode) {
+            button.parentNode.removeEventListener('click', removeMenu);
+        }
         button.off('click', removeMenu);
 
         button._menu.style.opacity = '0';
