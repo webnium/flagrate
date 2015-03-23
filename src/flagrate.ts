@@ -28,6 +28,8 @@ module Flagrate {
     //= include text-input.ts
     //= include tokenizer.ts
     //= include text-area.ts
+    //= include select.ts
+    //= include combo-box.ts
 
 }
 
