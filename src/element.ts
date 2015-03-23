@@ -606,7 +606,7 @@ Element.updateText = (element, content) => {
     var i = element.childNodes.length;
     while (i--) { Element.remove(element.childNodes[i]); }
 
-    if (!content) {
+    if (content === undefined) {
         return element;
     }
 
