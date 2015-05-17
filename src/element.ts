@@ -1,5 +1,12 @@
-function isElement(object): boolean {
-    return !!(object && object.nodeType === 1);
+var isElement: (object: any) => boolean;
+if (typeof HTMLElement === 'object') {
+    isElement = function (object) {
+        return object instanceof HTMLElement;
+    };
+} else {
+    isElement = function (object) {
+        return !!(object && object.nodeType === 1 && typeof object.nodeName === 'string');
+    };
 }
 
 /*?
