@@ -40,13 +40,13 @@
 	
 	// is element
 	var isElement;
-	if (typeof window.HTMLElement === 'object') {
+	if (typeof HTMLElement === 'object') {
 		isElement = function (a) {
-			return a instanceof window.HTMLElement;
+			return a instanceof HTMLElement;
 		};
 	} else {
 		isElement = function (a) {
-			return a && typeof a === "object" && a !== null && a.nodeType === 1 && typeof a.nodeName === "string";
+			return a && a.nodeType === 1 && typeof a.nodeName === "string";
 		};
 	}
 	
