@@ -25,6 +25,10 @@ textarea.flagrate {
 	-webkit-appearance: none;
 	border-radius     : 0; }
 
+input.flagrate:-ms-input-placeholder,
+textarea.flagrate:-ms-input-placeholder {
+	color: rgba(0,0,0,0.4); }
+
 button.flagrate::-moz-focus-inner {
 	border : 0;
 	padding: 0;
