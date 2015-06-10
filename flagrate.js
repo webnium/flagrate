@@ -3136,6 +3136,384 @@
 	};
 	
 	/*?
+	 *  class flagrate.SearchBox
+	 *
+	 *  Smart UI Component for Search Things. **(This is still in preview!!)**
+	 *
+	 *  #### Example
+	 *
+	 *      var searchBox = flagrate.createSearchBox({
+	 *        suggester: function (value, done) {
+	 *          someAsyncFunction(function (resultItems) {
+	 *            done(resultItems);
+	 *          });
+	 *        },
+	 *        onSearch: function (value) {
+	 *          console.log('searching: ' + value);
+	 *        }
+	 *      }).insertTo(x);
+	 *
+	 *  #### Additional Event
+	 *
+	 *  * `search`:
+	**/
+	
+	/*?
+	 *  flagrate.createSearchBox(option)
+	 *  new flagrate.SearchBox(option)
+	 *  - option (Object) - options.
+	 *  
+	 *  text input for search.
+	 *  
+	 *  #### option
+	 *  
+	 *  * `id`                       (String): `id` attribute of container element.
+	 *  * `className`                (String):
+	 *  * `attribute`                (Object):
+	 *  * `style`                    (Object): (using flagrate.Element.setStyle)
+	 *  * `value`                    (String): default value.
+	 *  * `placeholder`              (String):
+	 *  * `icon`                     (String):
+	 *  * `isDisabled`               (Boolean; default `false`):
+	 *  * `suggester`                (Function):
+	 *  * `onSearch`                 (Function): callback with input value.
+	**/
+	var SearchBox = flagrate.SearchBox = function (opt) {
+		
+		opt = opt || {};
+		
+		this.suggester = opt.suggester || null;
+		this.onSearch = opt.onSearch || emptyFunction;
+		
+		var attr = opt.attribute || {};
+		
+		attr.id       = opt.id         || null;
+		attr['class'] = opt.className  || null;
+		
+		//create
+		var that = new Element('div', attr);
+		extendObject(that, this);
+		
+		that.addClassName(flagrate.className + ' ' + flagrate.className + '-search-box');
+		
+		that._input = new TextInput({
+			className: 'search-input',
+			value: opt.value,
+			placeholder: opt.placeholder,
+			icon: opt.icon
+		}).insertTo(that);
+		
+		that._button = new Button({
+			className: 'search-button',
+			onSelect: that.search.bind(that)
+		}).insertTo(that);
+		
+		that._suggest = new Element('div', {
+			'class': 'search-suggest'
+		}).hide().insertTo(that);
+		
+		that._input.on('keydown', that._onKeydownHandler.bind(that));
+		that._input.on('keyup', that._onKeyupHandler.bind(that));
+		that._input.on('focus', that._onFocusHandler.bind(that));
+		that._input.on('blur', that._onBlurHandler.bind(that));
+		
+		// for Chrome
+		that._suggest.on('mousedown', function (e) {
+			e.preventDefault();
+		});
+		
+		if (opt.style) { that.setStyle(opt.style); }
+		
+		if (opt.isDisabled) { that.disable(); }
+		
+		return that;
+	};
+	
+	flagrate.createSearchBox = function (a) {
+		return new SearchBox(a);
+	};
+	
+	SearchBox.prototype = {
+		/*?
+		 *  flagrate.SearchBox#disable() -> flagrate.SearchBox
+		**/
+		disable: function () {
+			
+			this.addClassName(flagrate.className + '-disabled');
+			this._input.disable();
+			this._button.disable();
+			
+			this._suggest.hide();
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#enable() -> flagrate.SearchBox
+		**/
+		enable: function () {
+			
+			this.removeClassName(flagrate.className + '-disabled');
+			this._input.enable();
+			this._button.enable();
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#isEnabled() -> Boolean
+		**/
+		isEnabled: function () {
+			return !this.hasClassName(flagrate.className + '-disabled');
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#getValue() -> String
+		**/
+		getValue: function () {
+			return this._input.getValue();
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#setValue(value) -> flagrate.SearchBox
+		**/
+		setValue: function (value) {
+			
+			this._input.setValue(value);
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#search() -> flagrate.SearchBox
+		**/
+		search: function () {
+			
+			var value = this.getValue();
+			
+			this.onSearch(value);
+			this.fire('search', value);
+			
+			this._input.blur();
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#suggest() -> flagrate.SearchBox
+		**/
+		suggest: function () {
+			
+			if (!this.suggester) {
+				return this;
+			}
+			
+			this._suggest.hide();
+			
+			var value = this.getValue();
+			
+			var result = this.suggester(value, this._suggested.bind(this));
+			
+			if (result !== void 0) {
+				this._suggested(result);
+			}
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#focus() -> flagrate.SearchBox
+		**/
+		focus: function () {
+			
+			this._input.focus();
+			
+			return this;
+		},
+		
+		/*?
+		 *  flagrate.SearchBox#blur() -> flagrate.SearchBox
+		**/
+		blur: function () {
+			
+			this._input.blur();
+			
+			return this;
+		},
+		
+		_suggested: function (suggestedItems) {
+			
+			if (!suggestedItems) {
+				return;
+			}
+			
+			if (suggestedItems.length === 0) {
+				this._suggest.hide();
+				return;
+			}
+			
+			var items = [];
+			
+			var i, l;
+			for (i = 0, l = suggestedItems.length; i < l; i++) {
+				if (typeof suggestedItems[i] === 'string' && suggestedItems[i].trim() !== '') {
+					items.push({
+						label: suggestedItems[i].trim(),
+						onSelect: this._createCompletionHandler(this, suggestedItems[i].trim())
+					});
+				} else if (typeof suggestedItems[i] === 'object') {
+					items.push({
+						label: suggestedItems[i].label,
+						icon: suggestedItems[i].icon,
+						onSelect: this._createSuggestionHandler(this, suggestedItems[i].onSelect)
+					});
+				}
+			}
+			
+			if (items.length === 0) {
+				this._suggest.hide();
+				return;
+			}
+			
+			var menu = this._menu = new Menu({
+				items: items,
+				onSelect: function () {
+					this._suggest.hide();
+				}.bind(this)
+			});
+			
+			menu.firstChild.addClassName(flagrate.className + '-search-suggest-selected');
+			
+			this._suggest.update(menu).show();
+			
+			// To prevent overflow.
+			var menuHeight    = this._suggest.getHeight();
+			var menuMargin    = parseInt(this._suggest.getStyle('margin-top').replace('px', ''), 10);
+			var cummOffsetTop = this.cumulativeOffset().top;
+			var upsideSpace   = - window.pageYOffset + cummOffsetTop;
+			var downsideSpace = window.pageYOffset + window.innerHeight - cummOffsetTop - this.getHeight();
+			if (menuHeight + menuMargin > downsideSpace) {
+				if (upsideSpace > downsideSpace) {
+					if (upsideSpace < menuHeight + menuMargin) {
+						menuHeight = (upsideSpace - menuMargin - menuMargin);
+						this._suggest.style.maxHeight = menuHeight + 'px';
+					}
+					this._suggest.addClassName(flagrate.className + '-search-suggest-upper');
+				} else {
+					menuHeight = (downsideSpace - menuMargin - menuMargin);
+					this._suggest.style.maxHeight = menuHeight + 'px';
+					this._suggest.removeClassName(flagrate.className + '-search-suggest-upper');
+				}
+			} else {
+				this._suggest.removeClassName(flagrate.className + '-search-suggest-upper');
+			}
+			
+			// reset scroll position
+			this._suggest.scrollTop = 0;
+		},
+		
+		_createCompletionHandler: function (that, value) {
+			
+			return function () {
+				
+				that._input.setValue(value);
+				that._input.focus();
+			};
+		},
+		
+		_createSuggestionHandler: function (that, onSelect) {
+			
+			return function () {
+				
+				onSelect.call(that);
+				that._input.blur();
+			};
+		},
+		
+		_onKeydownHandler: function (e) {
+			
+			// ESC: 27
+			if (e.keyCode === 27) {
+				this._input.select();
+				this._suggest.hide();
+			} else if (this._suggest.visible() === true) {
+				// ENTER: 13
+				if (e.keyCode === 13) {
+					var target = this._menu.getElementsByClassName(flagrate.className + '-search-suggest-selected')[0];
+					target.click();
+					return;
+				}
+				
+				// UP: 38, DOWN: 40
+				if (e.keyCode !== 38 && e.keyCode !== 40) {
+					return;
+				}
+				
+				e.preventDefault();
+				
+				var elements = this._menu.getElementsByTagName('button');
+				
+				var i, l;
+				for (i = 0, l = elements.length; i < l; i++) {
+					if (elements[i].hasClassName(flagrate.className + '-search-suggest-selected') === true) {
+						if ((e.keyCode === 38 && i !== 0) || (e.keyCode === 40 && (i + 1) !== l)) {
+							elements[i].removeClassName(flagrate.className + '-search-suggest-selected');
+						}
+						
+						var scrollTop = -1;
+						
+						if (e.keyCode === 38 && i !== 0) {
+							elements[i - 1].addClassName(flagrate.className + '-search-suggest-selected');
+							scrollTop = elements[i - 1].offsetHeight + elements[i - 1].offsetTop;
+						} else if (e.keyCode === 40 && (i + 1) !== l) {
+							elements[i + 1].addClassName(flagrate.className + '-search-suggest-selected');
+							scrollTop = elements[i + 1].offsetHeight + elements[i + 1].offsetTop;
+						}
+						
+						if (scrollTop !== -1) {
+							this._suggest.scrollTop = scrollTop + 4 - this._suggest.getHeight();
+						}
+						
+						break;
+					}
+				}
+			} else if (e.keyCode === 13) {
+				setTimeout(this.search.bind(this), 100);
+			}
+			
+			return this;
+		},
+		
+		_onKeyupHandler: function (e) {
+			
+			if (this._lastValue !== this.getValue()) {
+				this._lastValue = this.getValue();
+				
+				this.suggest();
+			}
+		},
+		
+		_onFocusHandler: function (e) {
+			
+			setTimeout(this.suggest.bind(this), 100);
+			
+			return this;
+		},
+		
+		_onBlurHandler: function (e) {
+			
+			setTimeout(function () {
+				
+				if (document.activeElement !== this._suggest && this._suggest.visible() === true) {
+					this._suggest.hide();
+				}
+			}.bind(this), 100);
+			
+			return this;
+		}
+	};
+	
+	/*?
 	 *  class flagrate.Checkbox
 	**/
 	

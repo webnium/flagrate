@@ -25,6 +25,10 @@ textarea.flagrate {
 	-webkit-appearance: none;
 	border-radius     : 0; }
 
+input.flagrate:-ms-input-placeholder,
+textarea.flagrate:-ms-input-placeholder {
+	color: rgba(0,0,0,0.4); }
+
 button.flagrate::-moz-focus-inner {
 	border : 0;
 	padding: 0;
@@ -600,7 +604,6 @@ div.flagrate-combobox {
 	height          : 32px; }
 	
 	div.flagrate-combobox > input.flagrate-textinput {
-		display         : inline-block;
 		width           : 100%;
 		height          : 100%;
 		padding-right   : 30px; }
@@ -656,6 +659,82 @@ div.flagrate-combobox {
 		top              : auto;
 		bottom           : 100%;
 		margin           : 0 0 4px 0; }
+
+div.flagrate-search-box {
+	width  : 240px;
+	height : 32px;
+	display: inline-block; }
+	
+	div.flagrate-search-box > input.search-input {
+		width              : 100%;
+		height             : 100%;
+		padding-right      : 30px; }
+	
+	div.flagrate-search-box > button.search-button {
+		position           : absolute;
+		top                : 3px;
+		right              : 3px;
+		bottom             : 3px;
+		height             : auto;
+		width              : 24px;
+		box-shadow         : none;
+		border-color       : transparent;
+		transition-property: background-color;
+		background-color   : transparent;
+		background-size    : 12px 12px;
+		background-position: center center;
+		background-image   : url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwYXRoIHN0eWxlPSJmaWxsOiM3Nzc7IiBkPSJNNC40LDUuOGMwLTAuOCwwLjItMS42LDAuNS0yLjNzMC43LTEuMywxLjItMS44czEuMS0wLjksMS45LTEuMlM5LjQsMCwxMC4yLDBjMC41LDAsMSwwLjEsMS41LDAuMnMxLDAuMywxLjQsMC42IGMwLjQsMC4zLDAuOCwwLjYsMS4yLDAuOWMwLjQsMC40LDAuNywwLjcsMC45LDEuMmMwLjMsMC40LDAuNCwwLjksMC42LDEuNHMwLjIsMSwwLjIsMS41cy0wLjEsMS4xLTAuMiwxLjVzLTAuMywxLTAuNiwxLjQgYy0wLjMsMC40LTAuNiwwLjgtMC45LDEuMmMtMC40LDAuNC0wLjcsMC43LTEuMiwwLjljLTAuNCwwLjMtMC45LDAuNC0xLjQsMC42Yy0wLjUsMC4xLTEsMC4yLTEuNSwwLjJjLTAuNSwwLTEtMC4xLTEuNC0wLjIgYy0wLjUtMC4xLTAuOS0wLjMtMS4zLTAuNWwtNC45LDQuNmMtMC4xLDAuMS0wLjMsMC4yLTAuNSwwLjNDMS45LDE2LDEuNywxNiwxLjUsMTZjLTAuMiwwLTAuNCwwLTAuNi0wLjFzLTAuNC0wLjItMC41LTAuNCBjLTAuMS0wLjItMC4zLTAuMy0wLjMtMC41QzAsMTQuOCwwLDE0LjYsMCwxNC41YzAtMC4yLDAtMC40LDAuMS0wLjZjMC4xLTAuMiwwLjItMC40LDAuMy0wLjVsNC44LTQuNUM0LjksOC40LDQuNyw3LjksNC42LDcuNCBDNC40LDYuOSw0LjQsNi40LDQuNCw1Ljh6IE02LjEsNS44YzAsMC42LDAuMSwxLjEsMC4zLDEuNlM3LDguMyw3LjMsOC43QzcuNyw5LDguMSw5LjMsOC42LDkuNmMwLjUsMC4yLDEsMC4zLDEuNiwwLjMgYzAuNiwwLDEuMS0wLjEsMS42LTAuM2MwLjUtMC4yLDAuOS0wLjUsMS4zLTAuOWMwLjQtMC40LDAuNy0wLjgsMC45LTEuM3MwLjMtMSwwLjMtMS42cy0wLjEtMS4xLTAuMy0xLjZzLTAuNS0wLjktMC45LTEuMyBjLTAuNC0wLjQtMC44LTAuNy0xLjMtMC45Yy0wLjUtMC4yLTEtMC4zLTEuNi0wLjNjLTAuNiwwLTEuMSwwLjEtMS42LDAuM1M3LjcsMi42LDcuMywyLjlTNi43LDMuNyw2LjUsNC4yUzYuMSw1LjIsNi4xLDUuOHoiLz48L3N2Zz4='); }
+	
+	div.flagrate-search-box > button.search-button:hover,
+	div.flagrate-search-box > button.search-button:focus,
+	div.flagrate-search-box > input.search-input:focus + button.search-button {
+		background-color   : #388dd6;
+		background-image   : url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwYXRoIHN0eWxlPSJmaWxsOiNmZmY7IiBkPSJNNC40LDUuOGMwLTAuOCwwLjItMS42LDAuNS0yLjNzMC43LTEuMywxLjItMS44czEuMS0wLjksMS45LTEuMlM5LjQsMCwxMC4yLDBjMC41LDAsMSwwLjEsMS41LDAuMnMxLDAuMywxLjQsMC42IGMwLjQsMC4zLDAuOCwwLjYsMS4yLDAuOWMwLjQsMC40LDAuNywwLjcsMC45LDEuMmMwLjMsMC40LDAuNCwwLjksMC42LDEuNHMwLjIsMSwwLjIsMS41cy0wLjEsMS4xLTAuMiwxLjVzLTAuMywxLTAuNiwxLjQgYy0wLjMsMC40LTAuNiwwLjgtMC45LDEuMmMtMC40LDAuNC0wLjcsMC43LTEuMiwwLjljLTAuNCwwLjMtMC45LDAuNC0xLjQsMC42Yy0wLjUsMC4xLTEsMC4yLTEuNSwwLjJjLTAuNSwwLTEtMC4xLTEuNC0wLjIgYy0wLjUtMC4xLTAuOS0wLjMtMS4zLTAuNWwtNC45LDQuNmMtMC4xLDAuMS0wLjMsMC4yLTAuNSwwLjNDMS45LDE2LDEuNywxNiwxLjUsMTZjLTAuMiwwLTAuNCwwLTAuNi0wLjFzLTAuNC0wLjItMC41LTAuNCBjLTAuMS0wLjItMC4zLTAuMy0wLjMtMC41QzAsMTQuOCwwLDE0LjYsMCwxNC41YzAtMC4yLDAtMC40LDAuMS0wLjZjMC4xLTAuMiwwLjItMC40LDAuMy0wLjVsNC44LTQuNUM0LjksOC40LDQuNyw3LjksNC42LDcuNCBDNC40LDYuOSw0LjQsNi40LDQuNCw1Ljh6IE02LjEsNS44YzAsMC42LDAuMSwxLjEsMC4zLDEuNlM3LDguMyw3LjMsOC43QzcuNyw5LDguMSw5LjMsOC42LDkuNmMwLjUsMC4yLDEsMC4zLDEuNiwwLjMgYzAuNiwwLDEuMS0wLjEsMS42LTAuM2MwLjUtMC4yLDAuOS0wLjUsMS4zLTAuOWMwLjQtMC40LDAuNy0wLjgsMC45LTEuM3MwLjMtMSwwLjMtMS42cy0wLjEtMS4xLTAuMy0xLjZzLTAuNS0wLjktMC45LTEuMyBjLTAuNC0wLjQtMC44LTAuNy0xLjMtMC45Yy0wLjUtMC4yLTEtMC4zLTEuNi0wLjNjLTAuNiwwLTEuMSwwLjEtMS42LDAuM1M3LjcsMi42LDcuMywyLjlTNi43LDMuNyw2LjUsNC4yUzYuMSw1LjIsNi4xLDUuOHoiLz48L3N2Zz4='); }
+	
+	div.flagrate-search-box > button.search-button.flagrate-disabled {
+		color              : rgba(0,0,0,0.5);
+		background-color   : transparent; }
+	
+	div.flagrate-search-box > button.search-button:active,
+	div.flagrate-search-box > input.search-input:focus + button.search-button:hover {
+		background-color   : #2778be; }
+	
+	div.flagrate-search-box > button.search-button:active {
+		border-color       : #000; }
+	
+	div.flagrate-search-box > button.search-button:focus {
+		box-shadow         : inset 0 0 0 1px rgba(0,0,0,0.20); }
+	
+	div.flagrate-search-box > div.search-suggest {
+		position           : absolute;
+		z-index            : 1;
+		top                : 100%;
+		left               : 0;
+		width              : 100%;
+		max-height         : 200px;
+		margin             : 4px 0 0 0;
+		overflow-x         : hidden;
+		overflow-y         : auto;
+		border             : 1px solid #444;
+		box-shadow         : 2px 2px 0 rgba(0,0,0,0.2);
+		-webkit-box-sizing : border-box;
+		-moz-box-sizing    : border-box;
+		-ms-box-sizing     : border-box;
+		-o-box-sizing      : border-box;
+		box-sizing         : border-box; }
+	
+	div.flagrate-search-box > div.search-suggest.flagrate-search-suggest-upper {
+		top                : auto;
+		bottom             : 100%;
+		margin             : 0 0 4px 0; }
+		
+		div.flagrate-search-box > div.search-suggest > div.flagrate-menu {
+			width : 100%;
+			border: none; }
+			
+			div.flagrate-search-box > div.search-suggest > div.flagrate-menu > button.flagrate-search-suggest-selected {
+			color           : #fff;
+			background-color: #388dd6; }
 
 label.flagrate-checkbox,
 label.flagrate-radio {
