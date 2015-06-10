@@ -200,6 +200,40 @@
 		
 		flagrate.Element.insert(c, '<br>');
 		
+		// SearchBox
+		flagrate.createSearchBox({
+			placeholder: 'SearchBox',
+			suggester: function (value) {
+				if (value) {
+					return [
+						// suggestion
+						{
+							label: 'Search Site for "' + value + '"',
+							onSelect: function () {
+								console.log(this, value);
+							}
+						},
+						// auto complete
+						value.toLowerCase(),
+						value.toUpperCase()
+					];
+				}
+			},
+			onSearch: function (value) {
+				console.log(this, value);
+			}
+		}).insertTo(c);
+		flagrate.createSearchBox({
+			value: 'SearchBox',
+			isDisabled: true
+		}).insertTo(c);
+		flagrate.createSearchBox({
+			placeholder: 'SearchBox',
+			icon: 'icon.png'
+		}).insertTo(c);
+		
+		flagrate.Element.insert(c, '<br>');
+		
 		// Select
 		flagrate.createSelect({
 			items: [
