@@ -35,6 +35,7 @@ button.flagrate::-moz-focus-inner {
 	margin : 0; }
 
 .flagrate-icon {
+	background-size    : 16px 16px;
 	background-repeat  : no-repeat;
 	background-position: 5px center; }
 
