@@ -4891,12 +4891,12 @@
 				
 				if (Element.exists(t) === true) {
 					Popover._updatePosition(t, d);
-					this._positioningTimer = setTimeout(positioning, 30);
+					this._positioningTimer = setTimeout(positioning, 10);
 				} else {
 					this.close();
 				}
 			}.bind(this);
-			this._positioningTimer = setTimeout(positioning, 30);
+			this._positioningTimer = setTimeout(positioning, 10);
 			
 			var stopper = function (e) {
 				e.stopPropagation();
@@ -4972,7 +4972,7 @@
 		var width    = div.getWidth();
 		var height   = div.getHeight();
 		
-		var x = tOffset.left - tScroll.left + (tWidth / 2) - (width / 2);
+		var x = tOffset.left - tScroll.left + Math.round((tWidth / 2) - (width / 2));
 		var y = tOffset.top - tScroll.top + tHeight;
 		
 		if (y + height > window.innerHeight) {
