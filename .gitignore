@@ -1,7 +1,8 @@
 /node_modules
 /*.log
+/*.map
 /flagrate.js
 /flagrate.min.js
 /flagrate.d.ts
 /flagrate-test.d.ts
-/dist
+/lib
