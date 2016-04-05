@@ -1,59 +1,101 @@
-/*jslint node:true, white:true */
+/*
+   Copyright 2016 Webnium
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 'use strict';
 
-var fs = require('fs');
-var gulp = require('gulp');
-var include = require('gulp-include');
-var rename = require('gulp-rename');
-var mocha = require('gulp-mocha');
-var typescript = require('gulp-typescript');
-var uglify = require('gulp-uglify');
-var eol = require('gulp-eol');
-var merge = require('merge2');
+const fs = require('fs');
+const gulp = require('gulp');
+const typescript = require('gulp-typescript');
+const sourcemaps = require('gulp-sourcemaps');
+const rename = require('gulp-rename');
+const uglify = require('gulp-uglify');
+const del = require('del');
+const merge = require('merge2');
+const browserify = require('browserify');
+const babelify = require('babelify');
+const source = require('vinyl-source-stream')
+const buffer = require('vinyl-buffer');
 
-gulp.task('include-ts', function () {
-    return gulp.src('src/flagrate.ts')
-               .pipe(include())
-               .pipe(gulp.dest('dist'));
-});
+gulp.task('clean-js', () => {
 
-gulp.task('compile-ts', ['include-ts'], function () {
-
-    var result = gulp.src('dist/flagrate.ts').pipe(typescript({
-        target: 'ES5',
-        declarationFiles: true
-    }));
-
-    return merge([
-        result.dts.pipe(gulp.dest('dist')),
-        result.js.pipe(gulp.dest('dist'))
+    return del.sync([
+        'lib/js',
+        'flagrate.js'
     ]);
 });
 
-gulp.task('wrap-js', ['compile-ts'], function () {
-    return gulp.src('src/flagrate.js')
-               .pipe(include())
-               .pipe(eol())
-               .pipe(gulp.dest('dist'));
+gulp.task('tsc', ['clean-js'], () => {
+
+    const tsResult = gulp
+        .src([
+            'src/js/**/*.ts'
+        ])
+        .pipe(sourcemaps.init())
+        .pipe(typescript({
+            typescript: require('typescript'),
+            target: 'es6',
+            module: 'es6',
+            removeComments: false,
+            declarationFiles: true
+        }));
+
+    return merge([
+        tsResult
+            .js
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('lib/js')),
+        tsResult
+            .dts
+            .pipe(gulp.dest('lib/js'))
+    ]);
 });
 
-gulp.task('compile-js', ['wrap-js'], function () {
-    return gulp.src('dist/flagrate.js')
-               .pipe(uglify({ preserveComments: 'some' }))
-               .pipe(eol())
-               .pipe(rename('flagrate.min.js'))
-               .pipe(gulp.dest('dist'));
+gulp.task('browserify', ['tsc'], () => {
+
+    return browserify({
+        debug: true,
+        entries: './lib/js/flagrate.js',
+        extensions: ['.js']
+    })
+        .transform('babelify', { presets: ['es2015'], sourceMaps: true })
+        .bundle()
+        .pipe(source('flagrate.js'))
+        .pipe(buffer())
+        .pipe(gulp.dest('.'));
 });
 
-gulp.task('build', ['compile-js'], function () {
-    //fs.unlink('dist/flagrate.ts');
-    //todo
-    return gulp.src('src/flagrate.css')
-               .pipe(gulp.dest('dist'));
+gulp.task('minify', ['browserify'], () => {
+
+    return gulp.src('flagrate.js')
+        .pipe(sourcemaps.init())
+        .pipe(uglify({
+            preserveComments: 'some'
+        }))
+        .pipe(rename({
+            extname: '.min.js'
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('.'));
 });
 
-gulp.task('watch', function () {
-    gulp.watch('src/*.ts', ['build']);
+gulp.task('build-js', ['minify']);
+
+gulp.task('watch', () => {
+    gulp.watch('src/js/**/*.ts', ['build-js']);
 });
+
+gulp.task('build', ['build-js']);
 
 gulp.task('default', ['build']);

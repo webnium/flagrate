@@ -6,25 +6,25 @@
 	<title>flagrate</title>
 	<meta name="robots" content="noindex,nofollow">
 	<meta name="robots" content="noarchive">
-	<script type="text/javascript" src="../dist/flagrate.js"></script>
-	<link rel="stylesheet" type="text/css" href="../dist/flagrate.css">
+	<script type="text/javascript" src="../flagrate.js"></script>
+	<link rel="stylesheet" type="text/css" href="../flagrate.css">
 	<style type="text/css">
 		body {
 			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAALUlEQVQYV2P89evXfwYiACNVFb5584aBuiaCvEBdE2nsRpDxIiIi8KBH5oPYAE3RNZlqiqMoAAAAAElFTkSuQmCC);
 			padding: 0;
 			margin : 10px; }
-		
+
 		body, input {
 			font-family     : "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ",
 			                  Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; }
-		
+
 		div#c > * {
 			margin-bottom: 10px;
 			margin-right : 5px; }
-		
+
 		div#c > .progress-container > * {
 			margin-top: 20px; }
-		
+
 		div#c > .progress-container > *:first-child {
 			margin-top: 0; }
 	</style>
@@ -33,26 +33,26 @@
 	<div id="c"></div>
 	<script type="text/javascript">
 		var c = document.getElementById('c');
-		
+
 		// Element tests
 		flagrate.createElement().insertText('<b>text</b>').hide().insertTo(c);
 		flagrate.createElement().insert('<b>html</b>').hide().insertTo(c);
 		flagrate.createElement('div', { id: 'id' }).hide().insertTo(c);
-		
+
 		// Button
 		flagrate.createButton({ label: 'Button' }).insertTo(c);
 		flagrate.createButton({ label: 'Button', icon: 'icon.png' }).insertTo(c);
 		flagrate.createButton({ label: 'Button', isRemovableByUser: true }).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// disabled Button
 		flagrate.createButton({ label: 'Button' }).disable().insertTo(c);
 		flagrate.createButton({ label: 'Button', icon: 'icon.png' }).disable().insertTo(c);
 		flagrate.createButton({ label: 'Button', isRemovableByUser: true }).disable().insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// colored Button
 		flagrate.createButton({ label: 'Blue'}).setColor('@blue').insertTo(c);
 		flagrate.createButton({ label: 'LightBlue'}).setColor('@lightblue').insertTo(c);
@@ -63,9 +63,9 @@
 		flagrate.createButton({ label: 'Inverse'}).setColor('@inverse').insertTo(c);
 		flagrate.createButton({ label: 'Transparent'}).setColor('@transparent').insertTo(c);
 		flagrate.createButton({ label: 'Link'}).setColor('@link').insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// disabled colored Button
 		flagrate.createButton({ label: 'Blue', color: '@blue', isDisabled: true }).insertTo(c);
 		flagrate.createButton({ label: 'LightBlue', color: '@lightblue', isDisabled: true}).insertTo(c);
@@ -76,9 +76,9 @@
 		flagrate.createButton({ label: 'Inverse', color: '@inverse', isDisabled: true }).insertTo(c);
 		flagrate.createButton({ label: 'Transparent', color: '@transparent', isDisabled: true }).insertTo(c);
 		flagrate.createButton({ label: 'Link', color: '@link', isDisabled: true }).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Buttons
 		flagrate.createButtons(
 			{
@@ -100,9 +100,9 @@
 				]
 			}
 		).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Menu
 		flagrate.createMenu(
 			{
@@ -122,9 +122,9 @@
 				]
 			}
 		).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Pulldown
 		flagrate.createPulldown({
 			label: 'Pulldown',
@@ -162,16 +162,16 @@
 				}
 			]
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// TextInput
 		flagrate.createTextInput({ placeholder: 'TextInput' }).insertTo(c);
 		flagrate.createTextInput({ value: 'TextInput', isDisabled: true }).insertTo(c);
 		flagrate.createTextInput({ placeholder: 'TextInput', icon: 'icon.png' }).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Tokenizer
 		flagrate.createTokenizer({ placeholder: 'Tokenizer' }).insertTo(c);
 		flagrate.createTokenizer({ values: ['Token'], isDisabled: true }).insertTo(c);
@@ -183,23 +183,23 @@
 				return word.toUpperCase();
 			}
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
-		// TextArea 
+
+		// TextArea
 		flagrate.createTextArea({ placeholder: 'TextArea' }).insertTo(c);
 		flagrate.createTextArea({ value: 'TextArea', isDisabled: true }).insertTo(c);
 		flagrate.createTextArea({ placeholder: 'TextArea', icon: 'icon.png' }).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// ComboBox
 		flagrate.createComboBox({ placeholder: 'ComboBox', items: ['hoge', 'huga', 'poyo'] }).insertTo(c);
 		flagrate.createComboBox({ value: 'ComboBox', isDisabled: true }).insertTo(c);
 		flagrate.createComboBox({ placeholder: 'ComboBox', icon: 'icon.png', items: ['hoge', 'huga', 'poyo'] }).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Select
 		flagrate.createSelect({
 			items: [
@@ -227,9 +227,9 @@
 				}
 			]
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		flagrate.createSelect({
 			listView: true,
 			items: [
@@ -267,9 +267,9 @@
 				}
 			]
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		flagrate.createSelect({
 			multiple: true,
 			items: [
@@ -307,37 +307,37 @@
 				}
 			]
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Checkboxes
 		flagrate.createCheckboxes({ items: ['CheckboxA', 'CheckboxB'] }).addValue('CheckboxB').insertTo(c);
 		flagrate.createCheckboxes({ items: ['CheckboxA', { label: 'CheckboxB', value: 'B', icon: 'icon.png' }] }).addValue('CheckboxA').disable().insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Radios
 		flagrate.createRadios({ items: ['RadioA', 'RadioB'] }).setValue('RadioA').insertTo(c);
 		flagrate.createRadios({ items: ['RadioA', { label: 'RadioB', value: 'B', icon: 'icon.png' }] }).setValue('B').disable().insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Switch
 		flagrate.createSwitch().insertTo(c);
 		flagrate.createSwitch({ isOn: true }).insertTo(c);
 		flagrate.createSwitch({ isOn: true, isDisabled: true }).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Date
-		
-		
+
+
 		// Time
-		
-		
+
+
 		// Datetime
-		
-		
+
+
 		// Progress
 		flagrate.createElement().setStyle({
 			padding        : '20px 50px',
@@ -346,7 +346,7 @@
 		}).insert(
 			flagrate.createProgress({ value: 45 })
 		).insertTo(c)
-		
+
 		// Slider
 		flagrate.createElement('div', { 'class': 'progress-container' }).setStyle({
 			padding        : '20px 50px',
@@ -357,7 +357,7 @@
 		).insert(
 			flagrate.createSlider({ value: 70, isDisabled: true })
 		).insertTo(c)
-		
+
 		// Toolbar
 		flagrate.createToolbar({
 			items: [
@@ -377,9 +377,9 @@
 				flagrate.createButton({ label: 'Button', color: '@blue', isDisabled: true })
 			]
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Tab
 		flagrate.createTab({
 			tabs: [
@@ -398,20 +398,20 @@
 				}
 			]
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Popover
 		var popoverHoverBtn = flagrate.createButton({
 			color   : '@red',
 			label   : 'hover to open Popover'
 		}).insertTo(c);
-		
+
 		var popover = flagrate.createPopover({
 			target: popoverHoverBtn,
 			text  : 'Popover'
 		});
-		
+
 		flagrate.createButton({
 			color   : '@red',
 			label   : '#open',
@@ -419,7 +419,7 @@
 				popover.open(popoverTargetBtn);
 			}
 		}).insertTo(c);
-		
+
 		flagrate.createButton({
 			color   : '@red',
 			label   : '#close',
@@ -427,14 +427,14 @@
 				popover.close();
 			}
 		}).insertTo(c);
-		
+
 		var popoverTargetBtn = flagrate.createButton({
 			label   : 'target',
 			isDisabled: true
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Tutorial
 		var tutorial = flagrate.createTutorial({
 			steps: [
@@ -456,7 +456,7 @@
 				},
 			]
 		});
-		
+
 		flagrate.createButton({
 			color   : '@green',
 			label   : 'click to open Tutorial',
@@ -464,12 +464,12 @@
 				tutorial.open();
 			}
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Notify
 		var notify = flagrate.createNotify();
-		
+
 		flagrate.createButton({
 			color   : '@orange',
 			label   : 'click to create Notify',
@@ -480,18 +480,18 @@
 				});
 			}
 		}).insertTo(c);
-		
+
 		flagrate.Element.insert(c, '<br>');
-		
+
 		// Modal
 		var modal = flagrate.createModal({ title: 'Modal', subtitle: 'subtitle', text: 'text' });
-		
+
 		flagrate.createButton({
 			color   : '@blue',
 			label   : 'click to open Modal',
 			onSelect: function(){ modal.open(); }
 		}).insertTo(c);
-		
+
 		// Grid
 		var grid = flagrate.createGrid({
 			multiSelect: true,
@@ -575,7 +575,7 @@
 				}
 			]
 		}).insertTo(c);
-		
+
 		// Form
 		var form = flagrate.createForm({
 			fields: [
@@ -796,25 +796,25 @@
 				}
 			]
 		}).insertTo(c);
-		
+
 		flagrate.createButton({
 			color   : '@lightblue',
 			label   : '#enable',
 			onSelect: function () { form.enable(); }
 		}).insertTo(c);
-		
+
 		flagrate.createButton({
 			color   : '@lightblue',
 			label   : '#disable',
 			onSelect: function () { form.disable(); }
 		}).insertTo(c);
-		
+
 		flagrate.createButton({
 			color   : '@lightblue',
 			label   : '#getResult (see console.log)',
 			onSelect: function () { console.log(form.getResult()); }
 		}).insertTo(c);
-		
+
 		flagrate.createButton({
 			color   : '@lightblue',
 			label   : '#validate (see console.log)',
