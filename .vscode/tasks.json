@@ -1,0 +1,19 @@
+{
+    "version": "0.1.0",
+    "command": "gulp",
+    "isShellCommand": true,
+    "args": [
+        "--no-color"
+    ],
+    "tasks": [
+        {
+            "taskName": "watch",
+            "args": ["watch"],
+            "isBuildCommand": true,
+            "isWatching": true,
+            "problemMatcher": [
+                "$tsc"
+            ]
+        }
+    ]
+}
