@@ -147,13 +147,13 @@ function FButtons(option: Option = {}) {
     });
 
     return container;
-};
+}
 
 export const Buttons = FButtons as any as Class;
 
 export function createButtons(option?: Option): Buttons {
     return new Buttons(option);
-};
+}
 
 Buttons.prototype = {
     push (option: ButtonOption) {

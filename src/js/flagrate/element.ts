@@ -689,7 +689,7 @@ function FElement(tagName: string = 'div', attribute?: Attribute) {
     extendObject(node, this);
 
     return attribute ? node.writeAttribute(attribute) : node;
-};
+}
 
 export const Element = FElement as any as Class;
 

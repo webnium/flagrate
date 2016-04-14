@@ -185,7 +185,7 @@ function FButton(option: Option = {}) {
     }
 
     return button;
-};
+}
 
 export const Button = FButton as any as Class;
 
