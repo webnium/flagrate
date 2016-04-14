@@ -1,16 +1,52 @@
+/*
+   Copyright 2016 Webnium
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+'use strict';
+
+/**
+ * Extend Object.
+ */
+export function extendObject<T, U>(dest: T, source: U): T {
+
+    var k;
+    for (k in source) {
+        dest[k] = source[k];
+    }
+
+    return dest;
+}
+
+/**
+ * Placeholder.
+ */
+export function emptyFunction(...args: any[]): any;
+export function emptyFunction() {}
+
 /*?
- *  Flagrate.jsonPointer
- *
- *  ref: node-jsonpointer https://github.com/janl/node-jsonpointer
- *  ref: http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-08
+    Flagrate#jsonPointer
+
+    ref: node-jsonpointer https://github.com/janl/node-jsonpointer
+    ref: http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-08
 **/
 /**
- *  Json Pointer Implementation.
- *  @namespace Flagrate.jsonPointer
-**/
-export module jsonPointer {
+ * JSON Pointer Implementation.
+ */
+export namespace jsonPointer {
 
     export function get(object: Object, pointer: string): any {
+
         var pts = validate_input(object, pointer);
         if (pts.length === 0) {
             return object;
@@ -19,8 +55,9 @@ export module jsonPointer {
     }
 
     export function set<T>(object: Object, pointer: string, value: T): T {
+
         if (pointer === '' && typeof value === 'object') {
-            Flagrate.extendObject(object, value);
+            extendObject(object, value);
             return value;
         } else {
             var pts = validate_input(object, pointer);
@@ -32,6 +69,7 @@ export module jsonPointer {
     }
 
     function untilde(str: string): string {
+
         return str.replace(/~[01]/g, function (m) {
             switch (m) {
                 case '~0':
@@ -45,6 +83,7 @@ export module jsonPointer {
 
     function traverse<T>(object: Object, pts: string[], value?: T, isSet?: boolean): T;
     function traverse(object: Object, pts: string[], value?, isSet?): any {
+
         var part:any = untilde(pts.shift());
         if (/^\d+$/.test(part)) {
             part = parseInt(part, 10);
@@ -77,6 +116,7 @@ export module jsonPointer {
     }
 
     function validate_input(object: Object, pointer: string): string[] {
+
         if (typeof object !== 'object') {
             throw new Error('Invalid input object.');
         }
@@ -96,5 +136,4 @@ export module jsonPointer {
 
         return pts;
     }
-
 }
