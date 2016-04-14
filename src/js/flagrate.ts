@@ -18,6 +18,7 @@
 import * as util from './flagrate/util';
 import * as element from './flagrate/element';
 import * as button from './flagrate/button';
+import * as buttons from './flagrate/buttons';
 
 export default class Flagrate {
 
@@ -41,6 +42,9 @@ export default class Flagrate {
 
     Button = button.Button;
     createButton = button.createButton;
+
+    Buttons = buttons.Buttons;
+    createButtons = buttons.createButtons;
 }
 
 export declare const flagrate: Flagrate;
