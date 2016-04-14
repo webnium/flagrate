@@ -25,25 +25,25 @@ import * as button from './button';
     #### Example
 
         var button = flagrate.createButtons({
-        items: [
-            { label: 'Left' },
-            { label: 'Middle' },
-            { label: 'Right' }
-        ]
+            items: [
+                { label: 'Left' },
+                { label: 'Middle' },
+                { label: 'Right' }
+            ]
         }).insertTo(x);
 
     #### Structure
 
     <div class="example-container">
-    <div class="flagrate flagrate-buttons">
-        <button class="flagrate flagrate-button">Left</button><button class="flagrate flagrate-button">Middle</button><button class="flagrate flagrate-button">Right</button>
-    </div>
+        <div class="flagrate flagrate-buttons">
+            <button class="flagrate flagrate-button">Left</button><button class="flagrate flagrate-button">Middle</button><button class="flagrate flagrate-button">Right</button>
+        </div>
     </div>
 
         <div class="flagrate flagrate-buttons">
-        <button class="flagrate flagrate-button">Left</button>
-        <button class="flagrate flagrate-button">Middle</button>
-        <button class="flagrate flagrate-button">Right</button>
+            <button class="flagrate flagrate-button">Left</button>
+            <button class="flagrate flagrate-button">Middle</button>
+            <button class="flagrate flagrate-button">Right</button>
         </div>
 
     #### Inheritances
