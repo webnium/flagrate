@@ -15,8 +15,8 @@
 */
 'use strict';
 
-import { Element, FHTMLSpanElement, FHTMLButtonElement } from './element';
 import { extendObject, emptyFunction } from './util';
+import { Element, FHTMLSpanElement, FHTMLButtonElement } from './element';
 
 /*?
     class flagrate.Button
@@ -50,10 +50,6 @@ export interface Button extends Instance, FHTMLButtonElement { }
 export interface Class {
     new (option?: Option): Button;
     prototype: Instance;
-}
-
-export interface createButton {
-    (option?: Option): Button;
 }
 
 export interface Instance {
@@ -193,7 +189,7 @@ function FButton(option: Option = {}) {
 
 export const Button = FButton as any as Class;
 
-export const createButton: createButton = (option?: Option) => {
+export function createButton(option?: Option): Button {
     return new Button(option);
 }
 
@@ -274,15 +270,15 @@ Button.prototype = {
 
         // for Firefox <- until when..?
         if (this._removeButton && e && e.layerX) {
-            var bw = this.getWidth();
-            var bh = this.getHeight();
-            var bp = this._removeButton.getStyle('margin-right') === null ? 0 : parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
-            var rw = this._removeButton.getWidth();
-            var rh = this._removeButton.getHeight();
-            var lx = e.layerX;
-            var ly = e.layerY;
+            const bw = this.getWidth();
+            const bh = this.getHeight();
+            const bp = this._removeButton.getStyle('margin-right') === null ? 0 : parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
+            const rw = this._removeButton.getWidth();
+            const rh = this._removeButton.getHeight();
+            const lx = e.layerX;
+            const ly = e.layerY;
 
-            var isHitRemoveButton = (
+            const isHitRemoveButton = (
                 lx > bw - bp - rw &&
                 lx < bw - bp &&
                 ly > bh - ((bh - rh) / 2) - rh &&
@@ -305,6 +301,7 @@ Button.prototype = {
 
         if (this.isEnabled() && this.remove()) {
             this.onRemove(e);
+            this.fire('remove', { targetButton: this });
         }
     }
 };
