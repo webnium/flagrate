@@ -17,10 +17,9 @@
 
 import * as util from './flagrate/util';
 import * as element from './flagrate/element';
+import * as button from './flagrate/button';
 
 export default class Flagrate {
-
-    className = 'flagrate';
 
     identity<T>(a: T): T {
         return a;
@@ -39,6 +38,9 @@ export default class Flagrate {
 
     Element = element.Element;
     createElement = element.createElement;
+
+    Button = button.Button;
+    createButton = button.createButton;
 }
 
 export declare const flagrate: Flagrate;
