@@ -27,13 +27,13 @@ import { extendObject } from './util';
 
         var preview = flagrate.createElement().insertTo(x);
         preview.on('updated', function (e) {
-        console.log('fired custom event', e);
+            console.log('fired custom event', e);
         });
 
         var input = flagrate.createTextInput().insertTo(x);
         input.on('change', function () {
-        preview.updateText(input.value);
-        preview.fire('updated');
+            preview.updateText(input.value);
+            preview.fire('updated');
         });
 
     #### Inheritance
@@ -256,8 +256,6 @@ export interface Class {
     new (tagName: 'video', attribute?: Attribute): FHTMLVideoElement;
     new (tagName: 'xmp', attribute?: Attribute): FHTMLBlockElement;
     new (tagName?: string, attribute?: Attribute): FHTMLElement;
-
-    prototype: Instance;
 
     /** Tells whether `element` is visible. */
     visible<T extends HTMLElement>(element: T): boolean;
@@ -549,9 +547,9 @@ export interface Instance {
     insertText(content: Insertion): this;
 
     /** Insert `element` to the _content_ of `element`. */
-    insertTo<T extends HTMLElement, U extends HTMLElement>(element: T, to: U): this;
+    insertTo<T extends HTMLElement>(to: T): this;
     /** Insert `element` to the specific position of _content_ of `element`. */
-    insertTo<T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position: InsertPosition): this;
+    insertTo<T extends HTMLElement>(to: T, position: InsertPosition): this;
 
     /** **DEPRECATED**: Use getAttribute instead. */
     readAttribute(name: string): string;
@@ -701,7 +699,7 @@ export const createElement: createElement = (tagName, attribute) => {
 
 Element.prototype = {
     isFlagrated: true
-} as any;
+};
 
 /*?
     flagrate.Element.visible(element) -> Boolean
