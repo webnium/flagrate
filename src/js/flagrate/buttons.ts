@@ -118,13 +118,13 @@ function FButtons(option: Option = {}) {
 
     this.onSelect = option.onSelect || emptyFunction;
 
-    var attr = option.attribute || {};
+    const attr = option.attribute || {};
     if (option.id) {
         attr.id = option.id;
     }
 
     // create a container
-    var container = new Element('div', attr) as Buttons;
+    const container = new Element('div', attr) as Buttons;
     extendObject(container, this);
 
     container.addClassName('flagrate flagrate-buttons');
@@ -158,9 +158,7 @@ export function createButtons(option?: Option): Buttons {
 Buttons.prototype = {
     push (option: ButtonOption) {
 
-        if (option.onSelect) {
-            var _onSelect = option.onSelect;
-        }
+        const _onSelect = option.onSelect;
 
         option.onSelect = (e) => {
 
@@ -182,11 +180,11 @@ Buttons.prototype = {
 
     getButtonByKey (key: string) {
 
-        var result = null;
+        let result = null;
 
-        var elements = this.childNodes;
-        var i, l;
-        for (i = 0, l = elements.length; i < l; i++) {
+        const elements = this.childNodes;
+        let i = 0, l = elements.length;
+        for (; i < l; i++) {
             if (elements[i].dataset['_key'] === key) {
                 result = elements[i];
                 break;
