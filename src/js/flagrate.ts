@@ -23,6 +23,7 @@ import * as menu from './flagrate/menu';
 import * as pulldown from './flagrate/pulldown';
 import * as textInput from './flagrate/text-input';
 import * as tokenizer from './flagrate/tokenizer';
+import * as textArea from './flagrate/text-area';
 
 export default class Flagrate {
 
@@ -51,6 +52,9 @@ export default class Flagrate {
 
     Tokenizer = tokenizer.Tokenizer;
     createTokenizer = tokenizer.createTokenizer;
+
+    TextArea = textArea.TextArea;
+    createTextArea = textArea.createTextArea;
 }
 
 export declare const flagrate: Flagrate;
