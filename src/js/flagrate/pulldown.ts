@@ -199,13 +199,13 @@ Pulldown.prototype = {
             className: 'flagrate-pulldown-menu',
             items: pulldown.items,
 
-            onSelect: () => {
+            onSelect: (e) => {
 
                 if (pulldown.onSelect) {
-                    pulldown.onSelect();
+                    pulldown.onSelect(e);
                 }
 
-                pulldown.close();
+                close(e);
             }
         });
 
