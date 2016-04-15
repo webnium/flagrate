@@ -175,7 +175,7 @@ export function createMenu(option?: Option): Menu {
 }
 
 Menu.prototype = {
-    push (option: ButtonOption) {
+    push(option: ButtonOption) {
 
         if (typeof option === 'string') {
             new Element('hr').insertTo(this);
