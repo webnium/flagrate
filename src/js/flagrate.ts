@@ -20,6 +20,7 @@ import * as element from './flagrate/element';
 import * as button from './flagrate/button';
 import * as buttons from './flagrate/buttons';
 import * as menu from './flagrate/menu';
+import * as pulldown from './flagrate/pulldown';
 
 export default class Flagrate {
 
@@ -49,6 +50,9 @@ export default class Flagrate {
 
     Menu = menu.Menu;
     createMenu = menu.createMenu;
+
+    Pulldown = pulldown.Pulldown;
+    createPulldown = pulldown.createPulldown;
 }
 
 export declare const flagrate: Flagrate;
