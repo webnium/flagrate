@@ -21,6 +21,7 @@ import * as button from './flagrate/button';
 import * as buttons from './flagrate/buttons';
 import * as menu from './flagrate/menu';
 import * as pulldown from './flagrate/pulldown';
+import * as textInput from './flagrate/text-input';
 
 export default class Flagrate {
 
@@ -53,6 +54,9 @@ export default class Flagrate {
 
     Pulldown = pulldown.Pulldown;
     createPulldown = pulldown.createPulldown;
+
+    TextInput = textInput.TextInput;
+    createTextInput = textInput.createTextInput;
 }
 
 export declare const flagrate: Flagrate;
