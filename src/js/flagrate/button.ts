@@ -302,7 +302,9 @@ Button.prototype = {
 
     _onRemoveHandler (e) {
 
-        if (this.isEnabled() && this.remove()) {
+        if (this.isEnabled() === true) {
+            this.remove();
+
             this.onRemove(e, this);
             this.fire('remove', { targetButton: this });
         }
