@@ -25,19 +25,9 @@ import * as textInput from './flagrate/text-input';
 
 export default class Flagrate {
 
-    identity<T>(a: T): T {
-        return a;
-    }
-
-    extendObject<T, U>(dest: T, source: U): T {
-        return util.extendObject(dest, source);
-    }
-
-    emptyFunction(...args: any[]): any;
-    emptyFunction() {
-        return util.emptyFunction();
-    }
-
+    identity = util.identity;
+    extendObject = util.extendObject;
+    emptyFunction = util.emptyFunction;
     jsonPointer = util.jsonPointer;
 
     Element = element.Element;

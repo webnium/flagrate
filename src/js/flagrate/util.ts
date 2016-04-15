@@ -16,6 +16,13 @@
 'use strict';
 
 /**
+ * Identity.
+ */
+export function identity<T>(a: T): T {
+    return a;
+}
+
+/**
  * Extend Object.
  */
 export function extendObject<T, U>(dest: T, source: U): T {
