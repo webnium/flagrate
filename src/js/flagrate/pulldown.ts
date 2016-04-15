@@ -281,7 +281,7 @@ Pulldown.prototype = {
             pulldown._menu.remove();
             delete pulldown._menu;
 
-            pulldown.onOpen(e, pulldown);
+            pulldown.onClose(e, pulldown);
             pulldown.fire('close', { targetPulldown: pulldown });
         }, 250);
 
