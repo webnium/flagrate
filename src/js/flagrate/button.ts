@@ -35,7 +35,7 @@ import { Element, FHTMLSpanElement, FHTMLButtonElement } from './element';
 
         <button class="flagrate flagrate-button flagrate-icon" style="background-image: url(icon.png);">foo</button>
 
-    #### Event
+    #### Events
 
     * `select`:
     * `remove`:
@@ -62,6 +62,9 @@ export interface Instance {
     getColor(): string;
     setIcon(url?: string): Button;
     getIcon(): string;
+
+    onSelect? (event?: any, button?: Button): void;
+    onRemove? (event?: any, button?: Button): void;
 
     _label?: FHTMLSpanElement;
     _removeButton?: FHTMLButtonElement;
@@ -300,7 +303,7 @@ Button.prototype = {
     _onRemoveHandler (e) {
 
         if (this.isEnabled() && this.remove()) {
-            this.onRemove(e);
+            this.onRemove(e, this);
             this.fire('remove', { targetButton: this });
         }
     }
