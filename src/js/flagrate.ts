@@ -22,6 +22,7 @@ import * as buttons from './flagrate/buttons';
 import * as menu from './flagrate/menu';
 import * as pulldown from './flagrate/pulldown';
 import * as textInput from './flagrate/text-input';
+import * as tokenizer from './flagrate/tokenizer';
 
 export default class Flagrate {
 
@@ -47,6 +48,9 @@ export default class Flagrate {
 
     TextInput = textInput.TextInput;
     createTextInput = textInput.createTextInput;
+
+    Tokenizer = tokenizer.Tokenizer;
+    createTokenizer = tokenizer.createTokenizer;
 }
 
 export declare const flagrate: Flagrate;
