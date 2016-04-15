@@ -131,13 +131,13 @@ function FTextArea(option: Option = {}) {
     }
 
     return textArea;
-};
+}
 
 export const TextArea = FTextArea as any as Class;
 
 export function createTextArea(option?: Option): TextArea {
     return new TextArea(option);
-};
+}
 
 TextArea.prototype = {
     disable() {
