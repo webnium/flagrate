@@ -161,7 +161,7 @@ function FButton(option: Option = {}) {
         button.addClassName(option.className);
     }
 
-    button.on('click', button._onSelectHandler.bind(button), true);
+    button.addEventListener('click', button._onSelectHandler.bind(button), true);
 
     if (option.isRemovableByUser) {
         button.addClassName('flagrate-button-removable');
@@ -170,7 +170,7 @@ function FButton(option: Option = {}) {
             type: 'button',
             class: 'flagrate-button-remove'
         }).insertTo(button);
-        button._removeButton.on('click', button._onRemoveHandler.bind(button), true);
+        button._removeButton.addEventListener('click', button._onRemoveHandler.bind(button), true);
     }
 
     if (option.style) {

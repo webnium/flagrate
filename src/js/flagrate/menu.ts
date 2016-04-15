@@ -156,12 +156,12 @@ function FMenu(option: Option = {}) {
         container.push(option.items[i]);
     }
 
-    container.on('click', (e) => {
+    container.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
     });
 
-    container.on('mouseup', (e) => {
+    container.addEventListener('mouseup', (e) => {
         e.stopPropagation();
     });
 
@@ -182,13 +182,13 @@ Menu.prototype = {
         } else {
             const _onSelect = option.onSelect;
 
-            option.onSelect = (e) => {
+            option.onSelect = (e, button) => {
 
                 if (_onSelect) {
-                    _onSelect(e);
+                    _onSelect(e, button);
                 }
 
-                this.onSelect(e);
+                this.onSelect(e, this);
             };
 
             const btn = new button.Button(option).insertTo(this);

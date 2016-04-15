@@ -141,7 +141,7 @@ function FButtons(option: Option = {}) {
         container.push(option.items[i]);
     }
 
-    container.on('click', (e) => {
+    container.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
     });

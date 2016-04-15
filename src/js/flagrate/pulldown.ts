@@ -154,7 +154,7 @@ function FPulldown(option: Option = {}) {
 
     extendObject(pulldown, this);
 
-    pulldown.on('select', pulldown.open.bind(pulldown));
+    pulldown.addEventListener('select', pulldown.open.bind(pulldown));
 
     pulldown.addClassName('flagrate-pulldown');
     if (option.className) {
@@ -202,10 +202,10 @@ Pulldown.prototype = {
             onSelect: (e) => {
 
                 if (pulldown.onSelect) {
-                    pulldown.onSelect(e);
+                    pulldown.onSelect(e, pulldown);
                 }
 
-                close(e);
+                pulldown.fire('select', { targetPulldown: pulldown });
             }
         });
 
@@ -235,13 +235,11 @@ Pulldown.prototype = {
 
         const close = (e: Event) => {
 
-            e.stopPropagation();
-
             document.body.removeEventListener('click', close);
             if (pulldown.parentNode) {
                 pulldown.parentNode.removeEventListener('click', close);
             }
-            pulldown.off('select', close, true);
+            pulldown.removeEventListener('select', close);
 
             pulldown.close(e);
         };
@@ -251,7 +249,7 @@ Pulldown.prototype = {
             if (pulldown.parentNode) {
                 pulldown.parentNode.addEventListener('click', close);
             }
-            pulldown.on('select', close, true);
+            pulldown.addEventListener('select', close);
         }, 0);
 
         pulldown.onOpen(e, pulldown);
