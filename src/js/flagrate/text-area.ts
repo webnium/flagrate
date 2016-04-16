@@ -98,7 +98,7 @@ function FTextArea(option: Option = {}) {
 
     this.regexp = option.regexp || null;
 
-    var attr = option.attribute || {};
+    const attr = option.attribute || {};
 
     if (option.id) {
         attr.id = option.id;
@@ -108,7 +108,7 @@ function FTextArea(option: Option = {}) {
     }
 
     //create
-    var textArea = new Element('textarea', attr) as TextArea;
+    const textArea = new Element('textarea', attr) as TextArea;
     extendObject(textArea, this);
 
     textArea.addClassName('flagrate flagrate-textarea');
