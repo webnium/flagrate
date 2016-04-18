@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject, emptyFunction } from './util';
-import { Element, FHTMLSpanElement, FHTMLButtonElement } from './element';
+import { Element, Attribute, Property, FHTMLSpanElement, FHTMLButtonElement } from './element';
 
 /*?
     class flagrate.Button
@@ -80,10 +80,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** Color (uses flagrate.Button#setColor). */
     color?: string;
@@ -144,14 +144,14 @@ function FButton(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
     if (option.isFocused) {
-        attr.autofocus = true;
+        attr['autofocus'] = true;
     }
 
-    if (!attr.type) {
-        attr.type = 'button';
+    if (!attr['type']) {
+        attr['type'] = 'button';
     }
 
     // create a button element

@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject } from './util';
-import { Element, FHTMLDivElement } from './element';
+import { Element, Attribute, Property, FHTMLDivElement } from './element';
 import { Option as ButtonOption } from './button';
 import { Pulldown } from './pulldown';
 import { Grid } from './grid';
@@ -85,10 +85,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** default is false. */
     listView?: boolean;
@@ -157,7 +157,7 @@ function FSelect(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
 
     this.isPulldown = (!this.listView && !this.multiple);

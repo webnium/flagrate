@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject, emptyFunction } from './util';
-import { Element, FHTMLTextAreaElement } from './element';
+import { Element, Attribute, Property, FHTMLTextAreaElement } from './element';
 
 /*?
     class flagrate.TextArea
@@ -54,10 +54,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** default value. */
     value?: string;
@@ -101,10 +101,10 @@ function FTextArea(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
     if (option.placeholder) {
-        attr.placeholder = option.placeholder;
+        attr['placeholder'] = option.placeholder;
     }
 
     //create

@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject, emptyFunction } from './util';
-import { Element, FHTMLDivElement } from './element';
+import { Element, Attribute, Property, FHTMLDivElement } from './element';
 import * as button from './button';
 
 /*?
@@ -72,10 +72,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** Button items */
     items?: ButtonOption[];
@@ -120,7 +120,7 @@ function FButtons(option: Option = {}) {
 
     const attr = option.attribute || {};
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
 
     // create a container

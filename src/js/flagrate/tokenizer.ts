@@ -16,7 +16,7 @@
 'use strict';
 
 import { identity, extendObject, emptyFunction } from './util';
-import { Element, FHTMLSpanElement, FHTMLDivElement } from './element';
+import { Element, Attribute, Property, FHTMLSpanElement, FHTMLDivElement } from './element';
 import { Button } from './button';
 import { Menu } from './menu';
 import { TextInput } from './text-input';
@@ -72,10 +72,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses Flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** default values. */
     values?: Value[];
@@ -137,7 +137,7 @@ function FTokenizer(option: Option = {}) {
 
     const attr = option.attribute || {};
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
 
     //create

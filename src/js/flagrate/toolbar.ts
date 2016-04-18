@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject } from './util';
-import { Element, FHTMLElement, FHTMLDivElement } from './element';
+import { Element, Attribute, Property, FHTMLElement, FHTMLDivElement } from './element';
 
 /*?
     class flagrate.Toolbar
@@ -42,10 +42,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses Flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** items */
     items?: ItemOption[];
@@ -88,7 +88,7 @@ function FToolbar(option: Option = {}): Toolbar {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
 
     //create

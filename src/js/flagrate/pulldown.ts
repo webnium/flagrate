@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject, emptyFunction } from './util';
-import { Element }  from './element';
+import { Element, Attribute, Property }  from './element';
 import { Button, ButtonEvent }  from './button';
 import { Menu, ItemOption }  from './menu';
 
@@ -86,10 +86,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** Color (uses flagrate.Button#setColor). */
     color?: string;
@@ -141,7 +141,7 @@ function FPulldown(option: Option = {}) {
 
     const attr = option.attribute || {};
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
 
     //create

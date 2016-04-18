@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject, emptyFunction } from './util';
-import { Element, FHTMLInputElement }  from './element';
+import { Element, Attribute, Property, FHTMLInputElement }  from './element';
 
 /*?
     class flagrate.TextInput
@@ -54,10 +54,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** default value. */
     value?: string;
@@ -101,13 +101,13 @@ function FTextInput(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
     if (option.value) {
-        attr.value = option.value;
+        attr['value'] = option.value;
     }
     if (option.placeholder) {
-        attr.placeholder = option.placeholder;
+        attr['placeholder'] = option.placeholder;
     }
 
     //create

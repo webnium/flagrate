@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject } from './util';
-import { Element, FHTMLDivElement } from './element';
+import { Element, Attribute, Property, FHTMLDivElement } from './element';
 import { Button, Option as ButtonOption } from './button';
 import { Menu } from './menu';
 import { TextInput } from './text-input';
@@ -60,10 +60,10 @@ export interface Option {
     className?: string;
 
     /** attribute/value pairs properties. */
-    attribute?: any;
+    attribute?: Attribute;
 
     /** CSS style properties (uses flagrate.Element.setStyle). */
-    style?: any;
+    style?: Property;
 
     /** default value. */
     value?: string;
@@ -112,7 +112,7 @@ function FComboBox(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr.id = option.id;
+        attr['id'] = option.id;
     }
 
     //create
