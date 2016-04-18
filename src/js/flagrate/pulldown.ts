@@ -18,7 +18,7 @@
 import { extendObject, emptyFunction } from './util';
 import { Element }  from './element';
 import { Button }  from './button';
-import { Menu, ButtonOption }  from './menu';
+import { Menu, ItemOption }  from './menu';
 
 /*?
     class flagrate.Pulldown
@@ -66,7 +66,7 @@ export interface Class {
 }
 
 export interface Instance {
-    items?: ButtonOption[];
+    items?: ItemOption[];
 
     open(event?: any): Pulldown;
     close(event?: any): Pulldown;
@@ -104,7 +104,7 @@ export interface Option {
     isDisabled?: boolean;
 
     /** Button items */
-    items?: ButtonOption[];
+    items?: ItemOption[];
 
     onSelect?(event?: any, button?: Pulldown): void;
     onOpen?(event?: any, button?: Pulldown): void;
