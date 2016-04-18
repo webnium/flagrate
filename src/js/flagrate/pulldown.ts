@@ -17,7 +17,7 @@
 
 import { extendObject, emptyFunction } from './util';
 import { Element }  from './element';
-import { Button }  from './button';
+import { Button, ButtonEvent }  from './button';
 import { Menu, ItemOption }  from './menu';
 
 /*?
@@ -71,8 +71,8 @@ export interface Instance {
     open(event?: any): this;
     close(event?: any): this;
 
-    onOpen?(event?: any, button?: this): void;
-    onClose?(event?: any, button?: this): void;
+    onOpen?(event?: ButtonEvent, button?: this): void;
+    onClose?(event?: ButtonEvent, button?: this): void;
 
     _menu?: Menu;
     _open?: boolean;
@@ -106,7 +106,7 @@ export interface Option {
     /** Button items */
     items?: ItemOption[];
 
-    onSelect?(event?: any, button?: Pulldown): void;
+    onSelect?(event?: ButtonEvent, button?: Pulldown): void;
     onOpen?(event?: any, button?: Pulldown): void;
     onClose?(event?: any, button?: Pulldown): void;
 }

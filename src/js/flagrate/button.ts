@@ -63,13 +63,13 @@ export interface Instance {
     setIcon(url?: string): this;
     getIcon(): string;
 
-    onSelect? (event?: any, button?: this): void;
-    onRemove? (event?: any, button?: this): void;
+    onSelect?(event?: ButtonEvent, button?: this): void;
+    onRemove?(event?: ButtonEvent, button?: this): void;
 
     _label?: FHTMLSpanElement;
     _removeButton?: FHTMLButtonElement;
-    _onSelectHandler(event: any): void;
-    _onRemoveHandler(event: any): void;
+    _onSelectHandler(event: MouseEvent): void;
+    _onRemoveHandler(event: MouseEvent): void;
 }
 
 export interface Option {
@@ -103,8 +103,12 @@ export interface Option {
     /** default is false. */
     isRemovableByUser?: boolean;
 
-    onSelect? (event?: any, button?: Button): void;
-    onRemove? (event?: any, button?: Button): void;
+    onSelect?(event?: ButtonEvent, button?: Button): void;
+    onRemove?(event?: ButtonEvent, button?: Button): void;
+}
+
+export interface ButtonEvent extends MouseEvent {
+    targetButton?: Button;
 }
 
 /*?
@@ -197,11 +201,11 @@ export function createButton(option?: Option): Button {
 }
 
 Button.prototype = {
-    select () {
+    select() {
         return this._onSelectHandler(null);
     },
 
-    disable () {
+    disable() {
 
         this.addClassName('flagrate-disabled');
         this.writeAttribute('disabled', true);
@@ -209,7 +213,7 @@ Button.prototype = {
         return this;
     },
 
-    enable () {
+    enable() {
 
         this.removeClassName('flagrate-disabled');
         this.writeAttribute('disabled', false);
@@ -217,18 +221,18 @@ Button.prototype = {
         return this;
     },
 
-    isEnabled () {
+    isEnabled() {
         return !this.hasClassName('flagrate-disabled');
     },
 
-    setLabel (text) {
+    setLabel(text) {
 
         this._label.updateText(text);
 
         return this;
     },
 
-    setColor (color) {
+    setColor(color) {
 
         if (color.charAt(0) === '@') {
             this.style.backgroundColor = '';
@@ -242,11 +246,11 @@ Button.prototype = {
         return this;
     },
 
-    getColor () {
+    getColor() {
         return this._color || '';
     },
 
-    setIcon (identifier) {
+    setIcon(identifier) {
 
         this._iconIdentifier = identifier;
 
@@ -261,11 +265,11 @@ Button.prototype = {
         }
     },
 
-    getIcon () {
+    getIcon() {
         return this._iconIdentifier || '';
     },
 
-    _onSelectHandler (e) {
+    _onSelectHandler(e) {
 
         if (this.isEnabled() === false) {
             return;
@@ -294,18 +298,22 @@ Button.prototype = {
             }
         }
 
-        e.targetButton = this;
+        const _e: ButtonEvent = e;
+        _e.targetButton = this;
 
-        this.onSelect(e, this);
+        this.onSelect(_e, this);
         this.fire('select', { targetButton: this });
     },
 
-    _onRemoveHandler (e) {
+    _onRemoveHandler(e) {
 
         if (this.isEnabled() === true) {
             this.remove();
 
-            this.onRemove(e, this);
+            const _e: ButtonEvent = e;
+            _e.targetButton = this;
+
+            this.onRemove(_e, this);
             this.fire('remove', { targetButton: this });
         }
     }

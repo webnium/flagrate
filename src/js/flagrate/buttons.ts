@@ -80,7 +80,7 @@ export interface Option {
     /** Button items */
     items?: ButtonOption[];
 
-    onSelect? (event?: any, buttons?: Buttons): void;
+    onSelect? (event?: button.ButtonEvent, buttons?: Buttons): void;
 }
 
 export interface ButtonOption extends button.Option {
@@ -160,13 +160,13 @@ Buttons.prototype = {
 
         const _onSelect = option.onSelect;
 
-        option.onSelect = (e) => {
+        option.onSelect = (e, button) => {
 
             if (_onSelect) {
-                _onSelect(e);
+                _onSelect(e, button);
             }
 
-            this.onSelect(e);
+            this.onSelect(e, this);
         };
 
         const btn = new button.Button(option).insertTo(this);

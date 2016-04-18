@@ -96,7 +96,7 @@ export interface Option {
     /** Button items */
     items?: ItemOption[];
 
-    onSelect? (event?: any, menu?: Menu): void;
+    onSelect?(event?: button.ButtonEvent, menu?: Menu): void;
 }
 
 export interface ItemOption extends button.Option {
