@@ -17,7 +17,7 @@
 
 import { extendObject } from './util';
 import { Element, FHTMLDivElement } from './element';
-import { Button } from './button';
+import { Button, Option as ButtonOption } from './button';
 import { Menu } from './menu';
 import { TextInput } from './text-input';
 
@@ -42,7 +42,7 @@ export interface Instance {
     isValid(): boolean;
 
     /** readonly. */
-    items?: any[];
+    items?: ButtonOption[];
 
     /** RegExp for simple validation feature. */
     regexp?: RegExp;
@@ -68,8 +68,8 @@ export interface Option {
     /** default value. */
     value?: string;
 
-    /** Array of any value or, ISelectItemOption object. */
-    items?: any[];
+    /** Array of any value or, Button.Option object. */
+    items?: ButtonOption[];
 
     /** placeholder. */
     placeholder?: string;
