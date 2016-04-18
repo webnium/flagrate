@@ -258,124 +258,124 @@ export interface Class {
     new (tagName?: string, attribute?: Attribute): FHTMLElement;
 
     /** Tells whether `element` is visible. */
-    visible<T extends HTMLElement>(element: T): boolean;
+    visible<T extends Node>(element: T): boolean;
 
     /** Tells whether `element` is exists on document. */
-    exists<T extends HTMLElement>(element: T): boolean;
+    exists<T extends Node>(element: T): boolean;
 
     /** Toggles the visibility of `element`. */
-    toggle<T extends HTMLElement>(element: T): T;
+    toggle<T extends Node>(element: T): T;
 
     /** Sets `display: none` on `element`. */
-    hide<T extends HTMLElement>(element: T): T;
+    hide<T extends Node>(element: T): T;
 
     /** Removes `display: none` on `element`. */
-    show<T extends HTMLElement>(element: T): T;
+    show<T extends Node>(element: T): T;
 
     /** Completely removes `element` from the document. */
-    remove<T extends HTMLElement>(element: T): void;
+    remove<T extends Node>(element: T): void;
 
     /** Clear the _content_ of `element`. */
-    update<T extends HTMLElement>(element: T): T;
+    update<T extends Node>(element: T): T;
     /** Update the _content_ of `element` with the `string` as HTML. */
-    update<T extends HTMLElement>(element: T, string: string): T;
+    update<T extends Node>(element: T, string: string): T;
     /** **DEPRECATED**: Use updateText instead. */
-    update<T extends HTMLElement>(element: T, number: number): T;
+    update<T extends Node>(element: T, number: number): T;
     /** Replaces the _content_ of `element` with the `newContent`. */
-    update<T extends HTMLElement, U extends HTMLElement>(element: T, newContent: U): T;
+    update<T extends Node, U extends Node>(element: T, newContent: U): T;
 
     /** Update the _content_ of `element` with the `string` as Text. */
-    updateText<T extends HTMLElement>(element: T, string: string): T;
+    updateText<T extends Node>(element: T, string: string): T;
     /** Update the _content_ of `element` with the `number` as Text. */
-    updateText<T extends HTMLElement>(element: T, number: number): T;
+    updateText<T extends Node>(element: T, number: number): T;
     /** Update the _content_ of `element` with the `boolean` as Text. */
-    updateText<T extends HTMLElement>(element: T, boolean: boolean): T;
+    updateText<T extends Node>(element: T, boolean: boolean): T;
     /** Update the _content_ of `element` with the `content` element as Text. */
-    updateText<T extends HTMLElement, U extends HTMLElement>(element: T, content: U): T;
+    updateText<T extends Node, U extends Node>(element: T, content: U): T;
 
     /** Insert the `string` as HTML to the _content_ of `element`. */
-    insert<T extends HTMLElement>(element: T, string: string): T;
+    insert<T extends Node>(element: T, string: string): T;
     /** **DEPRECATED**: Use updateText instead. */
-    insert<T extends HTMLElement>(element: T, number: number): T;
+    insert<T extends Node>(element: T, number: number): T;
     /** Insert the `content` to the _content_ of `element`. */
-    insert<T extends HTMLElement, U extends HTMLElement>(element: T, content: U): T;
+    insert<T extends Node, U extends Node>(element: T, content: U): T;
     /** Insert the content(s) to the specific position of _content_ of `element` (Advanced).  */
-    insert<T extends HTMLElement>(element: T, insertion: Insertion): T;
+    insert<T extends Node>(element: T, insertion: Insertion): T;
 
     /** Insert the `string` to the _content_ of `element` */
-    insertText<T extends HTMLElement>(element: T, string: string): T;
+    insertText<T extends Node>(element: T, string: string): T;
     /** Insert the `number` as Text to the _content_ of `element` */
-    insertText<T extends HTMLElement>(element: T, number: number): T;
+    insertText<T extends Node>(element: T, number: number): T;
     /** Insert the content(s) to the specific position of _content_ of `element` (Advanced). */
-    insertText<T extends HTMLElement>(element: T, content: Insertion): T;
+    insertText<T extends Node>(element: T, content: Insertion): T;
 
     /** Insert `element` to the _content_ of `element`. */
-    insertTo<T extends HTMLElement, U extends HTMLElement>(element: T, to: U): T;
+    insertTo<T extends Node, U extends Node>(element: T, to: U): T;
     /** Insert `element` to the specific position of _content_ of `element`. */
-    insertTo<T extends HTMLElement, U extends HTMLElement>(element: T, to: U, position: InsertPosition): T;
+    insertTo<T extends Node, U extends Node>(element: T, to: U, position: InsertPosition): T;
 
     /** **DEPRECATED**: Use getAttribute instead. */
-    readAttribute<T extends HTMLElement>(element: T, name: string): string;
+    readAttribute<T extends Node>(element: T, name: string): string;
 
     /** Set attribute `name`. */
-    writeAttribute<T extends HTMLElement>(element: T, name: string): T;
+    writeAttribute<T extends Node>(element: T, name: string): T;
     /** Set or Remove attribute `name`. */
-    writeAttribute<T extends HTMLElement>(element: T, name: string, exists: boolean): T;
+    writeAttribute<T extends Node>(element: T, name: string, exists: boolean): T;
     /** Set value of attribute `name`. */
-    writeAttribute<T extends HTMLElement>(element: T, name: string, value: string): T;
+    writeAttribute<T extends Node>(element: T, name: string, value: string): T;
     /** Set attribute(s) by name/value pairs. */
-    writeAttribute<T extends HTMLElement>(element: T, attribute: Attribute): T;
+    writeAttribute<T extends Node>(element: T, attribute: Attribute): T;
 
     /** Get dimenstions of `element`. */
-    getDimensions<T extends HTMLElement>(element: T): Dimensions;
+    getDimensions<T extends Node>(element: T): Dimensions;
 
     /** Get height of `element`. */
-    getHeight<T extends HTMLElement>(element: T): number;
+    getHeight<T extends Node>(element: T): number;
 
     /** Get width of `element`. */
-    getWidth<T extends HTMLElement>(element: T): number;
+    getWidth<T extends Node>(element: T): number;
 
     /** Get cumulative offset of `element`. */
-    cumulativeOffset<T extends HTMLElement>(element: T): Offset;
+    cumulativeOffset<T extends Node>(element: T): Offset;
 
     /** Get cumulative scroll offset of `element`. */
-    cumulativeScrollOffset<T extends HTMLElement>(element: T): Offset;
+    cumulativeScrollOffset<T extends Node>(element: T): Offset;
 
     /** Tells weather class name is exists. */
-    hasClassName<T extends HTMLElement>(element: T, className: string): boolean;
+    hasClassName<T extends Node>(element: T, className: string): boolean;
 
     /** Add class name to `element`. */
-    addClassName<T extends HTMLElement>(element: T, className: string): T;
+    addClassName<T extends Node>(element: T, className: string): T;
 
     /** Remove class name from `element`. */
-    removeClassName<T extends HTMLElement>(element: T, className: string): T;
+    removeClassName<T extends Node>(element: T, className: string): T;
 
     /** Toggles the class name of `element`. */
-    toggleClassName<T extends HTMLElement>(element: T, className: string): T;
+    toggleClassName<T extends Node>(element: T, className: string): T;
 
     /** Get value of style property of `element`. */
-    getStyle<T extends HTMLElement>(element: T, propertyName: NumberProperty): number;
+    getStyle<T extends Node>(element: T, propertyName: NumberProperty): number;
     /** Get value of style property of `element`. */
-    getStyle<T extends HTMLElement>(element: T, propertyName: string): string;
+    getStyle<T extends Node>(element: T, propertyName: string): string;
 
     /** Set value of style property of `element`. */
-    setStyle<T extends HTMLElement>(element: T, style: Property): T;
+    setStyle<T extends Node>(element: T, style: Property): T;
 
     /** Registers an event handler on a DOM element. */
-    on<T extends HTMLElement>(element: T, eventType: string, listener: EventListener, useCapture?: boolean): T;
+    on<T extends Node>(element: T, eventType: string, listener: EventListener, useCapture?: boolean): T;
 
     /** Unregisters an event handler on a DOM element. */
-    off<T extends HTMLElement>(element: T, eventType: string, listener?: EventListener, useCapture?: boolean): T;
+    off<T extends Node>(element: T, eventType: string, listener?: EventListener, useCapture?: boolean): T;
 
     /** Fires a custom event. */
-    fire<T extends HTMLElement>(element: T, eventType: string, property?: any): T;
+    fire<T extends Node>(element: T, eventType: string, property?: any): T;
     /** Emit a custom event. (alias of fire) */
-    emit<T extends HTMLElement>(element: T, eventType: string, property?: any): T;
+    emit<T extends Node>(element: T, eventType: string, property?: any): T;
 
     // extra class methods
 
     /** Extends the given `element` instance. */
-    extend<T extends HTMLElement>(element: T): FHTMLElement;
+    extend<T extends Node>(element: T): FHTMLElement;
 
     /** Check object type. */
     isElement(object: any): boolean;
@@ -519,7 +519,7 @@ export interface Instance {
     /** **DEPRECATED**: Use updateText instead. */
     update(number: number): this;
     /** Replaces the _content_ of `element` with the `newContent`. */
-    update<T extends HTMLElement>(newContent: T): this;
+    update<T extends Node>(newContent: T): this;
 
     /** Update the _content_ of `element` with the `string` as Text. */
     updateText(string: string): this;
@@ -528,14 +528,14 @@ export interface Instance {
     /** Update the _content_ of `element` with the `boolean` as Text. */
     updateText(boolean: boolean): this;
     /** Update the _content_ of `element` with the `content` element as Text. */
-    updateText<T extends HTMLElement>(content: T): this;
+    updateText<T extends Node>(content: T): this;
 
     /** Insert the `string` as HTML to the _content_ of `element`. */
     insert(string: string): this;
     /** **DEPRECATED**: Use updateText instead. */
     insert(number: number): this;
     /** Insert the `content` to the _content_ of `element`. */
-    insert<T extends HTMLElement>(content: T): this;
+    insert<T extends Node>(content: T): this;
     /** Insert the content(s) to the specific position of _content_ of `element` (Advanced).  */
     insert(insertion: Insertion): this;
 
@@ -547,9 +547,9 @@ export interface Instance {
     insertText(content: Insertion): this;
 
     /** Insert `element` to the _content_ of `element`. */
-    insertTo<T extends HTMLElement>(to: T): this;
+    insertTo<T extends Node>(to: T): this;
     /** Insert `element` to the specific position of _content_ of `element`. */
-    insertTo<T extends HTMLElement>(to: T, position: InsertPosition): this;
+    insertTo<T extends Node>(to: T, position: InsertPosition): this;
 
     /** **DEPRECATED**: Use getAttribute instead. */
     readAttribute(name: string): string;
