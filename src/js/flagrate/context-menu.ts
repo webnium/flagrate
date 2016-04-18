@@ -129,7 +129,7 @@ export class ContextMenu {
 
         this._isShowing = false;
 
-        var menu = this._menu;
+        const menu = this._menu;
         setTimeout(() => {
             if (menu && menu.remove) {
                 menu.remove();
