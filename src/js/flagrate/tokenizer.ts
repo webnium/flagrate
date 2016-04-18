@@ -55,10 +55,10 @@ export interface Instance {
     _tokenize(): this;
     _tokenized(candidates: (string | Value)[]): this;
     _tokenized(candidates: string | Value): this;
-    _onClickHandler(event: any): void;
-    _onKeydownHandler(event: any): void;
-    _onFocusHandler(event: any): void;
-    _onBlurHandler(event: any): void;
+    _onClickHandler(event: MouseEvent): void;
+    _onKeydownHandler(event: KeyboardEvent): void;
+    _onFocusHandler(event: FocusEvent): void;
+    _onBlurHandler(event: FocusEvent): void;
 
     _tokens?: FHTMLSpanElement;
     _input?: TextInput;

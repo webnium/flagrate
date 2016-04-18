@@ -64,8 +64,8 @@ export interface Instance {
     _suggested(items: (string | SuggestedItem)[]): void;
     _onKeydownHandler(e: KeyboardEvent): void;
     _onKeyupHandler(e: KeyboardEvent): void;
-    _onFocusHandler(e: Event): void;
-    _onBlurHandler(e: Event): void;
+    _onFocusHandler(e: FocusEvent): void;
+    _onBlurHandler(e: FocusEvent): void;
 
     _input?: TextInput;
     _button?: Button;
