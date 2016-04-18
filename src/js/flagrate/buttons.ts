@@ -59,7 +59,7 @@ export interface Class {
 }
 
 export interface Instance {
-    push(button: ButtonOption): Buttons;
+    push(button: ButtonOption): this;
     getButtonByKey(key: string): button.Button;
     getButtons(): button.Button[];
 }

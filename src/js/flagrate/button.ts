@@ -53,18 +53,18 @@ export interface Class {
 }
 
 export interface Instance {
-    select(): Button;
-    disable(): Button;
-    enable(): Button;
+    select(): this;
+    disable(): this;
+    enable(): this;
     isEnabled(): boolean;
-    setLabel(label: string): Button;
-    setColor(color?: string): Button;
+    setLabel(label: string): this;
+    setColor(color?: string): this;
     getColor(): string;
-    setIcon(url?: string): Button;
+    setIcon(url?: string): this;
     getIcon(): string;
 
-    onSelect? (event?: any, button?: Button): void;
-    onRemove? (event?: any, button?: Button): void;
+    onSelect? (event?: any, button?: this): void;
+    onRemove? (event?: any, button?: this): void;
 
     _label?: FHTMLSpanElement;
     _removeButton?: FHTMLButtonElement;

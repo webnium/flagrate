@@ -32,12 +32,12 @@ export interface Class {
 }
 
 export interface Instance {
-    disable(): ComboBox;
-    enable(): ComboBox;
+    disable(): this;
+    enable(): this;
     isEnabled(): boolean;
     getValue(): any;
-    setValue(value: string): ComboBox;
-    setIcon(url?: string): ComboBox;
+    setValue(value: string): this;
+    setIcon(url?: string): this;
     getIcon(): string;
     isValid(): boolean;
 

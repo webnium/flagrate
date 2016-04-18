@@ -68,11 +68,11 @@ export interface Class {
 export interface Instance {
     items?: ItemOption[];
 
-    open(event?: any): Pulldown;
-    close(event?: any): Pulldown;
+    open(event?: any): this;
+    close(event?: any): this;
 
-    onOpen?(event?: any, button?: Pulldown): void;
-    onClose?(event?: any, button?: Pulldown): void;
+    onOpen?(event?: any, button?: this): void;
+    onClose?(event?: any, button?: this): void;
 
     _menu?: Menu;
     _open?: boolean;

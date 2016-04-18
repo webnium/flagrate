@@ -29,7 +29,7 @@ export interface Class {
 }
 
 export interface Instance {
-    push(item: ItemOption): Toolbar;
+    push(item: ItemOption): this;
     getElementByKey(key: string): FHTMLElement;
     getElements(): FHTMLElement[];
 }

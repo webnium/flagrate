@@ -36,25 +36,25 @@ export interface Class {
 }
 
 export interface Instance {
-    disable(): Tokenizer;
-    enable(): Tokenizer;
+    disable(): this;
+    enable(): this;
     isEnabled(): boolean;
-    setValues(values: Value[]): Tokenizer;
+    setValues(values: Value[]): this;
     getValues(): Value[];
-    removeValues(): Tokenizer;
-    removeValue(value: Value): Tokenizer;
-    setIcon(url?: string): Tokenizer;
+    removeValues(): this;
+    removeValue(value: Value): this;
+    setIcon(url?: string): this;
     getIcon(): string;
     focus(): void;
 
-    onChange?(event?: any, tokenizer?: Tokenizer): void;
+    onChange?(event?: any, tokenizer?: this): void;
     values?: Value[];
     max?: number;
 
-    _updateTokens(): Tokenizer;
-    _tokenize(): Tokenizer;
-    _tokenized(candidates: Value[]): Tokenizer;
-    _tokenized(candidates: Value): Tokenizer;
+    _updateTokens(): this;
+    _tokenize(): this;
+    _tokenized(candidates: Value[]): this;
+    _tokenized(candidates: Value): this;
     _onClickHandler(event: any): void;
     _onKeydownHandler(event: any): void;
     _onFocusHandler(event: any): void;

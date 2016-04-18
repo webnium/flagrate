@@ -36,12 +36,12 @@ export interface Class {
 }
 
 export interface Instance {
-    disable(): TextArea;
-    enable(): TextArea;
+    disable(): this;
+    enable(): this;
     isEnabled(): boolean;
-    setValue(value: string): TextArea;
+    setValue(value: string): this;
     getValue(): string;
-    setIcon(url?: string): TextArea;
+    setIcon(url?: string): this;
     getIcon(): string;
     isValid(): boolean;
 }

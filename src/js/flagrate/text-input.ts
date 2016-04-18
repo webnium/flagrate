@@ -36,12 +36,12 @@ export interface Class {
 }
 
 export interface Instance {
-    disable(): TextInput;
-    enable(): TextInput;
+    disable(): this;
+    enable(): this;
     isEnabled(): boolean;
-    setValue(value: string): TextInput;
+    setValue(value: string): this;
     getValue(): string;
-    setIcon(url?: string): TextInput;
+    setIcon(url?: string): this;
     getIcon(): string;
     isValid(): boolean;
 }

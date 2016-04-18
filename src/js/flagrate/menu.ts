@@ -75,7 +75,7 @@ export interface Class {
 }
 
 export interface Instance {
-    push(item: ItemOption): Menu;
+    push(item: ItemOption): this;
     getButtonByKey(key: string): button.Button;
     getButtons(): button.Button[];
 }

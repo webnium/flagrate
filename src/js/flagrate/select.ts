@@ -40,17 +40,17 @@ export interface Class {
 }
 
 export interface Instance {
-    select(index: number): Select;
-    deselect(index: number): Select;
-    selectAll(): Select;
-    deselectAll(): Select;
-    disable(): Select;
-    enable(): Select;
+    select(index: number): this;
+    deselect(index: number): this;
+    selectAll(): this;
+    deselectAll(): this;
+    disable(): this;
+    enable(): this;
     isEnabled(): boolean;
     getValue(): any;
     getValues(): any[];
 
-    onChange?(event?: any, menu?: Select): void;
+    onChange?(event?: any, menu?: this): void;
 
     /** readonly. */
     listView?: boolean;
