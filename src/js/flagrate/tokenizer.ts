@@ -39,22 +39,22 @@ export interface Instance {
     disable(): this;
     enable(): this;
     isEnabled(): boolean;
-    setValues(values: Value[]): this;
-    getValues(): Value[];
+    setValues(values: (string | Value)[]): this;
+    getValues(): (string | Value)[];
     removeValues(): this;
-    removeValue(value: Value): this;
+    removeValue(value: string | Value): this;
     setIcon(url?: string): this;
     getIcon(): string;
     focus(): void;
 
     onChange?(event?: any, tokenizer?: this): void;
-    values?: Value[];
+    values?: (string | Value)[];
     max?: number;
 
     _updateTokens(): this;
     _tokenize(): this;
-    _tokenized(candidates: Value[]): this;
-    _tokenized(candidates: Value): this;
+    _tokenized(candidates: (string | Value)[]): this;
+    _tokenized(candidates: string | Value): this;
     _onClickHandler(event: any): void;
     _onKeydownHandler(event: any): void;
     _onFocusHandler(event: any): void;
@@ -91,7 +91,7 @@ export interface Option {
 
     /** default is Flagrate.identity */
     tokenize?(input: string, done: TokenizedCallback): void;
-    tokenizeSync?(input: string): Value[];
+    tokenizeSync?(input: string): (string | Value)[];
 
     /** default is false. */
     isDisabled?: boolean;
@@ -100,11 +100,14 @@ export interface Option {
 }
 
 export interface TokenizedCallback {
-    (output: Value[]): void;
-    (output: Value): void;
+    (output: (string | Value)[]): void;
+    (output: string | Value): void;
 }
 
-export type Value = string | { label: string, value: any };
+export interface Value {
+    label: string;
+    value: any;
+}
 
 /*?
     flagrate.createTextInput(option)
@@ -203,7 +206,7 @@ Tokenizer.prototype = {
         return !this.hasClassName('flagrate-disabled');
     },
 
-    setValues(values: string[]) {
+    setValues(values) {
 
         this.values = values;
 
@@ -221,7 +224,7 @@ Tokenizer.prototype = {
         return this._updateTokens();
     },
 
-    removeValue(value: Value) {
+    removeValue(value) {
 
         this.values.splice(this.values.indexOf(value), 1);
 
