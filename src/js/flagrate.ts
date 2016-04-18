@@ -25,6 +25,7 @@ import * as textInput from './flagrate/text-input';
 import * as tokenizer from './flagrate/tokenizer';
 import * as textArea from './flagrate/text-area';
 import * as comboBox from './flagrate/combo-box';
+import * as select from './flagrate/select';
 
 export default class Flagrate {
 
@@ -59,6 +60,9 @@ export default class Flagrate {
 
     ComboBox = comboBox.ComboBox;
     createComboBox = comboBox.createComboBox;
+
+    Select = select.Select;
+    createSelect = select.createSelect;
 }
 
 export declare const flagrate: Flagrate;
