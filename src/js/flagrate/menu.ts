@@ -75,7 +75,7 @@ export interface Class {
 }
 
 export interface Instance {
-    push(item: ButtonOption): Menu;
+    push(item: ItemOption): Menu;
     getButtonByKey(key: string): button.Button;
     getButtons(): button.Button[];
 }
@@ -94,12 +94,12 @@ export interface Option {
     style?: any;
 
     /** Button items */
-    items?: ButtonOption[];
+    items?: ItemOption[];
 
     onSelect? (event?: any, menu?: Menu): void;
 }
 
-export interface ButtonOption extends button.Option {
+export interface ItemOption extends button.Option {
     /** key */
     key?: string;
 }
@@ -175,7 +175,7 @@ export function createMenu(option?: Option): Menu {
 }
 
 Menu.prototype = {
-    push(option: ButtonOption) {
+    push(option: ItemOption) {
 
         if (typeof option === 'string') {
             new Element('hr').insertTo(this);
