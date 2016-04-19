@@ -15,7 +15,7 @@
 */
 'use strict';
 
-import { extendObject, emptyFunction } from './util';
+import { extendObject } from './util';
 import { Element, Attribute, Property, FHTMLLabelElement, FHTMLInputElement } from './element';
 
 /*?

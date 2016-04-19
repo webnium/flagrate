@@ -15,7 +15,7 @@
 */
 'use strict';
 
-import { extendObject, emptyFunction } from './util';
+import { extendObject } from './util';
 import { Element, Attribute, Property, FHTMLDivElement } from './element';
 import { Checkbox, Option as _CheckboxOption, CheckboxEvent } from './checkbox';
 
@@ -109,7 +109,7 @@ function FCheckboxes(opt: Option = {}) {
         checkboxes.setStyle(opt.style);
     }
 
-    checkboxes.onChange = opt.onChange || emptyFunction;
+    checkboxes.onChange = opt.onChange;
 
     checkboxes._items = [];
 

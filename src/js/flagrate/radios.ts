@@ -15,7 +15,7 @@
 */
 'use strict';
 
-import { extendObject, emptyFunction } from './util';
+import { extendObject } from './util';
 import { Element, Attribute, Property, FHTMLDivElement } from './element';
 import { Radio, Option as _RadioOption, RadioEvent } from './radio';
 
@@ -108,7 +108,7 @@ function FRadios(opt: Option = {}) {
         radios.setStyle(opt.style);
     }
 
-    radios.onChange = opt.onChange || emptyFunction;
+    radios.onChange = opt.onChange;
 
     radios.selectedIndex = opt.selectedIndex || -1;
 
