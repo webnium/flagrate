@@ -41,7 +41,6 @@ export interface Instance {
     onUncheck?(e: CheckboxEvent, target: this): void;
 
     _input?: FHTMLInputElement;
-    _checked?: boolean;
 }
 
 export interface Option {
@@ -89,10 +88,6 @@ function FCheckbox(opt: Option = {}) {
 
     const id = 'flagrate-checkbox-' + (++idCounter).toString(10);
 
-    this.onChange = opt.onChange || null;
-    this.onCheck = opt.onCheck || null;
-    this.onUncheck = opt.onUncheck || null;
-
     const attr = opt.attribute || {};
 
     attr['id'] = opt.id || null;
@@ -112,11 +107,15 @@ function FCheckbox(opt: Option = {}) {
         });
     }
 
+    checkbox.onChange = opt.onChange || null;
+    checkbox.onCheck = opt.onCheck || null;
+    checkbox.onUncheck = opt.onUncheck || null;
+
     checkbox._input = new Element('input', { id: id, type: 'checkbox' });
     checkbox.insert({ top: new Element() });
     checkbox.insert({ top: checkbox._input });
 
-    checkbox._input.on('click', e => {
+    checkbox._input.addEventListener('change', e => {
 
         e.stopPropagation();
 
@@ -124,31 +123,21 @@ function FCheckbox(opt: Option = {}) {
         _e.targetCheckbox = checkbox;
 
         if (checkbox.isChecked() === true) {
-            checkbox.uncheck();
-        } else {
-            checkbox.check();
-        }
-
-        if (checkbox.isChecked() === true) {
             if (checkbox.onCheck) {
                 checkbox.onCheck(_e, checkbox);
             }
+
+            checkbox.fire('check', { targetCheckbox: checkbox });
         } else {
             if (checkbox.onUncheck) {
                 checkbox.onUncheck(_e, checkbox);
             }
+
+            checkbox.fire('uncheck', { targetCheckbox: checkbox });
         }
 
-        if (checkbox.onChange) {
-            checkbox.onChange(_e, checkbox);
-        }
         checkbox.fire('change', { targetCheckbox: checkbox });
     });
-
-    checkbox._input.on('change', e => e.stopPropagation());
-
-    // state
-    checkbox._checked = false;
 
     if (opt.isChecked === true) {
         checkbox.check();
@@ -191,22 +180,16 @@ Checkbox.prototype = {
     },
 
     isChecked() {
-        return this._checked;
+        return !!this._input.checked;
     },
 
     check() {
-
         this._input.checked = true;
-        this._checked = true;
-
         return this;
     },
 
     uncheck() {
-
         this._input.checked = false;
-        this._checked = false;
-
         return this;
     }
 };
