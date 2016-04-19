@@ -299,12 +299,12 @@ SearchBox.prototype = {
             if (upsideSpace > downsideSpace) {
                 if (upsideSpace < menuHeight + menuMargin) {
                     menuHeight = (upsideSpace - menuMargin - menuMargin);
-                    this._suggest.style.maxHeight = menuHeight + 'px';
+                    this._suggest.style.maxHeight = `${menuHeight}px`;
                 }
                 this._suggest.addClassName('flagrate-search-suggest-upper');
             } else {
                 menuHeight = (downsideSpace - menuMargin - menuMargin);
-                this._suggest.style.maxHeight = menuHeight + 'px';
+                this._suggest.style.maxHeight = `${menuHeight}px`;
                 this._suggest.removeClassName('flagrate-search-suggest-upper');
             }
         } else {

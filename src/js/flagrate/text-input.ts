@@ -140,7 +140,7 @@ export function createTextInput(option?: Option): TextInput {
 }
 
 TextInput.prototype = {
-    disable () {
+    disable() {
 
         this.addClassName('flagrate-disabled');
         this.writeAttribute('disabled', true);
@@ -148,7 +148,7 @@ TextInput.prototype = {
         return this;
     },
 
-    enable () {
+    enable() {
 
         this.removeClassName('flagrate-disabled');
         this.writeAttribute('disabled', false);
@@ -156,28 +156,28 @@ TextInput.prototype = {
         return this;
     },
 
-    isEnabled () {
+    isEnabled() {
         return !this.hasClassName('flagrate-disabled');
     },
 
-    setValue (value: string) {
+    setValue(value: string) {
 
         this.value = value;
 
         return this;
     },
 
-    getValue () {
+    getValue() {
         return this.value;
     },
 
-    setIcon (identifier) {
+    setIcon(identifier) {
 
         this._iconIdentifier = identifier;
 
         if (identifier) {
             return this.addClassName('flagrate-icon').setStyle({
-                backgroundImage: `url(${ identifier })`
+                backgroundImage: `url(${identifier})`
             });
         } else {
             return this.removeClassName('flagrate-icon').setStyle({
@@ -186,7 +186,7 @@ TextInput.prototype = {
         }
     },
 
-    getIcon () {
+    getIcon() {
         return this._iconIdentifier || '';
     },
 

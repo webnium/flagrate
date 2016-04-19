@@ -110,8 +110,8 @@ export class ContextMenu {
             y = y - this._menu.getHeight();
         }
 
-        this._menu.style.top = `${ y }px`;
-        this._menu.style.left = `${ x }px`;
+        this._menu.style.top = `${y}px`;
+        this._menu.style.left = `${x}px`;
         this._menu.style.opacity = '1';
 
         document.body.addEventListener('click', this._closeHandler);

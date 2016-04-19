@@ -237,7 +237,7 @@ Tokenizer.prototype = {
 
         if (identifier) {
             this.addClassName('flagrate-icon').setStyle({
-                backgroundImage: `url(${ identifier })`
+                backgroundImage: `url(${identifier})`
             });
         } else {
             this.removeClassName('flagrate-icon').setStyle({
@@ -291,7 +291,7 @@ Tokenizer.prototype = {
         const aw = vw - pl - pr - tw - tm - im - ip - (bw * 2) - 2;
 
         if (aw > 30) {
-            tokenizer._input.style.width = `${ aw }px`;
+            tokenizer._input.style.width = `${aw}px`;
         } else if (aw < -5) {
             tokenizer._input.style.width = '';
         } else {
@@ -332,7 +332,7 @@ Tokenizer.prototype = {
             onSelect: () => menu.remove()
         });
 
-        menu.style.left = `${ this._input.offsetLeft }px`;
+        menu.style.left = `${this._input.offsetLeft}px`;
 
         let i = 0, l = candidates.length, candidate, menuItem;
         for (; i < l; i++) {

@@ -256,7 +256,7 @@ Button.prototype = {
 
         if (identifier) {
             return this.addClassName('flagrate-icon').setStyle({
-                backgroundImage: 'url(' + identifier + ')'
+                backgroundImage: `url(${identifier})`
             });
         } else {
             return this.removeClassName('flagrate-icon').setStyle({

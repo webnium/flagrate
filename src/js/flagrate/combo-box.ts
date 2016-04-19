@@ -169,12 +169,12 @@ function FComboBox(option: Option = {}) {
                 if (upsideSpace > downsideSpace) {
                     if (upsideSpace < menuHeight + menuMargin) {
                         menuHeight = (upsideSpace - menuMargin - menuMargin);
-                        menu.style.maxHeight =`${ menuHeight }px`;
+                        menu.style.maxHeight = `${menuHeight}px`;
                     }
                     menu.addClassName('flagrate-combobox-menu-upper');
                 } else {
                     menuHeight = (downsideSpace - menuMargin - menuMargin);
-                    menu.style.maxHeight = `${ menuHeight }px`;
+                    menu.style.maxHeight = `${menuHeight}px`;
                 }
             }
 

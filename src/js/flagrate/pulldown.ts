@@ -209,8 +209,8 @@ Pulldown.prototype = {
             }
         });
 
-        pulldown._menu.style.top = `${ pulldown.offsetTop + pulldown.getHeight() }px`;
-        pulldown._menu.style.left = `${ pulldown.offsetLeft }px`;
+        pulldown._menu.style.top = `${pulldown.offsetTop + pulldown.getHeight()}px`;
+        pulldown._menu.style.left = `${pulldown.offsetLeft}px`;
 
         pulldown.insert({ after: pulldown._menu });
 
@@ -224,12 +224,12 @@ Pulldown.prototype = {
             if (upsideSpace > downsideSpace) {
                 if (upsideSpace < menuHeight + menuMargin) {
                     menuHeight = (upsideSpace - menuMargin - menuMargin);
-                    pulldown._menu.style.maxHeight = `${ menuHeight }px`;
+                    pulldown._menu.style.maxHeight = `${menuHeight}px`;
                 }
-                pulldown._menu.style.top = `${ (pulldown.offsetTop - menuHeight - (menuMargin * 2)) }px`;
+                pulldown._menu.style.top = `${(pulldown.offsetTop - menuHeight - (menuMargin * 2))}px`;
             } else {
                 menuHeight = (downsideSpace - menuMargin - menuMargin);
-                pulldown._menu.style.maxHeight = `${ menuHeight }px`;
+                pulldown._menu.style.maxHeight = `${menuHeight}px`;
             }
         }
 
