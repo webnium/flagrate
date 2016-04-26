@@ -4811,6 +4811,7 @@
 		_createOnSelectHandler: function (that, tab) {
 			
 			return function (e) {
+				if (/firefox/i.test(navigator.userAgent) === true) { window.event = e; }
 				
 				that.select(tab);
 			};
@@ -7021,6 +7022,7 @@
 		_createRowOnClickHandler: function (that, row) {
 			
 			return function (e) {
+				if (/firefox/i.test(navigator.userAgent) === true) { window.event = e; }
 				
 				if (that.isEnabled() === false) { return; }
 				
@@ -7046,6 +7048,7 @@
 		_createRowOnDblClickHandler: function (that, row) {
 			
 			return function (e) {
+				if (/firefox/i.test(navigator.userAgent) === true) { window.event = e; }
 				
 				if (that.isEnabled() === false) { return; }
 				
