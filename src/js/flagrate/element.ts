@@ -177,7 +177,7 @@ export interface Class {
     new (tagName: 'del', attribute?: Attribute): FHTMLModElement;
     new (tagName: 'dfn', attribute?: Attribute): FHTMLPhraseElement;
     new (tagName: 'dir', attribute?: Attribute): FHTMLDirectoryElement;
-    new (tagName: 'div', attribute?: Attribute): FHTMLDivElement;
+    new (tagName?: 'div', attribute?: Attribute): FHTMLDivElement;
     new (tagName: 'dl', attribute?: Attribute): FHTMLDListElement;
     new (tagName: 'dt', attribute?: Attribute): FHTMLDTElement;
     new (tagName: 'em', attribute?: Attribute): FHTMLPhraseElement;
@@ -255,7 +255,7 @@ export interface Class {
     new (tagName: 'var', attribute?: Attribute): FHTMLPhraseElement;
     new (tagName: 'video', attribute?: Attribute): FHTMLVideoElement;
     new (tagName: 'xmp', attribute?: Attribute): FHTMLBlockElement;
-    new (tagName?: string, attribute?: Attribute): FHTMLElement;
+    new (tagName: string, attribute?: Attribute): FHTMLElement;
 
     /** Tells whether `element` is visible. */
     visible<T extends Node>(element: T): boolean;
@@ -410,7 +410,7 @@ export interface createElement {
     (tagName: 'del', attribute?: Attribute): FHTMLModElement;
     (tagName: 'dfn', attribute?: Attribute): FHTMLPhraseElement;
     (tagName: 'dir', attribute?: Attribute): FHTMLDirectoryElement;
-    (tagName: 'div', attribute?: Attribute): FHTMLDivElement;
+    (tagName?: 'div', attribute?: Attribute): FHTMLDivElement;
     (tagName: 'dl', attribute?: Attribute): FHTMLDListElement;
     (tagName: 'dt', attribute?: Attribute): FHTMLDTElement;
     (tagName: 'em', attribute?: Attribute): FHTMLPhraseElement;
@@ -488,7 +488,7 @@ export interface createElement {
     (tagName: 'var', attribute?: Attribute): FHTMLPhraseElement;
     (tagName: 'video', attribute?: Attribute): FHTMLVideoElement;
     (tagName: 'xmp', attribute?: Attribute): FHTMLBlockElement;
-    (tagName?: string, attribute?: Attribute): FHTMLElement;
+    (tagName: string, attribute?: Attribute): FHTMLElement;
 }
 
 export interface Instance {
