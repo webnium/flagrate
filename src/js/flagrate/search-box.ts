@@ -209,7 +209,7 @@ SearchBox.prototype = {
 
         const value = this.getValue();
 
-        this.onSearch(value);
+        this.onSearch.call(this, value, this);
         this.fire('search', value);
 
         this._input.blur();
