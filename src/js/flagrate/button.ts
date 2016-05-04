@@ -309,7 +309,7 @@ Button.prototype = {
         const _e: ButtonEvent = e;
         _e.targetButton = button;
 
-        button.onSelect(_e, button);
+        button.onSelect.call(button, _e, button);
         button.fire('select', { targetButton: button });
     },
 
@@ -323,7 +323,7 @@ Button.prototype = {
             const _e: ButtonEvent = e;
             _e.targetButton = button;
 
-            button.onRemove(_e, button);
+            button.onRemove.call(button, _e, button);
             button.fire('remove', { targetButton: button });
         }
     }
