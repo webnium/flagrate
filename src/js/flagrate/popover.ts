@@ -15,7 +15,7 @@
 */
 'use strict';
 
-import { Element, FHTMLDivElement } from './element';
+import { Element, FHTMLElement, FHTMLDivElement } from './element';
 
 /*?
     class flagrate.Popover
@@ -45,7 +45,7 @@ export interface Option {
 **/
 export class Popover {
 
-    private _target: HTMLElement;
+    private _target: FHTMLElement;
     private _text: string;
     private _html: string;
     private _element: HTMLElement;
@@ -61,7 +61,10 @@ export class Popover {
     constructor(opt: Option = {}) {
 
         if (opt.target) {
-            this._target = opt.target;
+            if (!opt.target['isFlagrated']) {
+                opt.target = Element.extend(opt.target);
+            }
+            this._target = opt.target as FHTMLElement;
         }
         if (opt.text) {
             this._text = opt.text;
@@ -79,6 +82,46 @@ export class Popover {
         if (this._target) {
             this._target.addEventListener('mouseover', this._openHandler);
         }
+    }
+
+    get target(): FHTMLElement {
+        return this._target;
+    }
+
+    set target(element: FHTMLElement) {
+        this.setTarget(element);
+    }
+
+    get text(): string {
+        return this._text;
+    }
+
+    set text(text: string) {
+        this.setText(text);
+    }
+
+    get html(): string {
+        return this._html;
+    }
+
+    set html(html: string) {
+        this.setHTML(html);
+    }
+
+    get element(): HTMLElement {
+        return this._element;
+    }
+
+    set element(element: HTMLElement) {
+        this.setElement(element);
+    }
+
+    get isShowing(): boolean {
+        return this._isShowing;
+    }
+
+    set isShowing(boolean: boolean) {
+        this.open();
     }
 
     open(forceTarget?: Event | HTMLElement): this {
@@ -164,6 +207,65 @@ export class Popover {
         if (this._target) {
             this._target.removeEventListener('mouseover', this._openHandler);
         }
+    }
+
+    setTarget(element: FHTMLElement): this {
+
+        if (this._target === element) {
+            return this;
+        }
+        if (!element['isFlagrated']) {
+            element = Element.extend(element);
+        }
+        this._target = element;
+
+        if (this._isShowing === true) {
+            this.open();
+        }
+
+        return this;
+    }
+
+    setText(text: string): this {
+
+        if (this._text === text) {
+            return this;
+        }
+        this._text = text;
+
+        if (this._isShowing === true) {
+            this._div.updateText(text);
+        }
+
+        return this;
+    }
+
+    setHTML(html: string): this {
+
+        if (this._html === html) {
+            return this;
+        }
+        this._html = html;
+
+        if (this._isShowing === true) {
+            this._div.update(html);
+        }
+
+        return this;
+    }
+
+    setElement(element: HTMLElement): this {
+
+        if (this._element === element) {
+            return this;
+        }
+        this._element = element;
+
+        if (this._isShowing === true) {
+            this._div.update(element);
+        }
+
+        return this;
     }
 
     private _create(): FHTMLDivElement {
