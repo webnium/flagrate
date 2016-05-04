@@ -128,16 +128,20 @@ function FRadio(opt: Option = {}) {
 
         if (radio.isChecked() === true) {
             if (radio.onCheck) {
-                radio.onCheck(_e, radio);
+                radio.onCheck.call(radio, _e, radio);
             }
 
             radio.fire('check', { targetRadio: radio });
         } else {
             if (radio.onUncheck) {
-                radio.onUncheck(_e, radio);
+                radio.onUncheck.call(radio, _e, radio);
             }
 
             radio.fire('uncheck', { targetRadio: radio });
+        }
+
+        if (radio.onChange) {
+            radio.onChange.call(radio, _e, radio);
         }
 
         radio.fire('change', { targetRadio: radio });
