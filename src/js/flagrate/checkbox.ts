@@ -124,16 +124,20 @@ function FCheckbox(opt: Option = {}) {
 
         if (checkbox.isChecked() === true) {
             if (checkbox.onCheck) {
-                checkbox.onCheck(_e, checkbox);
+                checkbox.onCheck.call(checkbox, _e, checkbox);
             }
 
             checkbox.fire('check', { targetCheckbox: checkbox });
         } else {
             if (checkbox.onUncheck) {
-                checkbox.onUncheck(_e, checkbox);
+                checkbox.onUncheck.call(checkbox, _e, checkbox);
             }
 
             checkbox.fire('uncheck', { targetCheckbox: checkbox });
+        }
+
+        if (checkbox.onChange) {
+            checkbox.onChange.call(checkbox, _e, checkbox);
         }
 
         checkbox.fire('change', { targetCheckbox: checkbox });
