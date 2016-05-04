@@ -68,6 +68,8 @@ export interface Instance {
 
     _label?: FHTMLSpanElement;
     _removeButton?: FHTMLButtonElement;
+    _color?: string;
+    _iconIdentifier?: string;
     _onSelectHandler(event: MouseEvent): void;
     _onRemoveHandler(event: MouseEvent): void;
 }
@@ -234,16 +236,18 @@ Button.prototype = {
 
     setColor(color) {
 
+        const button = this as Button;
+
         if (color.charAt(0) === '@') {
-            this.style.backgroundColor = '';
-            this.addClassName('flagrate-button-color-' + color.slice(1));
+            button.style.backgroundColor = '';
+            button.addClassName('flagrate-button-color-' + color.slice(1));
         } else {
-            this.style.backgroundColor = color;
+            button.style.backgroundColor = color;
         }
 
-        this._color = color;
+        button._color = color;
 
-        return this;
+        return button;
     },
 
     getColor() {
@@ -252,14 +256,16 @@ Button.prototype = {
 
     setIcon(identifier) {
 
-        this._iconIdentifier = identifier;
+        const button = this as Button;
+
+        button._iconIdentifier = identifier;
 
         if (identifier) {
-            return this.addClassName('flagrate-icon').setStyle({
+            return button.addClassName('flagrate-icon').setStyle({
                 backgroundImage: `url(${identifier})`
             });
         } else {
-            return this.removeClassName('flagrate-icon').setStyle({
+            return button.removeClassName('flagrate-icon').setStyle({
                 backgroundImage: 'none'
             });
         }
@@ -271,17 +277,19 @@ Button.prototype = {
 
     _onSelectHandler(e) {
 
-        if (this.isEnabled() === false) {
+        const button = this as Button;
+
+        if (button.isEnabled() === false) {
             return;
         }
 
         // for Firefox <- until when..?
-        if (this._removeButton && e && e.layerX) {
-            const bw = this.getWidth();
-            const bh = this.getHeight();
-            const bp = this._removeButton.getStyle('margin-right') === null ? 0 : parseInt(this._removeButton.getStyle('margin-right').replace('px', ''), 10);
-            const rw = this._removeButton.getWidth();
-            const rh = this._removeButton.getHeight();
+        if (button._removeButton && e && e.layerX) {
+            const bw = button.getWidth();
+            const bh = button.getHeight();
+            const bp = button._removeButton.getStyle('margin-right') === null ? 0 : parseInt(button._removeButton.getStyle('margin-right').replace('px', ''), 10);
+            const rw = button._removeButton.getWidth();
+            const rh = button._removeButton.getHeight();
             const lx = e.layerX;
             const ly = e.layerY;
 
@@ -292,29 +300,31 @@ Button.prototype = {
                 ly < bh - ((bh - rh) / 2)
             );
             if (isHitRemoveButton) {
-                this._onRemoveHandler(e);
+                button._onRemoveHandler(e);
 
-                return this;
+                return button;
             }
         }
 
         const _e: ButtonEvent = e;
-        _e.targetButton = this;
+        _e.targetButton = button;
 
-        this.onSelect(_e, this);
-        this.fire('select', { targetButton: this });
+        button.onSelect(_e, button);
+        button.fire('select', { targetButton: button });
     },
 
     _onRemoveHandler(e) {
 
-        if (this.isEnabled() === true) {
-            this.remove();
+        const button = this as Button;
+
+        if (button.isEnabled() === true) {
+            button.remove();
 
             const _e: ButtonEvent = e;
-            _e.targetButton = this;
+            _e.targetButton = button;
 
-            this.onRemove(_e, this);
-            this.fire('remove', { targetButton: this });
+            button.onRemove(_e, button);
+            button.fire('remove', { targetButton: button });
         }
     }
 };
