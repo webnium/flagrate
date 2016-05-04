@@ -128,7 +128,7 @@ function FCheckboxes(opt: Option = {}) {
 
         _item._checkbox.addEventListener('change', e => {
             if (checkboxes.onChange) {
-                checkboxes.onChange(e, checkboxes);
+                checkboxes.onChange.call(checkboxes, e, checkboxes);
             }
         });
 
