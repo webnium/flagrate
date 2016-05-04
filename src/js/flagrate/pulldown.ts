@@ -202,7 +202,7 @@ Pulldown.prototype = {
             onSelect: (e) => {
 
                 if (pulldown.onSelect) {
-                    pulldown.onSelect(e, pulldown);
+                    pulldown.onSelect.call(pulldown, e, pulldown);
                 }
 
                 pulldown.fire('select', { targetPulldown: pulldown });
@@ -252,7 +252,7 @@ Pulldown.prototype = {
             pulldown.addEventListener('select', close);
         }, 0);
 
-        pulldown.onOpen(e, pulldown);
+        pulldown.onOpen.call(pulldown, e, pulldown);
         pulldown.fire('open', { targetPulldown: pulldown });
 
         return this;
@@ -279,7 +279,7 @@ Pulldown.prototype = {
             pulldown._menu.remove();
             delete pulldown._menu;
 
-            pulldown.onClose(e, pulldown);
+            pulldown.onClose.call(pulldown, e, pulldown);
             pulldown.fire('close', { targetPulldown: pulldown });
         }, 250);
 
