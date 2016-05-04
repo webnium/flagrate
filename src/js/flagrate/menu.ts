@@ -185,10 +185,10 @@ Menu.prototype = {
             option.onSelect = (e, button) => {
 
                 if (_onSelect) {
-                    _onSelect(e, button);
+                    _onSelect.call(button, e, button);
                 }
 
-                this.onSelect(e, this);
+                this.onSelect.call(this, e, this);
             };
 
             const btn = new button.Button(option).insertTo(this);
