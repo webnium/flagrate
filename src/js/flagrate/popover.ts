@@ -116,6 +116,14 @@ export class Popover {
         this.setElement(element);
     }
 
+    get className(): string {
+        return this._className;
+    }
+
+    set className(className: string) {
+        this.setClassName(className);
+    }
+
     get isShowing(): boolean {
         return this._isShowing;
     }
@@ -264,6 +272,21 @@ export class Popover {
         if (this._isShowing === true) {
             this._div.update(element);
         }
+
+        return this;
+    }
+
+    setClassName(className: string): this {
+
+        if (this._className === className) {
+            return this;
+        }
+
+        if (this._isShowing === true) {
+            this._div.removeClassName(this._className).addClassName(className);
+        }
+
+        this._className = className;
 
         return this;
     }
