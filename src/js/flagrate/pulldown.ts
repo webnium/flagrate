@@ -202,7 +202,7 @@ Pulldown.prototype = {
             onSelect: (e) => {
 
                 if (pulldown.onSelect) {
-                    pulldown.onSelect.call(pulldown, e, pulldown);
+                    pulldown.onSelect(e, pulldown);
                 }
 
                 pulldown.fire('select', { targetPulldown: pulldown });
@@ -279,7 +279,7 @@ Pulldown.prototype = {
             pulldown._menu.remove();
             delete pulldown._menu;
 
-            pulldown.onClose.call(pulldown, e, pulldown);
+            pulldown.onClose(e, pulldown);
             pulldown.fire('close', { targetPulldown: pulldown });
         }, 250);
 

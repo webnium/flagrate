@@ -131,7 +131,7 @@ function FRadios(opt: Option = {}) {
 
         _item._radio.addEventListener('change', e => {
             if (radios.onChange) {
-                radios.onChange.call(radios, e, radios);
+                radios.onChange(e, radios);
             }
         });
 

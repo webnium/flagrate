@@ -188,7 +188,7 @@ Menu.prototype = {
                     _onSelect.call(button, e, button);
                 }
 
-                this.onSelect.call(this, e, this);
+                this.onSelect(e, this);
             };
 
             const btn = new button.Button(option).insertTo(this);

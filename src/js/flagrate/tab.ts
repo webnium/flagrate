@@ -257,7 +257,7 @@ Tab.prototype = {
             tabItem.onSelect.call(tab, tabEvent, tabItem);
         }
         if (tab.onSelect) {
-            tab.onSelect.call(tab, tabEvent, tabItem);
+            tab.onSelect(tabEvent, tabItem);
         }
 
         return tab;
