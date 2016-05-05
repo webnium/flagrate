@@ -16,7 +16,7 @@
 'use strict';
 
 import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property }  from './element';
+import { Element, Attribute, Property, FHTMLDivElement }  from './element';
 import { Button, ButtonEvent }  from './button';
 import { Menu, ItemOption }  from './menu';
 
@@ -74,7 +74,7 @@ export interface Instance {
     onOpen?(event?: ButtonEvent, button?: this): void;
     onClose?(event?: ButtonEvent, button?: this): void;
 
-    _menu?: Menu;
+    _menu?: FHTMLDivElement;
     _open?: boolean;
 }
 
@@ -195,19 +195,20 @@ Pulldown.prototype = {
 
         pulldown._open = true;
 
-        pulldown._menu = new Menu({
-            className: 'flagrate-pulldown-menu',
-            items: pulldown.items,
+        pulldown._menu = new Element('div', {'class': 'flagrate-pulldown-menu'})
+            .insert(
+                new Menu({
+                    items: pulldown.items,
+                    onSelect: (e) => {
 
-            onSelect: (e) => {
+                        if (pulldown.onSelect) {
+                            pulldown.onSelect(e, pulldown);
+                        }
 
-                if (pulldown.onSelect) {
-                    pulldown.onSelect(e, pulldown);
-                }
-
-                pulldown.fire('select', { targetPulldown: pulldown });
-            }
-        });
+                        pulldown.fire('select', { targetPulldown: pulldown });
+                    }
+                })
+            );
 
         pulldown._menu.style.top = `${pulldown.offsetTop + pulldown.getHeight()}px`;
         pulldown._menu.style.left = `${pulldown.offsetLeft}px`;
