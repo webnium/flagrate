@@ -129,7 +129,12 @@ export class Popover {
     }
 
     set isShowing(boolean: boolean) {
-        this.open();
+
+        if (boolean === true) {
+            this.open();
+        } else {
+            this.close();
+        }
     }
 
     open(forceTarget?: Event | HTMLElement): this {
