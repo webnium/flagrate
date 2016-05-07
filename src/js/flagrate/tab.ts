@@ -357,10 +357,10 @@ Tab.prototype = {
         const tab = this as Tab;
 
         const removes = [];
-        let bulk = false;
+        let bulk = true;
 
         if (a instanceof Array === false) {
-            bulk = true;
+            bulk = false;
             a = [a];
         }
 
