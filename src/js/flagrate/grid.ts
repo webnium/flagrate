@@ -685,11 +685,11 @@ export class Grid {
     removeRow(rows: Row[]): Row[];
     removeRow(r) {
 
-        const removes = [];
-        let bulk = false;
+        const removes: Row[] = [];
+        let bulk = true;
 
         if (r instanceof Array === false) {
-            bulk = true;
+            bulk = false;
             r = [r];
         }
 
@@ -1328,6 +1328,6 @@ export class Grid {
     }
 }
 
-export function createGrid(a) {
+export function createGrid(a): Grid {
     return new Grid(a);
 }
