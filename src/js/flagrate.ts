@@ -26,6 +26,22 @@ import * as tokenizer from './flagrate/tokenizer';
 import * as textArea from './flagrate/text-area';
 import * as comboBox from './flagrate/combo-box';
 import * as select from './flagrate/select';
+import * as contextMenu from './flagrate/context-menu';
+import * as toolbar from './flagrate/toolbar';
+import * as searchBox from './flagrate/search-box';
+import * as checkbox from './flagrate/checkbox';
+import * as checkboxes from './flagrate/checkboxes';
+import * as radio from './flagrate/radio';
+import * as radios from './flagrate/radios';
+import * as sw from './flagrate/switch';
+import * as progress from './flagrate/progress';
+import * as slider from './flagrate/slider';
+import * as tab from './flagrate/tab';
+import * as popover from './flagrate/popover';
+import * as tutorial from './flagrate/tutorial';
+import * as notify from './flagrate/notify';
+import * as modal from './flagrate/modal';
+import * as grid from './flagrate/grid'
 
 export default class Flagrate {
 
@@ -63,6 +79,54 @@ export default class Flagrate {
 
     Select = select.Select;
     createSelect = select.createSelect;
+
+    ContextMenu = contextMenu.ContextMenu;
+    createContextMenu = contextMenu.createContextMenu;
+
+    Toolbar = toolbar.Toolbar;
+    createToolbar = toolbar.createToolbar;
+
+    SearchBox = searchBox.SearchBox;
+    createSearchBox = searchBox.createSearchBox;
+
+    Checkbox = checkbox.Checkbox;
+    createCheckbox = checkbox.createCheckbox;
+
+    Checkboxes = checkboxes.Checkboxes;
+    createCheckboxes = checkboxes.createCheckboxes;
+
+    Radio = radio.Radio;
+    createRadio = radio.createRadio;
+
+    Radios = radios.Radios;
+    createRadios = radios.createRadios;
+
+    Switch = sw.Switch;
+    createSwitch = sw.createSwitch;
+
+    Progress = progress.Progress;
+    createProgress = progress.createProgress;
+
+    Slider = slider.Slider;
+    createSlider = slider.createSlider;
+
+    Tab = tab.Tab;
+    createTab = tab.createTab;
+
+    Popover = popover.Popover;
+    createPopover = popover.createPopover;
+
+    Tutorial = tutorial.Tutorial;
+    createTutorial = tutorial.createTutorial;
+
+    Notify = notify.Notify;
+    createNotify = notify.createNotify;
+
+    Modal = modal.Modal;
+    createModal = modal.createModal;
+
+    Grid = grid.Grid;
+    createGrid = grid.createGrid;
 }
 
 export declare const flagrate: Flagrate;
