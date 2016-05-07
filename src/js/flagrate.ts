@@ -42,6 +42,7 @@ import * as tutorial from './flagrate/tutorial';
 import * as notify from './flagrate/notify';
 import * as modal from './flagrate/modal';
 import * as grid from './flagrate/grid'
+import * as form from './flagrate/form';
 
 export default class Flagrate {
 
@@ -127,6 +128,9 @@ export default class Flagrate {
 
     Grid = grid.Grid;
     createGrid = grid.createGrid;
+
+    Form = form.Form;
+    createForm = form.createForm;
 }
 
 export declare const flagrate: Flagrate;
