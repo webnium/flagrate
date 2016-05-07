@@ -285,11 +285,7 @@ export interface Class {
     update<T extends Node, U extends Node>(element: T, newContent: U): T;
 
     /** Update the _content_ of `element` with the `string` as Text. */
-    updateText<T extends Node>(element: T, string: string): T;
-    /** Update the _content_ of `element` with the `number` as Text. */
-    updateText<T extends Node>(element: T, number: number): T;
-    /** Update the _content_ of `element` with the `boolean` as Text. */
-    updateText<T extends Node>(element: T, boolean: boolean): T;
+    updateText<T extends Node>(element: T, string: string | number | boolean): T;
     /** Update the _content_ of `element` with the `content` element as Text. */
     updateText<T extends Node, U extends Node>(element: T, content: U): T;
 
@@ -303,9 +299,7 @@ export interface Class {
     insert<T extends Node>(element: T, insertion: Insertion): T;
 
     /** Insert the `string` to the _content_ of `element` */
-    insertText<T extends Node>(element: T, string: string): T;
-    /** Insert the `number` as Text to the _content_ of `element` */
-    insertText<T extends Node>(element: T, number: number): T;
+    insertText<T extends Node>(element: T, string: string | number | boolean): T;
     /** Insert the content(s) to the specific position of _content_ of `element` (Advanced). */
     insertText<T extends Node>(element: T, content: Insertion): T;
 
@@ -522,11 +516,7 @@ export interface Instance {
     update<T extends Node>(newContent: T): this;
 
     /** Update the _content_ of `element` with the `string` as Text. */
-    updateText(string: string): this;
-    /** Update the _content_ of `element` with the `number` as Text. */
-    updateText(number: number): this;
-    /** Update the _content_ of `element` with the `boolean` as Text. */
-    updateText(boolean: boolean): this;
+    updateText(string: string | number | boolean): this;
     /** Update the _content_ of `element` with the `content` element as Text. */
     updateText<T extends Node>(content: T): this;
 
@@ -540,9 +530,7 @@ export interface Instance {
     insert(insertion: Insertion): this;
 
     /** Insert the `string` to the _content_ of `element` */
-    insertText(string: string): this;
-    /** Insert the `number` as Text to the _content_ of `element` */
-    insertText(number: number): this;
+    insertText(string: string | number | boolean): this;
     /** Insert the content(s) to the specific position of _content_ of `element` (Advanced). */
     insertText(content: Insertion): this;
 
