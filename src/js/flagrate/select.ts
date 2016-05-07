@@ -174,8 +174,7 @@ function FSelect(option: Option = {}) {
     }
 
     // normalize items
-    let i = 0, l = this.items.length;
-    for (; i < l; i++) {
+    for (let i = 0, l = this.items.length; i < l; i++) {
         if (typeof this.items[i] !== 'object') {
             this.items[i] = {
                 label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
@@ -187,24 +186,20 @@ function FSelect(option: Option = {}) {
     if (this.isPulldown) {
         container._pulldown = new Pulldown({
             label: '-',
-            items: (function () {
-
-                const items: ButtonOption[] = [{
+            items: [
+                {
                     label: '-',
                     onSelect: createOnSelectHandler(-1)
-                }];
-
-                let i = 0, l = this.items.length;
-                for (; i < l; i++) {
-                    items.push({
-                        label: this.items[i].label,
-                        icon: this.items[i].icon,
-                        onSelect: createOnSelectHandler(i)
-                    });
                 }
-
-                return items;
-            }.bind(this))()
+            ].concat(
+                this.items.map((item, i) => {
+                    return {
+                        label: item.label,
+                        icon: item.icon,
+                        onSelect: createOnSelectHandler(i)
+                    };
+                })
+            )
         }).insertTo(container);
     } else {
         container._grid = new Grid({
@@ -215,26 +210,18 @@ function FSelect(option: Option = {}) {
                     key: 'label'
                 }
             ],
-            rows: (function () {
-
-                const rows = [];
-
-                let i = 0, l = this.items.length;
-                for (; i < l; i++) {
-                    rows.push({
-                        cell: {
-                            label: {
-                                text: this.items[i].label,
-                                icon: this.items[i].icon
-                            }
-                        },
-                        onSelect: createOnSelectHandler(i),
-                        onDeselect: createOnDeselectHandler(i)
-                    });
-                }
-
-                return rows;
-            }.bind(this))()
+            rows: this.items.map((item, i) => {
+                return {
+                    cell: {
+                        label: {
+                            text: item.label,
+                            icon: item.icon
+                        }
+                    },
+                    onSelect: createOnSelectHandler(i),
+                    onDeselect: createOnDeselectHandler(i)
+                };
+            })
         }).insertTo(container);
     }
     extendObject(container, this);
