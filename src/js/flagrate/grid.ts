@@ -27,7 +27,7 @@ import { Toolbar } from './toolbar';
 import { ContextMenu } from './context-menu';
 
 /*?
-    *  class flagrate.Grid
+    class flagrate.Grid
 **/
 export interface Option {
     /** `id` attribute of container. */
@@ -155,81 +155,81 @@ export interface CellOption {
 export type TextAlign = "left" | "center" | "right";
 
 /*?
-    *  flagrate.createGrid(option)
-    *  new flagrate.Grid(option)
-    *  - option (Object) - configuration for the grid.
-    *
-    *  Create and initialize the grid.
-    *
-    *  #### option
-    *
-    *  * `id`                       (String): `id` attribute of container.
-    *  * `className`                (String):
-    *  * `attribute`                (Object):
-    *  * `style`                    (Object): (using flagrate.Element.setStyle)
-    *  * `cols`                     (Array): of col object.
-    *  * `rows`                     (Array): of row object.
-    *  * `pagination`               (Boolean; default `false`):
-    *  * `numberOfRowsPerPage`      (Number; default `20`): pagination.
-    *  * `fill`                     (Boolean; default `false`):
-    *  * `headless`                 (Boolean; default `false`):
-    *  * `multiSelect`              (Boolean; default `false`):
-    *  * `disableCheckbox`          (Boolean; default `false`):
-    *  * `disableSelect`            (Boolean; default `false`):
-    *  * `disableSort`              (Boolean; default `false`):
-    *  * `disableFilter`            (Boolean; default `false`):
-    *  * `disableResize`            (Boolean; default `false`):
-    *  * `onSelect`                 (Function):
-    *  * `onDeselect`               (Function):
-    *  * `onClick`                  (Function):
-    *  * `onDblClick`               (Function):
-    *  * `onRender`                 (Function):
-    *  * `onRendered`               (Function):
-    *  * `postProcessOfRow`         (Function):
-    *
-    *  #### col
-    *
-    *  * `id`                       (String): `id` attribute of `th`
-    *  * `className`                (String):
-    *  * `attribute`                (Object):
-    *  * `style`                    (Object): styling of `th` (using flagrate.Element.setStyle)
-    *  * `key`                      (String; required):
-    *  * `label`                    (String; default `""`):
-    *  * `icon`                     (String):
-    *  * `align`                    (String):
-    *  * `width`                    (Number):
-    *  * `disableSort`              (Boolean; default `false`):
-    *  * `disableResize`            (Boolean; default `false`):
-    *
-    *  #### row
-    *
-    *  * `id`                       (String): `id` attribute of `tr`
-    *  * `className`                (String):
-    *  * `attribute`                (Object):
-    *  * `style`                    (Object): styling of `tr` (using flagrate.Element.setStyle)
-    *  * `cell`                     (Object|String; default `{}`): of cell object. or String for text.
-    *  * `menuItems`                (Array): of Menu items.
-    *  * `isSelected`               (Boolean):
-    *  * `onSelect`                 (Function):
-    *  * `onDeselect`               (Function):
-    *  * `onClick`                  (Function):
-    *  * `onDblClick`               (Function):
-    *  * `postProcess`              (Function):
-    *
-    *  #### cell
-    *
-    *  * `id`                       (String): `id` attribute of `td`
-    *  * `className`                (String):
-    *  * `attribute`                (Object):
-    *  * `style`                    (Object): styling of `td` (using flagrate.Element.setStyle)
-    *  * `text`                     (String):
-    *  * `html`                     (String):
-    *  * `element`                  (Element):
-    *  * `icon`                     (String):
-    *  * `sortAlt`                  (Number|String):
-    *  * `onClick`                  (Function):
-    *  * `onDblClick`               (Function):
-    *  * `postProcess`              (Function):
+    flagrate.createGrid(option)
+    new flagrate.Grid(option)
+    - option (Object) - configuration for the grid.
+
+    Create and initialize the grid.
+
+    #### option
+
+    * `id`                       (String): `id` attribute of container.
+    * `className`                (String):
+    * `attribute`                (Object):
+    * `style`                    (Object): (using flagrate.Element.setStyle)
+    * `cols`                     (Array): of col object.
+    * `rows`                     (Array): of row object.
+    * `pagination`               (Boolean; default `false`):
+    * `numberOfRowsPerPage`      (Number; default `20`): pagination.
+    * `fill`                     (Boolean; default `false`):
+    * `headless`                 (Boolean; default `false`):
+    * `multiSelect`              (Boolean; default `false`):
+    * `disableCheckbox`          (Boolean; default `false`):
+    * `disableSelect`            (Boolean; default `false`):
+    * `disableSort`              (Boolean; default `false`):
+    * `disableFilter`            (Boolean; default `false`):
+    * `disableResize`            (Boolean; default `false`):
+    * `onSelect`                 (Function):
+    * `onDeselect`               (Function):
+    * `onClick`                  (Function):
+    * `onDblClick`               (Function):
+    * `onRender`                 (Function):
+    * `onRendered`               (Function):
+    * `postProcessOfRow`         (Function):
+
+    #### col
+
+    * `id`                       (String): `id` attribute of `th`
+    * `className`                (String):
+    * `attribute`                (Object):
+    * `style`                    (Object): styling of `th` (using flagrate.Element.setStyle)
+    * `key`                      (String; required):
+    * `label`                    (String; default `""`):
+    * `icon`                     (String):
+    * `align`                    (String):
+    * `width`                    (Number):
+    * `disableSort`              (Boolean; default `false`):
+    * `disableResize`            (Boolean; default `false`):
+
+    #### row
+
+    * `id`                       (String): `id` attribute of `tr`
+    * `className`                (String):
+    * `attribute`                (Object):
+    * `style`                    (Object): styling of `tr` (using flagrate.Element.setStyle)
+    * `cell`                     (Object|String; default `{}`): of cell object. or String for text.
+    * `menuItems`                (Array): of Menu items.
+    * `isSelected`               (Boolean):
+    * `onSelect`                 (Function):
+    * `onDeselect`               (Function):
+    * `onClick`                  (Function):
+    * `onDblClick`               (Function):
+    * `postProcess`              (Function):
+
+    #### cell
+
+    * `id`                       (String): `id` attribute of `td`
+    * `className`                (String):
+    * `attribute`                (Object):
+    * `style`                    (Object): styling of `td` (using flagrate.Element.setStyle)
+    * `text`                     (String):
+    * `html`                     (String):
+    * `element`                  (Element):
+    * `icon`                     (String):
+    * `sortAlt`                  (Number|String):
+    * `onClick`                  (Function):
+    * `onDblClick`               (Function):
+    * `postProcess`              (Function):
 **/
 export class Grid {
 
