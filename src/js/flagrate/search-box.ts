@@ -262,13 +262,13 @@ SearchBox.prototype = {
             if (typeof item === 'string' && item.trim() !== '') {
                 items.push({
                     label: item.trim(),
-                    onSelect: this._createCompletionHandler(this, item.trim())
+                    onSelect: _createCompletionHandler(this, item.trim())
                 });
             } else if (typeof item === 'object') {
                 items.push({
                     label: item.label,
                     icon: item.icon,
-                    onSelect: this._createSuggestionHandler(this, item.onSelect)
+                    onSelect: _createSuggestionHandler(this, item.onSelect)
                 });
             }
         });
