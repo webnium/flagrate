@@ -531,6 +531,28 @@ export class Grid {
         return this._selectedRows;
     }
 
+    /** get values of selected rows */
+    getValues(): any[] {
+
+        return this._selectedRows.map(row => {
+
+            // row's value is first
+            if (row.value === undefined) {
+                return row.value;
+            }
+
+            const ret = {};
+
+            for (const key in row.cell) {
+                if (typeof row.cell[key] === 'object' && (<Cell>row.cell[key]).value !== undefined) {
+                    ret[key] = (<Cell>row.cell[key]).value;
+                }
+            }
+
+            return ret;
+        });
+    }
+
     /** sort rows by key */
     sort(key: string, isAsc?: boolean): this {
 
