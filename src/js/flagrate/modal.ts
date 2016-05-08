@@ -179,6 +179,14 @@ export class Modal {
         this._create();
     }
 
+    get buttons(): Button[] {
+        return this.getButtons();
+    }
+
+    set buttons(buttons: Button[]) {
+        this.setButtons(buttons);
+    }
+
     get content(): FHTMLDivElement {
         return this._content;
     }
@@ -394,6 +402,14 @@ export class Modal {
         return this._buttons.map(button => button._button);
     }
 
+    setButtons(buttons: Button[]): this {
+
+        this._buttons = buttons;
+        this._createButtons();
+
+        return this;
+    }
+
     private _create(): void {
 
         this._createBase();
@@ -480,12 +496,15 @@ export class Modal {
                     if (button.onSelect) {
                         button.onSelect.call(e.targetButton, e, this);
                     } else if (button['onClick']) {
+                        console.warn('ModalButton#onClick is deprecated. Use ModalButton#onSelect instead.');
                         button['onClick'](e, this);// DEPRECATED
                     }
                 }
             });
 
-            // DEPRECATED
+            // DEPRECATED, This is for backward compatibility.
+            button._button['button'] = button;
+            button['button'] = button._button;
             button['disable'] = button._button.disable.bind(button._button);
             button['enable'] = button._button.enable.bind(button._button);
             button['setColor'] = button._button.setColor.bind(button._button);
