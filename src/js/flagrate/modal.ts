@@ -446,39 +446,39 @@ export class Modal {
                 if (this._sizing === 'flex') {
                     if (baseWidth - 20 <= modalWidth) {
                         this._modal.style.left = '0';
-                        this._content.style.width = baseWidth + 'px';
-                        this._content.style.overflowX = 'auto';
+                        this._middle.style.width = baseWidth + 'px';
+                        this._middle.style.overflowX = 'auto';
                     } else {
                         this._modal.style.left = Math.floor((baseWidth / 2) - (modalWidth / 2)) + 'px';
-                        this._content.style.width = '';
-                        this._content.style.overflowX = 'visible';
+                        this._middle.style.width = '';
+                        this._middle.style.overflowX = 'visible';
                     }
 
                     if (baseHeight - 20 <= modalHeight) {
                         this._obi.style.top = '10px';
                         this._obi.style.bottom = '10px';
                         this._obi.style.height = '';
-                        this._content.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
-                        this._content.style.overflowY = 'auto';
+                        this._middle.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
+                        this._middle.style.overflowY = 'auto';
                     } else {
                         this._obi.style.top = (baseHeight / 2) - (modalHeight / 2) + 'px';
                         this._obi.style.bottom = '';
                         this._obi.style.height = modalHeight + 'px';
-                        this._content.style.height = '';
-                        this._content.style.overflowY = 'visible';
+                        this._middle.style.height = '';
+                        this._middle.style.overflowY = 'visible';
                     }
                 }
 
                 if (this._sizing === 'full') {
                     this._modal.style.right = '10px';
                     this._modal.style.left = '10px';
-                    this._content.style.overflowX = 'auto';
+                    this._middle.style.overflowX = 'auto';
 
                     this._obi.style.top = '10px';
                     this._obi.style.bottom = '10px';
                     this._obi.style.height = '';
-                    this._content.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
-                    this._content.style.overflowY = 'auto';
+                    this._middle.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
+                    this._middle.style.overflowY = 'auto';
                 }
             };
 
