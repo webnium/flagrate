@@ -29,13 +29,12 @@ export interface Option {
     className?: string;
     title?: string;
     subtitle?: string;
-    description?: string;
     text?: string;
     html?: string;
     element?: HTMLElement;
     content?: FHTMLDivElement;
     //href?: string;
-    buttons?: ModalButton[];
+    buttons?: ModalButtonOption[];
     /** default is `"flex"`. */
     sizing?: Sizing;
     onBeforeClose?(modal?: Modal, e?: Event): boolean;
@@ -51,7 +50,11 @@ export interface Option {
 
 export type Sizing = "flex" | "full";
 
-export interface ModalButton {
+export interface ModalButton extends ModalButtonOption {
+    _button?: Button;
+}
+
+export interface ModalButtonOption {
     key?: string;
     label?: string;
     icon?: string;
@@ -60,8 +63,6 @@ export interface ModalButton {
     isFocused?: boolean;
     isDisabled?: boolean;
     className?: string;
-
-    _button?: Button;
 }
 
 /*?
@@ -104,27 +105,12 @@ export interface ModalButton {
 **/
 export class Modal {
 
-    private _target: HTMLElement = document.body;
-    private _id: string;
-    private _className: string;
-
-    private _title = '';
-    private _subtitle = '';
-    private _text: string;
-    private _html: string;
-    private _element: HTMLElement;
     private _content: FHTMLDivElement;
-    //private _href: string;
     private _buttons: ModalButton[] = [];
-    private _sizing: Sizing = 'flex';
 
     onBeforeClose: (modal?: Modal, e?: Event) => boolean;
     onClose: (modal?: Modal, e?: Event) => void;
     onShow: (modal?: Modal) => void;
-
-    private _disableCloseButton = false;
-    private _disableCloseByMask = false;
-    private _disableCloseByEsc = false;
 
     private _container: FHTMLDivElement;
     private _obi: FHTMLDivElement;
@@ -141,61 +127,40 @@ export class Modal {
     private _close = this.close.bind(this);
     private __onKeydownHandler = this._onKeydownHandler.bind(this);
 
-    constructor(opt: Option = {}) {
+    constructor(private _opt: Option = {}) {
 
-        if (opt.target) {
-            this._target = opt.target;
+        if (!_opt.target) {
+            _opt.target = document.body;
         }
-        if (opt.id) {
-            this._id = opt.id;
+        if (!_opt.sizing) {
+            _opt.sizing = 'flex';
         }
-        if (opt.className) {
-            this._className = opt.className;
+        if (_opt.disableCloseButton === undefined) {
+            _opt.disableCloseButton = false;
         }
-
-        if (opt.title) {
-            this._title = opt.title;
+        if (_opt.disableCloseByMask === undefined) {
+            _opt.disableCloseByMask = false;
         }
-        if (opt.subtitle || opt.description) {
-            this._subtitle = opt.subtitle || opt.description;
-        }
-        if (opt.text) {
-            this._text = opt.text;
-        }
-        if (opt.html) {
-            this._html = opt.html;
-        }
-        if (opt.element) {
-            this._element = opt.element;
-        }
-        if (opt.content) {
-            this._content = opt.content;
-        }
-        /* if (opt.href) {
-            this._href = opt.href;
-        } */
-        if (opt.buttons) {
-            this._buttons = opt.buttons;
+        if (_opt.disableCloseByEsc === undefined) {
+            _opt.disableCloseByEsc = false;
         }
 
-        if (opt.onBeforeClose) {
-            this.onBeforeClose = opt.onBeforeClose;
-        }
-        if (opt.onClose) {
-            this.onClose = opt.onClose;
-        }
-        if (opt.onShow) {
-            this.onShow = opt.onShow;
+        if (_opt['description']) {
+            this._opt['description'] = _opt['description'];
         }
 
-        if (opt.disableCloseButton !== undefined) {
-            this._disableCloseButton = opt.disableCloseButton;
+        if (_opt.buttons) {
+            this._buttons = _opt.buttons;
         }
-        if (opt.disableCloseByMask !== undefined) {
-            this._disableCloseByMask = opt.disableCloseByMask;
+
+        if (_opt.onBeforeClose) {
+            this.onBeforeClose = _opt.onBeforeClose;
         }
-        if (opt.disableCloseByEsc !== undefined) {
-            this._disableCloseByEsc = opt.disableCloseByEsc;
+        if (_opt.onClose) {
+            this.onClose = _opt.onClose;
+        }
+        if (_opt.onShow) {
+            this.onShow = _opt.onShow;
         }
 
         if (this._buttons.length === 0) {
@@ -236,7 +201,7 @@ export class Modal {
             clearTimeout(this._closingTimer);
         }
 
-        Element.insert(this._target, this._container);
+        Element.insert(this._opt.target, this._container);
 
         setTimeout(() => this._container.addClassName('flagrate-modal-visible'), 0);
 
@@ -333,21 +298,21 @@ export class Modal {
     private _createBase(): void {
 
         this._container = new Element('div', {
-            id: this._id,
-            'class': `flagrate flagrate-modal flagrate-sizing-${this._sizing}`
+            id: this._opt.id,
+            'class': `flagrate flagrate-modal flagrate-sizing-${this._opt.sizing}`
         });
 
-        if (this._className) {
-            this._container.addClassName(this._className);
+        if (this._opt.className) {
+            this._container.addClassName(this._opt.className);
         }
 
-        if (this._target !== document.body) {
+        if (this._opt.target !== document.body) {
             this._container.style.position = 'absolute';
         }
 
         this._obi = new Element().insertTo(this._container);
 
-        if (this._disableCloseByMask === false) {
+        if (this._opt.disableCloseByMask === false) {
             this._container.addEventListener('click', this._close);
         }
     }
@@ -362,27 +327,27 @@ export class Modal {
             onSelect: this._close
         });
 
-        if (this._disableCloseButton === false) {
+        if (this._opt.disableCloseButton === false) {
             this._closeButton.insertTo(this._modal);
         }
 
         this._header = new Element('hgroup').insertTo(this._modal);
-        new Element('h1').insertText(this._title).insertTo(this._header);
-        new Element('small').insertText(this._subtitle).insertTo(this._header);
+        new Element('h1').insertText(this._opt.title || '').insertTo(this._header);
+        new Element('small').insertText(this._opt.subtitle || '').insertTo(this._header);
 
         this._middle = new Element().insertTo(this._modal);
 
-        if (this._content) {
-            this._middle.insert(this._content);
+        if (this._opt.content) {
+            this._middle.insert(this._opt.content);
         } else {
             this._content = new Element().insertTo(this._middle);
 
-            if (this._element) {
-                this._content.insert(this._element);
-            } else if (this._html) {
-                this._content.insert(this._html);
-            } else if (this._text) {
-                this._content.insertText(this._text);
+            if (this._opt.element) {
+                this._content.insert(this._opt.element);
+            } else if (this._opt.html) {
+                this._content.insert(this._opt.html);
+            } else if (this._opt.text) {
+                this._content.insertText(this._opt.text);
             }
         }
 
@@ -443,7 +408,7 @@ export class Modal {
                 modalWidth = this._modal.getWidth();
                 modalHeight = this._modal.getHeight();
 
-                if (this._sizing === 'flex') {
+                if (this._opt.sizing === 'flex') {
                     if (baseWidth - 20 <= modalWidth) {
                         this._modal.style.left = '0';
                         this._middle.style.width = baseWidth + 'px';
@@ -469,7 +434,7 @@ export class Modal {
                     }
                 }
 
-                if (this._sizing === 'full') {
+                if (this._opt.sizing === 'full') {
                     this._modal.style.right = '10px';
                     this._modal.style.left = '10px';
                     this._middle.style.overflowX = 'auto';
@@ -514,7 +479,7 @@ export class Modal {
         }
 
         // ESC:27
-        if (e.keyCode === 27 && this._disableCloseByEsc === false) {
+        if (e.keyCode === 27 && this._opt.disableCloseByEsc === false) {
             activated = true;
             this.close();
         }
