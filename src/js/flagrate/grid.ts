@@ -236,16 +236,7 @@ export class Grid {
     private _cols: Col[] = [];
     private _rows: Row[] = [];
 
-    private _pagination: boolean = false;
-    private _numberOfRowsPerPage: number = 20;
     private _pagePosition: number = 0;
-    private _fill: boolean = false;
-    private _multiSelect: boolean = false;
-    private _disableCheckbox: boolean = false;
-    private _disableSelect: boolean = false;
-    private _disableSort: boolean = false;
-    private _disableFilter: boolean = false;
-    private _disableResize: boolean = false;
 
     onSelect: (event?: Event, row?: Row, grid?: Grid) => void;
     onDeselect: (event?: Event, row?: Row, grid?: Grid) => void;
@@ -274,70 +265,70 @@ export class Grid {
 
     private _renderTimer: number;
 
-    constructor(opt: Option = {}) {
+    constructor(private _opt: Option = {}) {
 
-        if (opt.id) {
-            this.element.writeAttribute('id', opt.id);
+        if (_opt.id) {
+            this.element.writeAttribute('id', _opt.id);
         }
-        if (opt.className) {
-            this.element.writeAttribute('class', opt.className);
+        if (_opt.className) {
+            this.element.writeAttribute('class', _opt.className);
         }
-        if (opt.attribute) {
-            this.element.writeAttribute(opt.attribute);
+        if (_opt.attribute) {
+            this.element.writeAttribute(_opt.attribute);
         }
-        if (opt.style) {
-            this.element.setStyle(opt.style);
-        }
-
-        if (opt.cols) {
-            this._cols = opt.cols;
-        }
-        if (opt.rows) {
-            this._rows = opt.rows;
+        if (_opt.style) {
+            this.element.setStyle(_opt.style);
         }
 
-        if (opt.pagination) {
-            this._pagination = opt.pagination;
+        if (_opt.cols) {
+            this._cols = _opt.cols;
         }
-        if (opt.numberOfRowsPerPage) {
-            this._numberOfRowsPerPage = opt.numberOfRowsPerPage;
-        }
-        if (opt.fill) {
-            this._fill = opt.fill;
+        if (_opt.rows) {
+            this._rows = _opt.rows;
         }
 
-        if (opt.headless) {
-            this._disableSort = true;
-            this._disableResize = true;
+        if (_opt.pagination === undefined) {
+            _opt.pagination = false;
+        }
+        if (!_opt.numberOfRowsPerPage) {
+            _opt.numberOfRowsPerPage = 20;
+        }
+        if (_opt.fill === undefined) {
+            _opt.fill = false;
+        }
+
+        if (_opt.headless === true) {
+            _opt.disableSort = true;
+            _opt.disableResize = true;
             this.element.addClassName('flagrate-grid-headless');
         }
 
-        if (opt.multiSelect) {
-            this._multiSelect = opt.multiSelect;
+        if (_opt.multiSelect === undefined) {
+            _opt.multiSelect = false;
         }
-        if (opt.disableCheckbox) {
-            this._disableCheckbox = opt.disableCheckbox;
+        if (_opt.disableCheckbox === undefined) {
+            _opt.disableCheckbox = false;
         }
-        if (opt.disableSelect) {
-            this._disableSelect = opt.disableSelect;
+        if (_opt.disableSelect === undefined) {
+            _opt.disableSelect = false;
         }
-        if (opt.disableSort) {
-            this._disableSort = opt.disableSort;
+        if (_opt.disableSort === undefined) {
+            _opt.disableSort = false;
         }
-        if (opt.disableFilter) {
-            this._disableFilter = opt.disableFilter;
+        if (_opt.disableFilter === undefined) {
+            _opt.disableFilter = false;
         }
-        if (opt.disableResize) {
-            this._disableResize = opt.disableResize;
+        if (_opt.disableResize === undefined) {
+            _opt.disableResize = false;
         }
 
-        this.onSelect = opt.onSelect;
-        this.onDeselect = opt.onDeselect;
-        this.onClick = opt.onClick;
-        this.onDblClick = opt.onDblClick;
-        this.onRender = opt.onRender;
-        this.onRendered = opt.onRendered;
-        this.postProcessOfRow = opt.postProcessOfRow;
+        this.onSelect = _opt.onSelect;
+        this.onDeselect = _opt.onDeselect;
+        this.onClick = _opt.onClick;
+        this.onDblClick = _opt.onDblClick;
+        this.onRender = _opt.onRender;
+        this.onRendered = _opt.onRendered;
+        this.postProcessOfRow = _opt.postProcessOfRow;
 
         this._create()._requestRender();
     }
@@ -399,7 +390,7 @@ export class Grid {
             }
         }
 
-        if (this._multiSelect === false) {
+        if (this._opt.multiSelect === false) {
             this.deselectAll();
         }
 
@@ -723,7 +714,7 @@ export class Grid {
 
     private _create(): this {
 
-        if (this._disableCheckbox === false && this._disableSelect === false && this._multiSelect === true) {
+        if (this._opt.disableCheckbox === false && this._opt.disableSelect === false && this._opt.multiSelect === true) {
             this._checkbox = new Checkbox({
                 onCheck: this.selectAll.bind(this),
                 onUncheck: this.deselectAll.bind(this)
@@ -771,7 +762,7 @@ export class Grid {
                 });
             }
 
-            if (this._disableResize === false && !col.disableResize) {
+            if (this._opt.disableResize === false && !col.disableResize) {
                 col._resizeHandle = new Element('div', {
                     'class': 'flagrate-grid-col-resize-handle'
                 }).insertTo(this.element);
@@ -779,7 +770,7 @@ export class Grid {
                 col._resizeHandle.onmousedown = this._createResizeHandleOnMousedownHandler(col);
             }
 
-            if (this._disableSort === false && !col.disableSort) {
+            if (this._opt.disableSort === false && !col.disableSort) {
                 col._th.addClassName('flagrate-grid-col-sortable');
                 col._th.onclick = this._createColOnClickHandler(col);
             }
@@ -789,7 +780,7 @@ export class Grid {
         this._style.insertText('.' + this._id + '-col-last:after{right:0}');
 
         // pagination (testing)
-        if (this._pagination) {
+        if (this._opt.pagination) {
             this.element.addClassName('flagrate-grid-pagination');
             // pager container
             this._pager = new Toolbar({
@@ -838,7 +829,7 @@ export class Grid {
                         element: new Button({
                             className: 'flagrate-grid-pager-last',
                             onSelect: () => {
-                                this._pagePosition = Math.floor(this._rows.length / this._numberOfRowsPerPage);
+                                this._pagePosition = Math.floor(this._rows.length / this._opt.numberOfRowsPerPage);
                                 this._requestRender();
                             }
                         })
@@ -847,7 +838,7 @@ export class Grid {
             }).insertTo(this.element);
         }
 
-        if (this._fill) {
+        if (this._opt.fill) {
             this.element.addClassName('flagrate-grid-fill');
 
             this._body.onscroll = this._createBodyOnScrollHandler();
@@ -874,29 +865,29 @@ export class Grid {
             return this;
         }
 
-        const isCheckable = (this._disableCheckbox === false && this._disableSelect === false && this._multiSelect === true);
+        const isCheckable = (this._opt.disableCheckbox === false && this._opt.disableSelect === false && this._opt.multiSelect === true);
 
         let i: number, j: number, row: Row, col: Col, cell: Cell, pl: number, pages: number, from: number, to: number;
         const rl = this._rows.length;
         const cl = this._cols.length;
 
-        if (this._pagination) {
+        if (this._opt.pagination) {
             pl = 0;
-            pages = Math.ceil(rl / this._numberOfRowsPerPage);
+            pages = Math.ceil(rl / this._opt.numberOfRowsPerPage);
             if (pages <= this._pagePosition) {
                 this._pagePosition = pages - 1;
             }
             if (this._pagePosition <= 0) {
                 this._pagePosition = 0;
             }
-            from = this._pagePosition * this._numberOfRowsPerPage;
-            to = from + this._numberOfRowsPerPage;
+            from = this._pagePosition * this._opt.numberOfRowsPerPage;
+            to = from + this._opt.numberOfRowsPerPage;
         }
 
         this._tbody.update();
 
         for (i = 0; i < rl; i++) {
-            if (this._pagination) {
+            if (this._opt.pagination) {
                 if (i < from) {
                     continue;
                 }
@@ -926,8 +917,8 @@ export class Grid {
                 row._tr.setStyle(row.style);
             }
 
-            if (row.onClick || this.onClick || this._disableSelect === false) {
-                if (this._disableSelect === false) {
+            if (row.onClick || this.onClick || this._opt.disableSelect === false) {
+                if (this._opt.disableSelect === false) {
                     row._tr.addClassName('flagrate-grid-row-selectable');
                 }
                 if (row.onClick || this.onClick) {
@@ -1051,13 +1042,13 @@ export class Grid {
             }
         }//<--for
 
-        if (this._pagination) {
+        if (this._opt.pagination) {
             this._pager.getElementByKey('rn').updateText((from + 1) + ' - ' + (from + pl) + ' / ' + rl);
             this._pager.getElementByKey('num').updateText((this._pagePosition + 1) + ' / ' + pages);
         }
 
-        if (this._disableResize === false) {
-            if (this._fill) {
+        if (this._opt.disableResize === false) {
+            if (this._opt.fill) {
                 this._head.style.right = (this._body.offsetWidth - this._body.clientWidth) + 'px';
                 this._head.scrollLeft = this._body.scrollLeft;
             }
@@ -1075,7 +1066,7 @@ export class Grid {
 
     private _updatePositionOfResizeHandles() {
 
-        var adj = this._fill ? -this._body.scrollLeft : 0;
+        var adj = this._opt.fill ? -this._body.scrollLeft : 0;
 
         var col;
 
@@ -1116,7 +1107,7 @@ export class Grid {
 
         setTimeout(() => {
 
-            const base = this._fill ? this._body : this.element;
+            const base = this._opt.fill ? this._body : this.element;
 
             this._style.updateText(
                 this._style.innerHTML.replace(
@@ -1133,7 +1124,7 @@ export class Grid {
 
         return (e: Event) => {
 
-            if (this._disableResize === false) {
+            if (this._opt.disableResize === false) {
                 this._updateLayoutOfCols();
             }
         };
@@ -1146,7 +1137,7 @@ export class Grid {
             this._head.style.right = (this._body.offsetWidth - this._body.clientWidth) + 'px';
             this._head.scrollLeft = this._body.scrollLeft;
 
-            if (this._disableResize === false) {
+            if (this._opt.disableResize === false) {
                 this._updateLayoutOfCols();
                 this._updatePositionOfResizeHandles();
             }
@@ -1180,7 +1171,7 @@ export class Grid {
                 this.onClick(e, row, this);
             }
 
-            if (this._disableSelect === false) {
+            if (this._opt.disableSelect === false) {
                 if (row.isSelected === true) {
                     this.deselect(row);
                 } else {
@@ -1257,7 +1248,7 @@ export class Grid {
                 return;
             }
 
-            if (this._disableSelect === false) {
+            if (this._opt.disableSelect === false) {
                 if (row._checkbox.isChecked() === true) {
                     this.select(row);
                 } else {
