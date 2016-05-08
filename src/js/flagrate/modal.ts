@@ -15,7 +15,7 @@
 */
 'use strict';
 
-import { Element, FHTMLElement, FHTMLDivElement } from './element';
+import { Element, FHTMLElement, FHTMLDivElement, FHTMLHeadingElement } from './element';
 import { Button } from './button';
 
 /*?
@@ -120,6 +120,8 @@ export class Modal {
     private _header: FHTMLElement;
     private _middle: FHTMLDivElement;
     private _footer: FHTMLElement;
+    private _title: FHTMLHeadingElement;
+    private _subtitle: FHTMLElement;
 
     private _positioningTimer: number;
     private _closingTimer: number;
@@ -179,6 +181,110 @@ export class Modal {
 
     get content(): FHTMLDivElement {
         return this._content;
+    }
+    set content(div: FHTMLDivElement) {
+        this.setContent(div);
+    }
+
+    get element(): HTMLElement {
+        return this._opt.element;
+    }
+    set element(element: HTMLElement) {
+        this.setElement(element);
+    }
+
+    get html(): string {
+        return this._opt.html;
+    }
+    set html(html: string) {
+        this.setHTML(html);
+    }
+
+    get text(): string {
+        return this._opt.text;
+    }
+    set text(text: string) {
+        this.setText(text);
+    }
+
+    get title(): string {
+        return this._opt.title;
+    }
+    set title(title: string) {
+        this.setTitle(title);
+    }
+
+    get subtitle(): string {
+        return this._opt.subtitle;
+    }
+    set subtitle(subtitle: string) {
+        this.setSubtitle(subtitle);
+    }
+
+    setContent(div: FHTMLDivElement): this {
+
+        this._opt.content = div;
+
+        if (this.visible() === true) {
+            this._middle.update(div);
+        }
+
+        return this;
+    }
+
+    setElement(element: HTMLElement): this {
+
+        this._opt.element = element;
+
+        if (this.visible() === true) {
+            this._content.update(element);
+        }
+
+        return this;
+    }
+
+    setHTML(html: string): this {
+
+        this._opt.html = html;
+
+        if (this.visible() === true) {
+            this._content.update(html);
+        }
+
+        return this;
+    }
+
+    setText(text: string): this {
+
+        this._opt.text = text;
+
+        if (this.visible() === true) {
+            this._content.updateText(text);
+        }
+
+        return this;
+    }
+
+    setTitle(title: string): this {
+
+        this._opt.title = title;
+
+        if (this.visible() === true) {
+            this._title.updateText(title);
+        }
+
+        return this;
+    }
+
+    setSubtitle(subtitle: string): this {
+
+        this._opt.subtitle = subtitle;
+
+        if (this.visible() === true) {
+            this._subtitle.updateText(subtitle);
+        }
+
+        return this;
     }
 
     visible(): boolean {
@@ -332,8 +438,8 @@ export class Modal {
         }
 
         this._header = new Element('hgroup').insertTo(this._modal);
-        new Element('h1').insertText(this._opt.title || '').insertTo(this._header);
-        new Element('small').insertText(this._opt.subtitle || '').insertTo(this._header);
+        this._title = new Element('h1').insertText(this._opt.title || '').insertTo(this._header);
+        this._subtitle = new Element('small').insertText(this._opt.subtitle || '').insertTo(this._header);
 
         this._middle = new Element().insertTo(this._modal);
 
