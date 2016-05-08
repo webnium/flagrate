@@ -345,6 +345,24 @@ export class Grid {
         }
     }
 
+    get fill(): boolean {
+        return this.element.hasClassName('flagrate-grid-fill');
+    }
+    set fill(enable: boolean) {
+
+        if (enable) {
+            this.element.addClassName('flagrate-grid-fill');
+
+            this._body.onscroll = this._createBodyOnScrollHandler();
+        } else {
+            this.element.removeClassName('flagrate-grid-fill');
+
+            this.element.onscroll = this._createOnScrollHandler();
+        }
+
+        this._requestRender();
+    }
+
     get rows(): Row[] {
         return this._rows;
     }
