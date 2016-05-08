@@ -182,9 +182,22 @@ export class Modal {
     get buttons(): Button[] {
         return this.getButtons();
     }
-
     set buttons(buttons: Button[]) {
         this.setButtons(buttons);
+    }
+
+    get id(): string {
+        return this._container.id;
+    }
+    set id(id: string) {
+        this._container.id = id;
+    }
+
+    get className(): string {
+        return this._container.className;
+    }
+    set className(className: string) {
+        this._container.className = className;
     }
 
     get content(): FHTMLDivElement {
@@ -192,6 +205,13 @@ export class Modal {
     }
     set content(div: FHTMLDivElement) {
         this.setContent(div);
+    }
+
+    get sizing(): Sizing {
+        return this._opt.sizing;
+    }
+    set sizing(sizing: Sizing) {
+        this.setSizing(sizing);
     }
 
     get element(): HTMLElement {
@@ -229,10 +249,34 @@ export class Modal {
         this.setSubtitle(subtitle);
     }
 
+    setId(id: string): this {
+
+        this._container.id = id;
+
+        return this;
+    }
+
+    setClassName(className: string): this {
+
+        this._container.className = className;
+
+        return this;
+    }
+
     setContent(div: FHTMLDivElement): this {
 
         this._opt.content = div;
         this._middle.update(div);
+
+        return this;
+    }
+
+    setSizing(sizing: Sizing): this {
+
+        this._container.removeClassName(`flagrate-sizing-${this._opt.sizing}`);
+        this._container.addClassName(`flagrate-sizing-${sizing}`);
+
+        this._opt.sizing = sizing;
 
         return this;
     }
