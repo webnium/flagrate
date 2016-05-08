@@ -749,7 +749,7 @@ export class Grid {
 
             col._th.addClassName(col._id);
 
-            var width = !!col.width ? (col.width.toString(10) + 'px') : 'auto';
+            const width = !!col.width ? (col.width.toString(10) + 'px') : 'auto';
             this._style.insertText('.' + col._id + '{width:' + width + '}');
 
             if (col.align) {
@@ -1073,12 +1073,10 @@ export class Grid {
 
     private _updatePositionOfResizeHandles() {
 
-        var adj = this._opt.fill ? -this._body.scrollLeft : 0;
+        const adj = this._opt.fill ? -this._body.scrollLeft : 0;
 
-        var col;
-
-        var i, l;
-        for (i = 0, l = this._cols.length; i < l; i++) {
+        let col;
+        for (let i = 0, l = this._cols.length; i < l; i++) {
             col = this._cols[i];
 
             if (col._resizeHandle) {
