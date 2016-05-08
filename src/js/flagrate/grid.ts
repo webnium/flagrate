@@ -53,8 +53,8 @@ export interface Option {
     disableSelect?: boolean;
     /** default is `false`. */
     disableSort?: boolean;
-    /** default is `false`. */
-    disableFilter?: boolean;
+    ///** default is `false`. */
+    //disableFilter?: boolean;
     /** default is `false`. */
     disableResize?: boolean;
 
@@ -315,9 +315,9 @@ export class Grid {
         if (_opt.disableSort === undefined) {
             _opt.disableSort = false;
         }
-        if (_opt.disableFilter === undefined) {
+        /* if (_opt.disableFilter === undefined) {
             _opt.disableFilter = false;
-        }
+        } */
         if (_opt.disableResize === undefined) {
             _opt.disableResize = false;
         }
