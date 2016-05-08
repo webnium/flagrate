@@ -232,10 +232,7 @@ export class Modal {
     setContent(div: FHTMLDivElement): this {
 
         this._opt.content = div;
-
-        if (this.visible() === true) {
-            this._middle.update(div);
-        }
+        this._middle.update(div);
 
         return this;
     }
@@ -243,10 +240,7 @@ export class Modal {
     setElement(element: HTMLElement): this {
 
         this._opt.element = element;
-
-        if (this.visible() === true) {
-            this._content.update(element);
-        }
+        this._content.update(element);
 
         return this;
     }
@@ -254,10 +248,7 @@ export class Modal {
     setHTML(html: string): this {
 
         this._opt.html = html;
-
-        if (this.visible() === true) {
-            this._content.update(html);
-        }
+        this._content.update(html);
 
         return this;
     }
@@ -265,10 +256,7 @@ export class Modal {
     setText(text: string): this {
 
         this._opt.text = text;
-
-        if (this.visible() === true) {
-            this._content.updateText(text);
-        }
+        this._content.updateText(text);
 
         return this;
     }
@@ -276,10 +264,7 @@ export class Modal {
     setTitle(title: string): this {
 
         this._opt.title = title;
-
-        if (this.visible() === true) {
-            this._title.updateText(title);
-        }
+        this._title.updateText(title);
 
         return this;
     }
@@ -287,10 +272,7 @@ export class Modal {
     setSubtitle(subtitle: string): this {
 
         this._opt.subtitle = subtitle;
-
-        if (this.visible() === true) {
-            this._subtitle.updateText(subtitle);
-        }
+        this._subtitle.updateText(subtitle);
 
         return this;
     }
