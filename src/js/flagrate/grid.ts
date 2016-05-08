@@ -333,13 +333,21 @@ export class Grid {
         this._create()._requestRender();
     }
 
-    // get headless
-    // set headless
+    get headless(): boolean {
+        return this.element.hasClassName('flagrate-grid-headless');
+    }
+    set headless(enable: boolean) {
+
+        if (enable) {
+            this.element.addClassName('flagrate-grid-headless');
+        } else {
+            this.element.removeClassName('flagrate-grid-headless');
+        }
+    }
 
     get rows(): Row[] {
         return this._rows;
     }
-
     set rows(rows: Row[]) {
         this._rows = rows;
         this._requestRender();
@@ -356,7 +364,6 @@ export class Grid {
     get selectedRows(): Row[] {
         return this.getSelectedRows();
     }
-
     set selectedRows(rows: Row[]) {
         this.select(rows);
     }
