@@ -183,6 +183,10 @@ export class Popover {
 
     close(): this {
 
+        if (this._div === undefined) {
+            return this;
+        }
+
         clearInterval(this._positioningTimer);
 
         document.body.removeEventListener('click', this._closeHandler);
