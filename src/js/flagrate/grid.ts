@@ -37,6 +37,8 @@ export interface Option {
     style?: Property;
     cols?: ColOption[];
     rows?: RowOption[];
+    /** default is `10`. */
+    colMinWidth?: number;
     /** default is `false`. */
     pagination?: boolean;
     /** default is `20`. */
@@ -287,6 +289,9 @@ export class Grid {
             this._rows = _opt.rows;
         }
 
+        if (_opt.colMinWidth === undefined) {
+            _opt.colMinWidth = 10;
+        }
         if (_opt.pagination === undefined) {
             _opt.pagination = false;
         }
@@ -790,7 +795,7 @@ export class Grid {
             col._th.addClassName(col._id);
 
             const width = !!col.width ? (col.width.toString(10) + 'px') : 'auto';
-            this._style.insertText('.' + col._id + '{width:' + width + '}');
+            this._style.insertText(`.${col._id}{width:${width}}`);
 
             if (col.align) {
                 col._th.style.textAlign = col.align;
@@ -1346,12 +1351,13 @@ export class Grid {
                 document.removeEventListener('mousemove', onMove, true);
                 document.removeEventListener('mouseup', onUp, true);
 
+                const minWidth = col.minWidth === undefined ? this._opt.colMinWidth : col.minWidth;
                 const delta = e.clientX - origin;
-                let w = col._th.getWidth() + delta;
-                w = col.width = w < 0 ? 0 : w;
+                let width = col._th.getWidth() + delta;
+                width = col.width = Math.max(width, minWidth);
 
                 this._style.updateText(
-                    this._style.innerHTML.replace(new RegExp('(' + col._id + '{width:)([^}]*)}'), '$1' + w + 'px}')
+                    this._style.innerHTML.replace(new RegExp(`(${col._id}{width:)([^}]*)}`), `$1${width}px}`)
                 );
 
                 this._updateLayoutOfCols();
