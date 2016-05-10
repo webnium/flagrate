@@ -892,7 +892,7 @@ export class Form {
         if (field.element) {
             new Element('div', {
                 'class': 'flagrate-form-field-element'
-            }).insert(field.container).insertTo(field._input);
+            }).insert(field.element).insertTo(field._input);
         }
         if (field.html) {
             new Element('div', {
