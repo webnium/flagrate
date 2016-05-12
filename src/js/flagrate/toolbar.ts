@@ -104,8 +104,7 @@ function FToolbar(option: Option = {}): Toolbar {
         container.setStyle(option.style);
     }
 
-    let i = 0, l = items.length;
-    for (; i < l; i++) {
+    for (let i = 0, l = items.length; i < l; i++) {
         container.push(items[i]);
     }
 
@@ -147,18 +146,14 @@ Toolbar.prototype = {
 
     getElementByKey(key: string) {
 
-        let result = null;
-
         const elements = this.childNodes;
-        let i = 0, l = elements.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = elements.length; i < l; i++) {
             if (elements[i].dataset['_key'] === key) {
-                result = elements[i];
-                break;
+                return elements[i];
             }
         }
 
-        return result;
+        return null;
     },
 
     getElements() {

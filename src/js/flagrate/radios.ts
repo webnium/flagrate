@@ -181,8 +181,7 @@ Radios.prototype = {
 
     setValue: function (value) {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             if (this._items[i].value === value) {
                 this.select(i);
                 break;
@@ -194,8 +193,7 @@ Radios.prototype = {
 
     enable() {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             this._items[i]._radio.enable();
         }
 
@@ -206,8 +204,7 @@ Radios.prototype = {
 
     disable() {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             this._items[i]._radio.disable();
         }
 

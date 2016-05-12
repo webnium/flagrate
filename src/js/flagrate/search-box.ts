@@ -338,8 +338,7 @@ SearchBox.prototype = {
 
             const elements = this._menu.getElementsByTagName('button');
 
-            let i = 0, l = elements.length;
-            for (; i < l; i++) {
+            for (let i = 0, l = elements.length; i < l; i++) {
                 if (elements[i].hasClassName('flagrate-search-suggest-selected') === true) {
                     if ((e.keyCode === 38 && i !== 0) || (e.keyCode === 40 && (i + 1) !== l)) {
                         elements[i].removeClassName('flagrate-search-suggest-selected');

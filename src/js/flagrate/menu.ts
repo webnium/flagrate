@@ -151,8 +151,7 @@ function FMenu(option: Option = {}) {
         container.setStyle(option.style);
     }
 
-    let i = 0, l = option.items.length;
-    for (; i < l; i++) {
+    for (let i = 0, l = option.items.length; i < l; i++) {
         container.push(option.items[i]);
     }
 

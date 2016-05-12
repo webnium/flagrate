@@ -334,8 +334,7 @@ Tokenizer.prototype = {
 
         menu.style.left = `${this._input.offsetLeft}px`;
 
-        let i = 0, l = candidates.length, candidate, menuItem;
-        for (; i < l; i++) {
+        for (let i = 0, l = candidates.length, candidate, menuItem; i < l; i++) {
             candidate = candidates[i];
 
             if (typeof candidate === 'string') {

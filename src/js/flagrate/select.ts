@@ -327,8 +327,7 @@ Select.prototype = {
                     this._grid.deselect(index);
                 }
             } else {
-                let i = 0, l = this.items.length;
-                for (; i < l; i++) {
+                for (let i = 0, l = this.items.length; i < l; i++) {
                     if (this._grid.rows[i].isSelected === true) {
                         this._grid.deselect(i);
                     }
@@ -345,8 +344,7 @@ Select.prototype = {
             this._grid.selectAll();
             this.selectedIndexes = [];
 
-            let i = 0, l = this.items.length;
-            for (; i < l; i++) {
+            for (let i = 0, l = this.items.length; i < l; i++) {
                 this.selectedIndexes.push(i);
             }
         }
@@ -407,9 +405,9 @@ Select.prototype = {
 
     getValues() {
 
-        let i = 0, l = this.selectedIndexes.length, result = [];
+        let result = [];
 
-        for (; i < l; i++) {
+        for (let i = 0, l = this.selectedIndexes.length; i < l; i++) {
             result.push(this.items[this.selectedIndexes[i]].value);
         }
 

@@ -27,7 +27,7 @@ export function identity<T>(a: T): T {
  */
 export function extendObject<T, U>(dest: T, source: U): T {
 
-    var k;
+    let k;
     for (k in source) {
         dest[k] = source[k];
     }

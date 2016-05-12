@@ -175,8 +175,7 @@ Checkboxes.prototype = {
 
         const values = [];
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             if (this._items[i]._checkbox.isChecked() === true) {
                 values.push(this._items[i].value);
             }
@@ -187,8 +186,7 @@ Checkboxes.prototype = {
 
     addValue(value) {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             if (this._items[i].value === value) {
                 this.select(i);
                 break;
@@ -200,8 +198,7 @@ Checkboxes.prototype = {
 
     removeValue(value) {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             if (this._items[i].value === value) {
                 this.deselect(i);
                 break;
@@ -213,8 +210,7 @@ Checkboxes.prototype = {
 
     setValues(values) {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             if (values.indexOf(this._items[i].value) === -1) {
                 this.deselect(i);
             } else {
@@ -227,8 +223,7 @@ Checkboxes.prototype = {
 
     selectAll() {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             this.select(i);
         }
 
@@ -241,8 +236,7 @@ Checkboxes.prototype = {
 
     enable() {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             this._items[i]._checkbox.enable();
         }
 
@@ -253,8 +247,7 @@ Checkboxes.prototype = {
 
     disable() {
 
-        let i = 0, l = this._items.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = this._items.length; i < l; i++) {
             this._items[i]._checkbox.disable();
         }
 

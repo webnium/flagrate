@@ -136,8 +136,7 @@ function FButtons(option: Option = {}) {
         container.setStyle(option.style);
     }
 
-    let i = 0, l = option.items.length;
-    for (; i < l; i++) {
+    for (let i = 0, l = option.items.length; i < l; i++) {
         container.push(option.items[i]);
     }
 
@@ -180,18 +179,14 @@ Buttons.prototype = {
 
     getButtonByKey (key: string) {
 
-        let result = null;
-
         const elements = this.childNodes;
-        let i = 0, l = elements.length;
-        for (; i < l; i++) {
+        for (let i = 0, l = elements.length; i < l; i++) {
             if (elements[i].dataset['_key'] === key) {
-                result = elements[i];
-                break;
+                return elements[i];
             }
         }
 
-        return result;
+        return null;
     },
 
     getButtons () {

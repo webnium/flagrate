@@ -602,7 +602,7 @@ export class Form {
                         if (typeof active.selectionStart === 'number') {
                             active.selectionStart = active.selectionEnd = active.value.length;
                         } else if (typeof active.createTextRange !== 'undefined') {
-                            var range = active.createTextRange();
+                            const range = active.createTextRange();
                             range.collapse(false);
                             range.select();
                         }
@@ -631,7 +631,7 @@ export class Form {
             return this;
         }
 
-        var i, l, j, m, k, n, fi, s;
+        let i, l, j, m, k, n, fi, s;
         for (i = 0, l = this._fields.length; i < l; i++) {
             fi = this._fields[i];
 
@@ -741,15 +741,15 @@ export class Form {
 
     private _checkFieldDepends(field: Field): boolean {
 
-        var depends = field.depends;
+        const depends = field.depends;
 
         if (!depends || depends.length === 0) {
             field._dependsIsOk = true;
             return true;
         }
 
-        var result = true;
-        var i, l, j, m, d, f, s;
+        let result = true;
+        let i, l, j, m, d, f, s;
 
         for (i = 0, l = depends.length; i < l; i++) {
             d = depends[i];
@@ -1074,7 +1074,7 @@ export class Form {
 
                 if (q.length === 0 || hasError === true) { return fin(); }
 
-                var v = q.shift();
+                let v = q.shift();
 
                 if (typeof v === 'function') {
                     v.call(field.input, val, done);
@@ -1094,10 +1094,9 @@ export class Form {
 
         field._checkRefs = () => {
 
-            var rerend = false;
+            let rerend = false;
 
-            var i, l, refField;
-            for (i = 0, l = field._refs.length; i < l; i++) {
+            for (let i = 0, l = field._refs.length, refField; i < l; i++) {
                 refField = field._refs[i];
                 if (refField._dependsIsOk !== this._checkFieldDepends(refField)) {
                     refField._checkRefs();
@@ -1513,9 +1512,8 @@ export class Form {
                     this.element.deselectAll();
                 }
 
-                var i, j, l, m;
-                for (i = 0, l = val.length, m = this.element.items.length; i < l; i++) {
-                    for (j = 0; j < m; j++) {
+                for (let i = 0, l = val.length, m = this.element.items.length; i < l; i++) {
+                    for (let j = 0; j < m; j++) {
                         if (val[i] === this.element.items[j].value) {
                             this.element.select(j);
                             break;

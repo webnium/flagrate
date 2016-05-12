@@ -142,8 +142,8 @@ function FComboBox(option: Option = {}) {
             }
 
             const items = [];
-            let i = 0, l = container.items.length;
-            for (; i < l; i++) {
+
+            for (let i = 0, l = container.items.length; i < l; i++) {
                 items.push({
                     label: container.items[i],
                     onSelect: createOnSelectHandler(container.items[i])
