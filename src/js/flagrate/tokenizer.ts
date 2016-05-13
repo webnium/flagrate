@@ -159,11 +159,11 @@ function FTokenizer(option: Option = {}) {
         tokenizer._updateTokens();
     }
 
-    tokenizer.on('click', tokenizer._onClickHandler.bind(tokenizer));
+    tokenizer.addEventListener('click', tokenizer._onClickHandler.bind(tokenizer));
 
-    tokenizer._input.on('keydown', tokenizer._onKeydownHandler.bind(tokenizer));
-    tokenizer._input.on('focus', tokenizer._onFocusHandler.bind(tokenizer));
-    tokenizer._input.on('blur', tokenizer._onBlurHandler.bind(tokenizer));
+    tokenizer._input.addEventListener('keydown', tokenizer._onKeydownHandler.bind(tokenizer));
+    tokenizer._input.addEventListener('focus', tokenizer._onFocusHandler.bind(tokenizer));
+    tokenizer._input.addEventListener('blur', tokenizer._onBlurHandler.bind(tokenizer));
 
     if (option.style) {
         tokenizer.setStyle(option.style);
@@ -453,6 +453,8 @@ Tokenizer.prototype = {
 
         this._updateTokens();
         this._tokenize();
+
+        this.addClassName('flagrate-tokenizer-focus');
     },
 
     _onBlurHandler() {
@@ -462,6 +464,8 @@ Tokenizer.prototype = {
             this._menu.style.opacity = '0';
             setTimeout(() => this._menu.remove(), 500);
         }
+
+        this.removeClassName('flagrate-tokenizer-focus');
     }
 };
 
