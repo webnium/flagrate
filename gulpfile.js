@@ -27,6 +27,10 @@ const browserify = require('browserify');
 const babelify = require('babelify');
 const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer');
+const less = require('gulp-less');
+const cleanCSS = require('gulp-clean-css');
+const LessAutoprefix = require('less-plugin-autoprefix');
+const autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
 
 gulp.task('clean-js', () => {
 
@@ -76,7 +80,21 @@ gulp.task('browserify', ['tsc'], () => {
         .pipe(gulp.dest('.'));
 });
 
-gulp.task('minify', ['browserify'], () => {
+gulp.task('split', ['browserify'], () => {
+
+    let source = fs.readFileSync('flagrate.js', { encoding: 'utf8' });
+
+    let data = new Buffer(source.match(/\/\/. sourceMappingURL=[^,]+,(.+)/)[1], 'base64').toString('ascii');
+
+    source = source.replace(/\/\/. sourceMappingURL=[^,]+,(.+)/, '//# sourceMappingURL=flagrate.js.map');
+
+    fs.writeFileSync('flagrate.js', source);
+    fs.writeFileSync('flagrate.js.map', data);
+
+    return;
+});
+
+gulp.task('minify', ['split'], () => {
 
     return gulp.src('flagrate.js')
         .pipe(sourcemaps.init())
@@ -90,12 +108,40 @@ gulp.task('minify', ['browserify'], () => {
         .pipe(gulp.dest('.'));
 });
 
+gulp.task('less', () => {
+
+    return gulp
+        .src([
+            'src/css/flagrate.less'
+        ])
+        .pipe(sourcemaps.init())
+        .pipe(less({
+            plugins: [ autoprefix ]
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('.'));
+});
+
+gulp.task('minify-css', ['less'], () => {
+
+    return gulp.src('flagrate.css')
+        .pipe(sourcemaps.init())
+        .pipe(cleanCSS())
+        .pipe(rename({
+            extname: '.min.css'
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('.'));
+});
+
 gulp.task('build-js', ['minify']);
+gulp.task('build-css', ['minify-css']);
 
 gulp.task('watch', () => {
     gulp.watch('src/js/**/*.ts', ['build-js']);
+    gulp.watch('src/css/**/*.less', ['build-css']);
 });
 
-gulp.task('build', ['build-js']);
+gulp.task('build', ['build-js', 'build-css']);
 
 gulp.task('default', ['build']);

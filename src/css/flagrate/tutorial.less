@@ -1,0 +1,43 @@
+div.flagrate-tutorial {
+    button {
+        &.flagrate-tutorial-button-finish::before {
+            content: '\2714';
+        }
+        &.flagrate-tutorial-button-prev::before {
+            content: '\25c0'
+        }
+        &.flagrate-tutorial-button-next::before {
+            content: '\25b6'
+        }
+        &.flagrate-tutorial-button-abort::before {
+            content: '\2716'
+        }
+    }
+
+    &.flagrate-popover > div {
+        > div {
+            margin-top: 10px;
+            margin-bottom: 15px;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        > footer > button {
+            float: right;
+            margin-left: 5px;
+        }
+    }
+
+    &.flagrate-modal {
+        color: @background;
+
+        > div {
+            background-color: fade(@foreground, 50%);
+
+            > div {
+                background-color: transparent;
+                box-shadow: none;
+            }
+        }
+    }
+}

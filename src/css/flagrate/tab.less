@@ -1,0 +1,58 @@
+div.flagrate-tab {
+    &.flagrate-tab-fill {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        > div.flagrate-tab-head {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            overflow: hidden;
+        }
+    }
+
+    > div.flagrate-tab-head {
+        &,
+        > button.flagrate-button {
+            &,
+            &:hover {
+                box-shadow: inset 0 -2px 0 @primary;
+            }
+        }
+
+        > button.flagrate-button {
+            background-color: transparent;
+            box-shadow: none;
+            border-width: 0;
+            transition: none;
+
+            &:hover,
+            &:focus {
+                background-color: @shape;
+                outline: none;
+            }
+
+            &.flagrate-tab-selected {
+                background-color: @primary;
+                color: @primary-inverse;
+                cursor: default;
+            }
+        }
+    }
+
+    > div.flagrate-tab-body {
+        background-color: inherit;
+        padding: 10px 0;
+    }
+
+    &.flagrate-tab-fill > div.flagrate-tab-body {
+        position: absolute;
+        top: 28px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: auto;
+    }
+}

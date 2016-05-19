@@ -1,0 +1,272 @@
+button.flagrate-button {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0 11px;
+    border: 1px solid transparent;
+    color: @shape-inverse;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    background-color: @shape;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    height: 28px;
+    line-height: 18px;
+    text-align: center;
+    transition: background 0.15s ease;
+
+    * {
+        &:extend(.flagrate);
+    }
+
+    > span {
+        &:first-child {
+            pointer-events: none;
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: inherit;
+            line-height: inherit;
+            vertical-align: top;
+        }
+    }
+
+    &:hover:not(:disabled) {
+        border-color: fade(black, 20%);
+        background-color: @shape-hover;
+        transition: none;
+    }
+    &:active:not(:disabled) {
+        border-color: black;
+    }
+    &:focus {
+        box-shadow: inset 0 0 0 1px fade(black, 20%);
+        outline: none;
+    }
+
+    > button.flagrate-button-remove {
+        position: absolute;
+        display: inline-block;
+        cursor: pointer;
+        top: 50%;
+        right: 0;
+        margin: -10px 8px 0 0;
+        height: 20px;
+        opacity: 0.5;
+        background: transparent;
+
+        &::after {
+            display: inline-block;
+            font-size: 11px;
+            height: 20px;
+            line-height: 19px;
+            margin-top: 1px;
+            content: '\2716';
+        }
+
+        &:hover,
+        &:focus {
+            opacity: 1;
+            outline: none;
+        }
+    }
+
+    &.flagrate-icon {
+        padding-left: 25px;
+    }
+    &.flagrate-button-removable,
+    &.flagrate-pulldown {
+        padding-right: 25px;
+    }
+
+    &:disabled {
+        border-color: transparent;
+        opacity: 0.65;
+
+        > button.flagrate-button-remove {
+            &:hover,
+            &:focus {
+                opacity: 0.3;
+            }
+        }
+    }
+
+    &.flagrate-pulldown {
+        > span.flagrate-pulldown-triangle {
+            position: absolute;
+            display: inline-block;
+            cursor: pointer;
+            top: 50%;
+            right: 0;
+            margin: -10px 8px 0 0;
+            height: 20px;
+            opacity: 0.5;
+            background: transparent;
+
+            &::after {
+                display: inline-block;
+                font-size: 11px;
+                height: 20px;
+                line-height: 19px;
+                margin-top: 1px;
+                content: '\25bc';
+            }
+        }
+
+        &:hover,
+        &:focus {
+            &:not(:disabled) {
+                > span.flagrate-pulldown-triangle {
+                    opacity: 0.9;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    &-color-primary {
+        color: @primary-inverse;
+        background-color: @primary !important;
+
+        &:hover:not(:disabled) {
+            background-color: @primary-hover !important;
+        }
+    }
+    &-color-info {
+        color: @info-inverse;
+        background-color: @info !important;
+
+        &:hover:not(:disabled) {
+            background-color: @info-hover !important;
+        }
+    }
+    &-color-danger {
+        color: @danger-inverse;
+        background-color: @danger !important;
+
+        &:hover:not(:disabled) {
+            background-color: @danger-hover !important;
+        }
+    }
+    &-color-success {
+        color: @success-inverse;
+        background-color: @success !important;
+
+        &:hover:not(:disabled) {
+            background-color: @success-hover !important;
+        }
+    }
+    &-color-warning {
+        color: @warning-inverse;
+        background-color: @warning !important;
+
+        &:hover:not(:disabled) {
+            background-color: @warning-hover !important;
+        }
+    }
+    &-color-blue {
+        color: @blue-inverse;
+        background-color: @blue !important;
+
+        &:hover:not(:disabled) {
+            background-color: @blue-hover !important;
+        }
+    }
+    &-color-lightblue {
+        color: @lightblue-inverse;
+        background-color: @lightblue !important;
+
+        &:hover:not(:disabled) {
+            background-color: @lightblue-hover !important;
+        }
+    }
+    &-color-red {
+        color: @red-inverse;
+        background-color: @red !important;
+
+        &:hover:not(:disabled) {
+            background-color: @red-hover !important;
+        }
+    }
+    &-color-green {
+        color: @green-inverse;
+        background-color: @green !important;
+
+        &:hover:not(:disabled) {
+            background-color: @green-hover !important;
+        }
+    }
+    &-color-orange {
+        color: @orange-inverse;
+        background-color: @orange !important;
+
+        &:hover:not(:disabled) {
+            background-color: @orange-hover !important;
+        }
+    }
+    &-color-pink {
+        color: @pink-inverse;
+        background-color: @pink !important;
+
+        &:hover:not(:disabled) {
+            background-color: @pink-hover !important;
+        }
+    }
+    &-color-inverse {
+        color: @inverse-inverse;
+        background-color: @inverse !important;
+
+        &:hover:not(:disabled) {
+            background-color: @inverse-hover !important;
+        }
+    }
+    &-color-transparent {
+        color: @foreground;
+        background-color: transparent !important;
+
+        &:hover:not(:disabled) {
+            background-color: @background !important;
+        }
+    }
+    &-color-link {
+        &,
+        &:focus:not(:disabled),
+        &:hover:not(:disabled),
+        &:active:not(:disabled) {
+            color: @blue;
+            background-color: transparent !important;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        &:focus,
+        &:hover {
+            &:not(:disabled) {
+                > span {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        &:active:not(:disabled) {
+            color: @red;
+        }
+    }
+
+    &::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+div.flagrate-buttons {
+    display: inline-block;
+    padding: 0;
+
+    > button.flagrate-button {
+        margin: 0;
+    }
+}

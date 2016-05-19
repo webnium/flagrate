@@ -1,0 +1,55 @@
+div.flagrate-select {
+    display: inline-block;
+
+    &.flagrate-select-list-view {
+        max-height: 100px;
+        border: 1px solid @outline;
+        overflow-y: auto;
+    }
+
+    > button.flagrate-pulldown {
+        display: block;
+        width: 100%;
+        height: 32px;
+        font-size: 13px;
+        line-height: 20px;
+        background-color: @background;
+        color: @shape-inverse;
+        text-align: left;
+        border-color: @outline;
+
+        > span {
+            height: 20px;
+        }
+
+        &:focus,
+        &:hover {
+            border-color: @primary;
+        }
+
+        &:active {
+            border-color: black;
+        }
+
+        &:focus {
+            &:extend(input.flagrate-textinput:focus);
+        }
+
+        &:disabled {
+            &,
+            &:hover {
+                &:extend(input.flagrate-textinput:disabled);
+            }
+        }
+    }
+
+    > button.flagrate-pulldown+div.flagrate-pulldown-menu {
+        > div.flagrate-menu {
+            min-width: -moz-calc(160px);
+        }
+    }
+
+    > div.flagrate-grid {
+        //
+    }
+}

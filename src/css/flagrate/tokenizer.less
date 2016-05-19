@@ -1,0 +1,93 @@
+div.flagrate-tokenizer {
+    &:extend(input.flagrate-textinput);
+
+    cursor: text;
+    padding: 0px 5px 4px 3px;
+    width: 240px;
+    height: auto;
+
+    &.flagrate-tokenizer-focus  {
+        &:extend(input.flagrate-textinput:focus);
+    }
+
+    &.flagrate-icon {
+        &:extend(input.flagrate-textinput.flagrate-icon);
+
+        padding-left: 23px;
+    }
+
+    > input.flagrate-textinput {
+        display: inline-block;
+        width: 65px;
+        height: 21px;
+        padding: 0 0 0 2px;
+        margin: 5px 0 0 2px;
+        border: none;
+        box-shadow: none !important;
+        vertical-align: top;
+    }
+
+     > span {
+        display: inline-block;
+        margin: 2px 0 0 3px;
+        vertical-align: top;
+        max-width: 100%;
+
+        button.flagrate-button {
+            padding: 2px 4px 1px;
+            margin: 3px 4px 0 0;
+            height: auto;
+            min-height: 20px;
+            max-width: 100%;
+            vertical-align: top;
+            text-align: left;
+            color: @foreground;
+            font-size: 10px;
+            line-height: 15px;
+            word-break: break-all;
+            white-space: normal;
+
+            &:hover:not(:disabled) {
+                color: @shape-inverse;
+                background-color: @shape-hover !important;
+            }
+
+            &.flagrate-button-removable > span {
+                padding-right: 14px
+            }
+
+            > button.flagrate-button-remove {
+                height: 100%;
+                margin: 0 0 0 0;
+                width: 15px;
+                top: 0;
+
+                &::after {
+                    font-size: 10px;
+                    height: 10px;
+                    line-height: 9px;
+                }
+
+                &:hover,
+                &:focus {
+                    color: @danger-inverse;
+                    background-color: fade(@danger, 80%) !important;
+                }
+            }
+        }
+    }
+
+     > div.flagrate-menu {
+        position: absolute;
+        top: 100%;
+        margin-top: -2px;
+    }
+
+    &.flagrate-disabled {
+        &:extend(input.flagrate-textinput:disabled);
+
+        > span > button.flagrate-button {
+            border-color: @outline;
+        }
+    }
+}

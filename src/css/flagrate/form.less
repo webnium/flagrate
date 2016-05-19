@@ -1,0 +1,227 @@
+form.flagrate-form {
+    display: block;
+    overflow: visible;
+    background-color: @background;
+    padding: 0;
+
+    > div {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        padding: 2px 0;
+
+        > * {
+            &:extend(.flagrate);
+
+            display: table-cell;
+            padding: 0;
+            vertical-align: middle;
+        }
+
+        > div {
+            > * {
+                &:extend(.flagrate);
+            }
+
+            > div {
+                padding: 10px 10px 10px 0;
+            }
+
+            > div.flagrate-form-field-html,
+            > p.flagrate-form-field-text {
+                margin: 0;
+                padding: 10px 0;
+                font-size: 12px;
+                line-height: 1.5em;
+            }
+
+            > p.flagrate-form-field-text {
+                white-space: pre-wrap;
+
+                &:nth-child(2),
+                &:nth-child(3),
+                &:nth-child(4),
+                &:nth-child(5) {
+                    padding: 10px;
+                    border-top: 1px solid fade(black, 8%);
+                    background: fade(black, 5%);
+                }
+            }
+
+            div.flagrate-form-field-html,
+            div.flagrate-form-element {
+                * {
+                    &:extend(.reset);
+                }
+            }
+
+            > ul.flagrate-form-field-result {
+                margin: 0;
+                line-height: 1.5em;
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                height: 0;
+                max-height: 0;
+                opacity: 0;
+                list-style: disc inside;
+                transition: opacity 0.3s ease, max-height 0.5s ease, height 0.5s ease;
+            }
+        }
+
+        &.flagrate-has-result > div > ul.flagrate-form-field-result {
+            padding: 10px;
+            overflow: auto;
+            height: auto;
+            max-height: 200px;
+            border-top: 1px solid @line;
+            opacity: 1;
+            white-space: pre-wrap;
+        }
+        &.flagrate-has-success > div > ul.flagrate-form-field-result {
+            color: @success;
+            background: fade(@success, 10%);
+            border-color: fade(@success, 30%) !important;
+        }
+        &.flagrate-has-warning > div > ul.flagrate-form-field-result {
+            color: @warning;
+            background: fade(@warning, 10%);
+            border-color: fade(@warning, 30%) !important;
+        }
+        &.flagrate-has-error > div > ul.flagrate-form-field-result {
+            color: @danger;
+            background: fade(@danger, 10%);
+            border-color: fade(@danger, 30%) !important;
+        }
+
+        > div.flagrate-form-field-label {
+            margin: 0;
+            padding: 0;
+            width: 25%;
+            text-align: left;
+
+            > label {
+                padding: 10px 10px 10px 15px;
+                display: inline-block;
+                line-height: 16px;
+                word-break: break-all;
+                font-weight: bold;
+
+                &.flagrate-icon {
+                    background-position: 15px center;
+                    padding-left: 36px;
+                }
+            }
+        }
+
+        &.flagrate-required > div.flagrate-form-field-label > label::after {
+            color: @danger;
+            margin: 0 0 0 2px;
+            font-size: 12px;
+            content: '*';
+        }
+    }
+
+    &:not(.flagrate-form-vertical) > div:not(:first-child) {
+        border-top: 1px solid @line;
+    }
+
+    &.flagrate-form-nolabel,
+    &.flagrate-form-vertical {
+        padding: 10px;
+
+        > div {
+            &,
+            > * {
+                display: block;
+            }
+
+            &.flagrate-has-result > div > ul.flagrate-form-field-result {
+                border-top: none;
+                border-left: 2px solid @line;
+            }
+
+            > div > p.flagrate-form-field-text {
+                &:nth-child(2),
+                &:nth-child(3),
+                &:nth-child(4),
+                &:nth-child(5) {
+                    border-top: none;
+                    border-left: 2px solid @line;
+                    background: none;
+                }
+            }
+        }
+    }
+
+    &.flagrate-form-vertical {
+        > div {
+            > div.flagrate-form-field-label {
+                width: auto;
+                text-align: left;
+
+                 > label {
+                    padding: 0;
+                    margin: 10px 0 0 0;
+
+                    &.flagrate-icon {
+                        background-position: 0px center;
+                        padding-left: 20px;
+                    }
+                }
+            }
+        }
+    }
+
+    .flagrate-has-success {
+        input.flagrate-textinput,
+        textarea.flagrate-textarea,
+        div.flagrate-tokenizer,
+        div.flagrate-select.flagrate-select-list-view,
+        div.flagrate-select > button.flagrate-pulldown {
+            border-color: @success;
+
+            &.flagrate-tokenizer-focus,
+            &:focus {
+                box-shadow: 0 0 0 2px fade(@success, 25%);
+            }
+        }
+    }
+
+    .flagrate-has-warning {
+        input.flagrate-textinput,
+        textarea.flagrate-textarea,
+        div.flagrate-tokenizer,
+        div.flagrate-select.flagrate-select-list-view,
+        div.flagrate-select > button.flagrate-pulldown {
+            border-color: @warning;
+
+            &.flagrate-tokenizer-focus,
+            &:focus {
+                box-shadow: 0 0 0 2px fade(@warning, 25%);
+            }
+        }
+    }
+
+    .flagrate-has-error {
+        label.flagrate-checkbox,
+        label.flagrate-radio,
+        input[type='file'] {
+            color: @danger;
+        }
+
+        input.flagrate-textinput,
+        textarea.flagrate-textarea,
+        div.flagrate-tokenizer,
+        div.flagrate-select.flagrate-select-list-view,
+        div.flagrate-select > button.flagrate-pulldown {
+            border-color: @danger;
+
+            &.flagrate-tokenizer-focus,
+            &:focus {
+                box-shadow: 0 0 0 2px fade(@danger, 25%);
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+input.flagrate-textinput {
+    display: inline-block;
+    border: 1px solid @outline;
+    background-color: @background;
+    padding: 5px 9px 4px;
+    color: @foreground;
+    line-height: 21px;
+    width: 240px;
+    height: 32px;
+    appearance: none;
+    border-radius: 0;
+
+    &:focus {
+        border-color: @primary;
+        box-shadow: 0 0 0 2px fade(@primary, 25%);
+        color: @foreground;
+        outline: none;
+    }
+
+    &.flagrate-icon {
+        padding-left: 25px;
+    }
+
+    &:disabled {
+        border-color: @outline;
+        background-color: @lightgray;
+        color: fade(@lightgray-inverse, 50%);
+    }
+}

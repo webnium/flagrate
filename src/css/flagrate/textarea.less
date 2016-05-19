@@ -1,0 +1,17 @@
+textarea.flagrate-textarea {
+    &:extend(input.flagrate-textinput);
+
+    height: 60px;
+
+    &:focus {
+        &:extend(input.flagrate-textinput:focus);
+    }
+
+    &.flagrate-icon {
+        &:extend(input.flagrate-textinput.flagrate-icon);
+    }
+
+    &:disabled {
+        &:extend(input.flagrate-textinput:disabled);
+    }
+}

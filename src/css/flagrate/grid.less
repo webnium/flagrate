@@ -1,0 +1,312 @@
+div.flagrate-grid {
+    overflow: auto;
+    background-color: @background;
+
+    * {
+        position: relative;
+    }
+
+    &.flagrate-grid-fill {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        > div.flagrate-grid-head {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        > div.flagrate-grid-body {
+            position: absolute;
+            top: 32px;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+        }
+
+        &.flagrate-grid-headless > div.flagrate-grid-body {
+            top: 0
+        }
+
+        &.flagrate-grid-pagination > div.flagrate-grid-body {
+            bottom: 32px
+        }
+
+        > div.flagrate-grid-pager {
+            z-index: 3;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    }
+
+    > div.flagrate-grid-head {
+        z-index: 1;
+        position: relative;
+        margin-bottom: 2px;
+    }
+
+    &.flagrate-grid-headless > div.flagrate-grid-head {
+        display: none;
+    }
+
+    > div.flagrate-grid-body {
+        position: relative
+    }
+
+    > div > table {
+        position: relative;
+        border: none;
+        border-collapse: collapse;
+        table-layout: fixed;
+        overflow: hidden;
+        width: 100%;
+
+        > thead > tr {
+            background-color: @background;
+            color: @inverse;
+
+            &:hover {
+                color: @inverse-hover;
+            }
+
+            > th {
+                padding-top: 6px;
+                box-shadow: inset 1px 0 0 @line;
+
+                &:first-child {
+                    box-shadow: none;
+                }
+
+                &.flagrate-grid-col-sortable:hover {
+                    background-color: @shape-hover;
+                    cursor: pointer;
+                }
+
+                &.flagrate-grid-col-sorted-asc,
+                &.flagrate-grid-col-sorted-desc {
+                    color: @primary;
+
+                    > div::after {
+                        display: inline-block;
+                        position: absolute;
+                        top: 0;
+                        left: 50%;
+                        margin-top: -11px;
+                        margin-left: -4px;
+                        font-size: 10px;
+                    }
+                }
+
+                &.flagrate-grid-col-sorted-asc > div::after {
+                    content: '\25b2';
+                }
+                &.flagrate-grid-col-sorted-desc > div::after {
+                    content: '\25bc';
+                }
+
+                > div {
+                    font-size: 11px;
+                    font-weight: normal;
+                }
+            }
+        }
+
+        > tbody > tr {
+            position: relative;
+            background-color: @background;
+
+            &:hover {
+                background-color: @shape-hover;
+            }
+
+            &.flagrate-grid-row-selected {
+                background-color: fade(@primary, 30%);
+
+                &:hover {
+                    background-color: fade(@primary, 40%);
+                }
+            }
+
+            &.flagrate-grid-row-selectable,
+            &.flagrate-grid-row-clickable {
+                cursor: pointer;
+            }
+
+            > td {
+                &.flagrate-grid-cell-clickable {
+                    cursor: pointer;
+                }
+
+                > div {
+                    user-select: text;
+                }
+            }
+        }
+
+        > thead,
+        > tbody {
+            > tr {
+                > th,
+                > td {
+                    padding: 5px 5px 0 5px;
+                    box-sizing: border-box;
+                    height: 30px;
+                    text-align: left;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    vertical-align: top;
+                    user-select: none;
+
+                    &.flagrate-grid-cell-checkbox {
+                        width: 30px;
+
+                         > .flagrate-checkbox > div {
+                            opacity: 0.5;
+                        }
+                    }
+
+                    &:last-child {
+                        width: 0px;
+                    }
+
+                    &.flagrate-grid-cell-menu {
+                        overflow: visible;
+
+                        &::after {
+                            content: '\25bc';
+                            display: block;
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            margin-left: 0;
+                            overflow: visible;
+                            font-size: 13px;
+                            width: 13px;
+                            height: 13px;
+                            padding: 9px 5px 8px 5px;
+                            color: fade(@shape-inverse, 50%);
+                        }
+                    }
+
+                    > div {
+                        display: inline;
+                        line-height: 20px;
+                        height: 20px;
+                        white-space: nowrap;
+
+                        &.flagrate-icon {
+                            padding-left: 20px;
+                            background-position: 0 center;
+                        }
+                    }
+                }
+
+                &:hover {
+                    > th,
+                    > td {
+                        &.flagrate-grid-cell-menu {
+                            &::after {
+                                background-color: fade(@background, 50%);
+                                color: fade(@shape-inverse, 90%);
+                                box-shadow: -1px 0 0 fade(@foreground, 20%);
+                            }
+
+                            &:hover::after {
+                                background-color: fade(@background, 50%);
+                                color: @shape-inverse;
+                                box-shadow: -1px 0 0 fade(@foreground, 40%);
+                            }
+                        }
+                    }
+                }
+
+                &:hover,
+                &.flagrate-grid-row-selected {
+                    > th,
+                    > td {
+                        &.flagrate-grid-cell-checkbox > .flagrate-checkbox > div {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.flagrate-disabled > div > table > tbody > tr {
+        background-color: @lightgray;
+
+        &.flagrate-grid-row-selected {
+            background-color: fade(@primary, 30%);
+        }
+    }
+
+    &.flagrate-grid-fixed {
+        > div > table {
+            > thead > tr > th:last-child,
+            > tbody > tr > td:last-child {
+                width: auto;
+                box-shadow: inset 1px 0 0 fade(@foreground, 10%);
+                background-color: fade(@background, 20%);
+            }
+        }
+    }
+
+    > div.flagrate-grid-col-resize-handle {
+        z-index: 2;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        margin-left: -6px;
+        background-color: rgba(0,0,0,0);
+        cursor: col-resize;
+
+        &:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        &:active {
+            background-color: fade(@primary, 35%);
+        }
+    }
+
+     > div.flagrate-grid-pager {
+        position: relative;
+        display: block;
+        background-color: @background;
+        text-align: right;
+
+        > * {
+            margin-left: 2px
+        }
+
+        > span {
+            color: #555;
+            padding: 6px 5px 5px;
+        }
+
+        > button {
+            color: @primary;
+
+            &.flagrate-grid-pager-first::before {
+                content: '\3008';
+            }
+            &.flagrate-grid-pager-prev::before {
+                content: '\25c0';
+            }
+            &.flagrate-grid-pager-next::before {
+                content: '\25b6';
+            }
+            &.flagrate-grid-pager-last::before {
+                content: '\3009';
+            }
+        }
+    }
+}

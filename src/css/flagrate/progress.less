@@ -1,0 +1,12 @@
+div.flagrate-progress {
+    display: block;
+    height: 5px;
+    background-color: @shape;
+
+    > div {
+        height: 100%;
+        width: 0%;
+        background-color: @primary;
+        transition: width 0.2s ease;
+    }
+}

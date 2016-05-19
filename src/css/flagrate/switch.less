@@ -1,0 +1,79 @@
+button.flagrate-switch {
+    display: inline-block;
+    padding: 0;
+    width: 45px;
+    height: 20px;
+    box-shadow: none;
+    border: 2px solid @inverse;
+    border-radius: 10px;
+    background-color: @background;
+
+    &:disabled {
+        opacity: 0.65;
+    }
+
+    &::after {
+        position: absolute;
+        content: '';
+        display: block;
+        margin: 3px;
+        width: 10px;
+        height: 10px;
+        left: 0px;
+        top: 0px;
+        background-color: @inverse;
+        border-radius: 50%;
+        transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    &:not(:disabled) {
+        &:focus {
+            box-shadow: 0 0 0 2px fade(black, 15%);
+        }
+
+        &:hover {
+            &:extend(button.flagrate-switch);
+
+            &::after {
+                background-color: @foreground;
+            }
+        }
+
+        &:active {
+            box-shadow: none;
+            background-color: tint(@inverse, 20%);
+            border-color: tint(@inverse, 20%);
+
+            &::after {
+                background-color: @inverse-inverse;
+                transition: none;
+            }
+        }
+    }
+
+    &[data-flagrate-switch-status="on"] {
+        background-color: @primary;
+        border-color: @primary;
+
+        &::after {
+            left: 25px;
+            background-color: @inverse-inverse;
+        }
+
+        &:not(:disabled) {
+            &:hover {
+                background-color: tint(@primary, 20%);
+                border-color: tint(@primary, 20%);
+
+                &::after {
+                    background-color: @background;
+                }
+            }
+
+            &:active {
+                background-color: tint(@inverse, 20%);
+                border-color: tint(@inverse, 20%);
+            }
+        }
+    }
+}

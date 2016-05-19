@@ -1,0 +1,71 @@
+div.flagrate-menu {
+    z-index: 2;
+    display: inline-block;
+    border: 1px solid @outline;
+    padding: 4px 2px;
+    background-color: @background;
+
+    * {
+        &:extend(.flagrate);
+    }
+
+    > hr {
+        border: none;
+        height: 1px;
+        background-color: fade(@foreground, 10%);
+        margin: 4px 2px;
+    }
+
+    > button.flagrate-button {
+        display: block;
+        width: 100%;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        text-align: left;
+        outline: none;
+        transition: none;
+
+        > span {
+            padding: 0 30px;
+        }
+
+        &:not(:disabled) {
+            &:hover,
+            &:focus {
+                background-color: @shape;
+            }
+
+            &:active {
+                background-color: darken(@shape, 7%);
+            }
+        }
+    }
+
+    > button.flagrate-button.flagrate-icon {
+        background-position: 8px center;
+    }
+}
+
+div.flagrate-pulldown-menu {
+    position: absolute;
+    margin: 4px 0 0 0;
+    overflow-x: visible;
+    overflow-y: visible;
+
+    > div.flagrate-menu {
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 200px;
+        box-shadow: 2px 2px 0 fade(black, 10%);
+    }
+}
+
+div.flagrate-context-menu {
+    z-index: 99999999;
+    position: fixed;
+    margin: 0;
+    box-shadow: 2px 2px 0 fade(black, 10%);
+}

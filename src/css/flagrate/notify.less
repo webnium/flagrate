@@ -1,0 +1,70 @@
+div.flagrate-notify {
+    z-index: 10000;
+    background-color: fade(@inverse, 90%);
+    background-repeat: no-repeat;
+    padding: 10px 20px;
+    color: @inverse-inverse;
+    line-height: 14px;
+    width: 270px;
+    min-height: 80px;
+    opacity: 0;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: fade(@inverse-hover, 90%);
+        transition: all 0.1s ease;
+    }
+
+    > div {
+        &.title {
+            font-weight: normal;
+            font-size: 15px;
+            line-height: 1.25em;
+            word-break: break-all;
+        }
+
+        &.text {
+            margin-top: 5px;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 1.5em;
+        }
+
+        &.close {
+            box-sizing: border-box;
+            display: block;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 20px;
+            width: 20px;
+            background: rgba(0,0,0,0.25);
+            font-weight: bold;
+            font-size: 11px;
+            line-height: 12px;
+            padding: 5px 5px;
+
+            &:hover {
+                background: @danger;
+            }
+        }
+    }
+
+    &.flagrate-notify-icon {
+        padding-left: 100px;
+        width: 350px;
+
+        > div.icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 100%;
+            background-color: rgba(255,255,255,0.1);
+            background-repeat: no-repeat;
+            background-size: 40px 40px;
+            background-position: center center;
+        }
+    }
+}

@@ -1,0 +1,71 @@
+label.flagrate-radio {
+    &:extend(label.flagrate-checkbox);
+
+    * {
+        &:extend(.flagrate);
+    }
+
+    &.flagrate-disabled {
+        &:extend(label.flagrate-checkbox.flagrate-disabled);
+    }
+
+    &.flagrate-icon {
+        &:extend(label.flagrate-checkbox.flagrate-icon);
+    }
+
+    > input {
+        &:extend(label.flagrate-checkbox > input);
+
+        &:checked+div {
+            &:extend(label.flagrate-checkbox > input:checked+div);
+
+            background-image: none;
+            box-shadow: inset 0 0 0 3px @background,
+                        inset 0 0 0 40px @inverse;
+        }
+
+        &:focus:checked+div {
+            box-shadow: 0 0 0 2px fade(black, 15%),
+                        inset 0 0 0 3px @background,
+                        inset 0 0 0 40px @inverse;
+        }
+    }
+
+    > div {
+        &:extend(label.flagrate-checkbox > div);
+
+        border-radius: 50%;
+        box-shadow: inset 0 0 0 3px @background;
+    }
+
+    &:not(.flagrate-disabled) {
+        &:hover > div {
+            background-color: #ddd;
+        }
+
+        &:hover > input:checked+div {
+            box-shadow: inset 0 0 0 3px @background,
+                        inset 0 0 0 40px @foreground;
+        }
+
+        &:hover > input:focus:checked+div {
+            box-shadow: 0 0 0 2px fade(black, 15%),
+                        inset 0 0 0 3px @background,
+                        inset 0 0 0 40px @foreground;
+        }
+
+        &:active > div,
+        &:active > input:focus+div {
+            border-color: tint(@inverse, 20%);
+        }
+
+        &:active > input:checked+div {
+            box-shadow: inset 0 0 0 3px @background,
+                        inset 0 0 0 40px tint(@inverse, 20%);
+        }
+    }
+}
+
+div.flagrate-radios {
+    &:extend(div.flagrate-checkboxes);
+}

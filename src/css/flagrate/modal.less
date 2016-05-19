@@ -1,0 +1,181 @@
+div.flagrate-modal {
+    z-index: 10000;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    color: @foreground;
+    background-color: transparent;
+    pointer-events: none;
+    transition: all 0.1s ease;
+
+    > div {
+        z-index: 1;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        left: 0;
+        height: auto;
+
+        > div {
+            position: absolute;
+            width: auto;
+            height: auto;
+            background-color: @background;
+            box-shadow: 0 0 0 1px fade(black, 25%), 0 0 0 4px fade(black, 15%);
+
+            > div {
+                position: relative;
+
+                > div {
+                    margin: 10px 10px 10px 10px;
+                    line-height: 1.5em;
+                    word-break: break-all;
+
+                    > * {
+                        &:extend(.reset);
+                    }
+                }
+            }
+
+            // close button
+            > button {
+                z-index: 1;
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background: none;
+                border: none;
+                color: fade(@foreground, 50%);
+                padding: 5px;
+                width: 23px;
+                height: 23px;
+                line-height: 13px;
+
+                 > span::after {
+                    display: inline-block;
+                    content: '\2716';
+                    font-size: 13px;
+                    font-weight: bold;
+                    font-family: inherit;
+                }
+
+                &:focus,
+                &:hover {
+                    color: @danger;
+                    box-shadow: none;
+                    background: none !important;
+                }
+                &:active {
+                    color: @foreground;
+                }
+                &:focus {
+                    outline: none
+                }
+            }
+
+            // header
+            > hgroup {
+                padding: 10px 40px 10px 10px;
+
+                * {
+                    margin: 0;
+                    padding: 0;
+                    word-break: break-all;
+                }
+
+                > h1 {
+                    font-size: 16px;
+                    line-height: 1.5em;
+                }
+
+                > small {
+                    font-size: 11px;
+                    line-height: 1em;
+                }
+            }
+
+            // footer
+            > footer {
+                padding: 10px;
+
+                &::before,
+                &::after {
+                    content: "";
+                    display: table;
+                }
+
+                &::after {
+                    clear: both
+                }
+
+                 > button {
+                    float: right;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+
+    &.flagrate-modal-visible {
+        pointer-events: all;
+        background-color: fade(black, 40%);
+
+        > div {
+            opacity: 1;
+        }
+    }
+
+    &.flagrate-sizing-flex > div > div {
+        min-width: 320px;
+    }
+
+    &.flagrate-sizing-full > div > div > div > div {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+}
+
+@media screen {
+    @media (max-width: 320px) {
+        div.flagrate-modal.flagrate-sizing-flex > div > div {
+            min-width: inherit;
+            max-width: inherit;
+        }
+    }
+    @media (min-width: 400px) {
+        div.flagrate-modal.flagrate-sizing-flex > div > div {
+            max-width: 90%
+        }
+    }
+    @media (min-width: 640px) {
+        div.flagrate-modal.flagrate-sizing-flex > div > div {
+            max-width: 70%
+        }
+    }
+    @media screen and (min-width: 800px) {
+        div.flagrate-modal.flagrate-sizing-flex > div > div {
+            max-width: 65%
+        }
+    }
+    @media screen and (min-width: 1000px) {
+        div.flagrate-modal.flagrate-sizing-flex > div > div {
+            max-width: 60%
+        }
+    }
+    @media screen and (min-width: 1200px) {
+        div.flagrate-modal.flagrate-sizing-flex > div > div {
+            max-width: 55%
+        }
+    }
+    @media screen and (min-width: 1400px) {
+        div.flagrate-modal.flagrate-sizing-flex > div > div {
+            max-width: 50%
+        }
+    }
+}
