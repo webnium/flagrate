@@ -64,6 +64,9 @@ function FSlider(opt: Option = {}) {
     extendObject(slider, this);
 
     slider.addClassName('flagrate-slider');
+    if (slider.tabIndex === -1) {
+        slider.tabIndex = 0;
+    }
 
     if (window.ontouchstart !== undefined) {
         slider.addEventListener('touchstart', slider._onTouchStartHandler.bind(slider));
@@ -92,11 +95,25 @@ export function createSlider(option?: Option): Slider {
 
 Slider.prototype = {
     disable() {
-        return this.addClassName('flagrate-disabled');
+
+        const slider = this as Slider;
+
+        slider.dataset['flagrateTabIndex'] = slider.tabIndex.toString(10);
+        slider.removeAttribute('tabindex');
+
+        return slider.addClassName('flagrate-disabled');
     },
 
     enable() {
-        return this.removeClassName('flagrate-disabled');
+
+        const slider = this as Slider;
+
+        const tabIndex = parseInt(slider.dataset['flagrateTabIndex']);
+        if (tabIndex !== -1) {
+            slider.tabIndex = tabIndex;
+        }
+
+        return slider.removeClassName('flagrate-disabled');
     },
 
     isEnabled() {
