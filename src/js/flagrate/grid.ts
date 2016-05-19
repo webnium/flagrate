@@ -445,6 +445,11 @@ export class Grid {
 
             if (row._checkbox) {
                 row._checkbox.check();
+                setTimeout(() => {
+                    if (row.isSelected === true) {
+                        row._checkbox.check();
+                    }
+                }, 0);
             }
 
             if (row.onSelect) {
@@ -502,6 +507,11 @@ export class Grid {
 
             if (row._checkbox) {
                 row._checkbox.uncheck();
+                setTimeout(() => {
+                    if (row.isSelected === false) {
+                        row._checkbox.uncheck();
+                    }
+                }, 0);
             }
 
             if (row.onDeselect) {
