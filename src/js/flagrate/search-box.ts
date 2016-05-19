@@ -13,13 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import { Button } from './button';
-import { TextInput } from './text-input';
-import { Menu } from './menu';
+import { extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import { Button } from "./button";
+import { TextInput } from "./text-input";
+import { Menu } from "./menu";
 
 /*?
     class flagrate.SearchBox
@@ -35,7 +35,7 @@ import { Menu } from './menu';
                 });
             },
             onSearch: function (value) {
-                console.log('searching: ' + value);
+                console.log("searching: " + value);
             }
         }).insertTo(x);
 
@@ -119,38 +119,38 @@ function FSearchBox(opt: Option = {}) {
 
     const attr = opt.attribute || {};
 
-    attr['id'] = opt.id || null;
-    attr['class'] = opt.className || null;
+    attr["id"] = opt.id || null;
+    attr["class"] = opt.className || null;
 
     //create
-    const searchBox = new Element('div', attr) as SearchBox;
+    const searchBox = new Element("div", attr) as SearchBox;
     extendObject(searchBox, this);
 
-    searchBox.addClassName('flagrate flagrate-search-box');
+    searchBox.addClassName("flagrate flagrate-search-box");
 
     searchBox._input = new TextInput({
-        className: 'search-input',
+        className: "search-input",
         value: opt.value,
         placeholder: opt.placeholder,
         icon: opt.icon
     }).insertTo(searchBox);
 
     searchBox._button = new Button({
-        className: 'search-button',
+        className: "search-button",
         onSelect: searchBox.search.bind(searchBox)
     }).insertTo(searchBox);
 
-    searchBox._suggest = new Element('div', {
-        'class': 'search-suggest'
+    searchBox._suggest = new Element("div", {
+        "class": "search-suggest"
     }).hide().insertTo(searchBox);
 
-    searchBox._input.on('keydown', searchBox._onKeydownHandler.bind(searchBox));
-    searchBox._input.on('keyup', searchBox._onKeyupHandler.bind(searchBox));
-    searchBox._input.on('focus', searchBox._onFocusHandler.bind(searchBox));
-    searchBox._input.on('blur', searchBox._onBlurHandler.bind(searchBox));
+    searchBox._input.on("keydown", searchBox._onKeydownHandler.bind(searchBox));
+    searchBox._input.on("keyup", searchBox._onKeyupHandler.bind(searchBox));
+    searchBox._input.on("focus", searchBox._onFocusHandler.bind(searchBox));
+    searchBox._input.on("blur", searchBox._onBlurHandler.bind(searchBox));
 
     // for Chrome
-    searchBox._suggest.on('mousedown', e => e.preventDefault());
+    searchBox._suggest.on("mousedown", e => e.preventDefault());
 
     if (opt.style) {
         searchBox.setStyle(opt.style);
@@ -172,7 +172,7 @@ export function createSearchBox(option?: Option): SearchBox {
 SearchBox.prototype = {
     disable() {
 
-        this.addClassName('flagrate-disabled');
+        this.addClassName("flagrate-disabled");
         this._input.disable();
         this._button.disable();
 
@@ -183,7 +183,7 @@ SearchBox.prototype = {
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
+        this.removeClassName("flagrate-disabled");
         this._input.enable();
         this._button.enable();
 
@@ -191,7 +191,7 @@ SearchBox.prototype = {
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     getValue() {
@@ -210,7 +210,7 @@ SearchBox.prototype = {
         const value = this.getValue();
 
         this.onSearch(value, this);
-        this.fire('search', value);
+        this.fire("search", value);
 
         this._input.blur();
 
@@ -259,12 +259,12 @@ SearchBox.prototype = {
 
         suggestedItems.forEach(item => {
 
-            if (typeof item === 'string' && item.trim() !== '') {
+            if (typeof item === "string" && item.trim() !== "") {
                 items.push({
                     label: item.trim(),
                     onSelect: _createCompletionHandler(this, item.trim())
                 });
-            } else if (typeof item === 'object') {
+            } else if (typeof item === "object") {
                 items.push({
                     label: item.label,
                     icon: item.icon,
@@ -285,13 +285,13 @@ SearchBox.prototype = {
             }
         });
 
-        Element.addClassName(menu.firstChild, 'flagrate-search-suggest-selected');
+        Element.addClassName(menu.firstChild, "flagrate-search-suggest-selected");
 
         this._suggest.update(menu).show();
 
         // To prevent overflow.
         let menuHeight = this._suggest.getHeight();
-        let menuMargin = parseInt(this._suggest.getStyle('margin-top').replace('px', ''), 10);
+        let menuMargin = parseInt(this._suggest.getStyle("margin-top").replace("px", ""), 10);
         let cummOffsetTop = this.cumulativeOffset().top;
         let upsideSpace = - window.pageYOffset + cummOffsetTop;
         let downsideSpace = window.pageYOffset + window.innerHeight - cummOffsetTop - this.getHeight();
@@ -301,14 +301,14 @@ SearchBox.prototype = {
                     menuHeight = (upsideSpace - menuMargin - menuMargin);
                     this._suggest.style.maxHeight = `${menuHeight}px`;
                 }
-                this._suggest.addClassName('flagrate-search-suggest-upper');
+                this._suggest.addClassName("flagrate-search-suggest-upper");
             } else {
                 menuHeight = (downsideSpace - menuMargin - menuMargin);
                 this._suggest.style.maxHeight = `${menuHeight}px`;
-                this._suggest.removeClassName('flagrate-search-suggest-upper');
+                this._suggest.removeClassName("flagrate-search-suggest-upper");
             }
         } else {
-            this._suggest.removeClassName('flagrate-search-suggest-upper');
+            this._suggest.removeClassName("flagrate-search-suggest-upper");
         }
 
         // reset scroll position
@@ -324,7 +324,7 @@ SearchBox.prototype = {
         } else if (this._suggest.visible() === true) {
             // ENTER: 13
             if (e.keyCode === 13) {
-                const target = this._menu.getElementsByClassName('flagrate-search-suggest-selected')[0];
+                const target = this._menu.getElementsByClassName("flagrate-search-suggest-selected")[0];
                 target.click();
                 return;
             }
@@ -336,21 +336,21 @@ SearchBox.prototype = {
 
             e.preventDefault();
 
-            const elements = this._menu.getElementsByTagName('button');
+            const elements = this._menu.getElementsByTagName("button");
 
             for (let i = 0, l = elements.length; i < l; i++) {
-                if (elements[i].hasClassName('flagrate-search-suggest-selected') === true) {
+                if (elements[i].hasClassName("flagrate-search-suggest-selected") === true) {
                     if ((e.keyCode === 38 && i !== 0) || (e.keyCode === 40 && (i + 1) !== l)) {
-                        elements[i].removeClassName('flagrate-search-suggest-selected');
+                        elements[i].removeClassName("flagrate-search-suggest-selected");
                     }
 
                     let scrollTop = -1;
 
                     if (e.keyCode === 38 && i !== 0) {
-                        elements[i - 1].addClassName('flagrate-search-suggest-selected');
+                        elements[i - 1].addClassName("flagrate-search-suggest-selected");
                         scrollTop = elements[i - 1].offsetHeight + elements[i - 1].offsetTop;
                     } else if (e.keyCode === 40 && (i + 1) !== l) {
-                        elements[i + 1].addClassName('flagrate-search-suggest-selected');
+                        elements[i + 1].addClassName("flagrate-search-suggest-selected");
                         scrollTop = elements[i + 1].offsetHeight + elements[i + 1].offsetTop;
                     }
 

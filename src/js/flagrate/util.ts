@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
 /**
  * Identity.
@@ -63,13 +63,13 @@ export namespace jsonPointer {
 
     export function set<T>(object: Object, pointer: string, value: T): T {
 
-        if (pointer === '' && typeof value === 'object') {
+        if (pointer === "" && typeof value === "object") {
             extendObject(object, value);
             return value;
         } else {
             var pts = validate_input(object, pointer);
             if (pts.length === 0) {
-                throw new Error('Invalid JSON pointer for set.');
+                throw new Error("Invalid JSON pointer for set.");
             }
             return traverse(object, pts, value, true);
         }
@@ -79,12 +79,12 @@ export namespace jsonPointer {
 
         return str.replace(/~[01]/g, function (m) {
             switch (m) {
-                case '~0':
-                    return '~';
-                case '~1':
-                    return '/';
+                case "~0":
+                    return "~";
+                case "~1":
+                    return "/";
             }
-            throw new Error('Invalid tilde escape: ' + m);
+            throw new Error("Invalid tilde escape: " + m);
         });
     }
 
@@ -96,7 +96,7 @@ export namespace jsonPointer {
             part = parseInt(part, 10);
         }
         if (pts.length !== 0) {// keep traversin!
-            if (isSet && typeof object[part] !== 'object') {
+            if (isSet && typeof object[part] !== "object") {
                 if (value === void 0) {
                     return value;
                 }
@@ -124,21 +124,21 @@ export namespace jsonPointer {
 
     function validate_input(object: Object, pointer: string): string[] {
 
-        if (typeof object !== 'object') {
-            throw new Error('Invalid input object.');
+        if (typeof object !== "object") {
+            throw new Error("Invalid input object.");
         }
 
-        if (pointer === '') {
+        if (pointer === "") {
             return [];
         }
 
         if (!pointer) {
-            throw new Error('Invalid JSON pointer.');
+            throw new Error("Invalid JSON pointer.");
         }
 
-        var pts = pointer.split('/');
-        if (pts.shift() !== '') {
-            throw new Error('Invalid JSON pointer.');
+        var pts = pointer.split("/");
+        if (pts.shift() !== "") {
+            throw new Error("Invalid JSON pointer.");
         }
 
         return pts;

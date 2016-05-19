@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLInputElement }  from './element';
+import { extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLInputElement }  from "./element";
 
 /*?
     class flagrate.TextInput
@@ -101,20 +101,20 @@ function FTextInput(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
     if (option.value) {
-        attr['value'] = option.value;
+        attr["value"] = option.value;
     }
     if (option.placeholder) {
-        attr['placeholder'] = option.placeholder;
+        attr["placeholder"] = option.placeholder;
     }
 
     //create
-    const input = new Element('input', attr) as TextInput;
+    const input = new Element("input", attr) as TextInput;
     extendObject(input, this);
 
-    input.addClassName('flagrate flagrate-textinput');
+    input.addClassName("flagrate flagrate-textinput");
     if (option.className) {
         input.addClassName(option.className);
     }
@@ -142,22 +142,22 @@ export function createTextInput(option?: Option): TextInput {
 TextInput.prototype = {
     disable() {
 
-        this.addClassName('flagrate-disabled');
-        this.writeAttribute('disabled', true);
+        this.addClassName("flagrate-disabled");
+        this.writeAttribute("disabled", true);
 
         return this;
     },
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
-        this.writeAttribute('disabled', false);
+        this.removeClassName("flagrate-disabled");
+        this.writeAttribute("disabled", false);
 
         return this;
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     setValue(value: string) {
@@ -176,18 +176,18 @@ TextInput.prototype = {
         this._iconIdentifier = identifier;
 
         if (identifier) {
-            return this.addClassName('flagrate-icon').setStyle({
+            return this.addClassName("flagrate-icon").setStyle({
                 backgroundImage: `url(${identifier})`
             });
         } else {
-            return this.removeClassName('flagrate-icon').setStyle({
-                backgroundImage: 'none'
+            return this.removeClassName("flagrate-icon").setStyle({
+                backgroundImage: "none"
             });
         }
     },
 
     getIcon() {
-        return this._iconIdentifier || '';
+        return this._iconIdentifier || "";
     },
 
     isValid: function () {

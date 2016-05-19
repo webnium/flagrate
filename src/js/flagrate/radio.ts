@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLLabelElement, FHTMLInputElement } from './element';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLLabelElement, FHTMLInputElement } from "./element";
 
 /*?
     class flagrate.Radio
@@ -90,22 +90,22 @@ let idCounter = 0;
 **/
 function FRadio(opt: Option = {}) {
 
-    const id = 'flagrate-radio-' + (++idCounter).toString(10);
+    const id = "flagrate-radio-" + (++idCounter).toString(10);
 
     const attr = opt.attribute || {};
 
-    attr['id'] = opt.id || null;
-    attr['class'] = opt.className || null;
+    attr["id"] = opt.id || null;
+    attr["class"] = opt.className || null;
 
     //create
-    const radio = new Element('label', attr).updateText(opt.label) as Radio;
-    radio.writeAttribute('for', id);
+    const radio = new Element("label", attr).updateText(opt.label) as Radio;
+    radio.writeAttribute("for", id);
     extendObject(radio, this);
 
-    radio.addClassName('flagrate flagrate-radio');
+    radio.addClassName("flagrate flagrate-radio");
 
     if (opt.icon) {
-        radio.addClassName('flagrate-icon');
+        radio.addClassName("flagrate-icon");
         radio.setStyle({
             backgroundImage: `url(${opt.icon})`
         });
@@ -115,11 +115,11 @@ function FRadio(opt: Option = {}) {
     radio.onCheck = opt.onCheck || null;
     radio.onUncheck = opt.onUncheck || null;
 
-    radio._input = new Element('input', { id: id, type: 'radio', name: opt.name });
+    radio._input = new Element("input", { id: id, type: "radio", name: opt.name });
     radio.insert({ top: new Element() });
     radio.insert({ top: radio._input });
 
-    radio._input.addEventListener('change', e => {
+    radio._input.addEventListener("change", e => {
 
         e.stopPropagation();
 
@@ -131,20 +131,20 @@ function FRadio(opt: Option = {}) {
                 radio.onCheck(_e, radio);
             }
 
-            radio.fire('check', { targetRadio: radio });
+            radio.fire("check", { targetRadio: radio });
         } else {
             if (radio.onUncheck) {
                 radio.onUncheck(_e, radio);
             }
 
-            radio.fire('uncheck', { targetRadio: radio });
+            radio.fire("uncheck", { targetRadio: radio });
         }
 
         if (radio.onChange) {
             radio.onChange(_e, radio);
         }
 
-        radio.fire('change', { targetRadio: radio });
+        radio.fire("change", { targetRadio: radio });
     });
 
     if (opt.isChecked === true) {
@@ -169,22 +169,22 @@ export function createRadio(option?: Option): Radio {
 Radio.prototype = {
     disable() {
 
-        this.addClassName('flagrate-disabled');
-        this._input.writeAttribute('disabled', true);
+        this.addClassName("flagrate-disabled");
+        this._input.writeAttribute("disabled", true);
 
         return this;
     },
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
-        this._input.writeAttribute('disabled', false);
+        this.removeClassName("flagrate-disabled");
+        this._input.writeAttribute("disabled", false);
 
         return this;
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     isChecked() {

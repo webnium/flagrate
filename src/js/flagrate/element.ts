@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
+import { extendObject } from "./util";
 
 /*?
     class flagrate.Element
@@ -26,14 +26,14 @@ import { extendObject } from './util';
     #### Example
 
         var preview = flagrate.createElement().insertTo(x);
-        preview.on('updated', function (e) {
-            console.log('fired custom event', e);
+        preview.on("updated", function (e) {
+            console.log("fired custom event", e);
         });
 
         var input = flagrate.createTextInput().insertTo(x);
-        input.on('change', function () {
+        input.on("change", function () {
             preview.updateText(input.value);
-            preview.fire('updated');
+            preview.fire("updated");
         });
 
     #### Inheritance
@@ -149,112 +149,112 @@ export interface FHTMLVideoElement extends Instance, HTMLVideoElement { }
 export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
 
 export interface Class {
-    new (tagName: 'a', attribute?: Attribute): FHTMLAnchorElement;
-    new (tagName: 'abbr', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'acronym', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'address', attribute?: Attribute): FHTMLBlockElement;
-    new (tagName: 'applet', attribute?: Attribute): FHTMLAppletElement;
-    new (tagName: 'area', attribute?: Attribute): FHTMLAreaElement;
-    new (tagName: 'audio', attribute?: Attribute): FHTMLAudioElement;
-    new (tagName: 'b', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'base', attribute?: Attribute): FHTMLBaseElement;
-    new (tagName: 'basefont', attribute?: Attribute): FHTMLBaseFontElement;
-    new (tagName: 'bdo', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'big', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'blockquote', attribute?: Attribute): FHTMLBlockElement;
-    new (tagName: 'body', attribute?: Attribute): FHTMLBodyElement;
-    new (tagName: 'br', attribute?: Attribute): FHTMLBRElement;
-    new (tagName: 'button', attribute?: Attribute): FHTMLButtonElement;
-    new (tagName: 'canvas', attribute?: Attribute): FHTMLCanvasElement;
-    new (tagName: 'caption', attribute?: Attribute): FHTMLTableCaptionElement;
-    new (tagName: 'center', attribute?: Attribute): FHTMLBlockElement;
-    new (tagName: 'cite', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'code', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'col', attribute?: Attribute): FHTMLTableColElement;
-    new (tagName: 'colgroup', attribute?: Attribute): FHTMLTableColElement;
-    new (tagName: 'datalist', attribute?: Attribute): FHTMLDataListElement;
-    new (tagName: 'dd', attribute?: Attribute): FHTMLDDElement;
-    new (tagName: 'del', attribute?: Attribute): FHTMLModElement;
-    new (tagName: 'dfn', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'dir', attribute?: Attribute): FHTMLDirectoryElement;
-    new (tagName?: 'div', attribute?: Attribute): FHTMLDivElement;
-    new (tagName: 'dl', attribute?: Attribute): FHTMLDListElement;
-    new (tagName: 'dt', attribute?: Attribute): FHTMLDTElement;
-    new (tagName: 'em', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'embed', attribute?: Attribute): FHTMLEmbedElement;
-    new (tagName: 'fieldset', attribute?: Attribute): FHTMLFieldSetElement;
-    new (tagName: 'font', attribute?: Attribute): FHTMLFontElement;
-    new (tagName: 'form', attribute?: Attribute): FHTMLFormElement;
-    new (tagName: 'frame', attribute?: Attribute): FHTMLFrameElement;
-    new (tagName: 'frameset', attribute?: Attribute): FHTMLFrameSetElement;
-    new (tagName: 'h1', attribute?: Attribute): FHTMLHeadingElement;
-    new (tagName: 'h2', attribute?: Attribute): FHTMLHeadingElement;
-    new (tagName: 'h3', attribute?: Attribute): FHTMLHeadingElement;
-    new (tagName: 'h4', attribute?: Attribute): FHTMLHeadingElement;
-    new (tagName: 'h5', attribute?: Attribute): FHTMLHeadingElement;
-    new (tagName: 'h6', attribute?: Attribute): FHTMLHeadingElement;
-    new (tagName: 'head', attribute?: Attribute): FHTMLHeadElement;
-    new (tagName: 'hr', attribute?: Attribute): FHTMLHRElement;
-    new (tagName: 'html', attribute?: Attribute): FHTMLHtmlElement;
-    new (tagName: 'i', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'iframe', attribute?: Attribute): FHTMLIFrameElement;
-    new (tagName: 'img', attribute?: Attribute): FHTMLImageElement;
-    new (tagName: 'input', attribute?: Attribute): FHTMLInputElement;
-    new (tagName: 'ins', attribute?: Attribute): FHTMLModElement;
-    new (tagName: 'isindex', attribute?: Attribute): FHTMLIsIndexElement;
-    new (tagName: 'kbd', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'keygen', attribute?: Attribute): FHTMLBlockElement;
-    new (tagName: 'label', attribute?: Attribute): FHTMLLabelElement;
-    new (tagName: 'legend', attribute?: Attribute): FHTMLLegendElement;
-    new (tagName: 'li', attribute?: Attribute): FHTMLLIElement;
-    new (tagName: 'link', attribute?: Attribute): FHTMLLinkElement;
-    new (tagName: 'listing', attribute?: Attribute): FHTMLBlockElement;
-    new (tagName: 'map', attribute?: Attribute): FHTMLMapElement;
-    new (tagName: 'marquee', attribute?: Attribute): FHTMLMarqueeElement;
-    new (tagName: 'menu', attribute?: Attribute): FHTMLMenuElement;
-    new (tagName: 'meta', attribute?: Attribute): FHTMLMetaElement;
-    new (tagName: 'nextid', attribute?: Attribute): FHTMLNextIdElement;
-    new (tagName: 'nobr', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'object', attribute?: Attribute): FHTMLObjectElement;
-    new (tagName: 'ol', attribute?: Attribute): FHTMLOListElement;
-    new (tagName: 'optgroup', attribute?: Attribute): FHTMLOptGroupElement;
-    new (tagName: 'option', attribute?: Attribute): FHTMLOptionElement;
-    new (tagName: 'p', attribute?: Attribute): FHTMLParagraphElement;
-    new (tagName: 'param', attribute?: Attribute): FHTMLParamElement;
-    new (tagName: 'plaintext', attribute?: Attribute): FHTMLBlockElement;
-    new (tagName: 'pre', attribute?: Attribute): FHTMLPreElement;
-    new (tagName: 'progress', attribute?: Attribute): FHTMLProgressElement;
-    new (tagName: 'q', attribute?: Attribute): FHTMLQuoteElement;
-    new (tagName: 'rt', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'ruby', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 's', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'samp', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'script', attribute?: Attribute): FHTMLScriptElement;
-    new (tagName: 'select', attribute?: Attribute): FHTMLSelectElement;
-    new (tagName: 'small', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'source', attribute?: Attribute): FHTMLSourceElement;
-    new (tagName: 'span', attribute?: Attribute): FHTMLSpanElement;
-    new (tagName: 'strike', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'strong', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'style', attribute?: Attribute): FHTMLStyleElement;
-    new (tagName: 'sub', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'sup', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'table', attribute?: Attribute): FHTMLTableElement;
-    new (tagName: 'tbody', attribute?: Attribute): FHTMLTableSectionElement;
-    new (tagName: 'td', attribute?: Attribute): FHTMLTableDataCellElement;
-    new (tagName: 'textarea', attribute?: Attribute): FHTMLTextAreaElement;
-    new (tagName: 'tfoot', attribute?: Attribute): FHTMLTableSectionElement;
-    new (tagName: 'th', attribute?: Attribute): FHTMLTableHeaderCellElement;
-    new (tagName: 'thead', attribute?: Attribute): FHTMLTableSectionElement;
-    new (tagName: 'title', attribute?: Attribute): FHTMLTitleElement;
-    new (tagName: 'tr', attribute?: Attribute): FHTMLTableRowElement;
-    new (tagName: 'track', attribute?: Attribute): FHTMLTrackElement;
-    new (tagName: 'tt', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'u', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'ul', attribute?: Attribute): FHTMLUListElement;
-    new (tagName: 'var', attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: 'video', attribute?: Attribute): FHTMLVideoElement;
-    new (tagName: 'xmp', attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "a", attribute?: Attribute): FHTMLAnchorElement;
+    new (tagName: "abbr", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "acronym", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "address", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "applet", attribute?: Attribute): FHTMLAppletElement;
+    new (tagName: "area", attribute?: Attribute): FHTMLAreaElement;
+    new (tagName: "audio", attribute?: Attribute): FHTMLAudioElement;
+    new (tagName: "b", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "base", attribute?: Attribute): FHTMLBaseElement;
+    new (tagName: "basefont", attribute?: Attribute): FHTMLBaseFontElement;
+    new (tagName: "bdo", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "big", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "blockquote", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "body", attribute?: Attribute): FHTMLBodyElement;
+    new (tagName: "br", attribute?: Attribute): FHTMLBRElement;
+    new (tagName: "button", attribute?: Attribute): FHTMLButtonElement;
+    new (tagName: "canvas", attribute?: Attribute): FHTMLCanvasElement;
+    new (tagName: "caption", attribute?: Attribute): FHTMLTableCaptionElement;
+    new (tagName: "center", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "cite", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "code", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "col", attribute?: Attribute): FHTMLTableColElement;
+    new (tagName: "colgroup", attribute?: Attribute): FHTMLTableColElement;
+    new (tagName: "datalist", attribute?: Attribute): FHTMLDataListElement;
+    new (tagName: "dd", attribute?: Attribute): FHTMLDDElement;
+    new (tagName: "del", attribute?: Attribute): FHTMLModElement;
+    new (tagName: "dfn", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "dir", attribute?: Attribute): FHTMLDirectoryElement;
+    new (tagName?: "div", attribute?: Attribute): FHTMLDivElement;
+    new (tagName: "dl", attribute?: Attribute): FHTMLDListElement;
+    new (tagName: "dt", attribute?: Attribute): FHTMLDTElement;
+    new (tagName: "em", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "embed", attribute?: Attribute): FHTMLEmbedElement;
+    new (tagName: "fieldset", attribute?: Attribute): FHTMLFieldSetElement;
+    new (tagName: "font", attribute?: Attribute): FHTMLFontElement;
+    new (tagName: "form", attribute?: Attribute): FHTMLFormElement;
+    new (tagName: "frame", attribute?: Attribute): FHTMLFrameElement;
+    new (tagName: "frameset", attribute?: Attribute): FHTMLFrameSetElement;
+    new (tagName: "h1", attribute?: Attribute): FHTMLHeadingElement;
+    new (tagName: "h2", attribute?: Attribute): FHTMLHeadingElement;
+    new (tagName: "h3", attribute?: Attribute): FHTMLHeadingElement;
+    new (tagName: "h4", attribute?: Attribute): FHTMLHeadingElement;
+    new (tagName: "h5", attribute?: Attribute): FHTMLHeadingElement;
+    new (tagName: "h6", attribute?: Attribute): FHTMLHeadingElement;
+    new (tagName: "head", attribute?: Attribute): FHTMLHeadElement;
+    new (tagName: "hr", attribute?: Attribute): FHTMLHRElement;
+    new (tagName: "html", attribute?: Attribute): FHTMLHtmlElement;
+    new (tagName: "i", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "iframe", attribute?: Attribute): FHTMLIFrameElement;
+    new (tagName: "img", attribute?: Attribute): FHTMLImageElement;
+    new (tagName: "input", attribute?: Attribute): FHTMLInputElement;
+    new (tagName: "ins", attribute?: Attribute): FHTMLModElement;
+    new (tagName: "isindex", attribute?: Attribute): FHTMLIsIndexElement;
+    new (tagName: "kbd", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "keygen", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "label", attribute?: Attribute): FHTMLLabelElement;
+    new (tagName: "legend", attribute?: Attribute): FHTMLLegendElement;
+    new (tagName: "li", attribute?: Attribute): FHTMLLIElement;
+    new (tagName: "link", attribute?: Attribute): FHTMLLinkElement;
+    new (tagName: "listing", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "map", attribute?: Attribute): FHTMLMapElement;
+    new (tagName: "marquee", attribute?: Attribute): FHTMLMarqueeElement;
+    new (tagName: "menu", attribute?: Attribute): FHTMLMenuElement;
+    new (tagName: "meta", attribute?: Attribute): FHTMLMetaElement;
+    new (tagName: "nextid", attribute?: Attribute): FHTMLNextIdElement;
+    new (tagName: "nobr", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "object", attribute?: Attribute): FHTMLObjectElement;
+    new (tagName: "ol", attribute?: Attribute): FHTMLOListElement;
+    new (tagName: "optgroup", attribute?: Attribute): FHTMLOptGroupElement;
+    new (tagName: "option", attribute?: Attribute): FHTMLOptionElement;
+    new (tagName: "p", attribute?: Attribute): FHTMLParagraphElement;
+    new (tagName: "param", attribute?: Attribute): FHTMLParamElement;
+    new (tagName: "plaintext", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "pre", attribute?: Attribute): FHTMLPreElement;
+    new (tagName: "progress", attribute?: Attribute): FHTMLProgressElement;
+    new (tagName: "q", attribute?: Attribute): FHTMLQuoteElement;
+    new (tagName: "rt", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "ruby", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "s", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "samp", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "script", attribute?: Attribute): FHTMLScriptElement;
+    new (tagName: "select", attribute?: Attribute): FHTMLSelectElement;
+    new (tagName: "small", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "source", attribute?: Attribute): FHTMLSourceElement;
+    new (tagName: "span", attribute?: Attribute): FHTMLSpanElement;
+    new (tagName: "strike", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "strong", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "style", attribute?: Attribute): FHTMLStyleElement;
+    new (tagName: "sub", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "sup", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "table", attribute?: Attribute): FHTMLTableElement;
+    new (tagName: "tbody", attribute?: Attribute): FHTMLTableSectionElement;
+    new (tagName: "td", attribute?: Attribute): FHTMLTableDataCellElement;
+    new (tagName: "textarea", attribute?: Attribute): FHTMLTextAreaElement;
+    new (tagName: "tfoot", attribute?: Attribute): FHTMLTableSectionElement;
+    new (tagName: "th", attribute?: Attribute): FHTMLTableHeaderCellElement;
+    new (tagName: "thead", attribute?: Attribute): FHTMLTableSectionElement;
+    new (tagName: "title", attribute?: Attribute): FHTMLTitleElement;
+    new (tagName: "tr", attribute?: Attribute): FHTMLTableRowElement;
+    new (tagName: "track", attribute?: Attribute): FHTMLTrackElement;
+    new (tagName: "tt", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "u", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "ul", attribute?: Attribute): FHTMLUListElement;
+    new (tagName: "var", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "video", attribute?: Attribute): FHTMLVideoElement;
+    new (tagName: "xmp", attribute?: Attribute): FHTMLBlockElement;
     new (tagName: string, attribute?: Attribute): FHTMLElement;
 
     /** Tells whether `element` is visible. */
@@ -376,112 +376,112 @@ export interface Class {
 }
 
 export interface createElement {
-    (tagName: 'a', attribute?: Attribute): FHTMLAnchorElement;
-    (tagName: 'abbr', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'acronym', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'address', attribute?: Attribute): FHTMLBlockElement;
-    (tagName: 'applet', attribute?: Attribute): FHTMLAppletElement;
-    (tagName: 'area', attribute?: Attribute): FHTMLAreaElement;
-    (tagName: 'audio', attribute?: Attribute): FHTMLAudioElement;
-    (tagName: 'b', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'base', attribute?: Attribute): FHTMLBaseElement;
-    (tagName: 'basefont', attribute?: Attribute): FHTMLBaseFontElement;
-    (tagName: 'bdo', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'big', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'blockquote', attribute?: Attribute): FHTMLBlockElement;
-    (tagName: 'body', attribute?: Attribute): FHTMLBodyElement;
-    (tagName: 'br', attribute?: Attribute): FHTMLBRElement;
-    (tagName: 'button', attribute?: Attribute): FHTMLButtonElement;
-    (tagName: 'canvas', attribute?: Attribute): FHTMLCanvasElement;
-    (tagName: 'caption', attribute?: Attribute): FHTMLTableCaptionElement;
-    (tagName: 'center', attribute?: Attribute): FHTMLBlockElement;
-    (tagName: 'cite', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'code', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'col', attribute?: Attribute): FHTMLTableColElement;
-    (tagName: 'colgroup', attribute?: Attribute): FHTMLTableColElement;
-    (tagName: 'datalist', attribute?: Attribute): FHTMLDataListElement;
-    (tagName: 'dd', attribute?: Attribute): FHTMLDDElement;
-    (tagName: 'del', attribute?: Attribute): FHTMLModElement;
-    (tagName: 'dfn', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'dir', attribute?: Attribute): FHTMLDirectoryElement;
-    (tagName?: 'div', attribute?: Attribute): FHTMLDivElement;
-    (tagName: 'dl', attribute?: Attribute): FHTMLDListElement;
-    (tagName: 'dt', attribute?: Attribute): FHTMLDTElement;
-    (tagName: 'em', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'embed', attribute?: Attribute): FHTMLEmbedElement;
-    (tagName: 'fieldset', attribute?: Attribute): FHTMLFieldSetElement;
-    (tagName: 'font', attribute?: Attribute): FHTMLFontElement;
-    (tagName: 'form', attribute?: Attribute): FHTMLFormElement;
-    (tagName: 'frame', attribute?: Attribute): FHTMLFrameElement;
-    (tagName: 'frameset', attribute?: Attribute): FHTMLFrameSetElement;
-    (tagName: 'h1', attribute?: Attribute): FHTMLHeadingElement;
-    (tagName: 'h2', attribute?: Attribute): FHTMLHeadingElement;
-    (tagName: 'h3', attribute?: Attribute): FHTMLHeadingElement;
-    (tagName: 'h4', attribute?: Attribute): FHTMLHeadingElement;
-    (tagName: 'h5', attribute?: Attribute): FHTMLHeadingElement;
-    (tagName: 'h6', attribute?: Attribute): FHTMLHeadingElement;
-    (tagName: 'head', attribute?: Attribute): FHTMLHeadElement;
-    (tagName: 'hr', attribute?: Attribute): FHTMLHRElement;
-    (tagName: 'html', attribute?: Attribute): FHTMLHtmlElement;
-    (tagName: 'i', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'iframe', attribute?: Attribute): FHTMLIFrameElement;
-    (tagName: 'img', attribute?: Attribute): FHTMLImageElement;
-    (tagName: 'input', attribute?: Attribute): FHTMLInputElement;
-    (tagName: 'ins', attribute?: Attribute): FHTMLModElement;
-    (tagName: 'isindex', attribute?: Attribute): FHTMLIsIndexElement;
-    (tagName: 'kbd', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'keygen', attribute?: Attribute): FHTMLBlockElement;
-    (tagName: 'label', attribute?: Attribute): FHTMLLabelElement;
-    (tagName: 'legend', attribute?: Attribute): FHTMLLegendElement;
-    (tagName: 'li', attribute?: Attribute): FHTMLLIElement;
-    (tagName: 'link', attribute?: Attribute): FHTMLLinkElement;
-    (tagName: 'listing', attribute?: Attribute): FHTMLBlockElement;
-    (tagName: 'map', attribute?: Attribute): FHTMLMapElement;
-    (tagName: 'marquee', attribute?: Attribute): FHTMLMarqueeElement;
-    (tagName: 'menu', attribute?: Attribute): FHTMLMenuElement;
-    (tagName: 'meta', attribute?: Attribute): FHTMLMetaElement;
-    (tagName: 'nextid', attribute?: Attribute): FHTMLNextIdElement;
-    (tagName: 'nobr', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'object', attribute?: Attribute): FHTMLObjectElement;
-    (tagName: 'ol', attribute?: Attribute): FHTMLOListElement;
-    (tagName: 'optgroup', attribute?: Attribute): FHTMLOptGroupElement;
-    (tagName: 'option', attribute?: Attribute): FHTMLOptionElement;
-    (tagName: 'p', attribute?: Attribute): FHTMLParagraphElement;
-    (tagName: 'param', attribute?: Attribute): FHTMLParamElement;
-    (tagName: 'plaintext', attribute?: Attribute): FHTMLBlockElement;
-    (tagName: 'pre', attribute?: Attribute): FHTMLPreElement;
-    (tagName: 'progress', attribute?: Attribute): FHTMLProgressElement;
-    (tagName: 'q', attribute?: Attribute): FHTMLQuoteElement;
-    (tagName: 'rt', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'ruby', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 's', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'samp', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'script', attribute?: Attribute): FHTMLScriptElement;
-    (tagName: 'select', attribute?: Attribute): FHTMLSelectElement;
-    (tagName: 'small', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'source', attribute?: Attribute): FHTMLSourceElement;
-    (tagName: 'span', attribute?: Attribute): FHTMLSpanElement;
-    (tagName: 'strike', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'strong', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'style', attribute?: Attribute): FHTMLStyleElement;
-    (tagName: 'sub', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'sup', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'table', attribute?: Attribute): FHTMLTableElement;
-    (tagName: 'tbody', attribute?: Attribute): FHTMLTableSectionElement;
-    (tagName: 'td', attribute?: Attribute): FHTMLTableDataCellElement;
-    (tagName: 'textarea', attribute?: Attribute): FHTMLTextAreaElement;
-    (tagName: 'tfoot', attribute?: Attribute): FHTMLTableSectionElement;
-    (tagName: 'th', attribute?: Attribute): FHTMLTableHeaderCellElement;
-    (tagName: 'thead', attribute?: Attribute): FHTMLTableSectionElement;
-    (tagName: 'title', attribute?: Attribute): FHTMLTitleElement;
-    (tagName: 'tr', attribute?: Attribute): FHTMLTableRowElement;
-    (tagName: 'track', attribute?: Attribute): FHTMLTrackElement;
-    (tagName: 'tt', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'u', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'ul', attribute?: Attribute): FHTMLUListElement;
-    (tagName: 'var', attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: 'video', attribute?: Attribute): FHTMLVideoElement;
-    (tagName: 'xmp', attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "a", attribute?: Attribute): FHTMLAnchorElement;
+    (tagName: "abbr", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "acronym", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "address", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "applet", attribute?: Attribute): FHTMLAppletElement;
+    (tagName: "area", attribute?: Attribute): FHTMLAreaElement;
+    (tagName: "audio", attribute?: Attribute): FHTMLAudioElement;
+    (tagName: "b", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "base", attribute?: Attribute): FHTMLBaseElement;
+    (tagName: "basefont", attribute?: Attribute): FHTMLBaseFontElement;
+    (tagName: "bdo", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "big", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "blockquote", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "body", attribute?: Attribute): FHTMLBodyElement;
+    (tagName: "br", attribute?: Attribute): FHTMLBRElement;
+    (tagName: "button", attribute?: Attribute): FHTMLButtonElement;
+    (tagName: "canvas", attribute?: Attribute): FHTMLCanvasElement;
+    (tagName: "caption", attribute?: Attribute): FHTMLTableCaptionElement;
+    (tagName: "center", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "cite", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "code", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "col", attribute?: Attribute): FHTMLTableColElement;
+    (tagName: "colgroup", attribute?: Attribute): FHTMLTableColElement;
+    (tagName: "datalist", attribute?: Attribute): FHTMLDataListElement;
+    (tagName: "dd", attribute?: Attribute): FHTMLDDElement;
+    (tagName: "del", attribute?: Attribute): FHTMLModElement;
+    (tagName: "dfn", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "dir", attribute?: Attribute): FHTMLDirectoryElement;
+    (tagName?: "div", attribute?: Attribute): FHTMLDivElement;
+    (tagName: "dl", attribute?: Attribute): FHTMLDListElement;
+    (tagName: "dt", attribute?: Attribute): FHTMLDTElement;
+    (tagName: "em", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "embed", attribute?: Attribute): FHTMLEmbedElement;
+    (tagName: "fieldset", attribute?: Attribute): FHTMLFieldSetElement;
+    (tagName: "font", attribute?: Attribute): FHTMLFontElement;
+    (tagName: "form", attribute?: Attribute): FHTMLFormElement;
+    (tagName: "frame", attribute?: Attribute): FHTMLFrameElement;
+    (tagName: "frameset", attribute?: Attribute): FHTMLFrameSetElement;
+    (tagName: "h1", attribute?: Attribute): FHTMLHeadingElement;
+    (tagName: "h2", attribute?: Attribute): FHTMLHeadingElement;
+    (tagName: "h3", attribute?: Attribute): FHTMLHeadingElement;
+    (tagName: "h4", attribute?: Attribute): FHTMLHeadingElement;
+    (tagName: "h5", attribute?: Attribute): FHTMLHeadingElement;
+    (tagName: "h6", attribute?: Attribute): FHTMLHeadingElement;
+    (tagName: "head", attribute?: Attribute): FHTMLHeadElement;
+    (tagName: "hr", attribute?: Attribute): FHTMLHRElement;
+    (tagName: "html", attribute?: Attribute): FHTMLHtmlElement;
+    (tagName: "i", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "iframe", attribute?: Attribute): FHTMLIFrameElement;
+    (tagName: "img", attribute?: Attribute): FHTMLImageElement;
+    (tagName: "input", attribute?: Attribute): FHTMLInputElement;
+    (tagName: "ins", attribute?: Attribute): FHTMLModElement;
+    (tagName: "isindex", attribute?: Attribute): FHTMLIsIndexElement;
+    (tagName: "kbd", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "keygen", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "label", attribute?: Attribute): FHTMLLabelElement;
+    (tagName: "legend", attribute?: Attribute): FHTMLLegendElement;
+    (tagName: "li", attribute?: Attribute): FHTMLLIElement;
+    (tagName: "link", attribute?: Attribute): FHTMLLinkElement;
+    (tagName: "listing", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "map", attribute?: Attribute): FHTMLMapElement;
+    (tagName: "marquee", attribute?: Attribute): FHTMLMarqueeElement;
+    (tagName: "menu", attribute?: Attribute): FHTMLMenuElement;
+    (tagName: "meta", attribute?: Attribute): FHTMLMetaElement;
+    (tagName: "nextid", attribute?: Attribute): FHTMLNextIdElement;
+    (tagName: "nobr", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "object", attribute?: Attribute): FHTMLObjectElement;
+    (tagName: "ol", attribute?: Attribute): FHTMLOListElement;
+    (tagName: "optgroup", attribute?: Attribute): FHTMLOptGroupElement;
+    (tagName: "option", attribute?: Attribute): FHTMLOptionElement;
+    (tagName: "p", attribute?: Attribute): FHTMLParagraphElement;
+    (tagName: "param", attribute?: Attribute): FHTMLParamElement;
+    (tagName: "plaintext", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "pre", attribute?: Attribute): FHTMLPreElement;
+    (tagName: "progress", attribute?: Attribute): FHTMLProgressElement;
+    (tagName: "q", attribute?: Attribute): FHTMLQuoteElement;
+    (tagName: "rt", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "ruby", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "s", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "samp", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "script", attribute?: Attribute): FHTMLScriptElement;
+    (tagName: "select", attribute?: Attribute): FHTMLSelectElement;
+    (tagName: "small", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "source", attribute?: Attribute): FHTMLSourceElement;
+    (tagName: "span", attribute?: Attribute): FHTMLSpanElement;
+    (tagName: "strike", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "strong", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "style", attribute?: Attribute): FHTMLStyleElement;
+    (tagName: "sub", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "sup", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "table", attribute?: Attribute): FHTMLTableElement;
+    (tagName: "tbody", attribute?: Attribute): FHTMLTableSectionElement;
+    (tagName: "td", attribute?: Attribute): FHTMLTableDataCellElement;
+    (tagName: "textarea", attribute?: Attribute): FHTMLTextAreaElement;
+    (tagName: "tfoot", attribute?: Attribute): FHTMLTableSectionElement;
+    (tagName: "th", attribute?: Attribute): FHTMLTableHeaderCellElement;
+    (tagName: "thead", attribute?: Attribute): FHTMLTableSectionElement;
+    (tagName: "title", attribute?: Attribute): FHTMLTitleElement;
+    (tagName: "tr", attribute?: Attribute): FHTMLTableRowElement;
+    (tagName: "track", attribute?: Attribute): FHTMLTrackElement;
+    (tagName: "tt", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "u", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "ul", attribute?: Attribute): FHTMLUListElement;
+    (tagName: "var", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "video", attribute?: Attribute): FHTMLVideoElement;
+    (tagName: "xmp", attribute?: Attribute): FHTMLBlockElement;
     (tagName: string, attribute?: Attribute): FHTMLElement;
 }
 
@@ -650,24 +650,24 @@ const _insertionTranslation = {
     #### Example
 
         // The old way:
-        var a = document.createElement('a');
-        a.setAttribute('class', 'foo');
-        a.setAttribute('href', '/foo.html');
+        var a = document.createElement("a");
+        a.setAttribute("class", "foo");
+        a.setAttribute("href", "/foo.html");
         a.appendChild(document.createTextNode("Next page"));
         x.appendChild(a);
 
         // The new way:
-        var a = flagrate.createElement('a', { 'class': 'foo', href: '/foo.html' })
+        var a = flagrate.createElement("a", { "class": "foo", href: "/foo.html" })
                         .insertText("Next page")
                         .insertTo(x);
 **/
-function FElement(tagName: string = 'div', attribute?: Attribute) {
+function FElement(tagName: string = "div", attribute?: Attribute) {
 
     let node: any;
 
     if (_cache[tagName]) {
         node = _cache[tagName].cloneNode(false);
-    } else if ((attribute && attribute.hasOwnProperty('type')) || tagName === 'select') {
+    } else if ((attribute && attribute.hasOwnProperty("type")) || tagName === "select") {
         node = document.createElement(tagName);
     } else {
         node = document.createElement(tagName);
@@ -699,7 +699,7 @@ Element.prototype = {
 **/
 Element.visible = (element: HTMLElement) => {
 
-    return element.style.display !== 'none';
+    return element.style.display !== "none";
 };
 
 /*?
@@ -731,7 +731,7 @@ Element.exists = (element) => {
 **/
 Element.toggle = (element) => {
 
-    return Element[Element.visible(element) ? 'hide' : 'show'](element);
+    return Element[Element.visible(element) ? "hide" : "show"](element);
 };
 
 /*?
@@ -744,7 +744,7 @@ Element.toggle = (element) => {
 **/
 Element.hide = (element) => {
 
-    element.style.display = 'none';
+    element.style.display = "none";
     return element;
 };
 
@@ -758,7 +758,7 @@ Element.hide = (element) => {
 **/
 Element.show = (element) => {
 
-    element.style.display = '';
+    element.style.display = "";
     return element;
 };
 
@@ -805,7 +805,7 @@ Element.update = (element, content?) => {
         return element;
     }
 
-    if (typeof content !== 'string') {
+    if (typeof content !== "string") {
         content = content.toString(10);
     }
 
@@ -834,7 +834,7 @@ Element.updateText = (element, content) => {
         return Element.updateText(element, content.toString());
     }
 
-    if (typeof content !== 'string') {
+    if (typeof content !== "string") {
         content = content.toString(10);
     }
 
@@ -855,7 +855,7 @@ Element.updateText = (element, content) => {
 **/
 Element.insert = (element, insertion) => {
 
-    if (typeof insertion === 'string' || typeof insertion === 'number' || Element.isElement(insertion) === true) {
+    if (typeof insertion === "string" || typeof insertion === "number" || Element.isElement(insertion) === true) {
         insertion = { bottom: insertion };
     }
 
@@ -871,13 +871,13 @@ Element.insert = (element, insertion) => {
                 continue;
             }
 
-            if (typeof content !== 'string') {
+            if (typeof content !== "string") {
                 content = content.toString(10);
             }
 
             div = new Element();
             div.innerHTML = content;
-            if (position === 'top' || position === 'after') {
+            if (position === "top" || position === "after") {
                 [...div.childNodes].reverse();
             }
             while (div.childNodes.length !== 0) {
@@ -899,7 +899,7 @@ Element.insert = (element, insertion) => {
 **/
 Element.insertText = (element, insertion) => {
 
-    if (typeof insertion === 'string' || typeof insertion === 'number') {
+    if (typeof insertion === "string" || typeof insertion === "number") {
         insertion = { bottom: insertion };
     }
 
@@ -910,7 +910,7 @@ Element.insertText = (element, insertion) => {
             position = position.toLowerCase();
             insert = _insertionTranslation[position];
 
-            if (typeof content !== 'string') {
+            if (typeof content !== "string") {
                 content = content.toString(10);
             }
 
@@ -927,14 +927,14 @@ Element.insertText = (element, insertion) => {
     - to (Element) - insert to this element.
     - position (String) - `before` or `top` or `bottom` or `after`.
 **/
-Element.insertTo = (element, to, position = 'bottom') => {
+Element.insertTo = (element, to, position = "bottom") => {
 
     var insertion = {};
 
     if (position) {
         insertion[position] = element;
     } else {
-        insertion['bottom'] = element;
+        insertion["bottom"] = element;
     }
 
     Element.insert(to, insertion);
@@ -973,7 +973,7 @@ Element.writeAttribute = (element: HTMLElement, name, value?) => {
 
     let attr: Attribute;
 
-    if (typeof name === 'object') {
+    if (typeof name === "object") {
         attr = name;
     } else {
         attr = {};
@@ -1008,9 +1008,9 @@ Element.writeAttribute = (element: HTMLElement, name, value?) => {
 **/
 Element.getDimensions = (element: HTMLElement) => {
 
-    const display = Element.getStyle(element, 'display');
+    const display = Element.getStyle(element, "display");
 
-    if (display && display !== 'none') {
+    if (display && display !== "none") {
         return {
             width: element.offsetWidth,
             height: element.offsetHeight
@@ -1024,13 +1024,13 @@ Element.getDimensions = (element: HTMLElement) => {
     };
 
     const after: any = {
-        visibility: 'hidden',
-        display: 'block'
+        visibility: "hidden",
+        display: "block"
     };
 
     // Switching `fixed` to `absolute` causes issues in Safari.
-    if (before.position !== 'fixed') {
-        after.position = 'absolute';
+    if (before.position !== "fixed") {
+        after.position = "absolute";
     }
 
     Element.setStyle(element, after);
@@ -1125,7 +1125,7 @@ Element.cumulativeScrollOffset = (element) => {
 **/
 Element.hasClassName = (element, className) => {
 
-    return (element.className.length > 0 && (element.className === className || new RegExp('(^|\\s)' + className + '(\\s|$)').test(element.className)));
+    return (element.className.length > 0 && (element.className === className || new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className)));
 };
 
 /*?
@@ -1138,7 +1138,7 @@ Element.hasClassName = (element, className) => {
 Element.addClassName = (element, className) => {
 
     if (!Element.hasClassName(element, className)) {
-        element.className += (element.className ? ' ' : '') + className;
+        element.className += (element.className ? " " : "") + className;
     }
 
     return element;
@@ -1153,7 +1153,7 @@ Element.addClassName = (element, className) => {
 **/
 Element.removeClassName = (element, className) => {
 
-    element.className = element.className.replace(new RegExp('(^|\\s+)' + className + '(\\s+|$)'), ' ').trim();
+    element.className = element.className.replace(new RegExp("(^|\\s+)" + className + "(\\s+|$)"), " ").trim();
 
     return element;
 };
@@ -1167,7 +1167,7 @@ Element.removeClassName = (element, className) => {
 **/
 Element.toggleClassName = (element, className) => {
 
-    return Element[Element.hasClassName(element, className) ? 'removeClassName' : 'addClassName'](element, className);
+    return Element[Element.hasClassName(element, className) ? "removeClassName" : "addClassName"](element, className);
 };
 
 /*?
@@ -1179,21 +1179,21 @@ Element.toggleClassName = (element, className) => {
 **/
 Element.getStyle = (element, style) => {
 
-    style = style === 'float' ? 'cssFloat' : style.replace(/-+([a-z])?/g, (m, s) => {
-        return s ? s.toUpperCase() : '';
+    style = style === "float" ? "cssFloat" : style.replace(/-+([a-z])?/g, (m, s) => {
+        return s ? s.toUpperCase() : "";
     });
 
     let value = element.style[style];
-    if (!value || value === 'auto') {
+    if (!value || value === "auto") {
         const css = document.defaultView.getComputedStyle(element, null);
         value = css && (css[style] !== void 0) && css[style] !== "" ? css[style] : null;
     }
 
-    if (style === 'opacity') {
+    if (style === "opacity") {
         return value ? parseFloat(value) : 1.0;
     }
 
-    return value === 'auto' ? null : value;
+    return value === "auto" ? null : value;
 };
 
 /*?
@@ -1208,7 +1208,7 @@ Element.setStyle = (element, style) => {
     let p;
     for (p in style) {
         if (style.hasOwnProperty(p)) {
-            element.style[(p === 'float' || p === 'cssFloat') ? 'cssFloat' : p] = style[p];
+            element.style[(p === "float" || p === "cssFloat") ? "cssFloat" : p] = style[p];
         }
     }
 
@@ -1282,7 +1282,7 @@ Element.off = (element, name, listener?, useCapture?) => {
 **/
 Element.fire = (element, name, property) => {
 
-    const event = document.createEvent('HTMLEvents');
+    const event = document.createEvent("HTMLEvents");
     event.initEvent(name, true, true);
     if (property) {
         extendObject(event, property);
@@ -1341,12 +1341,12 @@ Element.extend = (element) => {
     flagrate.Element.isElement(element) -> Boolean
     - element (Element) - instance of Element.
 **/
-if (typeof HTMLElement === 'object') {
+if (typeof HTMLElement === "object") {
     Element.isElement = (object) => {
         return object instanceof HTMLElement;
     };
 } else {
     Element.isElement = (object) => {
-        return !!(object && object.nodeType === 1 && typeof object.nodeName === 'string');
+        return !!(object && object.nodeType === 1 && typeof object.nodeName === "string");
     };
 }

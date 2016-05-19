@@ -13,11 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import { Button } from './button';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import { Button } from "./button";
 
 /*?
     class flagrate.Tab
@@ -153,15 +153,15 @@ function FTab(opt: Option = {}) {
 
     const attr = opt.attribute || {};
 
-    attr['id'] = opt.id;
-    attr['class'] = 'flagrate flagrate-tab';
+    attr["id"] = opt.id;
+    attr["class"] = "flagrate flagrate-tab";
 
     if (opt.fill) {
-        attr['class'] += ' flagrate-tab-fill';
+        attr["class"] += " flagrate-tab-fill";
     }
 
     // create
-    const tab = new Element('div', attr) as Tab;
+    const tab = new Element("div", attr) as Tab;
     extendObject(tab, this);
 
     if (opt.className) {
@@ -220,14 +220,14 @@ Tab.prototype = {
 
         const tab = this as Tab;
 
-        const index = (typeof a === 'number') ? a : tab.indexOf(a);
+        const index = (typeof a === "number") ? a : tab.indexOf(a);
 
         if (index < 0 || index >= tab._tabs.length) {
             return tab;
         }
 
         if (0 <= tab._selectedIndex && tab._selectedIndex < tab._tabs.length && tab._tabs[tab._selectedIndex]._button) {
-            tab._tabs[tab._selectedIndex]._button.removeClassName('flagrate-tab-selected');
+            tab._tabs[tab._selectedIndex]._button.removeClassName("flagrate-tab-selected");
         }
 
         tab._selectedIndex = index;
@@ -237,7 +237,7 @@ Tab.prototype = {
             return tab;
         }
 
-        tabItem._button.addClassName('flagrate-tab-selected');
+        tabItem._button.addClassName("flagrate-tab-selected");
 
         if (tabItem.text) {
             tab._body.updateText(tabItem.text);
@@ -333,7 +333,7 @@ Tab.prototype = {
 
         const tab = this as Tab;
 
-        c = typeof c === 'undefined' ? this._tabs.length - index : c;
+        c = typeof c === "undefined" ? this._tabs.length - index : c;
 
         const removes = tab._tabs.splice(index, c);
 
@@ -365,7 +365,7 @@ Tab.prototype = {
         }
 
         for (let i = 0, l = a.length; i < l; i++) {
-            const index = (typeof a[i] === 'number') ? a[i] : tab.indexOf(a[i]);
+            const index = (typeof a[i] === "number") ? a[i] : tab.indexOf(a[i]);
             if (index !== -1) {
                 removes.push(tab.splice(index, 1));
             }
@@ -378,7 +378,7 @@ Tab.prototype = {
 
         const tab = this as Tab;
 
-        if (typeof a === 'string') {
+        if (typeof a === "string") {
             let index = -1;
 
             for (let i = 0, l = tab._tabs.length; i < l; i++) {
@@ -398,12 +398,12 @@ Tab.prototype = {
 
         const tab = this as Tab;
 
-        tab._head = new Element('div', { 'class': 'flagrate-tab-head' }).insertTo(tab);
+        tab._head = new Element("div", { "class": "flagrate-tab-head" }).insertTo(tab);
 
         if (tab._bodyless === true) {
             tab._body = new Element();
         } else {
-            tab._body = new Element('div', { 'class': 'flagrate-tab-body' }).insertTo(tab);
+            tab._body = new Element("div", { "class": "flagrate-tab-body" }).insertTo(tab);
         }
 
         return tab;

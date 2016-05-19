@@ -13,11 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Attribute, Property } from './element';
-import { Button } from './button';
+import { extendObject } from "./util";
+import { Attribute, Property } from "./element";
+import { Button } from "./button";
 
 /*?
     class flagrate.Switch
@@ -26,13 +26,13 @@ import { Button } from './button';
 
         var sw = flagrate.createSwitch().insertTo(x);
 
-        sw.on('on', function () {
-            console.log('on');
+        sw.on("on", function () {
+            console.log("on");
         });
-        sw.on('off', function () {
-            console.log('off');
+        sw.on("off", function () {
+            console.log("off");
         });
-        sw.on('change', function (e) {
+        sw.on("change", function (e) {
             console.log(e.target.isOn());
         });
 
@@ -110,14 +110,14 @@ function FSwitch(opt: Option = {}) {
     });
     extendObject(sw, this);
 
-    sw.addEventListener('select', sw.toggleSwitch.bind(sw));
+    sw.addEventListener("select", sw.toggleSwitch.bind(sw));
 
-    sw.addClassName('flagrate-switch');
+    sw.addClassName("flagrate-switch");
 
     if (sw.dataset) {
-        sw.dataset['flagrateSwitchStatus'] = opt.isOn ? 'on' : 'off';
+        sw.dataset["flagrateSwitchStatus"] = opt.isOn ? "on" : "off";
     } else {
-        sw.writeAttribute('data-flagrate-switch-status', opt.isOn ? 'on' : 'off');
+        sw.writeAttribute("data-flagrate-switch-status", opt.isOn ? "on" : "off");
     }
 
     return sw;
@@ -133,34 +133,34 @@ Switch.prototype = {
     isOn() {
 
         if (this.dataset) {
-            return this.dataset.flagrateSwitchStatus === 'on';
+            return this.dataset.flagrateSwitchStatus === "on";
         } else {
-            return this.readAttribute('data-flagrate-switch-status') === 'on';
+            return this.readAttribute("data-flagrate-switch-status") === "on";
         }
     },
 
     switchOn() {
 
         if (this.dataset) {
-            this.dataset.flagrateSwitchStatus = 'on';
+            this.dataset.flagrateSwitchStatus = "on";
         } else {
-            this.writeAttribute('data-flagrate-switch-status', 'on');
+            this.writeAttribute("data-flagrate-switch-status", "on");
         }
 
-        return this.fire('on', { targetSwitch: this })
-                   .fire('change', { targetSwitch: this });
+        return this.fire("on", { targetSwitch: this })
+                   .fire("change", { targetSwitch: this });
     },
 
     switchOff() {
 
         if (this.dataset) {
-            this.dataset.flagrateSwitchStatus = 'off';
+            this.dataset.flagrateSwitchStatus = "off";
         } else {
-            this.writeAttribute('data-flagrate-switch-status', 'off');
+            this.writeAttribute("data-flagrate-switch-status", "off");
         }
 
-        return this.fire('off', { targetSwitch: this })
-                   .fire('change', { targetSwitch: this });
+        return this.fire("off", { targetSwitch: this })
+                   .fire("change", { targetSwitch: this });
     },
 
     toggleSwitch() {

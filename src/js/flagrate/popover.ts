@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { Element, FHTMLElement, FHTMLDivElement } from './element';
+import { Element, FHTMLElement, FHTMLDivElement } from "./element";
 
 /*?
     class flagrate.Popover
@@ -61,7 +61,7 @@ export class Popover {
     constructor(opt: Option = {}) {
 
         if (opt.target) {
-            if (!opt.target['isFlagrated']) {
+            if (!opt.target["isFlagrated"]) {
                 opt.target = Element.extend(opt.target);
             }
             this._target = opt.target as FHTMLElement;
@@ -80,7 +80,7 @@ export class Popover {
         }
 
         if (this._target) {
-            this._target.addEventListener('mouseover', this._openHandler);
+            this._target.addEventListener("mouseover", this._openHandler);
         }
     }
 
@@ -150,10 +150,10 @@ export class Popover {
                 target = forceTarget.target as HTMLElement;
             }
 
-            document.body.addEventListener('click', this._closeHandler);
-            document.body.addEventListener('mouseout', this._closeHandler);
-            document.body.addEventListener('mouseup', this._closeHandler);
-            window.addEventListener('scroll', this._closeHandler);
+            document.body.addEventListener("click", this._closeHandler);
+            document.body.addEventListener("mouseout", this._closeHandler);
+            document.body.addEventListener("mouseup", this._closeHandler);
+            window.addEventListener("scroll", this._closeHandler);
         } else if (Element.isElement(forceTarget) === true) {
             target = forceTarget;
         }
@@ -169,9 +169,9 @@ export class Popover {
             }
         }, 10);
 
-        this._div.on('click', e => e.stopPropagation());
-        this._div.on('mouseup', e => e.stopPropagation());
-        this._div.on('mousewheel', e => {
+        this._div.on("click", e => e.stopPropagation());
+        this._div.on("mouseup", e => e.stopPropagation());
+        this._div.on("mousewheel", e => {
             e.stopPropagation();
             e.preventDefault();
         });
@@ -189,16 +189,16 @@ export class Popover {
 
         clearInterval(this._positioningTimer);
 
-        document.body.removeEventListener('click', this._closeHandler);
-        document.body.removeEventListener('mouseup', this._closeHandler);
-        document.body.removeEventListener('mouseout', this._closeHandler);
-        window.removeEventListener('scroll', this._closeHandler);
+        document.body.removeEventListener("click", this._closeHandler);
+        document.body.removeEventListener("mouseup", this._closeHandler);
+        document.body.removeEventListener("mouseout", this._closeHandler);
+        window.removeEventListener("scroll", this._closeHandler);
 
         this._isShowing = false;
 
         const div = this._div;
 
-        div.removeClassName('flagrate-popover-visible');
+        div.removeClassName("flagrate-popover-visible");
 
         setTimeout(() => {
             if (div && div.remove) {
@@ -212,7 +212,7 @@ export class Popover {
     }
 
     visible(): boolean {
-        return this._isShowing && !!this._div.hasClassName('flagrate-popover-visible');
+        return this._isShowing && !!this._div.hasClassName("flagrate-popover-visible");
     }
 
     remove(): void {
@@ -222,7 +222,7 @@ export class Popover {
         }
 
         if (this._target) {
-            this._target.removeEventListener('mouseover', this._openHandler);
+            this._target.removeEventListener("mouseover", this._openHandler);
         }
     }
 
@@ -231,7 +231,7 @@ export class Popover {
         if (this._target === element) {
             return this;
         }
-        if (!element['isFlagrated']) {
+        if (!element["isFlagrated"]) {
             element = Element.extend(element);
         }
         this._target = element;
@@ -304,8 +304,8 @@ export class Popover {
 
         this._isShowing = true;
 
-        const div = this._div = new Element('div', {
-            'class': 'flagrate flagrate-popover'
+        const div = this._div = new Element("div", {
+            "class": "flagrate flagrate-popover"
         });
 
         if (this._className) {
@@ -324,7 +324,7 @@ export class Popover {
 
         div.insertTo(document.body);
 
-        setTimeout(() => div.addClassName('flagrate-popover-visible'), 0);
+        setTimeout(() => div.addClassName("flagrate-popover-visible"), 0);
 
         return div;
     }
@@ -349,15 +349,15 @@ function _updatePosition(target: HTMLElement, div: FHTMLDivElement) {
     if (y + height > window.innerHeight) {
         y = window.innerHeight - y + tHeight;
 
-        div.removeClassName('flagrate-popover-tail-top');
-        div.addClassName('flagrate-popover-tail-bottom');
-        div.style.top = '';
+        div.removeClassName("flagrate-popover-tail-top");
+        div.addClassName("flagrate-popover-tail-bottom");
+        div.style.top = "";
         div.style.bottom = `${y}px`;
     } else {
-        div.removeClassName('flagrate-popover-tail-bottom');
-        div.addClassName('flagrate-popover-tail-top');
+        div.removeClassName("flagrate-popover-tail-bottom");
+        div.addClassName("flagrate-popover-tail-top");
         div.style.top = `${y}px`;
-        div.style.bottom = '';
+        div.style.bottom = "";
     }
 
     div.style.left = `${x}px`;

@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { Element, FHTMLElement, FHTMLDivElement } from './element';
+import { Element, FHTMLElement, FHTMLDivElement } from "./element";
 
 /*?
     class flagrate.Notify
@@ -27,17 +27,17 @@ import { Element, FHTMLElement, FHTMLDivElement } from './element';
 
         // create and initialize a Notify instance
         var notify = flagrate.createNotify({
-            title: 'Somehow Web App'
+            title: "Somehow Web App"
         });
 
         // create notify
-        notify.create({ text: 'Hello' });
+        notify.create({ text: "Hello" });
 
         setTimeout(function () {
         notify.create({
-            text   : 'Hey, are you awake?',
+            text   : "Hey, are you awake?",
             onClick: function () {
-                notify.create({ text: 'Aaaah' });
+                notify.create({ text: "Aaaah" });
             }
         });
         }, 1000 * 30);
@@ -114,13 +114,13 @@ export class Notify {
     className: string;
     disableDesktopNotify = false;
     disableFocusDetection = false;
-    hAlign: HorizontalAlign = 'right';
-    vAlign: VerticalAlign = 'bottom';
+    hAlign: HorizontalAlign = "right";
+    vAlign: VerticalAlign = "bottom";
     hMargin = 10;//pixels
     vMargin = 10;//pixels
     spacing = 10;//pixels
     timeout = 5;//seconds
-    title = 'Notify';
+    title = "Notify";
 
     private _notifies: FHTMLDivElement[] = [];
 
@@ -168,7 +168,7 @@ export class Notify {
         let opt: CreateOption;
 
         // sugar
-        if (typeof _opt === 'string') {
+        if (typeof _opt === "string") {
             opt = {
                 text: _opt
             };
@@ -208,15 +208,15 @@ export class Notify {
         //   <div class="close">&#xd7;</div>
         // </div>
         //
-        const notify = new Element('div', { 'class': this.className });
-        notify.addClassName('flagrate flagrate-notify');
-        new Element('div', { 'class': 'title' }).insertText(title).insertTo(notify);
-        new Element('div', { 'class': 'text' }).insertText(message).insertTo(notify);
-        const notifyClose = new Element('div', { 'class': 'close' }).update('&#xd7;').insertTo(notify);
+        const notify = new Element("div", { "class": this.className });
+        notify.addClassName("flagrate flagrate-notify");
+        new Element("div", { "class": "title" }).insertText(title).insertTo(notify);
+        new Element("div", { "class": "text" }).insertText(message).insertTo(notify);
+        const notifyClose = new Element("div", { "class": "close" }).update("&#xd7;").insertTo(notify);
 
         if (opt.icon) {
-            notify.addClassName('flagrate-notify-icon');
-            new Element('div', { 'class': 'icon' }).setStyle({ 'backgroundImage': 'url(' + opt.icon + ')' }).insertTo(notify);
+            notify.addClassName("flagrate-notify-icon");
+            new Element("div", { "class": "icon" }).setStyle({ "backgroundImage": "url(" + opt.icon + ")" }).insertTo(notify);
         }
 
         /*- Remove a notify element -*/
@@ -228,7 +228,7 @@ export class Notify {
 
             isAlive = false;
 
-            notify.style.opacity = '0';
+            notify.style.opacity = "0";
 
             //onClose event
             if (onClose) {
@@ -244,7 +244,7 @@ export class Notify {
             }, 300);
         };
 
-        notifyClose.addEventListener('click', e => {
+        notifyClose.addEventListener("click", e => {
 
             e.stopPropagation();
             e.preventDefault();
@@ -254,18 +254,18 @@ export class Notify {
             }
         }, false);
 
-        notify.style.display = 'none';
+        notify.style.display = "none";
 
-        notify.style.position = 'fixed';
-        notify.style[this.hAlign] = hPosition + 'px';
-        notify.style[this.vAlign] = vPosition + 'px';
+        notify.style.position = "fixed";
+        notify.style[this.hAlign] = hPosition + "px";
+        notify.style[this.vAlign] = vPosition + "px";
 
         /*- onClick event -*/
         if (!onClick) {
-            notify.addEventListener('click', closeNotify);
+            notify.addEventListener("click", closeNotify);
         } else {
-            notify.style.cursor = 'pointer';
-            notify.addEventListener('click', e => {
+            notify.style.cursor = "pointer";
+            notify.addEventListener("click", e => {
 
                 e.stopPropagation();
                 e.preventDefault();
@@ -279,9 +279,9 @@ export class Notify {
         this.target.appendChild(notify);
 
         /*- Show notify -*/
-        notify.style.display = 'block';
+        notify.style.display = "block";
         setTimeout(() => {
-            notify.style.opacity = '1';
+            notify.style.opacity = "1";
         }, 10);
 
         /*- Set timeout -*/
@@ -296,7 +296,7 @@ export class Notify {
             closeTimer = setTimeout(onTimeout, timeout * 1000);
 
             //Clear timeout
-            notify.addEventListener('mouseover', () => {
+            notify.addEventListener("mouseover", () => {
 
                 clearTimeout(closeTimer);
                 closeTimer = setTimeout(onTimeout, timeout * 1000);
@@ -313,17 +313,17 @@ export class Notify {
 
         if (this.disableDesktopNotify === false) {
             /*- Check supported -*/
-            if (!window['Notification'] || !window['Notification'].permission) {
+            if (!window["Notification"] || !window["Notification"].permission) {
                 this.disableDesktopNotify = true;
             } else {
                 /*- Check protocol -*/
-                if (location.protocol !== 'file:') {
+                if (location.protocol !== "file:") {
                     /*- Get Permissions -*/
-                    if (window['Notification'].permission === 'default') {
+                    if (window["Notification"].permission === "default") {
                         this.create({
-                            text: 'Click here to Activate the Desktop Notifications...',
+                            text: "Click here to Activate the Desktop Notifications...",
                             onClick() {
-                                window['Notification'].requestPermission();
+                                window["Notification"].requestPermission();
                             }
                         });
                     }
@@ -347,11 +347,11 @@ export class Notify {
 
         /*- Create a desktop notification -*/
         /*- Get Permissions -*/
-        if (window['Notification'].permission !== 'granted') {
+        if (window["Notification"].permission !== "granted") {
             return false;
         }
 
-        notify = new window['Notification'](title, {
+        notify = new window["Notification"](title, {
             icon: opt.icon,
             body: message
         });
@@ -367,7 +367,7 @@ export class Notify {
         }
 
         /*- onClick event -*/
-        notify.addEventListener('click', () => {
+        notify.addEventListener("click", () => {
 
             if (onClick) {
                 onClick.call(this);
@@ -406,8 +406,8 @@ export class Notify {
             const x = this.vMargin + pX;
             const y = this.hMargin + pY;
 
-            notify.style[this.hAlign] = x.toString(10) + 'px';
-            notify.style[this.vAlign] = y.toString(10) + 'px';
+            notify.style[this.hAlign] = x.toString(10) + "px";
+            notify.style[this.vAlign] = y.toString(10) + "px";
 
             pY += this.spacing + notify.offsetHeight;
 

@@ -13,11 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import { Radio, Option as _RadioOption, RadioEvent } from './radio';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import { Radio, Option as _RadioOption, RadioEvent } from "./radio";
 
 /*?
     class flagrate.Radios
@@ -87,19 +87,19 @@ let idCounter = 0;
 **/
 function FRadios(opt: Option = {}) {
 
-    const id = 'flagrate-radios-' + (++idCounter).toString(10);
+    const id = "flagrate-radios-" + (++idCounter).toString(10);
 
     const attr = opt.attribute || {};
 
     if (opt.id) {
-        attr['id'] = opt.id;
+        attr["id"] = opt.id;
     }
 
     //create
-    const radios = new Element('div', attr) as Radios;
+    const radios = new Element("div", attr) as Radios;
     extendObject(radios, this);
 
-    radios.addClassName('flagrate flagrate-radios');
+    radios.addClassName("flagrate flagrate-radios");
     if (opt.className) {
         radios.addClassName(opt.className);
     }
@@ -118,10 +118,10 @@ function FRadios(opt: Option = {}) {
 
         const _item: RadiosItem = {} as any;
 
-        if (typeof item === 'object') {
+        if (typeof item === "object") {
             extendObject(_item, item);
         } else {
-            _item.label = typeof item === 'string' ? item : item.toString(10);
+            _item.label = typeof item === "string" ? item : item.toString(10);
             _item.value = item;
         }
 
@@ -129,13 +129,13 @@ function FRadios(opt: Option = {}) {
 
         _item._radio = new Radio(_item).insertTo(radios);
 
-        _item._radio.addEventListener('change', e => {
+        _item._radio.addEventListener("change", e => {
             if (radios.onChange) {
                 radios.onChange(e, radios);
             }
         });
 
-        _item._radio.addEventListener('check', e => {
+        _item._radio.addEventListener("check", e => {
             radios.selectedIndex = i;
         });
 
@@ -197,7 +197,7 @@ Radios.prototype = {
             this._items[i]._radio.enable();
         }
 
-        this.removeClassName('flagrate-disabled');
+        this.removeClassName("flagrate-disabled");
 
         return this;
     },
@@ -208,12 +208,12 @@ Radios.prototype = {
             this._items[i]._radio.disable();
         }
 
-        this.addClassName('flagrate-disabled');
+        this.addClassName("flagrate-disabled");
 
         return this;
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     }
 };

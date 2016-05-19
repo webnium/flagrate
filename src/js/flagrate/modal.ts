@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { Element, FHTMLElement, FHTMLDivElement, FHTMLHeadingElement } from './element';
-import { Button } from './button';
+import { Element, FHTMLElement, FHTMLDivElement, FHTMLHeadingElement } from "./element";
+import { Button } from "./button";
 
 /*?
     class flagrate.Modal
@@ -135,7 +135,7 @@ export class Modal {
             _opt.target = document.body;
         }
         if (!_opt.sizing) {
-            _opt.sizing = 'flex';
+            _opt.sizing = "flex";
         }
         if (_opt.disableCloseButton === undefined) {
             _opt.disableCloseButton = false;
@@ -147,8 +147,8 @@ export class Modal {
             _opt.disableCloseByEsc = false;
         }
 
-        if (_opt['description']) {
-            this._opt['description'] = _opt['description'];
+        if (_opt["description"]) {
+            this._opt["description"] = _opt["description"];
         }
 
         if (_opt.buttons) {
@@ -168,8 +168,8 @@ export class Modal {
         if (this._buttons.length === 0) {
             this._buttons = [
                 {
-                    label: 'OK',
-                    color: '@primary',
+                    label: "OK",
+                    color: "@primary",
                     onSelect: this._close,
                     isFocused: true
                 }
@@ -322,7 +322,7 @@ export class Modal {
     }
 
     visible(): boolean {
-        return this._container.hasClassName('flagrate-modal-visible');
+        return this._container.hasClassName("flagrate-modal-visible");
     }
 
     open(): this {
@@ -332,7 +332,7 @@ export class Modal {
         }
 
         // make free
-        if (document.activeElement && document.activeElement['blur']) {
+        if (document.activeElement && document.activeElement["blur"]) {
             (<HTMLElement>document.activeElement).blur();
         }
         window.getSelection().removeAllRanges();
@@ -343,7 +343,7 @@ export class Modal {
 
         Element.insert(this._opt.target, this._container);
 
-        setTimeout(() => this._container.addClassName('flagrate-modal-visible'), 0);
+        setTimeout(() => this._container.addClassName("flagrate-modal-visible"), 0);
 
         // Callback: onShow
         if (this.onShow) {
@@ -357,7 +357,7 @@ export class Modal {
             this._buttons[0]._button.focus();
         }
 
-        window.addEventListener('keydown', this.__onKeydownHandler, true);
+        window.addEventListener("keydown", this.__onKeydownHandler, true);
 
         return this;
     }
@@ -378,7 +378,7 @@ export class Modal {
             return this;
         }
 
-        this._container.removeClassName('flagrate-modal-visible');
+        this._container.removeClassName("flagrate-modal-visible");
 
         if (e) {
             e.stopPropagation();
@@ -396,7 +396,7 @@ export class Modal {
 
         this._closingTimer = setTimeout(() => this._container.remove(), 1000);
 
-        window.removeEventListener('keydown', this.__onKeydownHandler, true);
+        window.removeEventListener("keydown", this.__onKeydownHandler, true);
 
         // Callback: onClose
         if (this.onClose) {
@@ -445,9 +445,9 @@ export class Modal {
 
     private _createBase(): void {
 
-        this._container = new Element('div', {
+        this._container = new Element("div", {
             id: this._opt.id,
-            'class': `flagrate flagrate-modal flagrate-sizing-${this._opt.sizing}`
+            "class": `flagrate flagrate-modal flagrate-sizing-${this._opt.sizing}`
         });
 
         if (this._opt.className) {
@@ -455,23 +455,23 @@ export class Modal {
         }
 
         if (this._opt.target !== document.body) {
-            this._container.style.position = 'absolute';
+            this._container.style.position = "absolute";
         }
 
         this._obi = new Element().insertTo(this._container);
 
         if (this._opt.disableCloseByMask === false) {
-            this._container.addEventListener('click', this._close);
+            this._container.addEventListener("click", this._close);
         }
     }
 
     private _createModal(): void {
 
         this._modal = new Element().insertTo(this._obi);
-        this._modal.addEventListener('click', e => e.stopPropagation());
+        this._modal.addEventListener("click", e => e.stopPropagation());
 
         this._closeButton = new Button({
-            label: '',
+            label: "",
             onSelect: this._close
         });
 
@@ -479,9 +479,9 @@ export class Modal {
             this._closeButton.insertTo(this._modal);
         }
 
-        this._header = new Element('hgroup').insertTo(this._modal);
-        this._title = new Element('h1').insertText(this._opt.title || '').insertTo(this._header);
-        this._subtitle = new Element('small').insertText(this._opt.subtitle || '').insertTo(this._header);
+        this._header = new Element("hgroup").insertTo(this._modal);
+        this._title = new Element("h1").insertText(this._opt.title || "").insertTo(this._header);
+        this._subtitle = new Element("small").insertText(this._opt.subtitle || "").insertTo(this._header);
 
         this._middle = new Element().insertTo(this._modal);
 
@@ -499,7 +499,7 @@ export class Modal {
             }
         }
 
-        this._footer = new Element('footer').insertTo(this._modal);
+        this._footer = new Element("footer").insertTo(this._modal);
     }
 
     private _createButtons(): void {
@@ -521,19 +521,19 @@ export class Modal {
 
                     if (button.onSelect) {
                         button.onSelect.call(e.targetButton, e, this);
-                    } else if (button['onClick']) {
-                        console.warn('ModalButton#onClick is deprecated. Use ModalButton#onSelect instead.');
-                        button['onClick'](e, this);// DEPRECATED
+                    } else if (button["onClick"]) {
+                        console.warn("ModalButton#onClick is deprecated. Use ModalButton#onSelect instead.");
+                        button["onClick"](e, this);// DEPRECATED
                     }
                 }
             });
 
             // DEPRECATED, This is for backward compatibility.
-            button._button['button'] = button;
-            button['button'] = button._button;
-            button['disable'] = button._button.disable.bind(button._button);
-            button['enable'] = button._button.enable.bind(button._button);
-            button['setColor'] = button._button.setColor.bind(button._button);
+            button._button["button"] = button;
+            button["button"] = button._button;
+            button["disable"] = button._button.disable.bind(button._button);
+            button["enable"] = button._button.enable.bind(button._button);
+            button["setColor"] = button._button.setColor.bind(button._button);
 
             this._footer.insert(button._button);
         });
@@ -559,42 +559,42 @@ export class Modal {
                 modalWidth = this._modal.getWidth();
                 modalHeight = this._modal.getHeight();
 
-                if (this._opt.sizing === 'flex') {
+                if (this._opt.sizing === "flex") {
                     if (baseWidth - 20 <= modalWidth) {
-                        this._modal.style.left = '0';
-                        this._middle.style.width = baseWidth + 'px';
-                        this._middle.style.overflowX = 'auto';
+                        this._modal.style.left = "0";
+                        this._middle.style.width = baseWidth + "px";
+                        this._middle.style.overflowX = "auto";
                     } else {
-                        this._modal.style.left = Math.floor((baseWidth / 2) - (modalWidth / 2)) + 'px';
-                        this._middle.style.width = '';
-                        this._middle.style.overflowX = 'visible';
+                        this._modal.style.left = Math.floor((baseWidth / 2) - (modalWidth / 2)) + "px";
+                        this._middle.style.width = "";
+                        this._middle.style.overflowX = "visible";
                     }
 
                     if (baseHeight - 20 <= modalHeight) {
-                        this._obi.style.top = '10px';
-                        this._obi.style.bottom = '10px';
-                        this._obi.style.height = '';
-                        this._middle.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
-                        this._middle.style.overflowY = 'auto';
+                        this._obi.style.top = "10px";
+                        this._obi.style.bottom = "10px";
+                        this._obi.style.height = "";
+                        this._middle.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + "px";
+                        this._middle.style.overflowY = "auto";
                     } else {
-                        this._obi.style.top = (baseHeight / 2) - (modalHeight / 2) + 'px';
-                        this._obi.style.bottom = '';
-                        this._obi.style.height = modalHeight + 'px';
-                        this._middle.style.height = '';
-                        this._middle.style.overflowY = 'visible';
+                        this._obi.style.top = (baseHeight / 2) - (modalHeight / 2) + "px";
+                        this._obi.style.bottom = "";
+                        this._obi.style.height = modalHeight + "px";
+                        this._middle.style.height = "";
+                        this._middle.style.overflowY = "visible";
                     }
                 }
 
-                if (this._opt.sizing === 'full') {
-                    this._modal.style.right = '10px';
-                    this._modal.style.left = '10px';
-                    this._middle.style.overflowX = 'auto';
+                if (this._opt.sizing === "full") {
+                    this._modal.style.right = "10px";
+                    this._modal.style.left = "10px";
+                    this._middle.style.overflowX = "auto";
 
-                    this._obi.style.top = '10px';
-                    this._obi.style.bottom = '10px';
-                    this._obi.style.height = '';
-                    this._middle.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + 'px';
-                    this._middle.style.overflowY = 'auto';
+                    this._obi.style.top = "10px";
+                    this._obi.style.bottom = "10px";
+                    this._obi.style.height = "";
+                    this._middle.style.height = baseHeight - this._header.getHeight() - this._footer.getHeight() - 20 + "px";
+                    this._middle.style.overflowY = "auto";
                 }
             };
 
@@ -608,13 +608,13 @@ export class Modal {
 
         const active = document.activeElement && document.activeElement.tagName;
 
-        if (active !== 'BODY' && active !== 'DIV' && active !== 'BUTTON') { return; }
-        if (window.getSelection().toString() !== '') { return; }
+        if (active !== "BODY" && active !== "DIV" && active !== "BUTTON") { return; }
+        if (window.getSelection().toString() !== "") { return; }
 
         let activated = false;
 
         // TAB:9
-        if (e.keyCode === 9 && active !== 'BUTTON') {
+        if (e.keyCode === 9 && active !== "BUTTON") {
             activated = true;
             if (this._closeButton) {
                 this._closeButton.focus();
@@ -624,7 +624,7 @@ export class Modal {
         }
 
         // ENTER:13
-        if (e.keyCode === 13 && this._buttons[0] && active !== 'BUTTON') {
+        if (e.keyCode === 13 && this._buttons[0] && active !== "BUTTON") {
             activated = true;
             this._buttons[0]._button.click();
         }

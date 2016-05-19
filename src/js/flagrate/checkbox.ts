@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLLabelElement, FHTMLInputElement } from './element';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLLabelElement, FHTMLInputElement } from "./element";
 
 /*?
     class flagrate.Checkbox
@@ -86,22 +86,22 @@ let idCounter = 0;
 **/
 function FCheckbox(opt: Option = {}) {
 
-    const id = 'flagrate-checkbox-' + (++idCounter).toString(10);
+    const id = "flagrate-checkbox-" + (++idCounter).toString(10);
 
     const attr = opt.attribute || {};
 
-    attr['id'] = opt.id || null;
-    attr['class'] = opt.className || null;
+    attr["id"] = opt.id || null;
+    attr["class"] = opt.className || null;
 
     //create
-    const checkbox = new Element('label', attr).updateText(opt.label) as Checkbox;
-    checkbox.writeAttribute('for', id);
+    const checkbox = new Element("label", attr).updateText(opt.label) as Checkbox;
+    checkbox.writeAttribute("for", id);
     extendObject(checkbox, this);
 
-    checkbox.addClassName('flagrate flagrate-checkbox');
+    checkbox.addClassName("flagrate flagrate-checkbox");
 
     if (opt.icon) {
-        checkbox.addClassName('flagrate-icon');
+        checkbox.addClassName("flagrate-icon");
         checkbox.setStyle({
             backgroundImage: `url(${opt.icon})`
         });
@@ -111,11 +111,11 @@ function FCheckbox(opt: Option = {}) {
     checkbox.onCheck = opt.onCheck || null;
     checkbox.onUncheck = opt.onUncheck || null;
 
-    checkbox._input = new Element('input', { id: id, type: 'checkbox' });
+    checkbox._input = new Element("input", { id: id, type: "checkbox" });
     checkbox.insert({ top: new Element() });
     checkbox.insert({ top: checkbox._input });
 
-    checkbox._input.addEventListener('change', e => {
+    checkbox._input.addEventListener("change", e => {
 
         e.stopPropagation();
 
@@ -127,20 +127,20 @@ function FCheckbox(opt: Option = {}) {
                 checkbox.onCheck(_e, checkbox);
             }
 
-            checkbox.fire('check', { targetCheckbox: checkbox });
+            checkbox.fire("check", { targetCheckbox: checkbox });
         } else {
             if (checkbox.onUncheck) {
                 checkbox.onUncheck(_e, checkbox);
             }
 
-            checkbox.fire('uncheck', { targetCheckbox: checkbox });
+            checkbox.fire("uncheck", { targetCheckbox: checkbox });
         }
 
         if (checkbox.onChange) {
             checkbox.onChange(_e, checkbox);
         }
 
-        checkbox.fire('change', { targetCheckbox: checkbox });
+        checkbox.fire("change", { targetCheckbox: checkbox });
     });
 
     if (opt.isChecked === true) {
@@ -165,22 +165,22 @@ export function createCheckbox(option?: Option): Checkbox {
 Checkbox.prototype = {
     disable() {
 
-        this.addClassName('flagrate-disabled');
-        this._input.writeAttribute('disabled', true);
+        this.addClassName("flagrate-disabled");
+        this._input.writeAttribute("disabled", true);
 
         return this;
     },
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
-        this._input.writeAttribute('disabled', false);
+        this.removeClassName("flagrate-disabled");
+        this._input.writeAttribute("disabled", false);
 
         return this;
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     isChecked() {

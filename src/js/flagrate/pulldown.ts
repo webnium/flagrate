@@ -13,12 +13,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLDivElement }  from './element';
-import { Button, ButtonEvent }  from './button';
-import { Menu, ItemOption }  from './menu';
+import { extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement }  from "./element";
+import { Button, ButtonEvent }  from "./button";
+import { Menu, ItemOption }  from "./menu";
 
 /*?
     class flagrate.Pulldown
@@ -26,10 +26,10 @@ import { Menu, ItemOption }  from './menu';
     #### Example
 
         var menu = flagrate.createPulldown({
-            label: 'foo',
+            label: "foo",
             items: [
                 {
-                    label: 'bar'
+                    label: "bar"
                 }
             ]
         }).insertTo(x);
@@ -132,7 +132,7 @@ export interface Option {
 **/
 function FPulldown(option: Option = {}) {
 
-    option.label = option.label || '';
+    option.label = option.label || "";
 
     this.items = option.items || [];
 
@@ -141,7 +141,7 @@ function FPulldown(option: Option = {}) {
 
     const attr = option.attribute || {};
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
 
     //create
@@ -154,14 +154,14 @@ function FPulldown(option: Option = {}) {
 
     extendObject(pulldown, this);
 
-    pulldown.addEventListener('select', pulldown.open.bind(pulldown));
+    pulldown.addEventListener("select", pulldown.open.bind(pulldown));
 
-    pulldown.addClassName('flagrate-pulldown');
+    pulldown.addClassName("flagrate-pulldown");
     if (option.className) {
         pulldown.addClassName(option.className);
     }
 
-    new Element('span', { 'class': 'flagrate-pulldown-triangle' }).insertTo(pulldown);
+    new Element("span", { "class": "flagrate-pulldown-triangle" }).insertTo(pulldown);
 
     if (option.style) {
         pulldown.setStyle(option.style);
@@ -195,7 +195,7 @@ Pulldown.prototype = {
 
         pulldown._open = true;
 
-        pulldown._menu = new Element('div', {'class': 'flagrate-pulldown-menu'})
+        pulldown._menu = new Element("div", {"class": "flagrate-pulldown-menu"})
             .insert(
                 new Menu({
                     items: pulldown.items,
@@ -205,7 +205,7 @@ Pulldown.prototype = {
                             pulldown.onSelect(e, pulldown);
                         }
 
-                        pulldown.fire('select', { targetPulldown: pulldown });
+                        pulldown.fire("select", { targetPulldown: pulldown });
                     }
                 })
             );
@@ -217,7 +217,7 @@ Pulldown.prototype = {
 
         // To prevent overflow.
         let menuHeight = pulldown._menu.getHeight();
-        let menuMargin = parseInt(pulldown._menu.getStyle('margin-top').replace('px', ''), 10);
+        let menuMargin = parseInt(pulldown._menu.getStyle("margin-top").replace("px", ""), 10);
         let cummOffsetTop = pulldown.cumulativeOffset().top;
         let upsideSpace = - window.pageYOffset + cummOffsetTop;
         let downsideSpace = window.pageYOffset + window.innerHeight - cummOffsetTop - pulldown.getHeight();
@@ -236,25 +236,25 @@ Pulldown.prototype = {
 
         const close = (e: Event) => {
 
-            document.body.removeEventListener('click', close);
+            document.body.removeEventListener("click", close);
             if (pulldown.parentNode) {
-                pulldown.parentNode.removeEventListener('click', close);
+                pulldown.parentNode.removeEventListener("click", close);
             }
-            pulldown.removeEventListener('select', close);
+            pulldown.removeEventListener("select", close);
 
             pulldown.close(e);
         };
 
         setTimeout(() => {
-            document.body.addEventListener('click', close);
+            document.body.addEventListener("click", close);
             if (pulldown.parentNode) {
-                pulldown.parentNode.addEventListener('click', close);
+                pulldown.parentNode.addEventListener("click", close);
             }
-            pulldown.addEventListener('select', close);
+            pulldown.addEventListener("select", close);
         }, 0);
 
         pulldown.onOpen.call(pulldown, e, pulldown);
-        pulldown.fire('open', { targetPulldown: pulldown });
+        pulldown.fire("open", { targetPulldown: pulldown });
 
         return this;
     },
@@ -269,7 +269,7 @@ Pulldown.prototype = {
 
         pulldown._open = false;
 
-        pulldown._menu.style.opacity = '0';
+        pulldown._menu.style.opacity = "0";
 
         setTimeout(() => {
 
@@ -281,7 +281,7 @@ Pulldown.prototype = {
             delete pulldown._menu;
 
             pulldown.onClose(e, pulldown);
-            pulldown.fire('close', { targetPulldown: pulldown });
+            pulldown.fire("close", { targetPulldown: pulldown });
         }, 250);
 
         return this;

@@ -13,11 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import * as button from './button';
+import { extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import * as button from "./button";
 
 /*?
     class flagrate.Buttons
@@ -26,9 +26,9 @@ import * as button from './button';
 
         var button = flagrate.createButtons({
             items: [
-                { label: 'Left' },
-                { label: 'Middle' },
-                { label: 'Right' }
+                { label: "Left" },
+                { label: "Middle" },
+                { label: "Right" }
             ]
         }).insertTo(x);
 
@@ -120,14 +120,14 @@ function FButtons(option: Option = {}) {
 
     const attr = option.attribute || {};
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
 
     // create a container
-    const container = new Element('div', attr) as Buttons;
+    const container = new Element("div", attr) as Buttons;
     extendObject(container, this);
 
-    container.addClassName('flagrate flagrate-buttons');
+    container.addClassName("flagrate flagrate-buttons");
     if (option.className) {
         container.addClassName(option.className);
     }
@@ -140,7 +140,7 @@ function FButtons(option: Option = {}) {
         container.push(option.items[i]);
     }
 
-    container.addEventListener('click', (e) => {
+    container.addEventListener("click", (e) => {
         e.stopPropagation();
         e.preventDefault();
     });
@@ -171,7 +171,7 @@ Buttons.prototype = {
         const btn = new button.Button(option).insertTo(this);
 
         if (option.key) {
-            btn.dataset['_key'] = option.key;
+            btn.dataset["_key"] = option.key;
         }
 
         return this;
@@ -181,7 +181,7 @@ Buttons.prototype = {
 
         const elements = this.childNodes;
         for (let i = 0, l = elements.length; i < l; i++) {
-            if (elements[i].dataset['_key'] === key) {
+            if (elements[i].dataset["_key"] === key) {
                 return elements[i];
             }
         }

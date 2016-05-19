@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLTextAreaElement } from './element';
+import { extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLTextAreaElement } from "./element";
 
 /*?
     class flagrate.TextArea
@@ -101,17 +101,17 @@ function FTextArea(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
     if (option.placeholder) {
-        attr['placeholder'] = option.placeholder;
+        attr["placeholder"] = option.placeholder;
     }
 
     //create
-    const textArea = new Element('textarea', attr) as TextArea;
+    const textArea = new Element("textarea", attr) as TextArea;
     extendObject(textArea, this);
 
-    textArea.addClassName('flagrate flagrate-textarea');
+    textArea.addClassName("flagrate flagrate-textarea");
     if (option.className) {
         textArea.addClassName(option.className);
     }
@@ -142,22 +142,22 @@ export function createTextArea(option?: Option): TextArea {
 TextArea.prototype = {
     disable() {
 
-        this.addClassName('flagrate-disabled');
-        this.writeAttribute('disabled', true);
+        this.addClassName("flagrate-disabled");
+        this.writeAttribute("disabled", true);
 
         return this;
     },
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
-        this.writeAttribute('disabled', false);
+        this.removeClassName("flagrate-disabled");
+        this.writeAttribute("disabled", false);
 
         return this;
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     setValue(value: string) {
@@ -176,18 +176,18 @@ TextArea.prototype = {
         this._iconIdentifier = identifier;
 
         if (identifier) {
-            return this.addClassName('flagrate-icon').setStyle({
+            return this.addClassName("flagrate-icon").setStyle({
                 backgroundImage: `url(${identifier})`
             });
         } else {
-            return this.removeClassName('flagrate-icon').setStyle({
-                backgroundImage: 'none'
+            return this.removeClassName("flagrate-icon").setStyle({
+                backgroundImage: "none"
             });
         }
     },
 
     getIcon() {
-        return this._iconIdentifier || '';
+        return this._iconIdentifier || "";
     },
 
     isValid: function () {

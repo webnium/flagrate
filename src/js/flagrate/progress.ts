@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
 
 /*?
     class flagrate.Progress
@@ -75,17 +75,17 @@ function FProgress(opt: Option = {}) {
 
     const attr = opt.attribute || {};
 
-    attr['id'] = opt.id || null;
-    attr['class'] = opt.className || null;
+    attr["id"] = opt.id || null;
+    attr["class"] = opt.className || null;
 
     //create
-    const progress = <Progress>new Element('div', attr);
+    const progress = <Progress>new Element("div", attr);
     extendObject(progress, this);
 
     progress._value = opt.value || 0;
     progress._max = opt.max || 100;
 
-    progress.addClassName('flagrate flagrate-progress');
+    progress.addClassName("flagrate flagrate-progress");
 
     progress._bar = new Element().insertTo(progress);
 
@@ -109,13 +109,13 @@ Progress.prototype = {
 
         const progress = this as Progress;
 
-        if (typeof number !== 'number') {
+        if (typeof number !== "number") {
             return progress;
         }
 
         progress._value = Math.max(0, Math.min(progress._max, number));
 
-        progress.fire('change', { targetProgress: progress });
+        progress.fire("change", { targetProgress: progress });
 
         progress._updateProgress();
 
@@ -130,7 +130,7 @@ Progress.prototype = {
 
         const progress = this as Progress;
 
-        if (typeof number !== 'number') {
+        if (typeof number !== "number") {
             return progress;
         }
 

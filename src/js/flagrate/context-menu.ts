@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { Menu, ItemOption } from './menu';
+import { Menu, ItemOption } from "./menu";
 
 /*?
     class flagrate.ContextMenu
@@ -63,10 +63,10 @@ export class ContextMenu {
     setTarget(target: HTMLElement): this {
 
         if (this._target) {
-            this._target.removeEventListener('contextmenu', this._openHandler);
+            this._target.removeEventListener("contextmenu", this._openHandler);
         }
 
-        target.addEventListener('contextmenu', this._openHandler);
+        target.addEventListener("contextmenu", this._openHandler);
 
         this._target = target;
 
@@ -86,7 +86,7 @@ export class ContextMenu {
         this._isShowing = true;
 
         this._menu = new Menu({
-            className: 'flagrate-context-menu',
+            className: "flagrate-context-menu",
             items: this.items,
             onSelect: this._closeHandler
         });
@@ -98,7 +98,7 @@ export class ContextMenu {
             y = e.clientY;
         }
 
-        this._menu.style.opacity = '0';
+        this._menu.style.opacity = "0";
 
         this._menu.insertTo(document.body);
 
@@ -112,20 +112,20 @@ export class ContextMenu {
 
         this._menu.style.top = `${y}px`;
         this._menu.style.left = `${x}px`;
-        this._menu.style.opacity = '1';
+        this._menu.style.opacity = "1";
 
-        document.body.addEventListener('click', this._closeHandler);
-        document.body.addEventListener('mouseup', this._closeHandler);
-        document.body.addEventListener('mousewheel', this._closeHandler);
+        document.body.addEventListener("click", this._closeHandler);
+        document.body.addEventListener("mouseup", this._closeHandler);
+        document.body.addEventListener("mousewheel", this._closeHandler);
 
         return this;
     }
 
     close(): this {
 
-        document.body.removeEventListener('click', this._closeHandler);
-        document.body.removeEventListener('mouseup', this._closeHandler);
-        document.body.removeEventListener('mousewheel', this._closeHandler);
+        document.body.removeEventListener("click", this._closeHandler);
+        document.body.removeEventListener("mouseup", this._closeHandler);
+        document.body.removeEventListener("mousewheel", this._closeHandler);
 
         this._isShowing = false;
 
@@ -154,7 +154,7 @@ export class ContextMenu {
         }
 
         if (this._target) {
-            this._target.removeEventListener('contextmenu', this._openHandler);
+            this._target.removeEventListener("contextmenu", this._openHandler);
         }
     }
 }

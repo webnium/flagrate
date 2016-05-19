@@ -13,13 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import { Option as ButtonOption } from './button';
-import { Pulldown } from './pulldown';
-import { Grid } from './grid';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import { Option as ButtonOption } from "./button";
+import { Pulldown } from "./pulldown";
+import { Grid } from "./grid";
 
 /*?
     class flagrate.Select
@@ -151,19 +151,19 @@ function FSelect(option: Option = {}) {
     if (this.multiple) {
         this.selectedIndexes = option.selectedIndexes || [];
     } else {
-        this.selectedIndex = typeof option.selectedIndex === 'undefined' ? -1 : option.selectedIndex;
+        this.selectedIndex = typeof option.selectedIndex === "undefined" ? -1 : option.selectedIndex;
     }
 
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
 
     this.isPulldown = (!this.listView && !this.multiple);
 
     // create
-    const container = new Element('div', attr) as Select;
+    const container = new Element("div", attr) as Select;
 
     function createOnSelectHandler(i: number) {
         return () => container.select(i);
@@ -175,9 +175,9 @@ function FSelect(option: Option = {}) {
 
     // normalize items
     for (let i = 0, l = this.items.length; i < l; i++) {
-        if (typeof this.items[i] !== 'object') {
+        if (typeof this.items[i] !== "object") {
             this.items[i] = {
-                label: typeof this.items[i] === 'string' ? this.items[i] : this.items[i].toString(10),
+                label: typeof this.items[i] === "string" ? this.items[i] : this.items[i].toString(10),
                 value: this.items[i]
             };
         }
@@ -185,10 +185,10 @@ function FSelect(option: Option = {}) {
 
     if (this.isPulldown) {
         container._pulldown = new Pulldown({
-            label: '-',
+            label: "-",
             items: [
                 {
-                    label: '-',
+                    label: "-",
                     onSelect: createOnSelectHandler(-1)
                 }
             ].concat(
@@ -207,7 +207,7 @@ function FSelect(option: Option = {}) {
             multiSelect: this.multiple,
             cols: [
                 {
-                    key: 'label'
+                    key: "label"
                 }
             ],
             rows: this.items.map((item, i) => {
@@ -226,9 +226,9 @@ function FSelect(option: Option = {}) {
     }
     extendObject(container, this);
 
-    container.addClassName('flagrate flagrate-select');
+    container.addClassName("flagrate flagrate-select");
     if (!container.isPulldown) {
-        container.addClassName('flagrate-select-list-view');
+        container.addClassName("flagrate-select-list-view");
     }
     if (option.className) {
         container.addClassName(option.className);
@@ -284,14 +284,14 @@ Select.prototype = {
 
         if (this.isPulldown) {
             if (index === -1) {
-                this._pulldown.setLabel('-');
+                this._pulldown.setLabel("-");
                 this._pulldown.setIcon(null);
             } else {
                 this._pulldown.setLabel(this.items[index].label);
                 this._pulldown.setIcon(this.items[index].icon);
             }
 
-            this.fire('change');
+            this.fire("change");
         } else {
             if (!this._grid.rows[index].isSelected) {
                 this._grid.select(index);
@@ -317,10 +317,10 @@ Select.prototype = {
         }
 
         if (this.isPulldown) {
-            this._pulldown.setLabel('-');
+            this._pulldown.setLabel("-");
             this._pulldown.setIcon(null);
 
-            this.fire('change');
+            this.fire("change");
         } else {
             if (this.multiple) {
                 if (this._grid.rows[index].isSelected === true) {
@@ -366,7 +366,7 @@ Select.prototype = {
 
     disable() {
 
-        this.addClassName('flagrate-disabled');
+        this.addClassName("flagrate-disabled");
 
         if (this.isPulldown) {
             this._pulldown.disable();
@@ -379,7 +379,7 @@ Select.prototype = {
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
+        this.removeClassName("flagrate-disabled");
 
         if (this.isPulldown) {
             this._pulldown.enable();
@@ -391,7 +391,7 @@ Select.prototype = {
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     getValue() {

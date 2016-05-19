@@ -13,13 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { identity, extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLSpanElement, FHTMLDivElement } from './element';
-import { Button } from './button';
-import { Menu } from './menu';
-import { TextInput } from './text-input';
+import { identity, extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLSpanElement, FHTMLDivElement } from "./element";
+import { Button } from "./button";
+import { Menu } from "./menu";
+import { TextInput } from "./text-input";
 
 /*?
     class flagrate.Tokenizer
@@ -140,30 +140,30 @@ function FTokenizer(option: Option = {}) {
 
     const attr = option.attribute || {};
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
 
     //create
-    const tokenizer = new Element('div', attr) as Tokenizer;
+    const tokenizer = new Element("div", attr) as Tokenizer;
     extendObject(tokenizer, this);
 
-    tokenizer.addClassName('flagrate flagrate-tokenizer');
+    tokenizer.addClassName("flagrate flagrate-tokenizer");
     if (option.className) {
         tokenizer.addClassName(option.className);
     }
 
-    tokenizer._tokens = new Element('span').insertTo(tokenizer);
+    tokenizer._tokens = new Element("span").insertTo(tokenizer);
     tokenizer._input = new TextInput({ placeholder: option.placeholder }).insertTo(tokenizer);
 
     if (tokenizer.values.length !== 0) {
         tokenizer._updateTokens();
     }
 
-    tokenizer.addEventListener('click', tokenizer._onClickHandler.bind(tokenizer));
+    tokenizer.addEventListener("click", tokenizer._onClickHandler.bind(tokenizer));
 
-    tokenizer._input.addEventListener('keydown', tokenizer._onKeydownHandler.bind(tokenizer));
-    tokenizer._input.addEventListener('focus', tokenizer._onFocusHandler.bind(tokenizer));
-    tokenizer._input.addEventListener('blur', tokenizer._onBlurHandler.bind(tokenizer));
+    tokenizer._input.addEventListener("keydown", tokenizer._onKeydownHandler.bind(tokenizer));
+    tokenizer._input.addEventListener("focus", tokenizer._onFocusHandler.bind(tokenizer));
+    tokenizer._input.addEventListener("blur", tokenizer._onBlurHandler.bind(tokenizer));
 
     if (option.style) {
         tokenizer.setStyle(option.style);
@@ -188,7 +188,7 @@ export function createTokenizer(option?: Option): Tokenizer {
 Tokenizer.prototype = {
     disable() {
 
-        this.addClassName('flagrate-disabled');
+        this.addClassName("flagrate-disabled");
         this._input.disable();
 
         return this._updateTokens();
@@ -196,14 +196,14 @@ Tokenizer.prototype = {
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
+        this.removeClassName("flagrate-disabled");
         this._input.enable();
 
         return this._updateTokens();
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     setValues(values) {
@@ -236,12 +236,12 @@ Tokenizer.prototype = {
         this._iconIdentifier = identifier;
 
         if (identifier) {
-            this.addClassName('flagrate-icon').setStyle({
+            this.addClassName("flagrate-icon").setStyle({
                 backgroundImage: `url(${identifier})`
             });
         } else {
-            this.removeClassName('flagrate-icon').setStyle({
-                backgroundImage: 'none'
+            this.removeClassName("flagrate-icon").setStyle({
+                backgroundImage: "none"
             });
         }
 
@@ -249,7 +249,7 @@ Tokenizer.prototype = {
     },
 
     getIcon() {
-        return this._iconIdentifier || '';
+        return this._iconIdentifier || "";
     },
 
     focus() {
@@ -266,7 +266,7 @@ Tokenizer.prototype = {
 
             let label;
 
-            if (typeof value === 'string') {
+            if (typeof value === "string") {
                 label = value;
             } else {
                 label = value.label;
@@ -281,24 +281,24 @@ Tokenizer.prototype = {
         });
 
         const vw = tokenizer.getWidth();
-        const bw = tokenizer.getStyle('border-width') === null ? 2 : parseInt(tokenizer.getStyle('border-width').replace('px', ''), 10);
-        const pl = tokenizer.getStyle('padding-left') === null ? 4 : parseInt(tokenizer.getStyle('padding-left').replace('px', ''), 10);
-        const pr = tokenizer.getStyle('padding-right') === null ? 4 : parseInt(tokenizer.getStyle('padding-right').replace('px', ''), 10);
+        const bw = tokenizer.getStyle("border-width") === null ? 2 : parseInt(tokenizer.getStyle("border-width").replace("px", ""), 10);
+        const pl = tokenizer.getStyle("padding-left") === null ? 4 : parseInt(tokenizer.getStyle("padding-left").replace("px", ""), 10);
+        const pr = tokenizer.getStyle("padding-right") === null ? 4 : parseInt(tokenizer.getStyle("padding-right").replace("px", ""), 10);
         const tw = tokenizer._tokens.getWidth();
-        const tm = tokenizer._tokens.getStyle('margin-left') === null ? 2 : parseInt(tokenizer._tokens.getStyle('margin-left').replace('px', ''), 10);
-        const im = tokenizer._input.getStyle('margin-left') === null ? 2 : parseInt(tokenizer._input.getStyle('margin-left').replace('px', ''), 10);
-        const ip = tokenizer._input.getStyle('padding-left') === null ? 2 : parseInt(tokenizer._input.getStyle('padding-left').replace('px', ''), 10);
+        const tm = tokenizer._tokens.getStyle("margin-left") === null ? 2 : parseInt(tokenizer._tokens.getStyle("margin-left").replace("px", ""), 10);
+        const im = tokenizer._input.getStyle("margin-left") === null ? 2 : parseInt(tokenizer._input.getStyle("margin-left").replace("px", ""), 10);
+        const ip = tokenizer._input.getStyle("padding-left") === null ? 2 : parseInt(tokenizer._input.getStyle("padding-left").replace("px", ""), 10);
         const aw = vw - pl - pr - tw - tm - im - ip - (bw * 2) - 2;
 
         if (aw > 30) {
             tokenizer._input.style.width = `${aw}px`;
         } else if (aw < -5) {
-            tokenizer._input.style.width = '';
+            tokenizer._input.style.width = "";
         } else {
-            tokenizer._input.style.width = '100%';
+            tokenizer._input.style.width = "100%";
         }
 
-        tokenizer.fire('change');
+        tokenizer.fire("change");
 
         return this;
     },
@@ -337,8 +337,8 @@ Tokenizer.prototype = {
         for (let i = 0, l = candidates.length, candidate, menuItem; i < l; i++) {
             candidate = candidates[i];
 
-            if (typeof candidate === 'string') {
-                if (candidate === '') {
+            if (typeof candidate === "string") {
+                if (candidate === "") {
                     continue;
                 }
                 menuItem = { label: candidate };
@@ -396,7 +396,7 @@ Tokenizer.prototype = {
                 e.stopPropagation();
                 e.preventDefault();
 
-                this._input.value = '';
+                this._input.value = "";
                 if (this.max < 0 || this.max > this.values.length) {
                     this.values.push(this._candidates[0]);
                 }
@@ -412,7 +412,7 @@ Tokenizer.prototype = {
             }
         }
 
-        if (this._input.value === '' && this.values.length !== 0) {
+        if (this._input.value === "" && this.values.length !== 0) {
             if (
                 // BS:8
                 (e.keyCode === 8)
@@ -421,7 +421,7 @@ Tokenizer.prototype = {
                 e.preventDefault();
 
                 const value: Value = this.values.pop();
-                this._input.value = typeof value === 'string' ? value : typeof value.value === 'string' ? value.value : '';
+                this._input.value = typeof value === "string" ? value : typeof value.value === "string" ? value.value : "";
 
                 this._updateTokens();
 
@@ -437,10 +437,10 @@ Tokenizer.prototype = {
 
         setTimeout(() => {
 
-            if (this.max > -1 && this.max <= this.values.length && this._input.value !== '') {
+            if (this.max > -1 && this.max <= this.values.length && this._input.value !== "") {
                 e.stopPropagation();
 
-                this._input.value = '';
+                this._input.value = "";
 
                 return;
             }
@@ -454,18 +454,18 @@ Tokenizer.prototype = {
         this._updateTokens();
         this._tokenize();
 
-        this.addClassName('flagrate-tokenizer-focus');
+        this.addClassName("flagrate-tokenizer-focus");
     },
 
     _onBlurHandler() {
 
-        this._input.value = '';
+        this._input.value = "";
         if (this._menu) {
-            this._menu.style.opacity = '0';
+            this._menu.style.opacity = "0";
             setTimeout(() => this._menu.remove(), 500);
         }
 
-        this.removeClassName('flagrate-tokenizer-focus');
+        this.removeClassName("flagrate-tokenizer-focus");
     }
 };
 

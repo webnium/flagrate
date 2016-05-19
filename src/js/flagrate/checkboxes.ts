@@ -13,11 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import { Checkbox, Option as _CheckboxOption, CheckboxEvent } from './checkbox';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import { Checkbox, Option as _CheckboxOption, CheckboxEvent } from "./checkbox";
 
 /*?
     class flagrate.Checkboxes
@@ -93,14 +93,14 @@ function FCheckboxes(opt: Option = {}) {
     const attr = opt.attribute || {};
 
     if (opt.id) {
-        attr['id'] = opt.id;
+        attr["id"] = opt.id;
     }
 
     //create
-    const checkboxes = new Element('div', attr) as Checkboxes;
+    const checkboxes = new Element("div", attr) as Checkboxes;
     extendObject(checkboxes, this);
 
-    checkboxes.addClassName('flagrate flagrate-checkboxes');
+    checkboxes.addClassName("flagrate flagrate-checkboxes");
     if (opt.className) {
         checkboxes.addClassName(opt.className);
     }
@@ -117,16 +117,16 @@ function FCheckboxes(opt: Option = {}) {
 
         const _item: CheckboxesItem = {} as any;
 
-        if (typeof item === 'object') {
+        if (typeof item === "object") {
             extendObject(_item, item);
         } else {
-            _item.label = typeof item === 'string' ? item : item.toString(10);
+            _item.label = typeof item === "string" ? item : item.toString(10);
             _item.value = item;
         }
 
         _item._checkbox = new Checkbox(_item).insertTo(checkboxes);
 
-        _item._checkbox.addEventListener('change', e => {
+        _item._checkbox.addEventListener("change", e => {
             if (checkboxes.onChange) {
                 checkboxes.onChange(e, checkboxes);
             }
@@ -240,7 +240,7 @@ Checkboxes.prototype = {
             this._items[i]._checkbox.enable();
         }
 
-        this.removeClassName('flagrate-disabled');
+        this.removeClassName("flagrate-disabled");
 
         return this;
     },
@@ -251,12 +251,12 @@ Checkboxes.prototype = {
             this._items[i]._checkbox.disable();
         }
 
-        this.addClassName('flagrate-disabled');
+        this.addClassName("flagrate-disabled");
 
         return this;
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     }
 };

@@ -13,18 +13,18 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
 import {
     Element, Attribute, Property, InsertPosition,
     FHTMLElement, FHTMLDivElement, FHTMLTableDataCellElement,
     FHTMLTableSectionElement, FHTMLTableRowElement, FHTMLTableHeaderCellElement
-} from './element';
-import { Button } from './button';
-import { ItemOption as MenuItemOption } from './menu';
-import { Checkbox, CheckboxEvent } from './checkbox';
-import { Toolbar } from './toolbar';
-import { ContextMenu } from './context-menu';
+} from "./element";
+import { Button } from "./button";
+import { ItemOption as MenuItemOption } from "./menu";
+import { Checkbox, CheckboxEvent } from "./checkbox";
+import { Toolbar } from "./toolbar";
+import { ContextMenu } from "./context-menu";
 
 /*?
     class flagrate.Grid
@@ -252,28 +252,28 @@ export class Grid {
     private _sortedByKey: string = null;
     private _sortedByAsc: boolean = null;
 
-    element = new Element('div', { 'class': 'flagrate flagrate-grid' });
+    element = new Element("div", { "class": "flagrate flagrate-grid" });
     private _checkbox: Checkbox;
     private _pager: Toolbar;
-    private _head = new Element('div', { 'class': 'flagrate-grid-head' }).insertTo(this.element);
-    private _thead = new Element('thead').insertTo(new Element('table').insertTo(this._head));
-    private _tr = new Element('tr').insertTo(this._thead);
-    private _body = new Element('div', { 'class': 'flagrate-grid-body' }).insertTo(this.element);
-    private _tbody = new Element('tbody').insertTo(new Element('table').insertTo(this._body));
-    private _style = new Element('style').insertTo(this.element);
+    private _head = new Element("div", { "class": "flagrate-grid-head" }).insertTo(this.element);
+    private _thead = new Element("thead").insertTo(new Element("table").insertTo(this._head));
+    private _tr = new Element("tr").insertTo(this._thead);
+    private _body = new Element("div", { "class": "flagrate-grid-body" }).insertTo(this.element);
+    private _tbody = new Element("tbody").insertTo(new Element("table").insertTo(this._body));
+    private _style = new Element("style").insertTo(this.element);
 
     static idCounter = 0;
-    private _id = 'flagrate-grid-' + (++Grid.idCounter).toString(10);
+    private _id = "flagrate-grid-" + (++Grid.idCounter).toString(10);
 
     private _renderTimer: number;
 
     constructor(private _opt: Option = {}) {
 
         if (_opt.id) {
-            this.element.writeAttribute('id', _opt.id);
+            this.element.writeAttribute("id", _opt.id);
         }
         if (_opt.className) {
-            this.element.writeAttribute('class', _opt.className);
+            this.element.writeAttribute("class", _opt.className);
         }
         if (_opt.attribute) {
             this.element.writeAttribute(_opt.attribute);
@@ -305,7 +305,7 @@ export class Grid {
         if (_opt.headless === true) {
             _opt.disableSort = true;
             _opt.disableResize = true;
-            this.element.addClassName('flagrate-grid-headless');
+            this.element.addClassName("flagrate-grid-headless");
         }
 
         if (_opt.multiSelect === undefined) {
@@ -339,28 +339,28 @@ export class Grid {
     }
 
     get headless(): boolean {
-        return this.element.hasClassName('flagrate-grid-headless');
+        return this.element.hasClassName("flagrate-grid-headless");
     }
     set headless(enable: boolean) {
 
         if (enable) {
-            this.element.addClassName('flagrate-grid-headless');
+            this.element.addClassName("flagrate-grid-headless");
         } else {
-            this.element.removeClassName('flagrate-grid-headless');
+            this.element.removeClassName("flagrate-grid-headless");
         }
     }
 
     get fill(): boolean {
-        return this.element.hasClassName('flagrate-grid-fill');
+        return this.element.hasClassName("flagrate-grid-fill");
     }
     set fill(enable: boolean) {
 
         if (enable) {
-            this.element.addClassName('flagrate-grid-fill');
+            this.element.addClassName("flagrate-grid-fill");
 
             this._body.onscroll = this._createBodyOnScrollHandler();
         } else {
-            this.element.removeClassName('flagrate-grid-fill');
+            this.element.removeClassName("flagrate-grid-fill");
 
             this.element.onscroll = this._createOnScrollHandler();
         }
@@ -427,20 +427,20 @@ export class Grid {
         for (let i = 0, l = rows.length; i < l; i++) {
             let row = rows[i];
 
-            if (typeof row === 'number') {
+            if (typeof row === "number") {
                 row = this._rows[<number>row];
             }
 
             row.isSelected = true;
 
-            if (row._tr && row._tr.hasClassName('flagrate-grid-row-selected') === true) {
+            if (row._tr && row._tr.hasClassName("flagrate-grid-row-selected") === true) {
                 continue;
             }
 
             this._selectedRows.push(row);
 
             if (row._tr) {
-                row._tr.addClassName('flagrate-grid-row-selected');
+                row._tr.addClassName("flagrate-grid-row-selected");
             }
 
             if (row._checkbox) {
@@ -464,7 +464,7 @@ export class Grid {
             this._checkbox.check();
         }
 
-        this.element.fire('change', { targetGrid: this });
+        this.element.fire("change", { targetGrid: this });
 
         return this;
     }
@@ -489,20 +489,20 @@ export class Grid {
         for (let i = 0, l = rows.length; i < l; i++) {
             let row = rows[i];
 
-            if (typeof row === 'number') {
+            if (typeof row === "number") {
                 row = this._rows[<number>row];
             }
 
             row.isSelected = false;
 
-            if (row._tr && row._tr.hasClassName('flagrate-grid-row-selected') === false) {
+            if (row._tr && row._tr.hasClassName("flagrate-grid-row-selected") === false) {
                 continue;
             }
 
             this._selectedRows.splice(this._selectedRows.indexOf(row), 1);
 
             if (row._tr) {
-                row._tr.removeClassName('flagrate-grid-row-selected');
+                row._tr.removeClassName("flagrate-grid-row-selected");
             }
 
             if (row._checkbox) {
@@ -526,7 +526,7 @@ export class Grid {
             this._checkbox.uncheck();
         }
 
-        this.element.fire('change', { targetGrid: this });
+        this.element.fire("change", { targetGrid: this });
 
         return this;
     }
@@ -559,7 +559,7 @@ export class Grid {
             const ret = {};
 
             for (const key in row.cell) {
-                if (typeof row.cell[key] === 'object' && (<Cell>row.cell[key]).value !== undefined) {
+                if (typeof row.cell[key] === "object" && (<Cell>row.cell[key]).value !== undefined) {
                     ret[key] = (<Cell>row.cell[key]).value;
                 }
             }
@@ -583,12 +583,12 @@ export class Grid {
             const cellA: Cell = a.cell[key];
             const cellB: Cell = b.cell[key];
 
-            if (typeof cellA === 'object') {
+            if (typeof cellA === "object") {
                 A = (cellA.sortAlt !== undefined) ? cellA.sortAlt : cellA.text || cellA.html || (cellA.element && cellA.element.innerHTML) || (cellA._div && cellA._div.innerHTML) || 0;
             } else {
                 A = cellA || 0;
             }
-            if (typeof cellB === 'object') {
+            if (typeof cellB === "object") {
                 B = (cellB.sortAlt !== undefined) ? cellB.sortAlt : cellB.text || cellB.html || (cellB.element && cellB.element.innerHTML) || (cellB._div && cellB._div.innerHTML) || 0;
             } else {
                 B = cellB || 0;
@@ -604,11 +604,11 @@ export class Grid {
         for (let i = 0, l = this._cols.length; i < l; i++) {
             if (this._cols[i].key === key) {
                 if (isAsc) {
-                    this._cols[i]._th.addClassName('flagrate-grid-col-sorted-asc');
-                    this._cols[i]._th.removeClassName('flagrate-grid-col-sorted-desc');
+                    this._cols[i]._th.addClassName("flagrate-grid-col-sorted-asc");
+                    this._cols[i]._th.removeClassName("flagrate-grid-col-sorted-desc");
                 } else {
-                    this._cols[i]._th.addClassName('flagrate-grid-col-sorted-desc');
-                    this._cols[i]._th.removeClassName('flagrate-grid-col-sorted-asc');
+                    this._cols[i]._th.addClassName("flagrate-grid-col-sorted-desc");
+                    this._cols[i]._th.removeClassName("flagrate-grid-col-sorted-asc");
                 }
 
                 this._cols[i].isSorted = true;
@@ -618,7 +618,7 @@ export class Grid {
                 this._sortedByAsc = isAsc;
             } else {
                 if (this._cols[i].isSorted) {
-                    this._cols[i]._th.removeClassName('flagrate-grid-col-sorted-asc').removeClassName('flagrate-grid-col-sorted-desc');
+                    this._cols[i]._th.removeClassName("flagrate-grid-col-sorted-asc").removeClassName("flagrate-grid-col-sorted-desc");
                 }
 
                 this._cols[i].isSorted = false;
@@ -707,7 +707,7 @@ export class Grid {
     splice(index: number, howMany?: number, row?: Row): Row[];
     splice(index, c, r) {
 
-        c = typeof c === 'undefined' ? this._rows.length - index : c;
+        c = typeof c === "undefined" ? this._rows.length - index : c;
 
         const removes = this._rows.splice(index, c);
 
@@ -758,20 +758,20 @@ export class Grid {
 
     disable() {
 
-        this.element.addClassName('flagrate-disabled');
+        this.element.addClassName("flagrate-disabled");
 
         return this;
     }
 
     enable() {
 
-        this.element.removeClassName('flagrate-disabled');
+        this.element.removeClassName("flagrate-disabled");
 
         return this;
     }
 
     isEnabled() {
-        return !this.element.hasClassName('flagrate-disabled');
+        return !this.element.hasClassName("flagrate-disabled");
     }
 
     private _create(): this {
@@ -780,20 +780,20 @@ export class Grid {
             this._checkbox = new Checkbox({
                 onCheck: this.selectAll.bind(this),
                 onUncheck: this.deselectAll.bind(this)
-            }).insertTo(new Element('th', { 'class': 'flagrate-grid-cell-checkbox' }).insertTo(this._tr));
+            }).insertTo(new Element("th", { "class": "flagrate-grid-cell-checkbox" }).insertTo(this._tr));
         }
 
         for (let i = 0, l = this._cols.length; i < l; i++) {
             let col = this._cols[i];
 
             col._id = `${this._id}-col-${col.key}`;
-            col._th = new Element('th').insertTo(this._tr);
+            col._th = new Element("th").insertTo(this._tr);
 
             if (col.id) {
-                col._th.writeAttribute('id', col.id);
+                col._th.writeAttribute("id", col.id);
             }
             if (col.className) {
-                col._th.writeAttribute('class', col.className);
+                col._th.writeAttribute("class", col.className);
             }
             if (col.attribute) {
                 col._th.writeAttribute(col.attribute);
@@ -804,7 +804,7 @@ export class Grid {
 
             col._th.addClassName(col._id);
 
-            const width = !!col.width ? (col.width.toString(10) + 'px') : 'auto';
+            const width = !!col.width ? (col.width.toString(10) + "px") : "auto";
             this._style.insertText(`.${col._id}{width:${width}}`);
 
             if (col.align) {
@@ -818,44 +818,44 @@ export class Grid {
             }
 
             if (col.icon) {
-                col._div.addClassName('flagrate-icon');
+                col._div.addClassName("flagrate-icon");
                 col._div.setStyle({
-                    backgroundImage: 'url(' + col.icon + ')'
+                    backgroundImage: "url(" + col.icon + ")"
                 });
             }
 
             if (this._opt.disableResize === false && !col.disableResize) {
-                col._resizeHandle = new Element('div', {
-                    'class': 'flagrate-grid-col-resize-handle'
+                col._resizeHandle = new Element("div", {
+                    "class": "flagrate-grid-col-resize-handle"
                 }).insertTo(this.element);
 
                 col._resizeHandle.onmousedown = this._createResizeHandleOnMousedownHandler(col);
             }
 
             if (this._opt.disableSort === false && !col.disableSort) {
-                col._th.addClassName('flagrate-grid-col-sortable');
+                col._th.addClassName("flagrate-grid-col-sortable");
                 col._th.onclick = this._createColOnClickHandler(col);
             }
         }
 
-        new Element('th', { 'class': this._id + '-col-last' }).insertTo(this._tr);
-        this._style.insertText('.' + this._id + '-col-last:after{right:0}');
+        new Element("th", { "class": this._id + "-col-last" }).insertTo(this._tr);
+        this._style.insertText("." + this._id + "-col-last:after{right:0}");
 
         // pagination (testing)
         if (this._opt.pagination) {
-            this.element.addClassName('flagrate-grid-pagination');
+            this.element.addClassName("flagrate-grid-pagination");
             // pager container
             this._pager = new Toolbar({
-                className: 'flagrate-grid-pager',
+                className: "flagrate-grid-pager",
                 items: [
                     {
-                        key: 'rn',
-                        element: new Element('span').insertText('-')
+                        key: "rn",
+                        element: new Element("span").insertText("-")
                     },
                     {
-                        key: 'first',
+                        key: "first",
                         element: new Button({
-                            className: 'flagrate-grid-pager-first',
+                            className: "flagrate-grid-pager-first",
                             onSelect: () => {
                                 this._pagePosition = 0;
                                 this._requestRender();
@@ -863,9 +863,9 @@ export class Grid {
                         })
                     },
                     {
-                        key: 'prev',
+                        key: "prev",
                         element: new Button({
-                            className: 'flagrate-grid-pager-prev',
+                            className: "flagrate-grid-pager-prev",
                             onSelect: () => {
                                 --this._pagePosition;
                                 this._requestRender();
@@ -873,13 +873,13 @@ export class Grid {
                         })
                     },
                     {
-                        key: 'num',
-                        element: new Element('span', { 'class': 'flagrate-grid-pager-num' }).insertText('-')
+                        key: "num",
+                        element: new Element("span", { "class": "flagrate-grid-pager-num" }).insertText("-")
                     },
                     {
-                        key: 'next',
+                        key: "next",
                         element: new Button({
-                            className: 'flagrate-grid-pager-next',
+                            className: "flagrate-grid-pager-next",
                             onSelect: () => {
                                 ++this._pagePosition;
                                 this._requestRender();
@@ -887,9 +887,9 @@ export class Grid {
                         })
                     },
                     {
-                        key: 'last',
+                        key: "last",
                         element: new Button({
-                            className: 'flagrate-grid-pager-last',
+                            className: "flagrate-grid-pager-last",
                             onSelect: () => {
                                 this._pagePosition = Math.floor(this._rows.length / this._opt.numberOfRowsPerPage);
                                 this._requestRender();
@@ -901,7 +901,7 @@ export class Grid {
         }
 
         if (this._opt.fill) {
-            this.element.addClassName('flagrate-grid-fill');
+            this.element.addClassName("flagrate-grid-fill");
 
             this._body.onscroll = this._createBodyOnScrollHandler();
         } else {
@@ -962,15 +962,15 @@ export class Grid {
             row = this._rows[i];
 
             if (!row._tr) {
-                row._tr = new Element('tr');
+                row._tr = new Element("tr");
             }
             row._tr.insertTo(this._tbody);
 
             if (row.id) {
-                row._tr.writeAttribute('id', row.id);
+                row._tr.writeAttribute("id", row.id);
             }
             if (row.className) {
-                row._tr.writeAttribute('class', row.className);
+                row._tr.writeAttribute("class", row.className);
             }
             if (row.attribute) {
                 row._tr.writeAttribute(row.attribute);
@@ -981,10 +981,10 @@ export class Grid {
 
             if (row.onClick || this.onClick || this._opt.disableSelect === false) {
                 if (this._opt.disableSelect === false) {
-                    row._tr.addClassName('flagrate-grid-row-selectable');
+                    row._tr.addClassName("flagrate-grid-row-selectable");
                 }
                 if (row.onClick || this.onClick) {
-                    row._tr.addClassName('flagrate-grid-row-clickable');
+                    row._tr.addClassName("flagrate-grid-row-clickable");
                 }
 
                 row._tr.onclick = this._createRowOnClickHandler(row);
@@ -997,7 +997,7 @@ export class Grid {
             if (isCheckable && !row._checkbox) {
                 row._checkbox = new Checkbox({
                     onChange: this._createRowOnCheckHandler(row)
-                }).insertTo(new Element('td', { 'class': 'flagrate-grid-cell-checkbox' }).insertTo(row._tr));
+                }).insertTo(new Element("td", { "class": "flagrate-grid-cell-checkbox" }).insertTo(row._tr));
             }
 
             if (row.isSelected === true) {
@@ -1008,20 +1008,20 @@ export class Grid {
                 col = this._cols[j];
                 cell = (row.cell[col.key] === undefined) ? (row.cell[col.key] = {}) : row.cell[col.key];
 
-                if (typeof cell === 'string' || typeof cell === 'number') {
+                if (typeof cell === "string" || typeof cell === "number") {
                     cell = row.cell[col.key] = { text: <string | number>cell };
                 }
 
                 if (!cell._td) {
-                    cell._td = new Element('td');
+                    cell._td = new Element("td");
                 }
                 cell._td.insertTo(row._tr);
 
                 if (cell.id) {
-                    cell._td.writeAttribute('id', cell.id);
+                    cell._td.writeAttribute("id", cell.id);
                 }
                 if (cell.className) {
-                    cell._td.writeAttribute('class', cell.className);
+                    cell._td.writeAttribute("class", cell.className);
                 }
                 if (cell.attribute) {
                     cell._td.writeAttribute(cell.attribute);
@@ -1052,14 +1052,14 @@ export class Grid {
                 }
 
                 if (cell.icon) {
-                    cell._div.addClassName('flagrate-icon');
+                    cell._div.addClassName("flagrate-icon");
                     cell._div.setStyle({
-                        backgroundImage: 'url(' + cell.icon + ')'
+                        backgroundImage: "url(" + cell.icon + ")"
                     });
                 }
 
                 if (cell.onClick) {
-                    cell._td.addClassName('flagrate-grid-cell-clickable');
+                    cell._td.addClassName("flagrate-grid-cell-clickable");
 
                     cell._td.onclick = this._createCellOnClickHandler(cell);
                 }
@@ -1075,13 +1075,13 @@ export class Grid {
             }
 
             if (!row._last) {
-                row._last = new Element('td', { 'class': this._id + '-col-last' });
+                row._last = new Element("td", { "class": this._id + "-col-last" });
             }
             row._last.insertTo(row._tr);
 
             // menu
             if (row.menuItems) {
-                row._last.addClassName('flagrate-grid-cell-menu');
+                row._last.addClassName("flagrate-grid-cell-menu");
 
                 //row
                 if (row._menu) {
@@ -1105,13 +1105,13 @@ export class Grid {
         }//<--for
 
         if (this._opt.pagination) {
-            this._pager.getElementByKey('rn').updateText((from + 1) + ' - ' + (from + pl) + ' / ' + rl);
-            this._pager.getElementByKey('num').updateText((this._pagePosition + 1) + ' / ' + pages);
+            this._pager.getElementByKey("rn").updateText((from + 1) + " - " + (from + pl) + " / " + rl);
+            this._pager.getElementByKey("num").updateText((this._pagePosition + 1) + " / " + pages);
         }
 
         if (this._opt.disableResize === false) {
             if (this._opt.fill) {
-                this._head.style.right = (this._body.offsetWidth - this._body.clientWidth) + 'px';
+                this._head.style.right = (this._body.offsetWidth - this._body.clientWidth) + "px";
                 this._head.scrollLeft = this._body.scrollLeft;
             }
 
@@ -1135,7 +1135,7 @@ export class Grid {
             col = this._cols[i];
 
             if (col._resizeHandle) {
-                col._resizeHandle.style.left = (col._th.offsetLeft + col._th.getWidth() + adj) + 'px';
+                col._resizeHandle.style.left = (col._th.offsetLeft + col._th.getWidth() + adj) + "px";
             }
         }
 
@@ -1157,13 +1157,13 @@ export class Grid {
 
             this._style.updateText(
                 this._style.innerHTML.replace(
-                    new RegExp('(' + col._id + '{width:)([^}]*)}'),
-                    '$1' + col.width + 'px}'
+                    new RegExp("(" + col._id + "{width:)([^}]*)}"),
+                    "$1" + col.width + "px}"
                 )
             );
         }
 
-        this.element.addClassName('flagrate-grid-fixed');
+        this.element.addClassName("flagrate-grid-fixed");
 
         setTimeout(() => {
 
@@ -1171,8 +1171,8 @@ export class Grid {
 
             this._style.updateText(
                 this._style.innerHTML.replace(
-                    new RegExp('(' + this._id + '-col-last:after{right:)([^}]*)}'),
-                    '$1' + (base.scrollWidth - base.clientWidth - base.scrollLeft) + 'px!important}'
+                    new RegExp("(" + this._id + "-col-last:after{right:)([^}]*)}"),
+                    "$1" + (base.scrollWidth - base.clientWidth - base.scrollLeft) + "px!important}"
                 )
             );
         }, 0);
@@ -1194,7 +1194,7 @@ export class Grid {
 
         return (e: Event) => {
 
-            this._head.style.right = (this._body.offsetWidth - this._body.clientWidth) + 'px';
+            this._head.style.right = (this._body.offsetWidth - this._body.clientWidth) + "px";
             this._head.scrollLeft = this._body.scrollLeft;
 
             if (this._opt.disableResize === false) {
@@ -1351,15 +1351,15 @@ export class Grid {
                 const delta = e.clientX - current;
                 current += delta;
 
-                col._resizeHandle.style.left = (parseInt(col._resizeHandle.style.left.replace('px', ''), 10) + delta) + 'px';
+                col._resizeHandle.style.left = (parseInt(col._resizeHandle.style.left.replace("px", ""), 10) + delta) + "px";
             };
 
             const onUp = (e: MouseEvent) => {
 
                 e.preventDefault();
 
-                document.removeEventListener('mousemove', onMove, true);
-                document.removeEventListener('mouseup', onUp, true);
+                document.removeEventListener("mousemove", onMove, true);
+                document.removeEventListener("mouseup", onUp, true);
 
                 const minWidth = col.minWidth === undefined ? this._opt.colMinWidth : col.minWidth;
                 const delta = e.clientX - origin;
@@ -1374,8 +1374,8 @@ export class Grid {
                 this._updatePositionOfResizeHandles();
             };
 
-            document.addEventListener('mousemove', onMove, true);
-            document.addEventListener('mouseup', onUp, true);
+            document.addEventListener("mousemove", onMove, true);
+            document.addEventListener("mouseup", onUp, true);
         };
     }
 }

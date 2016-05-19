@@ -13,21 +13,21 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { jsonPointer } from './util';
+import { jsonPointer } from "./util";
 import {
     Element, Attribute, Property, InsertPosition, FHTMLElement, FHTMLDivElement,
     FHTMLInputElement, FHTMLFormElement, FHTMLLabelElement, FHTMLUListElement
-} from './element';
-import { TextInput } from './text-input';
-import { TextArea } from './text-area';
-import { ComboBox } from './combo-box';
-import { Checkbox } from './checkbox';
-import { Checkboxes } from './checkboxes';
-import { Switch } from './switch';
-import { Radios } from './radios';
-import { Select } from './select';
+} from "./element";
+import { TextInput } from "./text-input";
+import { TextArea } from "./text-area";
+import { ComboBox } from "./combo-box";
+import { Checkbox } from "./checkbox";
+import { Checkboxes } from "./checkboxes";
+import { Switch } from "./switch";
+import { Radios } from "./radios";
+import { Select } from "./select";
 
 /*?
     class flagrate.Form
@@ -239,15 +239,15 @@ export type ValidatorFunction = (input: any, done: (result: boolean | "success" 
             // using regex:
             {
                 regexp: /^[a-z0-9]+(-[a-z0-9]+)*(\.([a-z0-9]+(-[a-z0-9]+)*))*$/i,
-                error: 'Please enter a valid hostname string.'
+                error: "Please enter a valid hostname string."
             },
             // using async function:
             function (input, done) {
                 someAsyncFunction(input, function (err, result) {
                     if (err) {
-                        done('error', 'This hostname is already in use. (' + err + ')');
+                        done("error", "This hostname is already in use. (" + err + ")");
                     } else {
-                        done('success');
+                        done("success");
                     }
                 });
             },
@@ -255,9 +255,9 @@ export type ValidatorFunction = (input: any, done: (result: boolean | "success" 
             function (input, done) {
                 var err = someSyncFunction(input);
                 if (err) {
-                    done('error', 'This hostname is prohibited. (' + err + ')');
+                    done("error", "This hostname is prohibited. (" + err + ")");
                 } else {
-                    done('success');
+                    done("success");
                 }
             }
         ]
@@ -271,10 +271,10 @@ export class Form {
     private _nolabel: boolean = false;
     private _vertical: boolean = false;
 
-    element = new Element('form', { 'class': 'flagrate flagrate-form' });
+    element = new Element("form", { "class": "flagrate flagrate-form" });
 
     static idCounter = 0;
-    private _id = 'flagrate-form-' + (++Form.idCounter).toString(10);
+    private _id = "flagrate-form-" + (++Form.idCounter).toString(10);
 
     private _renderTimer: number;
 
@@ -314,7 +314,7 @@ export class Form {
         for (let i = 0, l = this._fields.length; i < l; i++) {
             let field = this._fields[i];
 
-            if ((!field.key && typeof field.pointer !== 'string') || field._dependsIsOk !== true) {
+            if ((!field.key && typeof field.pointer !== "string") || field._dependsIsOk !== true) {
                 continue;
             }
 
@@ -323,7 +323,7 @@ export class Form {
                 continue;
             }
 
-            if (typeof field.pointer === 'string') {
+            if (typeof field.pointer === "string") {
                 jsonPointer.set(result, field.pointer, field.getVal());
             } else if (field.key) {
                 result[field.key] = field.getVal();
@@ -338,9 +338,9 @@ export class Form {
 
             form.validate(function(success) {
                 if (success) {
-                    console.log('form is valid.');
+                    console.log("form is valid.");
                 } else {
-                    console.log('form is invalid.');
+                    console.log("form is invalid.");
                 }
             });
     **/
@@ -454,7 +454,7 @@ export class Form {
     splice(index: number, howMany?: number, field?: Field): Field[];
     splice(index, c, f) {
 
-        c = typeof c === 'undefined' ? this._fields.length - index : c;
+        c = typeof c === "undefined" ? this._fields.length - index : c;
 
         const removes = this._fields.splice(index, c);
 
@@ -499,7 +499,7 @@ export class Form {
         }
 
         for (let i = 0, l = f.length; i < l; i++) {
-            const index = (typeof f[i] === 'number') ? f[i] : this.indexOf(f[i]);
+            const index = (typeof f[i] === "number") ? f[i] : this.indexOf(f[i]);
             if (index !== -1) {
                 removes.push(this.splice(index, 1));
             }
@@ -512,7 +512,7 @@ export class Form {
     indexOf(keyOfField: string): number;
     indexOf(f) {
 
-        if (typeof f === 'string') {
+        if (typeof f === "string") {
             let index = -1;
 
             for (let i = 0, l = this._fields.length; i < l; i++) {
@@ -531,10 +531,10 @@ export class Form {
     private _create(): this {
 
         if (this._opt.id) {
-            this.element.writeAttribute('id', this._opt.id);
+            this.element.writeAttribute("id", this._opt.id);
         }
         if (this._opt.className) {
-            this.element.writeAttribute('class', this._opt.className);
+            this.element.writeAttribute("class", this._opt.className);
         }
         if (this._opt.attribute) {
             this.element.writeAttribute(this._opt.attribute);
@@ -544,13 +544,13 @@ export class Form {
         }
 
         if (this._opt.nolabel === true) {
-            this.element.addClassName('flagrate-form-nolabel');
+            this.element.addClassName("flagrate-form-nolabel");
         }
         if (this._opt.vertical === true) {
-            this.element.addClassName('flagrate-form-vertical');
+            this.element.addClassName("flagrate-form-vertical");
         }
 
-        this.element.addEventListener('submit', e => e.preventDefault());
+        this.element.addEventListener("submit", e => e.preventDefault());
 
         return this;
     }
@@ -590,18 +590,18 @@ export class Form {
 
                     const isMustReselected = (
                         (
-                            active.tagName === 'INPUT' && (
-                                active.type === 'text' ||
-                                active.type === 'password' ||
-                                active.type === 'number'
+                            active.tagName === "INPUT" && (
+                                active.type === "text" ||
+                                active.type === "password" ||
+                                active.type === "number"
                             )
                         ) ||
-                        active.tagName === 'TEXTAREA'
+                        active.tagName === "TEXTAREA"
                     );
                     if (isMustReselected) {
-                        if (typeof active.selectionStart === 'number') {
+                        if (typeof active.selectionStart === "number") {
                             active.selectionStart = active.selectionEnd = active.value.length;
-                        } else if (typeof active.createTextRange !== 'undefined') {
+                        } else if (typeof active.createTextRange !== "undefined") {
                             const range = active.createTextRange();
                             range.collapse(false);
                             range.select();
@@ -623,11 +623,11 @@ export class Form {
         field._refs = [];
 
         // DEPRECATED
-        if (typeof field['point'] !== 'undefined') {
-            field.pointer = field['point'];
-            delete field['point'];
+        if (typeof field["point"] !== "undefined") {
+            field.pointer = field["point"];
+            delete field["point"];
         }
-        if (!field.key && typeof field.pointer !== 'string') {
+        if (!field.key && typeof field.pointer !== "string") {
             return this;
         }
 
@@ -648,16 +648,16 @@ export class Form {
                             s = true;
                             break;
                         }
-                        if (typeof fi.depends[j][k].point === 'string') {
+                        if (typeof fi.depends[j][k].point === "string") {
                             fi.depends[j][k].pointer = fi.depends[j][k].point;
                             delete fi.depends[j][k].point;
                         }
-                        if (typeof fi.depends[j][k].pointer === 'string') {
+                        if (typeof fi.depends[j][k].pointer === "string") {
                             if (fi.depends[j][k].pointer === field.pointer) {
                                 s = true;
                                 break;
                             }
-                            if (fi.depends[j][k].pointer === '/' + field.key) {
+                            if (fi.depends[j][k].pointer === "/" + field.key) {
                                 s = true;
                                 break;
                             }
@@ -673,16 +673,16 @@ export class Form {
                         field._refs.push(fi);
                         break;
                     }
-                    if (typeof fi.depends[j].point === 'string') {
+                    if (typeof fi.depends[j].point === "string") {
                         fi.depends[j].pointer = fi.depends[j].point;
                         delete fi.depends[j].point;
                     }
-                    if (typeof fi.depends[j].pointer === 'string') {
+                    if (typeof fi.depends[j].pointer === "string") {
                         if (fi.depends[j].pointer === field.pointer) {
                             field._refs.push(fi);
                             break;
                         }
-                        if (fi.depends[j].pointer === '/' + field.key) {
+                        if (fi.depends[j].pointer === "/" + field.key) {
                             field._refs.push(fi);
                             break;
                         }
@@ -708,7 +708,7 @@ export class Form {
                     v = f.getVal();
                 }
             }
-        } else if (typeof d.pointer === 'string') {
+        } else if (typeof d.pointer === "string") {
             try {
                 v = jsonPointer.get(this.getResult(), d.pointer);
             } catch (e) {
@@ -718,18 +718,18 @@ export class Form {
             return true;
         }
 
-        if (typeof d.tester === 'function') {
+        if (typeof d.tester === "function") {
             return !!d.tester(v, d);
         }
 
         if (d.op) {
-            if (d.op === '===' && d.val === v) { return true; }
-            if (d.op === '!==' && d.val !== v) { return true; }
-            if (d.op === '>=' && d.val >= v) { return true; }
-            if (d.op === '<=' && d.val <= v) { return true; }
-            if (d.op === '>' && d.val > v) { return true; }
-            if (d.op === '<' && d.val < v) { return true; }
-            if (d.op === 'in' && typeof v[d.val] !== 'undefined') { return true; }
+            if (d.op === "===" && d.val === v) { return true; }
+            if (d.op === "!==" && d.val !== v) { return true; }
+            if (d.op === ">=" && d.val >= v) { return true; }
+            if (d.op === "<=" && d.val <= v) { return true; }
+            if (d.op === ">" && d.val > v) { return true; }
+            if (d.op === "<" && d.val < v) { return true; }
+            if (d.op === "in" && typeof v[d.val] !== "undefined") { return true; }
         } else {
             if (d.val === v) {
                 return true;
@@ -785,14 +785,14 @@ export class Form {
         field._dependsIsOk = (!field.depends || field.depends.length === 0);
 
         // field container
-        field.container = new Element('div');
+        field.container = new Element("div");
 
         // attributes to field container
         if (field.id) {
-            field.container.writeAttribute('id', field.id);
+            field.container.writeAttribute("id", field.id);
         }
         if (field.className) {
-            field.container.writeAttribute('class', field.className);
+            field.container.writeAttribute("class", field.className);
         }
         if (field.attribute) {
             field.container.writeAttribute(field.attribute);
@@ -803,15 +803,15 @@ export class Form {
 
         // create label
         if (this._nolabel === false) {
-            field.labelElement = new Element('label').insertText(field.label || '');
+            field.labelElement = new Element("label").insertText(field.label || "");
 
-            new Element('div', { 'class': 'flagrate-form-field-label' })
+            new Element("div", { "class": "flagrate-form-field-label" })
                 .insert(field.labelElement)
                 .insertTo(field.container);
 
             // icon to label
             if (field.icon) {
-                field.labelElement.addClassName('flagrate-icon');
+                field.labelElement.addClassName("flagrate-icon");
                 field.labelElement.setStyle({
                     backgroundImage: `url(${field.icon})`
                 });
@@ -819,11 +819,11 @@ export class Form {
         }
 
         // input container
-        field._input = new Element('div').insertTo(field.container);
+        field._input = new Element("div").insertTo(field.container);
 
         // input ready?
         if (field.input && field.input.type) {
-            if (typeof field.input.type === 'string') {
+            if (typeof field.input.type === "string") {
                 field.input.type = Form.inputType[<string><any>field.input.type];
             } else if (!field.input.type.create) {
                 delete field.input;
@@ -835,26 +835,26 @@ export class Form {
             const input = field.input;
 
             if (!input.id) {
-                input.id = 'flagrate-form-input-' + (++Form.idCounter);
+                input.id = "flagrate-form-input-" + (++Form.idCounter);
             }
 
             if (this._nolabel === false) {
-                field.labelElement.writeAttribute('for', input.id);
+                field.labelElement.writeAttribute("for", input.id);
             }
 
             input.element = input.type.create.call(input);
 
-            new Element('div', { 'class': 'flagrate-form-field-input' })
+            new Element("div", { "class": "flagrate-form-field-input" })
                 .insert(input.element)
                 .insertTo(field._input);
 
-            input.element.writeAttribute('id', input.id);
+            input.element.writeAttribute("id", input.id);
 
             // value, values is just alias.
-            if (input['value']) {
-                input.val = input['value'];
-            } else if (input['values']) {
-                input.val = input['values'];
+            if (input["value"]) {
+                input.val = input["value"];
+            } else if (input["values"]) {
+                input.val = input["values"];
             }
 
             // set the default value
@@ -869,7 +869,7 @@ export class Form {
             // init validator
             if (input.validators) {
                 input.validators.forEach((v, i) => {
-                    if (typeof v === 'string') {
+                    if (typeof v === "string") {
                         input.validators[i] = Form.inputValidator[<string><any>v];
                     }
                 });
@@ -878,30 +878,30 @@ export class Form {
             }
 
             // result block
-            input._result = new Element('ul', {
-                'class': 'flagrate-form-field-result'
+            input._result = new Element("ul", {
+                "class": "flagrate-form-field-result"
             }).insertTo(field._input);
 
             // etc
             if (input.isRequired === true) {
-                field.container.addClassName('flagrate-required');
+                field.container.addClassName("flagrate-required");
             }
         }
 
         // misc
         if (field.element) {
-            new Element('div', {
-                'class': 'flagrate-form-field-element'
+            new Element("div", {
+                "class": "flagrate-form-field-element"
             }).insert(field.element).insertTo(field._input);
         }
         if (field.html) {
-            new Element('div', {
-                'class': 'flagrate-form-field-html'
+            new Element("div", {
+                "class": "flagrate-form-field-html"
             }).insert(field.html).insertTo(field._input);
         }
         if (field.text) {
-            new Element('p', {
-                'class': 'flagrate-form-field-text'
+            new Element("p", {
+                "class": "flagrate-form-field-text"
             }).insertText(field.text).insertTo(field._input);
         }
 
@@ -922,21 +922,21 @@ export class Form {
                 result = result.toString();
             }
 
-            if (field.input.trim === true && typeof result === 'string') {
+            if (field.input.trim === true && typeof result === "string") {
                 result = result.trim();
             }
 
-            if (field.input.toNumber === true && typeof result !== 'number') {
-                if (typeof result === 'string') {
+            if (field.input.toNumber === true && typeof result !== "number") {
+                if (typeof result === "string") {
                     result = parseFloat(result);
                 } else if (result instanceof Date) {
                     result = result.getTime();
-                } else if (typeof result === 'boolean') {
+                } else if (typeof result === "boolean") {
                     result = (result === true) ? 1 : 0;
                 }
             }
 
-            if (typeof field.input.transform === 'function') {
+            if (typeof field.input.transform === "function") {
                 result = field.input.transform.call(field.input, result);
             }
 
@@ -971,18 +971,18 @@ export class Form {
                     hasError = true;
                 } else if (val === false || val === null) {
                     hasError = true;
-                } else if (typeof val === 'number' && isNaN(val) === true) {
+                } else if (typeof val === "number" && isNaN(val) === true) {
                     hasError = true;
                 } else if ((val.length !== undefined) && val.length === 0) {
                     hasError = true;
                 }
             }
             if (field.input.min) {
-                if (typeof val === 'number') {
+                if (typeof val === "number") {
                     if (field.input.min > val) {
                         hasError = true;
                     }
-                } else if (typeof val === 'string' && val !== '') {
+                } else if (typeof val === "string" && val !== "") {
                     if (field.input.min > parseInt(val, 10)) {
                         hasError = true;
                     }
@@ -993,11 +993,11 @@ export class Form {
                 }
             }
             if (field.input.max) {
-                if (typeof val === 'number') {
+                if (typeof val === "number") {
                     if (field.input.max < val) {
                         hasError = true;
                     }
-                } else if (typeof val === 'string' && val !== '') {
+                } else if (typeof val === "string" && val !== "") {
                     if (field.input.max < parseInt(val, 10)) {
                         hasError = true;
                     }
@@ -1007,7 +1007,7 @@ export class Form {
                     }
                 }
             }
-            if (field.input.minLength && field.input.minLength > (val.length || (val.toString && val.toString().length) || 0) && (typeof val === 'string' && val !== '')) {
+            if (field.input.minLength && field.input.minLength > (val.length || (val.toString && val.toString().length) || 0) && (typeof val === "string" && val !== "")) {
                 hasError = true;
             }
             if (field.input.maxLength && field.input.maxLength < (val.length || (val.toString && val.toString().length) || 0)) {
@@ -1021,24 +1021,24 @@ export class Form {
             });
 
             function fin() {
-                if (field.input._result.innerHTML === '') {
-                    field.container.removeClassName('flagrate-has-result');
+                if (field.input._result.innerHTML === "") {
+                    field.container.removeClassName("flagrate-has-result");
                 } else {
-                    field.container.addClassName('flagrate-has-result');
+                    field.container.addClassName("flagrate-has-result");
                 }
 
                 if (hasError) {
-                    field.container.removeClassName('flagrate-has-warning');
-                    field.container.removeClassName('flagrate-has-success');
-                    field.container.addClassName('flagrate-has-error');
+                    field.container.removeClassName("flagrate-has-warning");
+                    field.container.removeClassName("flagrate-has-success");
+                    field.container.addClassName("flagrate-has-error");
                 } else if (hasWarning) {
-                    field.container.removeClassName('flagrate-has-error');
-                    field.container.removeClassName('flagrate-has-success');
-                    field.container.addClassName('flagrate-has-warning');
+                    field.container.removeClassName("flagrate-has-error");
+                    field.container.removeClassName("flagrate-has-success");
+                    field.container.addClassName("flagrate-has-warning");
                 } else {
-                    field.container.removeClassName('flagrate-has-error');
-                    field.container.removeClassName('flagrate-has-warning');
-                    field.container.addClassName('flagrate-has-success');
+                    field.container.removeClassName("flagrate-has-error");
+                    field.container.removeClassName("flagrate-has-warning");
+                    field.container.addClassName("flagrate-has-success");
                 }
 
                 field._hasError = hasError;
@@ -1051,20 +1051,20 @@ export class Form {
 
                 switch (result) {
                     case true:
-                    case 'success':
+                    case "success":
                         break;
                     case null:
-                    case 'warning':
+                    case "warning":
                         hasWarning = true;
                         break;
                     case false:
-                    case 'error':
+                    case "error":
                         hasError = true;
                         break;
                 }
 
                 if (message) {
-                    new Element('li').insertText(message).insertTo(field.input._result);
+                    new Element("li").insertText(message).insertTo(field.input._result);
                 }
 
                 run();
@@ -1076,9 +1076,9 @@ export class Form {
 
                 let v = q.shift();
 
-                if (typeof v === 'function') {
+                if (typeof v === "function") {
                     v.call(field.input, val, done);
-                } else if (typeof val === 'string' && val !== '') {
+                } else if (typeof val === "string" && val !== "") {
                     if (v.regexp.test(val)) {
                         done(true, v.success);
                     } else {
@@ -1120,7 +1120,7 @@ export class Form {
 
         // listen change event
         if (field.input && field.input.type) {
-            const changeEvents = field.input.type.changeEvents || ['change'];
+            const changeEvents = field.input.type.changeEvents || ["change"];
             changeEvents.forEach(eventName => {
                 field.input.element.addEventListener(eventName, field._inputOnChange);
             });
@@ -1140,7 +1140,7 @@ export class Form {
         #### Basic validator
 
             // success and error messages are optional
-            { regexp: /RegExp/, success: 'String', error: 'String' }
+            { regexp: /RegExp/, success: "String", error: "String" }
             // warning state is not available in this way, see Advanced.
 
         #### Advanced validator
@@ -1152,23 +1152,23 @@ export class Form {
             function (input, done) { done(true); }// success
             function (input, done) { done(null); }// warning
             function (input, done) { done(false); }// error
-            function (input, done) { done('success'); }// success
-            function (input, done) { done('warning'); }// warning
-            function (input, done) { done('error'); }// error
-            function (input, done) { done(true, '...'); }// success with message
-            function (input, done) { done(null, '...'); }// warning with message
-            function (input, done) { done(false, '...'); }// error with message
+            function (input, done) { done("success"); }// success
+            function (input, done) { done("warning"); }// warning
+            function (input, done) { done("error"); }// error
+            function (input, done) { done(true, "..."); }// success with message
+            function (input, done) { done(null, "..."); }// warning with message
+            function (input, done) { done(false, "..."); }// error with message
 
         #### Example: adding error message to built-in validators
 
-            flagrate.Form.inputValidator.numeric.error = 'Please enter a numbers.';
-            flagrate.Form.inputValidator.alphanumeric.error = 'Please enter a alphanumeric.';
+            flagrate.Form.inputValidator.numeric.error = "Please enter a numbers.";
+            flagrate.Form.inputValidator.alphanumeric.error = "Please enter a alphanumeric.";
 
         #### Example: add the custom validator to Flagrate (to create plugin)
 
             flagrate.Form.inputValidator.hostname = {
                 regexp: /^[a-z0-9]+(-[a-z0-9]+)*(\.([a-z0-9]+(-[a-z0-9]+)*))*$/i,
-                error: 'Please enter a valid hostname string.'
+                error: "Please enter a valid hostname string."
             };
     **/
     static inputValidator = {
@@ -1208,7 +1208,7 @@ export class Form {
             * `maxLength`   (Number):
         **/
         text: {
-            changeEvents: ['change', 'keyup'],
+            changeEvents: ["change", "keyup"],
             create() {
                 // return to define this.element
                 return new TextInput({
@@ -1238,13 +1238,13 @@ export class Form {
             password input. Almost the same to [text](#text).
         **/
         password: {
-            changeEvents: ['change', 'keyup'],
+            changeEvents: ["change", "keyup"],
             create() {
                 return new TextInput({
                     placeholder: this.placeholder,
                     icon: this.icon,
                     attribute: {
-                        type: 'password',
+                        type: "password",
                         maxlength: this.maxLength
                     }
                 });
@@ -1272,7 +1272,7 @@ export class Form {
             * `maxLength`   (Number):
         **/
         textarea: {
-            changeEvents: ['change', 'keyup'],
+            changeEvents: ["change", "keyup"],
             create() {
                 return new TextArea({
                     placeholder: this.placeholder,
@@ -1307,14 +1307,14 @@ export class Form {
             * `maxLength`   (Number):
         **/
         number: {
-            changeEvents: ['change', 'keyup'],
+            changeEvents: ["change", "keyup"],
             create() {
                 return new TextInput({
                     placeholder: this.placeholder,
                     icon: this.icon,
                     attribute: {
-                        type: 'number',
-                        inputmode: 'numeric',
+                        type: "number",
+                        inputmode: "numeric",
                         min: this.min,
                         max: this.max,
                         maxlength: this.maxLength
@@ -1345,7 +1345,7 @@ export class Form {
             * `items`       (Array): of String values.
         **/
         combobox: {
-            changeEvents: ['change', 'keyup'],
+            changeEvents: ["change", "keyup"],
             create() {
                 return new ComboBox({
                     placeholder: this.placeholder,
@@ -1432,7 +1432,7 @@ export class Form {
             #### switch -> `Boolean`
             Switch input. (uses flagrate.Switch)
         **/
-        'switch': {
+        "switch": {
             create() {
                 return new Switch();
             },
@@ -1538,9 +1538,9 @@ export class Form {
         **/
         file: {
             create() {
-                return new Element('input', {
-                    type: 'file',
-                    accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(',') : undefined)
+                return new Element("input", {
+                    type: "file",
+                    accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(",") : undefined)
                 });
             },
             getVal() {
@@ -1550,10 +1550,10 @@ export class Form {
                 this.element.files[0] = file;
             },
             enable() {
-                this.element.writeAttribute('disabled', false);
+                this.element.writeAttribute("disabled", false);
             },
             disable() {
-                this.element.writeAttribute('disabled', true);
+                this.element.writeAttribute("disabled", true);
             }
         },
 
@@ -1566,9 +1566,9 @@ export class Form {
         **/
         files: {
             create() {
-                return new Element('input', {
-                    type: 'file',
-                    accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(',') : undefined),
+                return new Element("input", {
+                    type: "file",
+                    accept: this.accept || (this.acceptTypes ? this.acceptTypes.join(",") : undefined),
                     multiple: true
                 });
             },
@@ -1579,10 +1579,10 @@ export class Form {
                 this.element.files = files;
             },
             enable() {
-                this.element.writeAttribute('disabled', false);
+                this.element.writeAttribute("disabled", false);
             },
             disable() {
-                this.element.writeAttribute('disabled', true);
+                this.element.writeAttribute("disabled", true);
             }
         }
     };

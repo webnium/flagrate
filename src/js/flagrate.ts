@@ -13,36 +13,36 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import * as util from './flagrate/util';
-import * as element from './flagrate/element';
-import * as button from './flagrate/button';
-import * as buttons from './flagrate/buttons';
-import * as menu from './flagrate/menu';
-import * as pulldown from './flagrate/pulldown';
-import * as textInput from './flagrate/text-input';
-import * as tokenizer from './flagrate/tokenizer';
-import * as textArea from './flagrate/text-area';
-import * as comboBox from './flagrate/combo-box';
-import * as select from './flagrate/select';
-import * as contextMenu from './flagrate/context-menu';
-import * as toolbar from './flagrate/toolbar';
-import * as searchBox from './flagrate/search-box';
-import * as checkbox from './flagrate/checkbox';
-import * as checkboxes from './flagrate/checkboxes';
-import * as radio from './flagrate/radio';
-import * as radios from './flagrate/radios';
-import * as sw from './flagrate/switch';
-import * as progress from './flagrate/progress';
-import * as slider from './flagrate/slider';
-import * as tab from './flagrate/tab';
-import * as popover from './flagrate/popover';
-import * as tutorial from './flagrate/tutorial';
-import * as notify from './flagrate/notify';
-import * as modal from './flagrate/modal';
-import * as grid from './flagrate/grid'
-import * as form from './flagrate/form';
+import * as util from "./flagrate/util";
+import * as element from "./flagrate/element";
+import * as button from "./flagrate/button";
+import * as buttons from "./flagrate/buttons";
+import * as menu from "./flagrate/menu";
+import * as pulldown from "./flagrate/pulldown";
+import * as textInput from "./flagrate/text-input";
+import * as tokenizer from "./flagrate/tokenizer";
+import * as textArea from "./flagrate/text-area";
+import * as comboBox from "./flagrate/combo-box";
+import * as select from "./flagrate/select";
+import * as contextMenu from "./flagrate/context-menu";
+import * as toolbar from "./flagrate/toolbar";
+import * as searchBox from "./flagrate/search-box";
+import * as checkbox from "./flagrate/checkbox";
+import * as checkboxes from "./flagrate/checkboxes";
+import * as radio from "./flagrate/radio";
+import * as radios from "./flagrate/radios";
+import * as sw from "./flagrate/switch";
+import * as progress from "./flagrate/progress";
+import * as slider from "./flagrate/slider";
+import * as tab from "./flagrate/tab";
+import * as popover from "./flagrate/popover";
+import * as tutorial from "./flagrate/tutorial";
+import * as notify from "./flagrate/notify";
+import * as modal from "./flagrate/modal";
+import * as grid from "./flagrate/grid"
+import * as form from "./flagrate/form";
 
 export default class Flagrate {
 
@@ -135,6 +135,6 @@ export default class Flagrate {
 
 export declare const flagrate: Flagrate;
 
-if (typeof window['flagrate'] === 'undefined') {
-    window['flagrate'] = new Flagrate();
+if (typeof window["flagrate"] === "undefined") {
+    window["flagrate"] = new Flagrate();
 }

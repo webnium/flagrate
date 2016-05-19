@@ -13,13 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { emptyFunction } from './util';
-import { Element } from './element';
-import { Button, Option as ButtonOption } from './button';
-import { Popover } from './popover';
-import { Modal } from './modal';
+import { emptyFunction } from "./util";
+import { Element } from "./element";
+import { Button, Option as ButtonOption } from "./button";
+import { Popover } from "./popover";
+import { Modal } from "./modal";
 
 /*?
     class flagrate.Tutorial
@@ -32,20 +32,20 @@ import { Modal } from './modal';
         var tutorial = flagrate.createTutorial({
         steps: [
             {
-                target: '#tutorial-step1',// using selector string
-                text  : 'step1'
+                target: "#tutorial-step1",// using selector string
+                text  : "step1"
             },
             {
-                target: '#tutorial-step2',
-                text  : 'step2',
+                target: "#tutorial-step2",
+                text  : "step2",
             },
             {
                 target: element,
-                text  : 'step3'
+                text  : "step3"
             },
             {
-                title : 'Finish',
-                text  : 'Good luck!'
+                title : "Finish",
+                text  : "Good luck!"
             }
         ]
         });
@@ -244,14 +244,14 @@ export class Tutorial {
 
         if ((this._index + 1) >= this._steps.length) {
             buttons.push({
-                className: 'flagrate-tutorial-button-finish',
+                className: "flagrate-tutorial-button-finish",
                 onSelect: () => {
                     this._afterStep(this.finish.bind(this));
                 }
             });
         } else {
             buttons.push({
-                className: 'flagrate-tutorial-button-next',
+                className: "flagrate-tutorial-button-next",
                 onSelect: () => {
                     this._afterStep(this.next.bind(this));
                 }
@@ -260,7 +260,7 @@ export class Tutorial {
 
         if (this._index > 0) {
             buttons.push({
-                className: 'flagrate-tutorial-button-prev',
+                className: "flagrate-tutorial-button-prev",
                 onSelect: () => {
                     this._afterStep(this.prev.bind(this));
                 }
@@ -269,17 +269,17 @@ export class Tutorial {
 
         if ((this._index + 1) < this._steps.length) {
             buttons.push({
-                className: 'flagrate-tutorial-button-abort',
+                className: "flagrate-tutorial-button-abort",
                 onSelect: () => {
                     this._afterStep(this.abort.bind(this));
                 }
             });
         }
 
-        buttons[0].color = '@primary';
+        buttons[0].color = "@primary";
 
         let target;
-        if (typeof step.target === 'string') {
+        if (typeof step.target === "string") {
             target = document.querySelector(step.target as string);
         } else if (Element.isElement(step.target) === true) {
             target = step.target;
@@ -297,13 +297,13 @@ export class Tutorial {
                 body.insertText(step.text).insertTo(container);
             }
 
-            const buttonContainer = new Element('footer').insertTo(container);
+            const buttonContainer = new Element("footer").insertTo(container);
             buttons.forEach(button => {
                 new Button(button).insertTo(buttonContainer);
             });
 
             this._popover = new Popover({
-                className: 'flagrate-tutorial',
+                className: "flagrate-tutorial",
                 element: container
             });
 
@@ -313,7 +313,7 @@ export class Tutorial {
                 disableCloseByMask: true,
                 disableCloseButton: true,
                 disableCloseByEsc: true,
-                className: 'flagrate-tutorial',
+                className: "flagrate-tutorial",
                 title: step.title,
                 text: step.text,
                 html: step.html,

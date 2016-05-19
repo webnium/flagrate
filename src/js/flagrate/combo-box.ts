@@ -13,13 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import { Button, Option as ButtonOption } from './button';
-import { Menu } from './menu';
-import { TextInput } from './text-input';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import { Button, Option as ButtonOption } from "./button";
+import { Menu } from "./menu";
+import { TextInput } from "./text-input";
 
 /*?
     class flagrate.ComboBox
@@ -112,11 +112,11 @@ function FComboBox(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
 
     //create
-    const container = new Element('div', attr) as ComboBox;
+    const container = new Element("div", attr) as ComboBox;
 
     container._textinput = new TextInput({
         value: option.value,
@@ -128,7 +128,7 @@ function FComboBox(option: Option = {}) {
         return () => {
             container.setValue(value);
             container._textinput.focus();
-            container.fire('change');
+            container.fire("change");
         };
     }
 
@@ -151,7 +151,7 @@ function FComboBox(option: Option = {}) {
             }
 
             const menu = container._menu = new Menu({
-                className: 'flagrate-combobox-menu',
+                className: "flagrate-combobox-menu",
                 items: items,
                 onSelect: () => {
                     menu.remove();
@@ -161,7 +161,7 @@ function FComboBox(option: Option = {}) {
 
             // To prevent overflow.
             let menuHeight = menu.getHeight();
-            let menuMargin = parseInt(menu.getStyle('margin-top').replace('px', ''), 10);
+            let menuMargin = parseInt(menu.getStyle("margin-top").replace("px", ""), 10);
             let cummOffsetTop = container.cumulativeOffset().top;
             let upsideSpace = - window.pageYOffset + cummOffsetTop;
             let downsideSpace = window.pageYOffset + window.innerHeight - cummOffsetTop - container.getHeight();
@@ -171,7 +171,7 @@ function FComboBox(option: Option = {}) {
                         menuHeight = (upsideSpace - menuMargin - menuMargin);
                         menu.style.maxHeight = `${menuHeight}px`;
                     }
-                    menu.addClassName('flagrate-combobox-menu-upper');
+                    menu.addClassName("flagrate-combobox-menu-upper");
                 } else {
                     menuHeight = (downsideSpace - menuMargin - menuMargin);
                     menu.style.maxHeight = `${menuHeight}px`;
@@ -180,27 +180,27 @@ function FComboBox(option: Option = {}) {
 
             function removeMenu(e) {
 
-                document.body.removeEventListener('click', removeMenu);
-                container.parentNode.removeEventListener('click', removeMenu);
-                container.off('click', removeMenu);
+                document.body.removeEventListener("click", removeMenu);
+                container.parentNode.removeEventListener("click", removeMenu);
+                container.off("click", removeMenu);
 
-                menu.style.opacity = '0';
+                menu.style.opacity = "0";
                 setTimeout(() => menu.remove(), 500);
 
                 delete container._menu;
             }
 
             setTimeout(() => {
-                document.body.addEventListener('click', removeMenu);
-                container.parentNode.addEventListener('click', removeMenu);
-                container.on('click', removeMenu);
+                document.body.addEventListener("click", removeMenu);
+                container.parentNode.addEventListener("click", removeMenu);
+                container.on("click", removeMenu);
             }, 0);
         }
     }).insertTo(container);
 
     extendObject(container, this);
 
-    container.addClassName('flagrate flagrate-combobox');
+    container.addClassName("flagrate flagrate-combobox");
     if (option.className) {
         container.addClassName(option.className);
     }
@@ -225,7 +225,7 @@ export function createComboBox(option?: Option): ComboBox {
 ComboBox.prototype = {
     disable() {
 
-        this.addClassName('flagrate-disabled');
+        this.addClassName("flagrate-disabled");
 
         this._textinput.disable();
         this._button.disable();
@@ -235,7 +235,7 @@ ComboBox.prototype = {
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
+        this.removeClassName("flagrate-disabled");
 
         this._textinput.enable();
         this._button.enable();
@@ -244,7 +244,7 @@ ComboBox.prototype = {
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     getValue() {

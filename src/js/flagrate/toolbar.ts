@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import { Element, Attribute, Property, FHTMLElement, FHTMLDivElement } from './element';
+import { extendObject } from "./util";
+import { Element, Attribute, Property, FHTMLElement, FHTMLDivElement } from "./element";
 
 /*?
     class flagrate.Toolbar
@@ -88,14 +88,14 @@ function FToolbar(option: Option = {}): Toolbar {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
 
     //create
-    const container = new Element('div', attr) as Toolbar;
+    const container = new Element("div", attr) as Toolbar;
     extendObject(container, this);
 
-    container.addClassName('flagrate flagrate-toolbar');
+    container.addClassName("flagrate flagrate-toolbar");
     if (option.className) {
         container.addClassName(option.className);
     }
@@ -120,15 +120,15 @@ export function createToolbar(option?: Option): Toolbar {
 Toolbar.prototype = {
     push(option: ItemOption) {
 
-        if (typeof option === 'string') {
-            new Element('hr').insertTo(this);
+        if (typeof option === "string") {
+            new Element("hr").insertTo(this);
         } else if (option instanceof HTMLElement) {
             this.insert(option);
         } else {
             let element;
 
             if (option.isBorder) {
-                element = new Element('hr').insertTo(this);
+                element = new Element("hr").insertTo(this);
             } else {
                 if (!option.element.isFlagrated) {
                     option.element = Element.extend(option.element);
@@ -137,7 +137,7 @@ Toolbar.prototype = {
             }
 
             if (option.key) {
-                element.dataset['_key'] = option.key;
+                element.dataset["_key"] = option.key;
             }
         }
 
@@ -148,7 +148,7 @@ Toolbar.prototype = {
 
         const elements = this.childNodes;
         for (let i = 0, l = elements.length; i < l; i++) {
-            if (elements[i].dataset['_key'] === key) {
+            if (elements[i].dataset["_key"] === key) {
                 return elements[i];
             }
         }

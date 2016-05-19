@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLSpanElement, FHTMLButtonElement } from './element';
+import { extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLSpanElement, FHTMLButtonElement } from "./element";
 
 /*?
     class flagrate.Button
@@ -24,10 +24,10 @@ import { Element, Attribute, Property, FHTMLSpanElement, FHTMLButtonElement } fr
     #### Example
 
         var button = flagrate.createButton({
-            label   : 'foo',
-            icon    : 'icon.png',
+            label   : "foo",
+            icon    : "icon.png",
             onSelect: function () {
-                alert('hey');
+                alert("hey");
             }
         }).insertTo(x);
 
@@ -137,7 +137,7 @@ export interface ButtonEvent extends MouseEvent {
 **/
 function FButton(option: Option = {}) {
 
-    option.label = option.label || '';
+    option.label = option.label || "";
     option.isRemovableByUser = option.isRemovableByUser || false;
 
     this.onSelect = option.onSelect || emptyFunction;
@@ -146,37 +146,37 @@ function FButton(option: Option = {}) {
     const attr = option.attribute || {};
 
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
     if (option.isFocused) {
-        attr['autofocus'] = true;
+        attr["autofocus"] = true;
     }
 
-    if (!attr['type']) {
-        attr['type'] = 'button';
+    if (!attr["type"]) {
+        attr["type"] = "button";
     }
 
     // create a button element
-    const button = new Element('button', attr) as Button;
+    const button = new Element("button", attr) as Button;
     extendObject(button, this);
 
-    button._label = new Element('span').updateText(option.label).insertTo(button);
+    button._label = new Element("span").updateText(option.label).insertTo(button);
 
-    button.addClassName('flagrate flagrate-button');
+    button.addClassName("flagrate flagrate-button");
     if (option.className) {
         button.addClassName(option.className);
     }
 
-    button.addEventListener('click', button._onSelectHandler.bind(button), true);
+    button.addEventListener("click", button._onSelectHandler.bind(button), true);
 
     if (option.isRemovableByUser) {
-        button.addClassName('flagrate-button-removable');
+        button.addClassName("flagrate-button-removable");
 
-        button._removeButton = new Element('button', {
-            type: 'button',
-            class: 'flagrate-button-remove'
+        button._removeButton = new Element("button", {
+            type: "button",
+            class: "flagrate-button-remove"
         }).insertTo(button);
-        button._removeButton.addEventListener('click', button._onRemoveHandler.bind(button), true);
+        button._removeButton.addEventListener("click", button._onRemoveHandler.bind(button), true);
     }
 
     if (option.style) {
@@ -209,22 +209,22 @@ Button.prototype = {
 
     disable() {
 
-        this.addClassName('flagrate-disabled');
-        this.writeAttribute('disabled', true);
+        this.addClassName("flagrate-disabled");
+        this.writeAttribute("disabled", true);
 
         return this;
     },
 
     enable() {
 
-        this.removeClassName('flagrate-disabled');
-        this.writeAttribute('disabled', false);
+        this.removeClassName("flagrate-disabled");
+        this.writeAttribute("disabled", false);
 
         return this;
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     setLabel(text) {
@@ -238,9 +238,9 @@ Button.prototype = {
 
         const button = this as Button;
 
-        if (color.charAt(0) === '@') {
-            button.style.backgroundColor = '';
-            button.addClassName('flagrate-button-color-' + color.slice(1));
+        if (color.charAt(0) === "@") {
+            button.style.backgroundColor = "";
+            button.addClassName("flagrate-button-color-" + color.slice(1));
         } else {
             button.style.backgroundColor = color;
         }
@@ -251,7 +251,7 @@ Button.prototype = {
     },
 
     getColor() {
-        return this._color || '';
+        return this._color || "";
     },
 
     setIcon(identifier) {
@@ -261,18 +261,18 @@ Button.prototype = {
         button._iconIdentifier = identifier;
 
         if (identifier) {
-            return button.addClassName('flagrate-icon').setStyle({
+            return button.addClassName("flagrate-icon").setStyle({
                 backgroundImage: `url(${identifier})`
             });
         } else {
-            return button.removeClassName('flagrate-icon').setStyle({
-                backgroundImage: 'none'
+            return button.removeClassName("flagrate-icon").setStyle({
+                backgroundImage: "none"
             });
         }
     },
 
     getIcon() {
-        return this._iconIdentifier || '';
+        return this._iconIdentifier || "";
     },
 
     _onSelectHandler(e) {
@@ -287,7 +287,7 @@ Button.prototype = {
         if (button._removeButton && e && e.layerX) {
             const bw = button.getWidth();
             const bh = button.getHeight();
-            const bp = button._removeButton.getStyle('margin-right') === null ? 0 : parseInt(button._removeButton.getStyle('margin-right').replace('px', ''), 10);
+            const bp = button._removeButton.getStyle("margin-right") === null ? 0 : parseInt(button._removeButton.getStyle("margin-right").replace("px", ""), 10);
             const rw = button._removeButton.getWidth();
             const rh = button._removeButton.getHeight();
             const lx = e.layerX;
@@ -310,7 +310,7 @@ Button.prototype = {
         _e.targetButton = button;
 
         button.onSelect(_e, button);
-        button.fire('select', { targetButton: button });
+        button.fire("select", { targetButton: button });
     },
 
     _onRemoveHandler(e) {
@@ -324,7 +324,7 @@ Button.prototype = {
             _e.targetButton = button;
 
             button.onRemove(_e, button);
-            button.fire('remove', { targetButton: button });
+            button.fire("remove", { targetButton: button });
         }
     }
 };

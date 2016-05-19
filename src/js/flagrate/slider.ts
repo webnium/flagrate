@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject } from './util';
-import * as progress from './progress';
+import { extendObject } from "./util";
+import * as progress from "./progress";
 
 /*?
     class flagrate.Slider
@@ -63,21 +63,21 @@ function FSlider(opt: Option = {}) {
     const slider = new progress.Progress(opt) as Slider;
     extendObject(slider, this);
 
-    slider.addClassName('flagrate-slider');
+    slider.addClassName("flagrate-slider");
     if (slider.tabIndex === -1) {
         slider.tabIndex = 0;
     }
 
     if (window.ontouchstart !== undefined) {
-        slider.addEventListener('touchstart', slider._onTouchStartHandler.bind(slider));
+        slider.addEventListener("touchstart", slider._onTouchStartHandler.bind(slider));
     }
     if (navigator.pointerEnabled) {
-        slider.addEventListener('pointerdown', slider._onPointerDownHandler.bind(slider));
+        slider.addEventListener("pointerdown", slider._onPointerDownHandler.bind(slider));
     } else if (navigator.msPointerEnabled) {
         // deprecated on IE11
-        slider.addEventListener('MSPointerDown', slider._onPointerDownHandler.bind(slider));
+        slider.addEventListener("MSPointerDown", slider._onPointerDownHandler.bind(slider));
     } else {
-        slider.addEventListener('mousedown', slider._onPointerDownHandler.bind(slider));
+        slider.addEventListener("mousedown", slider._onPointerDownHandler.bind(slider));
     }
 
     if (opt.isDisabled) {
@@ -98,26 +98,26 @@ Slider.prototype = {
 
         const slider = this as Slider;
 
-        slider.dataset['flagrateTabIndex'] = slider.tabIndex.toString(10);
-        slider.removeAttribute('tabindex');
+        slider.dataset["flagrateTabIndex"] = slider.tabIndex.toString(10);
+        slider.removeAttribute("tabindex");
 
-        return slider.addClassName('flagrate-disabled');
+        return slider.addClassName("flagrate-disabled");
     },
 
     enable() {
 
         const slider = this as Slider;
 
-        const tabIndex = parseInt(slider.dataset['flagrateTabIndex']);
+        const tabIndex = parseInt(slider.dataset["flagrateTabIndex"]);
         if (tabIndex !== -1) {
             slider.tabIndex = tabIndex;
         }
 
-        return slider.removeClassName('flagrate-disabled');
+        return slider.removeClassName("flagrate-disabled");
     },
 
     isEnabled() {
-        return !this.hasClassName('flagrate-disabled');
+        return !this.hasClassName("flagrate-disabled");
     },
 
     _onTouchStartHandler(e) {
@@ -131,7 +131,7 @@ Slider.prototype = {
         this._slide(
             e.touches[0].pageX - this.cumulativeOffset().left,
             e.touches[0].clientX,
-            'touch'
+            "touch"
         );
     },
 
@@ -146,7 +146,7 @@ Slider.prototype = {
         this._slide(
             e.offsetX || e.layerX,
             e.clientX,
-            'pointer'
+            "pointer"
         );
     },
 
@@ -169,59 +169,59 @@ Slider.prototype = {
             }
 
             slider.setValue(Math.round(x / unitWidth));
-            slider.fire('slide', { targetSlider: slider });
+            slider.fire("slide", { targetSlider: slider });
         };
 
         const onUp = (e) => {
 
             e.preventDefault();
 
-            if (type === 'pointer') {
+            if (type === "pointer") {
                 if (navigator.pointerEnabled) {
-                    document.removeEventListener('pointermove', onMove);
-                    document.removeEventListener('pointerup', onUp);
+                    document.removeEventListener("pointermove", onMove);
+                    document.removeEventListener("pointerup", onUp);
                 } else if (navigator.msPointerEnabled) {
-                    document.removeEventListener('MSPointerUp', onUp);
-                    document.removeEventListener('MSPointerMove', onMove);
+                    document.removeEventListener("MSPointerUp", onUp);
+                    document.removeEventListener("MSPointerMove", onMove);
                 } else {
-                    document.removeEventListener('mousemove', onMove);
-                    document.removeEventListener('mouseup', onUp);
+                    document.removeEventListener("mousemove", onMove);
+                    document.removeEventListener("mouseup", onUp);
                 }
-            } else if (type === 'touch') {
-                document.removeEventListener('touchmove', onMove);
-                document.removeEventListener('touchend', onUp);
-                document.removeEventListener('touchcancel', onUp);
+            } else if (type === "touch") {
+                document.removeEventListener("touchmove", onMove);
+                document.removeEventListener("touchend", onUp);
+                document.removeEventListener("touchcancel", onUp);
             }
 
             if (e.clientX) {
                 x = x + e.clientX - pos;
                 slider.setValue(Math.round(x / unitWidth));
-                slider.fire('slide', { targetSlider: slider });
+                slider.fire("slide", { targetSlider: slider });
             } else if (e.touches && e.touches[0]) {
                 x = x + e.touches[0].clientX - pos;
                 slider.setValue(Math.round(x / unitWidth));
-                slider.fire('slide', { targetSlider: slider });
+                slider.fire("slide", { targetSlider: slider });
             }
         };
 
-        if (type === 'pointer') {
+        if (type === "pointer") {
             if (navigator.pointerEnabled) {
-                document.addEventListener('pointermove', onMove);
-                document.addEventListener('pointerup', onUp);
+                document.addEventListener("pointermove", onMove);
+                document.addEventListener("pointerup", onUp);
             } else if (navigator.msPointerEnabled) {
-                document.addEventListener('MSPointerMove', onMove);
-                document.addEventListener('MSPointerUp', onUp);
+                document.addEventListener("MSPointerMove", onMove);
+                document.addEventListener("MSPointerUp", onUp);
             } else {
-                document.addEventListener('mousemove', onMove);
-                document.addEventListener('mouseup', onUp);
+                document.addEventListener("mousemove", onMove);
+                document.addEventListener("mouseup", onUp);
             }
-        } else if (type === 'touch') {
-            document.addEventListener('touchmove', onMove);
-            document.addEventListener('touchend', onUp);
-            document.addEventListener('touchcancel', onUp);
+        } else if (type === "touch") {
+            document.addEventListener("touchmove", onMove);
+            document.addEventListener("touchend", onUp);
+            document.addEventListener("touchcancel", onUp);
         }
 
         slider.setValue(Math.round(x / unitWidth));
-        slider.fire('slide', { targetSlider: slider });
+        slider.fire("slide", { targetSlider: slider });
     }
 };

@@ -13,12 +13,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-'use strict';
+"use strict";
 
-import { extendObject, emptyFunction } from './util';
-import { Element, Attribute, Property, FHTMLDivElement } from './element';
-import * as button from './button';
-import { Buttons } from './buttons';
+import { extendObject, emptyFunction } from "./util";
+import { Element, Attribute, Property, FHTMLDivElement } from "./element";
+import * as button from "./button";
+import { Buttons } from "./buttons";
 
 /*?
     class flagrate.Menu
@@ -28,15 +28,15 @@ import { Buttons } from './buttons';
         var menu = flagrate.createMenu({
             items: [
                 {
-                    label: 'foo'
+                    label: "foo"
                 },
                 {
-                    label: 'bar',
-                    icon : 'icon.png'
+                    label: "bar",
+                    icon : "icon.png"
                 },
-                '--',
+                "--",
                 {
-                    label: 'disabled button',
+                    label: "disabled button",
                     isDisabled: true
                 }
             ]
@@ -135,14 +135,14 @@ function FMenu(option: Option = {}) {
 
     const attr = option.attribute || {};
     if (option.id) {
-        attr['id'] = option.id;
+        attr["id"] = option.id;
     }
 
     // create a container
-    const container = new Element('div', attr) as Menu;
+    const container = new Element("div", attr) as Menu;
     extendObject(container, this);
 
-    container.addClassName('flagrate flagrate-menu');
+    container.addClassName("flagrate flagrate-menu");
     if (option.className) {
         container.addClassName(option.className);
     }
@@ -155,12 +155,12 @@ function FMenu(option: Option = {}) {
         container.push(option.items[i]);
     }
 
-    container.addEventListener('click', (e) => {
+    container.addEventListener("click", (e) => {
         e.stopPropagation();
         e.preventDefault();
     });
 
-    container.addEventListener('mouseup', (e) => {
+    container.addEventListener("mouseup", (e) => {
         e.stopPropagation();
     });
 
@@ -176,8 +176,8 @@ export function createMenu(option?: Option): Menu {
 Menu.prototype = {
     push(option: ItemOption) {
 
-        if (typeof option === 'string') {
-            new Element('hr').insertTo(this);
+        if (typeof option === "string") {
+            new Element("hr").insertTo(this);
         } else {
             const _onSelect = option.onSelect;
 
@@ -193,7 +193,7 @@ Menu.prototype = {
             const btn = new button.Button(option).insertTo(this);
 
             if (option.key) {
-                btn.dataset['_key'] = option.key;
+                btn.dataset["_key"] = option.key;
             }
         }
 
