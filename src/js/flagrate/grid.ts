@@ -273,7 +273,7 @@ export class Grid {
             this.element.writeAttribute("id", _opt.id);
         }
         if (_opt.className) {
-            this.element.writeAttribute("class", _opt.className);
+            this.element.addClassName(_opt.className);
         }
         if (_opt.attribute) {
             this.element.writeAttribute(_opt.attribute);
