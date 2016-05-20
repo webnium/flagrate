@@ -534,7 +534,7 @@ export class Form {
             this.element.writeAttribute("id", this._opt.id);
         }
         if (this._opt.className) {
-            this.element.writeAttribute("class", this._opt.className);
+            this.element.addClassName(this._opt.className);
         }
         if (this._opt.attribute) {
             this.element.writeAttribute(this._opt.attribute);
