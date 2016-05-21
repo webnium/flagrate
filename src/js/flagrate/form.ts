@@ -124,7 +124,7 @@ export interface InputOption {
     validators?: (string | RegExpValidator | ValidatorFunction)[];
 
     /** if NOT String, use `val.toString()` before resulting. */
-    toString?: boolean;
+    toStr?: boolean;
     /** if String, use `String#trim()` before resulting. */
     trim?: boolean;
     /** if NOT Number, tries to convert to Number. */
@@ -866,6 +866,11 @@ export class Form {
                 input.element.setStyle(input.style);
             }
 
+            // toString is alias for toStr.
+            if (typeof input["toString"] === "boolean" && input.toStr === undefined) {
+                input.toStr = input["toString"] as any as boolean;
+            }
+
             // init validator
             if (input.validators) {
                 input.validators.forEach((v, i) => {
@@ -918,7 +923,7 @@ export class Form {
 
             let result = field.input.type.getVal.call(field.input);
 
-            if (field.input.toString === true) {
+            if (field.input.toStr === true) {
                 result = result.toString();
             }
 
