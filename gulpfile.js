@@ -57,12 +57,28 @@ gulp.task("tsc", ["clean-js"], () => {
             declaration: true
         }));
 
+    const dtsResult = gulp
+        .src([
+            "src/js/**/*.ts"
+        ])
+        .pipe(typescript({
+            typescript: require("typescript"),
+            target: "es6",
+            module: "es6",
+            removeComments: false,
+            declaration: true,
+            outFile: "flagrate.js"
+        }));
+
     return merge([
         tsResult
             .js
             .pipe(sourcemaps.write("./"))
             .pipe(gulp.dest("lib/es6")),
         tsResult
+            .dts
+            .pipe(gulp.dest("lib/es6")),
+        dtsResult
             .dts
             .pipe(gulp.dest("lib/dts"))
     ]);
@@ -120,14 +136,6 @@ gulp.task("less", () => {
         .pipe(less({
             plugins: [ autoprefix ]
         }))
-        .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("lib"));
-});
-
-gulp.task("minify-css", ["less"], () => {
-
-    return gulp.src("lib/flagrate.css")
-        .pipe(sourcemaps.init())
         .pipe(cleanCSS())
         .pipe(rename({
             extname: ".min.css"
@@ -137,7 +145,7 @@ gulp.task("minify-css", ["less"], () => {
 });
 
 gulp.task("build-js", ["minify"]);
-gulp.task("build-css", ["minify-css"]);
+gulp.task("build-css", ["less"]);
 
 gulp.task("watch", () => {
     gulp.watch("src/js/**/*.ts", ["build-js"]);
