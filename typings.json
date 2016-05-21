@@ -1,0 +1,8 @@
+{
+  "name": "flagrate",
+  "files": [
+    "./index.d.ts",
+    "./lib/dts/flagrate.d.ts"
+  ],
+  "global": true
+}
