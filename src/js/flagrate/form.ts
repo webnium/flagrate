@@ -24,10 +24,10 @@ import { TextInput } from "./text-input";
 import { TextArea } from "./text-area";
 import { ComboBox } from "./combo-box";
 import { Checkbox } from "./checkbox";
-import { Checkboxes } from "./checkboxes";
+import { Checkboxes, CheckboxOption as CheckboxesItem } from "./checkboxes";
 import { Switch } from "./switch";
-import { Radios } from "./radios";
-import { Select } from "./select";
+import { Radios, RadioOption as RadiosItem } from "./radios";
+import { Select, ItemOption as SelectItem } from "./select";
 
 /*?
     class flagrate.Form
@@ -136,6 +136,18 @@ export interface InputOption {
     id?: string;
     /** style of input. (using flagrate.Element.setStyle) */
     style?: Property;
+
+    // anyway,
+    placeholder?: string;
+    label?: string;
+    icon?: string;
+    items?: (string | number | boolean | CheckboxesItem | SelectItem | RadiosItem)[];
+    selectedIndex?: number;
+    selectedIndexes?: number[];
+    listView?: boolean;
+    multiple?: boolean;
+    accept?: string;
+    acceptTypes?: string[];
 }
 
 export interface Depend {
