@@ -44,97 +44,97 @@ import * as modal from "./flagrate/modal";
 import * as grid from "./flagrate/grid"
 import * as form from "./flagrate/form";
 
-export default class Flagrate {
+export namespace Flagrate {
 
-    identity = util.identity;
-    extendObject = util.extendObject;
-    emptyFunction = util.emptyFunction;
-    jsonPointer = util.jsonPointer;
+    export const identity = util.identity;
+    export const extendObject = util.extendObject;
+    export const emptyFunction = util.emptyFunction;
+    export const jsonPointer = util.jsonPointer;
 
-    Element = element.Element;
-    createElement = element.createElement;
+    export const Element = element.Element;
+    export const createElement = element.createElement;
 
-    Button = button.Button;
-    createButton = button.createButton;
+    export const Button = button.Button;
+    export const createButton = button.createButton;
 
-    Buttons = buttons.Buttons;
-    createButtons = buttons.createButtons;
+    export const Buttons = buttons.Buttons;
+    export const createButtons = buttons.createButtons;
 
-    Menu = menu.Menu;
-    createMenu = menu.createMenu;
+    export const Menu = menu.Menu;
+    export const createMenu = menu.createMenu;
 
-    Pulldown = pulldown.Pulldown;
-    createPulldown = pulldown.createPulldown;
+    export const Pulldown = pulldown.Pulldown;
+    export const createPulldown = pulldown.createPulldown;
 
-    TextInput = textInput.TextInput;
-    createTextInput = textInput.createTextInput;
+    export const TextInput = textInput.TextInput;
+    export const createTextInput = textInput.createTextInput;
 
-    Tokenizer = tokenizer.Tokenizer;
-    createTokenizer = tokenizer.createTokenizer;
+    export const Tokenizer = tokenizer.Tokenizer;
+    export const createTokenizer = tokenizer.createTokenizer;
 
-    TextArea = textArea.TextArea;
-    createTextArea = textArea.createTextArea;
+    export const TextArea = textArea.TextArea;
+    export const createTextArea = textArea.createTextArea;
 
-    ComboBox = comboBox.ComboBox;
-    createComboBox = comboBox.createComboBox;
+    export const ComboBox = comboBox.ComboBox;
+    export const createComboBox = comboBox.createComboBox;
 
-    Select = select.Select;
-    createSelect = select.createSelect;
+    export const Select = select.Select;
+    export const createSelect = select.createSelect;
 
-    ContextMenu = contextMenu.ContextMenu;
-    createContextMenu = contextMenu.createContextMenu;
+    export const ContextMenu = contextMenu.ContextMenu;
+    export const createContextMenu = contextMenu.createContextMenu;
 
-    Toolbar = toolbar.Toolbar;
-    createToolbar = toolbar.createToolbar;
+    export const Toolbar = toolbar.Toolbar;
+    export const createToolbar = toolbar.createToolbar;
 
-    SearchBox = searchBox.SearchBox;
-    createSearchBox = searchBox.createSearchBox;
+    export const SearchBox = searchBox.SearchBox;
+    export const createSearchBox = searchBox.createSearchBox;
 
-    Checkbox = checkbox.Checkbox;
-    createCheckbox = checkbox.createCheckbox;
+    export const Checkbox = checkbox.Checkbox;
+    export const createCheckbox = checkbox.createCheckbox;
 
-    Checkboxes = checkboxes.Checkboxes;
-    createCheckboxes = checkboxes.createCheckboxes;
+    export const Checkboxes = checkboxes.Checkboxes;
+    export const createCheckboxes = checkboxes.createCheckboxes;
 
-    Radio = radio.Radio;
-    createRadio = radio.createRadio;
+    export const Radio = radio.Radio;
+    export const createRadio = radio.createRadio;
 
-    Radios = radios.Radios;
-    createRadios = radios.createRadios;
+    export const Radios = radios.Radios;
+    export const createRadios = radios.createRadios;
 
-    Switch = sw.Switch;
-    createSwitch = sw.createSwitch;
+    export const Switch = sw.Switch;
+    export const createSwitch = sw.createSwitch;
 
-    Progress = progress.Progress;
-    createProgress = progress.createProgress;
+    export const Progress = progress.Progress;
+    export const createProgress = progress.createProgress;
 
-    Slider = slider.Slider;
-    createSlider = slider.createSlider;
+    export const Slider = slider.Slider;
+    export const createSlider = slider.createSlider;
 
-    Tab = tab.Tab;
-    createTab = tab.createTab;
+    export const Tab = tab.Tab;
+    export const createTab = tab.createTab;
 
-    Popover = popover.Popover;
-    createPopover = popover.createPopover;
+    export const Popover = popover.Popover;
+    export const createPopover = popover.createPopover;
 
-    Tutorial = tutorial.Tutorial;
-    createTutorial = tutorial.createTutorial;
+    export const Tutorial = tutorial.Tutorial;
+    export const createTutorial = tutorial.createTutorial;
 
-    Notify = notify.Notify;
-    createNotify = notify.createNotify;
+    export const Notify = notify.Notify;
+    export const createNotify = notify.createNotify;
 
-    Modal = modal.Modal;
-    createModal = modal.createModal;
+    export const Modal = modal.Modal;
+    export const createModal = modal.createModal;
 
-    Grid = grid.Grid;
-    createGrid = grid.createGrid;
+    export const Grid = grid.Grid;
+    export const createGrid = grid.createGrid;
 
-    Form = form.Form;
-    createForm = form.createForm;
+    export const Form = form.Form;
+    export const createForm = form.createForm;
 }
 
-export declare const flagrate: Flagrate;
+export import flagrate = Flagrate;
 
 if (typeof window["flagrate"] === "undefined") {
-    window["flagrate"] = new Flagrate();
+    window["flagrate"] = Flagrate;
 }
