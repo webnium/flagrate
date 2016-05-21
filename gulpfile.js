@@ -35,8 +35,10 @@ const autoprefix = new LessAutoprefix({ browsers: ["last 2 versions"] });
 gulp.task("clean-js", () => {
 
     return del.sync([
-        "lib/js",
-        "flagrate.js"
+        "lib/dts",
+        "lib/es6",
+        "lib/*.js",
+        "lib/*.js.map"
     ]);
 });
 
@@ -52,17 +54,17 @@ gulp.task("tsc", ["clean-js"], () => {
             target: "es6",
             module: "es6",
             removeComments: false,
-            declarationFiles: true
+            declaration: true
         }));
 
     return merge([
         tsResult
             .js
             .pipe(sourcemaps.write("./"))
-            .pipe(gulp.dest("lib/js")),
+            .pipe(gulp.dest("lib/es6")),
         tsResult
             .dts
-            .pipe(gulp.dest("lib/js"))
+            .pipe(gulp.dest("lib/dts"))
     ]);
 });
 
@@ -70,33 +72,33 @@ gulp.task("browserify", ["tsc"], () => {
 
     return browserify({
         debug: true,
-        entries: "./lib/js/flagrate.js",
+        entries: "./lib/es6/flagrate.js",
         extensions: [".js"]
     })
         .transform("babelify", { presets: ["es2015"], sourceMaps: true })
         .bundle()
         .pipe(source("flagrate.js"))
         .pipe(buffer())
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest("lib"));
 });
 
 gulp.task("split", ["browserify"], () => {
 
-    let source = fs.readFileSync("flagrate.js", { encoding: "utf8" });
+    let source = fs.readFileSync("lib/flagrate.js", { encoding: "utf8" });
 
     let data = new Buffer(source.match(/\/\/. sourceMappingURL=[^,]+,(.+)/)[1], "base64").toString("ascii");
 
     source = source.replace(/\/\/. sourceMappingURL=[^,]+,(.+)/, "//# sourceMappingURL=flagrate.js.map");
 
-    fs.writeFileSync("flagrate.js", source);
-    fs.writeFileSync("flagrate.js.map", data);
+    fs.writeFileSync("lib/flagrate.js", source);
+    fs.writeFileSync("lib/flagrate.js.map", data);
 
     return;
 });
 
 gulp.task("minify", ["split"], () => {
 
-    return gulp.src("flagrate.js")
+    return gulp.src("lib/flagrate.js")
         .pipe(sourcemaps.init())
         .pipe(uglify({
             preserveComments: "some"
@@ -105,7 +107,7 @@ gulp.task("minify", ["split"], () => {
             extname: ".min.js"
         }))
         .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest("lib"));
 });
 
 gulp.task("less", () => {
@@ -119,19 +121,19 @@ gulp.task("less", () => {
             plugins: [ autoprefix ]
         }))
         .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest("lib"));
 });
 
 gulp.task("minify-css", ["less"], () => {
 
-    return gulp.src("flagrate.css")
+    return gulp.src("lib/flagrate.css")
         .pipe(sourcemaps.init())
         .pipe(cleanCSS())
         .pipe(rename({
             extname: ".min.css"
         }))
         .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest("lib"));
 });
 
 gulp.task("build-js", ["minify"]);
