@@ -41,8 +41,7 @@ export interface Instance {
     getIcon(): string;
     isValid(): boolean;
 
-    /** readonly. */
-    items?: ButtonOption[];
+    items?: string[];
 
     /** RegExp for simple validation feature. */
     regexp?: RegExp;
@@ -68,8 +67,8 @@ export interface Option {
     /** default value. */
     value?: string;
 
-    /** Array of any value or, Button.Option object. */
-    items?: ButtonOption[];
+    /** Array of string values. */
+    items?: string[];
 
     /** placeholder. */
     placeholder?: string;
