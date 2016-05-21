@@ -133,8 +133,14 @@ export namespace Flagrate {
     export const createForm = form.createForm;
 }
 
-export import flagrate = Flagrate;
-
 if (typeof window["flagrate"] === "undefined") {
     window["flagrate"] = Flagrate;
 }
+
+declare global {
+    interface Window {
+        flagrate: typeof Flagrate;
+    }
+}
+
+export default Flagrate;
