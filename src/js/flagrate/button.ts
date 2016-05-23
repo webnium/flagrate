@@ -240,9 +240,21 @@ Button.prototype = {
 
         if (color.charAt(0) === "@") {
             button.style.backgroundColor = "";
+            button.style.color = "";
             button.addClassName("flagrate-button-color-" + color.slice(1));
         } else {
             button.style.backgroundColor = color;
+
+            if (/^#[0-9a-f]{6}$/i.test(color) === true) {
+                const c = parseInt(color.slice(1), 16);
+                if ((((c >> 16) + (c >> 8 & 0xff) + (c & 0xff)) / 3) > 150) {
+                    button.style.color = "black";
+                } else {
+                    button.style.color = "white";
+                }
+            } else {
+                button.style.color = "";
+            }
         }
 
         button._color = color;
