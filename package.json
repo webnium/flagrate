@@ -1,13 +1,14 @@
 {
   "name": "flagrate",
   "description": "JavaScript UI Component Library",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "main": "./lib/es6/flagrate.js",
   "homepage": "https://flagrate.org",
   "scripts": {
     "test": "gulp",
     "build": "gulp",
-    "watch": "gulp watch"
+    "watch": "gulp watch",
+    "prepublish": "gulp"
   },
   "repository": {
     "type": "git",
