@@ -112,6 +112,7 @@ export interface Option {
 export type ItemOption = string | number | {
     /** if not specifies label, tries convert value to string for display label. */
     label?: string;
+    labelHTML?: string;
 
     /** icon image URL. */
     icon?: string;
@@ -195,6 +196,7 @@ function FSelect(option: Option = {}) {
                 this.items.map((item, i) => {
                     return {
                         label: item.label,
+                        labelHTML: item.labelHTML,
                         icon: item.icon,
                         onSelect: createOnSelectHandler(i)
                     };
@@ -215,6 +217,7 @@ function FSelect(option: Option = {}) {
                     cell: {
                         label: {
                             text: item.label,
+                            html: item.labelHTML,
                             icon: item.icon
                         }
                     },
@@ -287,7 +290,11 @@ Select.prototype = {
                 this._pulldown.setLabel("-");
                 this._pulldown.setIcon(null);
             } else {
-                this._pulldown.setLabel(this.items[index].label);
+                if (this.items[index].label !== undefined) {
+                    this._pulldown.setLabel(this.items[index].label);
+                } else if (this.items[index].labelHTML !== undefined) {
+                    this._pulldown.setLabelHTML(this.items[index].labelHTML);
+                }
                 this._pulldown.setIcon(this.items[index].icon);
             }
 
