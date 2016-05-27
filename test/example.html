@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,8 +7,8 @@
 	<title>flagrate</title>
 	<meta name="robots" content="noindex,nofollow">
 	<meta name="robots" content="noarchive">
-	<script type="text/javascript" src="../flagrate.js"></script>
-	<link rel="stylesheet" type="text/css" href="../flagrate.css">
+	<script type="text/javascript" src="../lib/flagrate.js"></script>
+	<link rel="stylesheet" type="text/css" href="../lib/flagrate.min.css">
 	<style type="text/css">
 		body {
 			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAALUlEQVQYV2P89evXfwYiACNVFb5584aBuiaCvEBdE2nsRpDxIiIi8KBH5oPYAE3RNZlqiqMoAAAAAElFTkSuQmCC);
@@ -43,6 +44,7 @@
 		flagrate.createButton({ label: 'Button' }).insertTo(c);
 		flagrate.createButton({ label: 'Button', icon: 'icon.png' }).insertTo(c);
 		flagrate.createButton({ label: 'Button', isRemovableByUser: true }).insertTo(c);
+		flagrate.createButton({ labelHTML: 'Button <b>(HTML)</b>' }).insertTo(c);
 
 		flagrate.Element.insert(c, '<br>');
 
@@ -50,6 +52,7 @@
 		flagrate.createButton({ label: 'Button' }).disable().insertTo(c);
 		flagrate.createButton({ label: 'Button', icon: 'icon.png' }).disable().insertTo(c);
 		flagrate.createButton({ label: 'Button', isRemovableByUser: true }).disable().insertTo(c);
+		flagrate.createButton({ labelHTML: 'Button <b>(HTML)</b>', isRemovableByUser: true }).insertTo(c);
 
 		flagrate.Element.insert(c, '<br>');
 
@@ -90,7 +93,7 @@
 						label: 'foo'
 					},
 					{
-						label: 'bar'
+						labelHTML: '<b>bar</b>'
 					},
 					{
 						label     : 'delete',
@@ -109,6 +112,9 @@
 				items: [
 					{
 						label: 'Menu'
+					},
+					{
+						labelHTML: '<b>Menu</b>'
 					},
 					{
 						label: 'Menu',
@@ -133,6 +139,9 @@
 					label: 'Pulldown'
 				},
 				{
+					labelHTML: '<b>Pulldown</b>'
+				},
+				{
 					label: 'Pulldown',
 					icon : 'icon.png'
 				},
@@ -150,6 +159,9 @@
 			items: [
 				{
 					label: 'Pulldown'
+				},
+				{
+					labelHTML: '<b>Pulldown</b>'
 				},
 				{
 					label: 'Pulldown',
@@ -200,6 +212,40 @@
 
 		flagrate.Element.insert(c, '<br>');
 
+		// SearchBox
+		flagrate.createSearchBox({
+			placeholder: 'SearchBox',
+			suggester: function (value) {
+				if (value) {
+					return [
+						// suggestion
+						{
+							label: 'Search Site for "' + value + '"',
+							onSelect: function () {
+								console.log(this, value);
+							}
+						},
+						// auto complete
+						value.toLowerCase(),
+						value.toUpperCase()
+					];
+				}
+			},
+			onSearch: function (value) {
+				console.log(this, value);
+			}
+		}).insertTo(c);
+		flagrate.createSearchBox({
+			value: 'SearchBox',
+			isDisabled: true
+		}).insertTo(c);
+		flagrate.createSearchBox({
+			placeholder: 'SearchBox',
+			icon: 'icon.png'
+		}).insertTo(c);
+
+		flagrate.Element.insert(c, '<br>');
+
 		// Select
 		flagrate.createSelect({
 			items: [
@@ -213,7 +259,7 @@
 					value: 'huga'
 				},
 				{
-					label: 'Select 3',
+					labelHTML: '<b>Select</b> 3',
 					value: 123
 				}
 			]
@@ -232,6 +278,7 @@
 
 		flagrate.createSelect({
 			listView: true,
+			selectedIndex: 2,
 			items: [
 				{
 					label: 'Select',
@@ -243,7 +290,7 @@
 					value: 'huga'
 				},
 				{
-					label: 'Select 3',
+					labelHTML: '<b>Select</b> 3',
 					value: 123
 				}
 			]
@@ -251,6 +298,7 @@
 		flagrate.createSelect({
 			listView  : true,
 			isDisabled: true,
+			selectedIndex: 2,
 			items: [
 				{
 					label: 'Select',
@@ -262,7 +310,7 @@
 					value: 'huga'
 				},
 				{
-					label: 'Select 3',
+					labelHTML: '<b>Select</b> 3',
 					value: 123
 				}
 			]
@@ -272,6 +320,7 @@
 
 		flagrate.createSelect({
 			multiple: true,
+			selectedIndexes: [2],
 			items: [
 				{
 					label: 'Select',
@@ -283,7 +332,7 @@
 					value: 'huga'
 				},
 				{
-					label: 'Select 3',
+					labelHTML: '<b>Select</b> 3',
 					value: 123
 				}
 			]
@@ -291,6 +340,7 @@
 		flagrate.createSelect({
 			multiple  : true,
 			isDisabled: true,
+			selectedIndexes: [2],
 			items: [
 				{
 					label: 'Select',
@@ -302,7 +352,7 @@
 					value: 'huga'
 				},
 				{
-					label: 'Select 3',
+					labelHTML: '<b>Select</b> 3',
 					value: 123
 				}
 			]
@@ -522,7 +572,7 @@
 			rows: [
 				{
 					cell: {
-						id: '0',
+						id: 0,
 						name: 'text',
 						num: {
 							sortAlt: 1,
@@ -538,7 +588,7 @@
 				{
 					isSelected: true,
 					cell: {
-						id: '1',
+						id: 1,
 						name: 'text',
 						desc: '<b>text</b>',
 						num: {
@@ -563,7 +613,7 @@
 				},
 				{
 					cell: {
-						id: '2',
+						id: 2,
 						desc: {
 							html: '<b>html</b>'
 						},
