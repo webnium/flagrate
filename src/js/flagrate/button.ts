@@ -58,6 +58,7 @@ export interface Instance {
     enable(): this;
     isEnabled(): boolean;
     setLabel(label: string): this;
+    setLabelHTML(html: string): this;
     setColor(color?: string): this;
     getColor(): string;
     setIcon(url?: string): this;
@@ -66,7 +67,7 @@ export interface Instance {
     onSelect?(event?: ButtonEvent, button?: this): void;
     onRemove?(event?: ButtonEvent, button?: this): void;
 
-    _label?: FHTMLSpanElement;
+    labelElement?: FHTMLSpanElement;
     _removeButton?: FHTMLButtonElement;
     _color?: string;
     _iconIdentifier?: string;
@@ -92,6 +93,9 @@ export interface Option {
 
     /** Label text. */
     label?: string;
+
+    /** Label html. */
+    labelHTML?: string;
 
     /** icon image URL. */
     icon?: string;
@@ -137,7 +141,6 @@ export interface ButtonEvent extends MouseEvent {
 **/
 function FButton(option: Option = {}) {
 
-    option.label = option.label || "";
     option.isRemovableByUser = option.isRemovableByUser || false;
 
     this.onSelect = option.onSelect || emptyFunction;
@@ -160,7 +163,13 @@ function FButton(option: Option = {}) {
     const button = new Element("button", attr) as Button;
     extendObject(button, this);
 
-    button._label = new Element("span").updateText(option.label).insertTo(button);
+    button.labelElement = new Element("span").insertTo(button);
+
+    if (option.label) {
+        button.labelElement.insertText(option.label);
+    } else if (option.labelHTML) {
+        button.labelElement.insert(option.labelHTML);
+    }
 
     button.addClassName("flagrate flagrate-button");
     if (option.className) {
@@ -229,7 +238,14 @@ Button.prototype = {
 
     setLabel(text) {
 
-        this._label.updateText(text);
+        this.labelElement.updateText(text);
+
+        return this;
+    },
+
+    setLabelHTML(html) {
+
+        this.labelElement.update(html);
 
         return this;
     },
