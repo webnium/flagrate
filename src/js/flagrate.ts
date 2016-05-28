@@ -133,8 +133,8 @@ export namespace Flagrate {
     export const createForm = form.createForm;
 }
 
-if (typeof window["flagrate"] === "undefined") {
-    window["flagrate"] = Flagrate;
+if (window.flagrate === undefined) {
+    window.flagrate = Flagrate;
 }
 
 declare global {
