@@ -70,6 +70,8 @@ export interface Option {
     timeout?: number;
     /** default is `"Notify"`. */
     title?: string;
+    /** default icon URL. */
+    icon?: string;
 }
 
 export interface CreateOption {
@@ -121,6 +123,7 @@ export class Notify {
     spacing = 10;//pixels
     timeout = 5;//seconds
     title = "Notify";
+    icon: string;
 
     private _notifies: FHTMLDivElement[] = [];
 
@@ -159,6 +162,9 @@ export class Notify {
         if (opt.title) {
             this.title = opt.title;
         }
+        if (opt.icon) {
+            this.icon = opt.icon;
+        }
 
         this._init();
     }
@@ -192,6 +198,7 @@ export class Notify {
         const onClick = opt.onClick;
         const onClose = opt.onClose;
         const timeout = (opt.timeout !== void 0) ? opt.timeout : this.timeout;
+        const icon = opt.icon || this.icon;
 
         let isAlive = true;
         let closeTimer;
@@ -214,9 +221,9 @@ export class Notify {
         new Element("div", { "class": "text" }).insertText(message).insertTo(notify);
         const notifyClose = new Element("div", { "class": "close" }).update("&#xd7;").insertTo(notify);
 
-        if (opt.icon) {
+        if (icon) {
             notify.addClassName("flagrate-notify-icon");
-            new Element("div", { "class": "icon" }).setStyle({ "backgroundImage": "url(" + opt.icon + ")" }).insertTo(notify);
+            new Element("div", { "class": "icon" }).setStyle({ "backgroundImage": `url(${icon})` }).insertTo(notify);
         }
 
         /*- Remove a notify element -*/
@@ -340,6 +347,7 @@ export class Notify {
         const onClick = opt.onClick;
         const onClose = opt.onClose;
         const timeout = (opt.timeout !== void 0) ? opt.timeout : this.timeout;
+        const icon = opt.icon || this.icon;
 
         let isAlive = true;
         let notify = null;
@@ -352,7 +360,7 @@ export class Notify {
         }
 
         notify = new window["Notification"](title, {
-            icon: opt.icon,
+            icon: icon,
             body: message
         });
 
