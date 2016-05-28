@@ -56,6 +56,9 @@ export interface Option {
     /** Label text. */
     label?: string;
 
+    /** Label HTML. */
+    labelHTML?: string;
+
     /** icon image URL. */
     icon?: string;
 
@@ -94,9 +97,15 @@ function FCheckbox(opt: Option = {}) {
     attr["class"] = opt.className || null;
 
     //create
-    const checkbox = new Element("label", attr).updateText(opt.label) as Checkbox;
+    const checkbox = new Element("label", attr) as Checkbox;
     checkbox.writeAttribute("for", id);
     extendObject(checkbox, this);
+
+    if (opt.label) {
+        checkbox.insertText(opt.label);
+    } else if (opt.labelHTML) {
+        checkbox.insert(opt.labelHTML);
+    }
 
     checkbox.addClassName("flagrate flagrate-checkbox");
 

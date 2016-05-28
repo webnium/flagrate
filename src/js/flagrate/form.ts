@@ -140,6 +140,7 @@ export interface InputOption {
     // anyway,
     placeholder?: string;
     label?: string;
+    labelHTML?: string;
     icon?: string;
     items?: (string | number | boolean | CheckboxesItem | SelectItem | RadiosItem)[];
     selectedIndex?: number;
@@ -1392,13 +1393,15 @@ export class Form {
             Checkbox input. (uses flagrate.Checkbox)
 
             * `label`       (String):
+            * `labelHTML`   (String):
             * `icon`        (String):
         **/
         checkbox: {
             create() {
                 return new Checkbox({
                     icon: this.icon,
-                    label: this.label
+                    label: this.label,
+                    labelHTML: this.labelHTML
                 });
             },
             getVal(): boolean {

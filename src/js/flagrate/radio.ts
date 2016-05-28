@@ -60,6 +60,9 @@ export interface Option {
     /** Label text. */
     label?: string;
 
+    /** Label HTML. */
+    labelHTML?: string;
+
     /** icon image URL. */
     icon?: string;
 
@@ -98,9 +101,15 @@ function FRadio(opt: Option = {}) {
     attr["class"] = opt.className || null;
 
     //create
-    const radio = new Element("label", attr).updateText(opt.label) as Radio;
+    const radio = new Element("label", attr) as Radio;
     radio.writeAttribute("for", id);
     extendObject(radio, this);
+
+    if (opt.label) {
+        radio.insertText(opt.label);
+    } else if (opt.labelHTML) {
+        radio.insert(opt.labelHTML);
+    }
 
     radio.addClassName("flagrate flagrate-radio");
 
