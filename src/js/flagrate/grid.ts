@@ -1153,7 +1153,8 @@ export class Grid {
                 continue;
             }
 
-            col.width = col._th.getWidth();
+            const minWidth = col.minWidth === undefined ? this._opt.colMinWidth : col.minWidth;
+            col.width = Math.max(col._th.getWidth(), minWidth);
 
             this._style.updateText(
                 this._style.innerHTML.replace(
