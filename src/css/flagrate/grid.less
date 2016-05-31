@@ -92,21 +92,21 @@ div.flagrate-grid {
                 &.flagrate-grid-col-sorted-desc {
                     color: @primary;
 
-                    > div::after {
+                    &::after {
                         display: inline-block;
                         position: absolute;
                         top: 0;
                         left: 50%;
-                        margin-top: -11px;
+                        margin-top: 0;
                         margin-left: -4px;
                         font-size: 10px;
                     }
                 }
 
-                &.flagrate-grid-col-sorted-asc > div::after {
+                &.flagrate-grid-col-sorted-asc::after {
                     content: '\25b2';
                 }
-                &.flagrate-grid-col-sorted-desc > div::after {
+                &.flagrate-grid-col-sorted-desc::after {
                     content: '\25bc';
                 }
 
