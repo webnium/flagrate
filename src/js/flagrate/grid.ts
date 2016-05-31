@@ -909,13 +909,15 @@ export class Grid {
             this.element.onscroll = this._createOnScrollHandler();
         }
 
-        this.element.addEventListener("mouseover", (e) => {
+        if (this._opt.disableResize === false) {
+            this.element.addEventListener("mouseover", (e) => {
 
-            if (e.buttons === 0) {
-                this._updateLayoutOfCols();
-                this._updatePositionOfResizeHandles();
-            }
-        }, true);
+                if (e.buttons === 0) {
+                    this._updateLayoutOfCols();
+                    this._updatePositionOfResizeHandles();
+                }
+            }, true);
+        }
 
         return this;
     }
