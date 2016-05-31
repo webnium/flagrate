@@ -255,6 +255,7 @@ export class Grid {
     element = new Element("div", { "class": "flagrate flagrate-grid" });
     private _checkbox: Checkbox;
     private _pager: Toolbar;
+    private _lastCol: FHTMLTableHeaderCellElement;
     private _head = new Element("div", { "class": "flagrate-grid-head" }).insertTo(this.element);
     private _thead = new Element("thead").insertTo(new Element("table").insertTo(this._head));
     private _tr = new Element("tr").insertTo(this._thead);
@@ -838,7 +839,7 @@ export class Grid {
             }
         }
 
-        new Element("th", { "class": this._id + "-col-last" }).insertTo(this._tr);
+        this._lastCol = new Element("th", { "class": this._id + "-col-last" }).insertTo(this._tr);
         this._style.insertText("." + this._id + "-col-last:after{right:0}");
 
         // pagination (testing)
@@ -907,6 +908,14 @@ export class Grid {
         } else {
             this.element.onscroll = this._createOnScrollHandler();
         }
+
+        this.element.addEventListener("mouseover", (e) => {
+
+            if (e.buttons === 0) {
+                this._updateLayoutOfCols();
+                this._updatePositionOfResizeHandles();
+            }
+        }, true);
 
         return this;
     }
@@ -1142,10 +1151,12 @@ export class Grid {
         return this;
     }
 
-    private _updateLayoutOfCols() {
+    private _updateLayoutOfCols(surplus?: number) {
+
+        let fixed = true;
+        let minimized = 0;
 
         let col;
-
         for (let i = 0, l = this._cols.length; i < l; i++) {
             col = this._cols[i];
 
@@ -1153,18 +1164,31 @@ export class Grid {
                 continue;
             }
 
+            let width = "auto";
+
             const minWidth = col.minWidth === undefined ? this._opt.colMinWidth : col.minWidth;
-            col.width = Math.max(col._th.getWidth(), minWidth);
+            if (surplus) {
+                width = surplus + "px";
+            } else if (minWidth >= col._th.getWidth()) {
+                width = minWidth + "px";
+                ++minimized;
+            } else {
+                fixed = false;
+            }
 
             this._style.updateText(
                 this._style.innerHTML.replace(
                     new RegExp("(" + col._id + "{width:)([^}]*)}"),
-                    "$1" + col.width + "px}"
+                    "$1" + width + "}"
                 )
             );
         }
 
-        this.element.addClassName("flagrate-grid-fixed");
+        if (fixed) {
+            this.element.addClassName("flagrate-grid-fixed");
+        } else {
+            this.element.removeClassName("flagrate-grid-fixed");
+        }
 
         setTimeout(() => {
 
@@ -1176,6 +1200,11 @@ export class Grid {
                     "$1" + (base.scrollWidth - base.clientWidth - base.scrollLeft) + "px!important}"
                 )
             );
+
+            const _surplus = this._lastCol.getWidth();
+            if (fixed && !surplus && _surplus && minimized) {
+                this._updateLayoutOfCols(Math.floor(_surplus / minimized));
+            }
         }, 0);
 
         return this;
