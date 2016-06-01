@@ -1,14 +1,14 @@
 {
     "version": "0.1.0",
-    "command": "gulp",
+    "command": "npm",
     "isShellCommand": true,
     "args": [
         "--no-color"
     ],
     "tasks": [
         {
-            "taskName": "watch",
-            "args": ["watch"],
+            "taskName": "run",
+            "args": ["build"],
             "isBuildCommand": true,
             "isWatching": true,
             "problemMatcher": [
