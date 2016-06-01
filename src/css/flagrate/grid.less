@@ -68,7 +68,6 @@ div.flagrate-grid {
         width: 100%;
 
         > thead > tr {
-            background-color: @background;
             color: @inverse;
 
             &:hover {
@@ -84,7 +83,7 @@ div.flagrate-grid {
                 }
 
                 &.flagrate-grid-col-sortable:hover {
-                    background-color: @shape-hover;
+                    background-color: fade(#000, 4%);
                     cursor: pointer;
                 }
 
@@ -119,10 +118,9 @@ div.flagrate-grid {
 
         > tbody > tr {
             position: relative;
-            background-color: @background;
 
             &:hover {
-                background-color: @shape-hover;
+                background-color: fade(#000, 4%);
             }
 
             &.flagrate-grid-row-selected {
@@ -164,6 +162,7 @@ div.flagrate-grid {
                     user-select: none;
 
                     &.flagrate-grid-cell-checkbox {
+                        padding: 5px;
                         width: 30px;
 
                          > .flagrate-checkbox > div {
