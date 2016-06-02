@@ -583,7 +583,8 @@
 						{
 							label: 'menu'
 						}
-					]
+					],
+					value: 0
 				},
 				{
 					isSelected: true,
@@ -609,11 +610,17 @@
 							label     : 'menu',
 							isDisabled: true
 						}
-					]
+					],
+					value: {
+						id: 1
+					}
 				},
 				{
 					cell: {
-						id: 2,
+						id: {
+							text: 2,
+							value: 2
+						},
 						desc: {
 							html: '<b>html</b>'
 						},
