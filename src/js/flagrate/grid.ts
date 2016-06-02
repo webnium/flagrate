@@ -550,23 +550,7 @@ export class Grid {
     /** get values of selected rows */
     getValues(): any[] {
 
-        return this._selectedRows.map(row => {
-
-            // row's value is first
-            if (row.value === undefined) {
-                return row.value;
-            }
-
-            const ret = {};
-
-            for (const key in row.cell) {
-                if (typeof row.cell[key] === "object" && (<Cell>row.cell[key]).value !== undefined) {
-                    ret[key] = (<Cell>row.cell[key]).value;
-                }
-            }
-
-            return ret;
-        });
+        return this._selectedRows.map(row => getValue.call(row));
     }
 
     /** sort rows by key */
@@ -1414,4 +1398,24 @@ export class Grid {
 
 export function createGrid(a): Grid {
     return new Grid(a);
+}
+
+/** get value of row */
+function getValue(): any {
+
+    const row = this as Row;
+
+    if (row.value !== undefined) {
+        return row.value;
+    }
+
+    const ret = {};
+
+    for (const key in row.cell) {
+        if (typeof row.cell[key] === "object" && (<Cell>row.cell[key]).value !== undefined) {
+            ret[key] = (<Cell>row.cell[key]).value;
+        }
+    }
+
+    return ret;
 }
