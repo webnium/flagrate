@@ -102,6 +102,9 @@ export interface ColOption {
 export interface Row extends RowOption {
     cell?: { [colKey: string]: string | number | Cell };
 
+    /** readonly */tr?: FHTMLTableRowElement;
+
+    _grid?: Grid;
     _tr?: FHTMLTableRowElement;
     _checkbox?: Checkbox;
     _last?: FHTMLTableDataCellElement;
@@ -130,6 +133,9 @@ export interface RowOption {
 }
 
 export interface Cell extends CellOption {
+    /** readonly */td?: FHTMLTableDataCellElement;
+    /** readonly */div?: FHTMLDivElement;
+
     _td?: FHTMLTableDataCellElement;
     _div?: FHTMLDivElement;
 }
@@ -956,16 +962,20 @@ export class Grid {
 
             row = this._rows[i];
 
-            if (!row._tr) {
-                row._tr = new Element("tr");
+            if (row._tr) {
+                row._tr.insertTo(this._tbody);
+                continue;
             }
-            row._tr.insertTo(this._tbody);
+
+            // init row
+            row._grid = this;
+            row._tr = new Element("tr").insertTo(this._tbody);
 
             if (row.id) {
-                row._tr.writeAttribute("id", row.id);
+                row._tr.id = row.id;
             }
             if (row.className) {
-                row._tr.writeAttribute("class", row.className);
+                row._tr.className = row.className;
             }
             if (row.attribute) {
                 row._tr.writeAttribute(row.attribute);
@@ -1007,16 +1017,19 @@ export class Grid {
                     cell = row.cell[col.key] = { text: <string | number>cell };
                 }
 
-                if (!cell._td) {
-                    cell._td = new Element("td");
+                if (cell._td) {
+                    cell._td.insertTo(row._tr);
+                    continue;
                 }
-                cell._td.insertTo(row._tr);
+
+                // init cell
+                cell._td = new Element("td").insertTo(row._tr);
 
                 if (cell.id) {
-                    cell._td.writeAttribute("id", cell.id);
+                    cell._td.id = cell.id;
                 }
                 if (cell.className) {
-                    cell._td.writeAttribute("class", cell.className);
+                    cell._td.className = cell.className;
                 }
                 if (cell.attribute) {
                     cell._td.writeAttribute(cell.attribute);
@@ -1031,10 +1044,8 @@ export class Grid {
 
                 cell._td.addClassName(col._id);
 
-                if (!cell._div) {
-                    cell._div = new Element();
-                }
-                cell._div.insertTo(cell._td);
+                // init cell content
+                cell._div = new Element().insertTo(cell._td);
 
                 if (cell.text !== undefined) {
                     cell._div.updateText(cell.text);
@@ -1048,9 +1059,7 @@ export class Grid {
 
                 if (cell.icon) {
                     cell._div.addClassName("flagrate-icon");
-                    cell._div.setStyle({
-                        backgroundImage: "url(" + cell.icon + ")"
-                    });
+                    cell._div.style.backgroundImage = `url(${cell.icon})`;
                 }
 
                 if (cell.onClick) {
@@ -1062,6 +1071,9 @@ export class Grid {
                 if (cell.onDblClick) {
                     cell._td.ondblclick = this._createCellOnDblClickHandler(cell);
                 }
+
+                // redefine props
+                Object.defineProperties(cell, cellProps);
 
                 // post-processing
                 if (cell.postProcess) {
@@ -1076,19 +1088,11 @@ export class Grid {
 
             // menu
             if (row.menuItems) {
-                row._last.addClassName("flagrate-grid-cell-menu");
-
-                //row
-                if (row._menu) {
-                    row._menu.remove();
-                }
-                row._menu = new ContextMenu({
-                    target: row._tr,
-                    items: row.menuItems
-                });
-
-                row._last.onclick = this._createLastRowOnClickHandler(row);
+                this._updateRowMenu(row, row.menuItems);
             }
+
+            // redefine props
+            Object.defineProperties(row, rowProps);
 
             // post-processing
             if (row.postProcess) {
@@ -1121,7 +1125,30 @@ export class Grid {
         return this;
     }
 
-    private _updatePositionOfResizeHandles() {
+    private _updateRowMenu(row: Row, items: MenuItemOption[]): void {
+
+        if (row._menu) {
+            row._menu.remove();
+            delete row._menu;
+        }
+
+        if (items && items.length !== 0) {
+            row._last.addClassName("flagrate-grid-cell-menu");
+
+            row._menu = new ContextMenu({
+                target: row._tr,
+                items: items
+            });
+
+            if (!row._last.onclick) {
+                row._last.onclick = row._grid._createLastRowOnClickHandler(row);
+            }
+        } else {
+            row._last.removeClassName("flagrate-grid-cell-menu");
+        }
+    }
+
+    private _updatePositionOfResizeHandles(): void {
 
         const adj = this._opt.fill ? -this._body.scrollLeft : 0;
 
@@ -1133,11 +1160,9 @@ export class Grid {
                 col._resizeHandle.style.left = (col._th.offsetLeft + col._th.getWidth() + adj) + "px";
             }
         }
-
-        return this;
     }
 
-    private _updateLayoutOfCols(surplus?: number) {
+    private _updateLayoutOfCols(surplus?: number): void {
 
         let fixed = true;
         let minimized = 0;
@@ -1192,8 +1217,6 @@ export class Grid {
                 this._updateLayoutOfCols(Math.floor(_surplus / minimized));
             }
         }, 0);
-
-        return this;
     }
 
     private _createOnScrollHandler() {
@@ -1419,3 +1442,129 @@ function getValue(): any {
 
     return ret;
 }
+
+const hiddenProp = { enumerable: false };
+
+const rowProps = <PropertyDescriptorMap>{
+    _checkbox: hiddenProp,
+    _grid: hiddenProp,
+    _last: hiddenProp,
+    _menu: hiddenProp,
+    _tr: hiddenProp,
+    className: hiddenProp,
+    attribute: hiddenProp,
+    style: hiddenProp,
+    postProcess: hiddenProp,
+
+    tr: {
+        enumerable: true,
+        get: function () {
+            return (<Row>this)._tr;
+        }
+    },
+    id: {
+        enumerable: true,
+        get: function () {
+            return (<Row>this)._tr.id || undefined;
+        },
+        set: function (id: string) {
+            (<Row>this)._tr.id = id;
+        }
+    },
+    menuItems: {
+        enumerable: true,
+        get: function () {
+            if ((<Row>this)._menu) {
+                return (<Row>this)._menu.items;
+            }
+        },
+        set: function (items: MenuItemOption[]) {
+            this._grid._updateRowMenu(<Row>this, items);
+        }
+    }
+};
+
+const cellProps = <PropertyDescriptorMap>{
+    _td: hiddenProp,
+    _div: hiddenProp,
+    className: hiddenProp,
+    attribute: hiddenProp,
+    style: hiddenProp,
+    postProcess: hiddenProp,
+
+    td: {
+        enumerable: true,
+        get: function () {
+            return (<Cell>this)._td;
+        }
+    },
+    div: {
+        enumerable: true,
+        get: function () {
+            return (<Cell>this)._div;
+        }
+    },
+    id: {
+        enumerable: true,
+        get: function () {
+            return (<Cell>this)._td.id || undefined;
+        },
+        set: function (id: string) {
+            (<Cell>this)._td.id = id;
+        }
+    },
+    align: {
+        enumerable: true,
+        get: function () {
+            return (<Cell>this)._td.style.textAlign || undefined;
+        },
+        set: function (align: TextAlign) {
+            (<Cell>this)._td.style.textAlign = align;
+        }
+    },
+    text: {
+        enumerable: false,
+        get: function () {
+            return (<Cell>this)._div.innerText;
+        },
+        set: function (text: string | number) {
+            (<Cell>this)._div.updateText(text);
+        }
+    },
+    html: {
+        enumerable: false,
+        get: function () {
+            return (<Cell>this)._div.innerHTML;
+        },
+        set: function (html: string) {
+            (<Cell>this)._div.update(html);
+        }
+    },
+    element: {
+        enumerable: false,
+        get: function () {
+            return (<Cell>this)._div.firstChild;
+        },
+        set: function (element: HTMLElement) {
+            (<Cell>this)._div.update(element);
+        }
+    },
+    icon: {
+        enumerable: true,
+        get: function () {
+            return (<Cell>this)._div.style.backgroundImage.replace(/(.*url\()([^)]+)(\).*)/, "$2") || undefined;
+        },
+        set: function (url: string) {
+
+            const cell = this as Cell;
+
+            if (url) {
+                cell._div.addClassName("flagrate-icon");
+                cell._div.style.backgroundImage = `url(${url})`;
+            } else {
+                cell._div.removeClassName("flagrate-icon");
+                cell._div.style.backgroundImage = "";
+            }
+        }
+    }
+};
