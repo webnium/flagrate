@@ -103,11 +103,11 @@ export class ContextMenu {
         this._menu.insertTo(document.body);
 
         if (x + this._menu.getWidth() > window.innerWidth) {
-            x = x - this._menu.getWidth();
+            x = x - this._menu.getWidth() + 1;
         }
 
         if (y + this._menu.getHeight() > window.innerHeight) {
-            y = y - this._menu.getHeight();
+            y = y - this._menu.getHeight() + 1;
         }
 
         this._menu.style.top = `${y}px`;
