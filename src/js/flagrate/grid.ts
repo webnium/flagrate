@@ -273,6 +273,9 @@ export class Grid {
     private _id = "flagrate-grid-" + (++Grid.idCounter).toString(10);
 
     private _renderTimer: number;
+    private _layoutTimer: number;
+    private _layoutInterval: number;
+    private _layoutWidth: number;
 
     constructor(private _opt: Option = {}) {
 
@@ -900,16 +903,34 @@ export class Grid {
         }
 
         if (this._opt.disableResize === false) {
-            this.element.addEventListener("mouseover", (e) => {
-
-                if (e.buttons === 0) {
-                    this._updateLayoutOfCols();
-                    this._updatePositionOfResizeHandles();
-                }
-            }, true);
+            this._layoutUpdater();
         }
 
         return this;
+    }
+
+    private _layoutUpdater(): void {
+
+        if (this._layoutInterval) {
+            clearInterval(this._layoutInterval);
+        }
+        this._layoutInterval = setInterval(this._requestUpdateLayout.bind(this), 1000);
+    }
+
+    private _requestUpdateLayout(): void {
+
+        if (this._layoutWidth === this.element.clientWidth) {
+            return;
+        }
+        if (this._layoutTimer) {
+            clearTimeout(this._layoutTimer);
+        }
+        this._layoutTimer = setTimeout(() => {
+
+            this._layoutWidth = this.element.clientWidth;
+            this._updateLayoutOfCols();
+            this._updatePositionOfResizeHandles();
+        }, 0);
     }
 
     private _requestRender(): this {
@@ -1114,8 +1135,7 @@ export class Grid {
                 this._head.scrollLeft = this._body.scrollLeft;
             }
 
-            this._updateLayoutOfCols();
-            this._updatePositionOfResizeHandles();
+            this._requestUpdateLayout();
         }
 
         if (this.onRendered) {
