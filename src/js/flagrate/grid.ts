@@ -914,7 +914,15 @@ export class Grid {
         if (this._layoutInterval) {
             clearInterval(this._layoutInterval);
         }
-        this._layoutInterval = setInterval(this._requestUpdateLayout.bind(this), 1000);
+        this._layoutInterval = setInterval(() => {
+
+            if (this.element.exists() === false) {
+                clearInterval(this._layoutInterval);
+                return;
+            }
+
+            this._requestUpdateLayout();
+        }, 1000);
     }
 
     private _requestUpdateLayout(): void {
