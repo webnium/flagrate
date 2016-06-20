@@ -37,7 +37,7 @@ export interface Option {
     style?: Property;
     cols?: ColOption[];
     rows?: RowOption[];
-    /** default is `10`. */
+    /** default is `16`. */
     colMinWidth?: number;
     /** default is `false`. */
     pagination?: boolean;
@@ -300,7 +300,7 @@ export class Grid {
         }
 
         if (_opt.colMinWidth === undefined) {
-            _opt.colMinWidth = 10;
+            _opt.colMinWidth = 16;
         }
         if (_opt.pagination === undefined) {
             _opt.pagination = false;
