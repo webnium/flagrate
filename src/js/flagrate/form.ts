@@ -995,7 +995,7 @@ export class Form {
                     hasError = true;
                 }
             }
-            if (field.input.min) {
+            if (typeof field.input.min === "number") {
                 if (typeof val === "number") {
                     if (field.input.min > val) {
                         hasError = true;
@@ -1010,7 +1010,7 @@ export class Form {
                     }
                 }
             }
-            if (field.input.max) {
+            if (typeof field.input.max === "number") {
                 if (typeof val === "number") {
                     if (field.input.max < val) {
                         hasError = true;
