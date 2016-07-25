@@ -1,7 +1,7 @@
 {
   "name": "flagrate",
   "description": "JavaScript UI Component Library",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.0-beta.14",
   "main": "./lib/es6/flagrate.js",
   "homepage": "https://flagrate.org",
   "scripts": {
