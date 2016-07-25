@@ -472,9 +472,9 @@ export class Form {
         const removes = this._fields.splice(index, c);
 
         for (let i = 0, l = removes.length; i < l; i++) {
-            if (removes[i].element) {
-                removes[i].element.remove();
-                delete removes[i].element;
+            if (removes[i].container) {
+                removes[i].container.remove();
+                delete removes[i].container;
             }
         }
 
