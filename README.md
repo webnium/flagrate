@@ -26,16 +26,28 @@ Using Flagrate
 
 **npm** package:
 
-    npm install flagrate
+```
+npm install flagrate@latest --save-dev
+```
 
 **Official CDN** provided by [Webnium](https://webnium.co.jp/):
 
-    <link href="//flagrate.org/flagrate.min.css" rel="stylesheet">
-    <script src="//flagrate.org/flagrate.min.js"></script>
+```html
+<link href="//flagrate.org/flagrate.min.css" rel="stylesheet">
+<script src="//flagrate.org/flagrate.min.js"></script>
+```
 
 **TypeScript** support:
 
-    /// <reference path="path/to/flagrate/index.d.ts" />
+```
+/// <reference path="path/to/flagrate/index.d.ts" />
+```
+
+**[Typings](https://github.com/typings/typings)** support:
+
+```
+typings install npm:flagrate -SG
+```
 
 #### [CDN status](http://stats.pingdom.com/z2isnrsvidf5/874134)
 [![Status banner](https://share.pingdom.com/banners/36f90d37)](http://stats.pingdom.com/z2isnrsvidf5/874134)
