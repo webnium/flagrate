@@ -67,7 +67,8 @@ export interface Instance {
     onSelect?(event?: ButtonEvent, button?: this): void;
     onRemove?(event?: ButtonEvent, button?: this): void;
 
-    labelElement?: FHTMLSpanElement;
+    readonly labelElement?: FHTMLSpanElement;
+
     _removeButton?: FHTMLButtonElement;
     _color?: string;
     _iconIdentifier?: string;
@@ -163,7 +164,7 @@ function FButton(option: Option = {}) {
     const button = new Element("button", attr) as Button;
     extendObject(button, this);
 
-    button.labelElement = new Element("span").insertTo(button);
+    (<any>button).labelElement = new Element("span").insertTo(button);
 
     if (option.label) {
         button.labelElement.insertText(option.label);
