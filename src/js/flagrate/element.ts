@@ -452,7 +452,7 @@ export interface createElement {
 }
 
 export interface Instance {
-    isFlagrated: boolean;
+    readonly isFlagrated: boolean;
 
     /** Tells whether `element` is visible. */
     visible(): boolean;
@@ -579,13 +579,13 @@ export interface Insertion {
 }
 
 export interface Dimensions {
-    width: number;
-    height: number;
+    readonly width: number;
+    readonly height: number;
 }
 
 export interface Offset {
-    top: number;
-    left: number;
+    readonly top: number;
+    readonly left: number;
 }
 
 const _cache = {};
