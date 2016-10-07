@@ -61,9 +61,9 @@ export interface Field extends FieldOption {
     visible?(): boolean;
 
     /** field container element */
-    /** readonly */container?: FHTMLDivElement;
+    readonly container?: FHTMLDivElement;
     /** label element */
-    /** readonly */labelElement?: FHTMLLabelElement;
+    readonly labelElement?: FHTMLLabelElement;
     /** input container element */
     _input?: FHTMLDivElement;
 
@@ -105,7 +105,7 @@ export interface Input extends InputOption {
     validators?: (RegExpValidator | ValidatorFunction)[];
 
     /** input element */
-    /** readonly */element?: FHTMLDivElement;
+    readonly element?: FHTMLDivElement;
 
     _result?: FHTMLUListElement;
 }
@@ -798,7 +798,7 @@ export class Form {
         field._dependsIsOk = (!field.depends || field.depends.length === 0);
 
         // field container
-        field.container = new Element("div");
+        (<any>field).container = new Element("div");
 
         // attributes to field container
         if (field.id) {
@@ -816,7 +816,7 @@ export class Form {
 
         // create label
         if (this._nolabel === false) {
-            field.labelElement = new Element("label").insertText(field.label || "");
+            (<any>field).labelElement = new Element("label").insertText(field.label || "");
 
             new Element("div", { "class": "flagrate-form-field-label" })
                 .insert(field.labelElement)
@@ -855,7 +855,7 @@ export class Form {
                 field.labelElement.writeAttribute("for", input.id);
             }
 
-            input.element = input.type.create.call(input);
+            (<any>input).element = input.type.create.call(input);
 
             new Element("div", { "class": "flagrate-form-field-input" })
                 .insert(input.element)
