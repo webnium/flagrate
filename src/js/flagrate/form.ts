@@ -614,8 +614,8 @@ export class Form {
                     if (isMustReselected) {
                         if (typeof active.selectionStart === "number") {
                             active.selectionStart = active.selectionEnd = active.value.length;
-                        } else if (typeof active.createTextRange !== "undefined") {
-                            const range = active.createTextRange();
+                        } else if (active["createTextRange"] !== undefined) {
+                            const range = active["createTextRange"]();
                             range.collapse(false);
                             range.select();
                         }

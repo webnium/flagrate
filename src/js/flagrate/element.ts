@@ -42,37 +42,23 @@ import { extendObject } from "./util";
 **/
 export interface FHTMLElement extends Instance, HTMLElement { }
 export interface FHTMLAnchorElement extends Instance, HTMLAnchorElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
 export interface FHTMLAppletElement extends Instance, HTMLAppletElement { }
 export interface FHTMLAreaElement extends Instance, HTMLAreaElement { }
 export interface FHTMLAudioElement extends Instance, HTMLAudioElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLBaseElement extends Instance, HTMLBaseElement { }
 export interface FHTMLBaseFontElement extends Instance, HTMLBaseFontElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
 export interface FHTMLBodyElement extends Instance, HTMLBodyElement { }
 export interface FHTMLBRElement extends Instance, HTMLBRElement { }
 export interface FHTMLButtonElement extends Instance, HTMLButtonElement { }
 export interface FHTMLCanvasElement extends Instance, HTMLCanvasElement { }
 export interface FHTMLTableCaptionElement extends Instance, HTMLTableCaptionElement { }
-export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLTableColElement extends Instance, HTMLTableColElement { }
 export interface FHTMLTableColElement extends Instance, HTMLTableColElement { }
 export interface FHTMLDataListElement extends Instance, HTMLDataListElement { }
-export interface FHTMLDDElement extends Instance, HTMLDDElement { }
 export interface FHTMLModElement extends Instance, HTMLModElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLDirectoryElement extends Instance, HTMLDirectoryElement { }
 export interface FHTMLDivElement extends Instance, HTMLDivElement { }
 export interface FHTMLDListElement extends Instance, HTMLDListElement { }
-export interface FHTMLDTElement extends Instance, HTMLDTElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLEmbedElement extends Instance, HTMLEmbedElement { }
 export interface FHTMLFieldSetElement extends Instance, HTMLFieldSetElement { }
 export interface FHTMLFontElement extends Instance, HTMLFontElement { }
@@ -88,49 +74,32 @@ export interface FHTMLHeadingElement extends Instance, HTMLHeadingElement { }
 export interface FHTMLHeadElement extends Instance, HTMLHeadElement { }
 export interface FHTMLHRElement extends Instance, HTMLHRElement { }
 export interface FHTMLHtmlElement extends Instance, HTMLHtmlElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLIFrameElement extends Instance, HTMLIFrameElement { }
 export interface FHTMLImageElement extends Instance, HTMLImageElement { }
 export interface FHTMLInputElement extends Instance, HTMLInputElement { }
 export interface FHTMLModElement extends Instance, HTMLModElement { }
-export interface FHTMLIsIndexElement extends Instance, HTMLIsIndexElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
 export interface FHTMLLabelElement extends Instance, HTMLLabelElement { }
 export interface FHTMLLegendElement extends Instance, HTMLLegendElement { }
 export interface FHTMLLIElement extends Instance, HTMLLIElement { }
 export interface FHTMLLinkElement extends Instance, HTMLLinkElement { }
-export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
 export interface FHTMLMapElement extends Instance, HTMLMapElement { }
 export interface FHTMLMarqueeElement extends Instance, HTMLMarqueeElement { }
 export interface FHTMLMenuElement extends Instance, HTMLMenuElement { }
 export interface FHTMLMetaElement extends Instance, HTMLMetaElement { }
-export interface FHTMLNextIdElement extends Instance, HTMLNextIdElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLObjectElement extends Instance, HTMLObjectElement { }
 export interface FHTMLOListElement extends Instance, HTMLOListElement { }
 export interface FHTMLOptGroupElement extends Instance, HTMLOptGroupElement { }
 export interface FHTMLOptionElement extends Instance, HTMLOptionElement { }
 export interface FHTMLParagraphElement extends Instance, HTMLParagraphElement { }
 export interface FHTMLParamElement extends Instance, HTMLParamElement { }
-export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
 export interface FHTMLPreElement extends Instance, HTMLPreElement { }
 export interface FHTMLProgressElement extends Instance, HTMLProgressElement { }
 export interface FHTMLQuoteElement extends Instance, HTMLQuoteElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLScriptElement extends Instance, HTMLScriptElement { }
 export interface FHTMLSelectElement extends Instance, HTMLSelectElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLSourceElement extends Instance, HTMLSourceElement { }
 export interface FHTMLSpanElement extends Instance, HTMLSpanElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLStyleElement extends Instance, HTMLStyleElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLTableElement extends Instance, HTMLTableElement { }
 export interface FHTMLTableSectionElement extends Instance, HTMLTableSectionElement { }
 export interface FHTMLTableDataCellElement extends Instance, HTMLTableDataCellElement { }
@@ -141,46 +110,43 @@ export interface FHTMLTableSectionElement extends Instance, HTMLTableSectionElem
 export interface FHTMLTitleElement extends Instance, HTMLTitleElement { }
 export interface FHTMLTableRowElement extends Instance, HTMLTableRowElement { }
 export interface FHTMLTrackElement extends Instance, HTMLTrackElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLUListElement extends Instance, HTMLUListElement { }
-export interface FHTMLPhraseElement extends Instance, HTMLPhraseElement { }
 export interface FHTMLVideoElement extends Instance, HTMLVideoElement { }
-export interface FHTMLBlockElement extends Instance, HTMLBlockElement { }
+export interface FHTMLUnknownElement extends Instance, HTMLUnknownElement { }
 
 export interface Class {
     new (tagName: "a", attribute?: Attribute): FHTMLAnchorElement;
-    new (tagName: "abbr", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "acronym", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "address", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "abbr", attribute?: Attribute): FHTMLElement;
+    new (tagName: "acronym", attribute?: Attribute): FHTMLElement;
+    new (tagName: "address", attribute?: Attribute): FHTMLElement;
     new (tagName: "applet", attribute?: Attribute): FHTMLAppletElement;
     new (tagName: "area", attribute?: Attribute): FHTMLAreaElement;
     new (tagName: "audio", attribute?: Attribute): FHTMLAudioElement;
-    new (tagName: "b", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "b", attribute?: Attribute): FHTMLElement;
     new (tagName: "base", attribute?: Attribute): FHTMLBaseElement;
     new (tagName: "basefont", attribute?: Attribute): FHTMLBaseFontElement;
-    new (tagName: "bdo", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "big", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "blockquote", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "bdo", attribute?: Attribute): FHTMLElement;
+    new (tagName: "big", attribute?: Attribute): FHTMLElement;
+    new (tagName: "blockquote", attribute?: Attribute): FHTMLQuoteElement;
     new (tagName: "body", attribute?: Attribute): FHTMLBodyElement;
     new (tagName: "br", attribute?: Attribute): FHTMLBRElement;
     new (tagName: "button", attribute?: Attribute): FHTMLButtonElement;
     new (tagName: "canvas", attribute?: Attribute): FHTMLCanvasElement;
     new (tagName: "caption", attribute?: Attribute): FHTMLTableCaptionElement;
-    new (tagName: "center", attribute?: Attribute): FHTMLBlockElement;
-    new (tagName: "cite", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "code", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "center", attribute?: Attribute): FHTMLElement;
+    new (tagName: "cite", attribute?: Attribute): FHTMLElement;
+    new (tagName: "code", attribute?: Attribute): FHTMLElement;
     new (tagName: "col", attribute?: Attribute): FHTMLTableColElement;
     new (tagName: "colgroup", attribute?: Attribute): FHTMLTableColElement;
     new (tagName: "datalist", attribute?: Attribute): FHTMLDataListElement;
-    new (tagName: "dd", attribute?: Attribute): FHTMLDDElement;
+    new (tagName: "dd", attribute?: Attribute): FHTMLElement;
     new (tagName: "del", attribute?: Attribute): FHTMLModElement;
-    new (tagName: "dfn", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "dfn", attribute?: Attribute): FHTMLElement;
     new (tagName: "dir", attribute?: Attribute): FHTMLDirectoryElement;
     new (tagName?: "div", attribute?: Attribute): FHTMLDivElement;
     new (tagName: "dl", attribute?: Attribute): FHTMLDListElement;
-    new (tagName: "dt", attribute?: Attribute): FHTMLDTElement;
-    new (tagName: "em", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "dt", attribute?: Attribute): FHTMLElement;
+    new (tagName: "em", attribute?: Attribute): FHTMLElement;
     new (tagName: "embed", attribute?: Attribute): FHTMLEmbedElement;
     new (tagName: "fieldset", attribute?: Attribute): FHTMLFieldSetElement;
     new (tagName: "font", attribute?: Attribute): FHTMLFontElement;
@@ -196,49 +162,49 @@ export interface Class {
     new (tagName: "head", attribute?: Attribute): FHTMLHeadElement;
     new (tagName: "hr", attribute?: Attribute): FHTMLHRElement;
     new (tagName: "html", attribute?: Attribute): FHTMLHtmlElement;
-    new (tagName: "i", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "i", attribute?: Attribute): FHTMLElement;
     new (tagName: "iframe", attribute?: Attribute): FHTMLIFrameElement;
     new (tagName: "img", attribute?: Attribute): FHTMLImageElement;
     new (tagName: "input", attribute?: Attribute): FHTMLInputElement;
     new (tagName: "ins", attribute?: Attribute): FHTMLModElement;
-    new (tagName: "isindex", attribute?: Attribute): FHTMLIsIndexElement;
-    new (tagName: "kbd", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "keygen", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "isindex", attribute?: Attribute): FHTMLUnknownElement;
+    new (tagName: "kbd", attribute?: Attribute): FHTMLElement;
+    new (tagName: "keygen", attribute?: Attribute): FHTMLElement;
     new (tagName: "label", attribute?: Attribute): FHTMLLabelElement;
     new (tagName: "legend", attribute?: Attribute): FHTMLLegendElement;
     new (tagName: "li", attribute?: Attribute): FHTMLLIElement;
     new (tagName: "link", attribute?: Attribute): FHTMLLinkElement;
-    new (tagName: "listing", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "listing", attribute?: Attribute): FHTMLPreElement;
     new (tagName: "map", attribute?: Attribute): FHTMLMapElement;
     new (tagName: "marquee", attribute?: Attribute): FHTMLMarqueeElement;
     new (tagName: "menu", attribute?: Attribute): FHTMLMenuElement;
     new (tagName: "meta", attribute?: Attribute): FHTMLMetaElement;
-    new (tagName: "nextid", attribute?: Attribute): FHTMLNextIdElement;
-    new (tagName: "nobr", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "nextid", attribute?: Attribute): FHTMLUnknownElement;
+    new (tagName: "nobr", attribute?: Attribute): FHTMLElement;
     new (tagName: "object", attribute?: Attribute): FHTMLObjectElement;
     new (tagName: "ol", attribute?: Attribute): FHTMLOListElement;
     new (tagName: "optgroup", attribute?: Attribute): FHTMLOptGroupElement;
     new (tagName: "option", attribute?: Attribute): FHTMLOptionElement;
     new (tagName: "p", attribute?: Attribute): FHTMLParagraphElement;
     new (tagName: "param", attribute?: Attribute): FHTMLParamElement;
-    new (tagName: "plaintext", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "plaintext", attribute?: Attribute): FHTMLElement;
     new (tagName: "pre", attribute?: Attribute): FHTMLPreElement;
     new (tagName: "progress", attribute?: Attribute): FHTMLProgressElement;
     new (tagName: "q", attribute?: Attribute): FHTMLQuoteElement;
-    new (tagName: "rt", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "ruby", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "s", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "samp", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "rt", attribute?: Attribute): FHTMLElement;
+    new (tagName: "ruby", attribute?: Attribute): FHTMLElement;
+    new (tagName: "s", attribute?: Attribute): FHTMLElement;
+    new (tagName: "samp", attribute?: Attribute): FHTMLElement;
     new (tagName: "script", attribute?: Attribute): FHTMLScriptElement;
     new (tagName: "select", attribute?: Attribute): FHTMLSelectElement;
-    new (tagName: "small", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "small", attribute?: Attribute): FHTMLElement;
     new (tagName: "source", attribute?: Attribute): FHTMLSourceElement;
     new (tagName: "span", attribute?: Attribute): FHTMLSpanElement;
-    new (tagName: "strike", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "strong", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "strike", attribute?: Attribute): FHTMLElement;
+    new (tagName: "strong", attribute?: Attribute): FHTMLElement;
     new (tagName: "style", attribute?: Attribute): FHTMLStyleElement;
-    new (tagName: "sub", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "sup", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "sub", attribute?: Attribute): FHTMLElement;
+    new (tagName: "sup", attribute?: Attribute): FHTMLElement;
     new (tagName: "table", attribute?: Attribute): FHTMLTableElement;
     new (tagName: "tbody", attribute?: Attribute): FHTMLTableSectionElement;
     new (tagName: "td", attribute?: Attribute): FHTMLTableDataCellElement;
@@ -249,12 +215,12 @@ export interface Class {
     new (tagName: "title", attribute?: Attribute): FHTMLTitleElement;
     new (tagName: "tr", attribute?: Attribute): FHTMLTableRowElement;
     new (tagName: "track", attribute?: Attribute): FHTMLTrackElement;
-    new (tagName: "tt", attribute?: Attribute): FHTMLPhraseElement;
-    new (tagName: "u", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "tt", attribute?: Attribute): FHTMLElement;
+    new (tagName: "u", attribute?: Attribute): FHTMLElement;
     new (tagName: "ul", attribute?: Attribute): FHTMLUListElement;
-    new (tagName: "var", attribute?: Attribute): FHTMLPhraseElement;
+    new (tagName: "var", attribute?: Attribute): FHTMLElement;
     new (tagName: "video", attribute?: Attribute): FHTMLVideoElement;
-    new (tagName: "xmp", attribute?: Attribute): FHTMLBlockElement;
+    new (tagName: "xmp", attribute?: Attribute): FHTMLPreElement;
     new (tagName: string, attribute?: Attribute): FHTMLElement;
 
     /** Tells whether `element` is visible. */
@@ -377,37 +343,37 @@ export interface Class {
 
 export interface createElement {
     (tagName: "a", attribute?: Attribute): FHTMLAnchorElement;
-    (tagName: "abbr", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "acronym", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "address", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "abbr", attribute?: Attribute): FHTMLElement;
+    (tagName: "acronym", attribute?: Attribute): FHTMLElement;
+    (tagName: "address", attribute?: Attribute): FHTMLElement;
     (tagName: "applet", attribute?: Attribute): FHTMLAppletElement;
     (tagName: "area", attribute?: Attribute): FHTMLAreaElement;
     (tagName: "audio", attribute?: Attribute): FHTMLAudioElement;
-    (tagName: "b", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "b", attribute?: Attribute): FHTMLElement;
     (tagName: "base", attribute?: Attribute): FHTMLBaseElement;
     (tagName: "basefont", attribute?: Attribute): FHTMLBaseFontElement;
-    (tagName: "bdo", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "big", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "blockquote", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "bdo", attribute?: Attribute): FHTMLElement;
+    (tagName: "big", attribute?: Attribute): FHTMLElement;
+    (tagName: "blockquote", attribute?: Attribute): FHTMLQuoteElement;
     (tagName: "body", attribute?: Attribute): FHTMLBodyElement;
     (tagName: "br", attribute?: Attribute): FHTMLBRElement;
     (tagName: "button", attribute?: Attribute): FHTMLButtonElement;
     (tagName: "canvas", attribute?: Attribute): FHTMLCanvasElement;
     (tagName: "caption", attribute?: Attribute): FHTMLTableCaptionElement;
-    (tagName: "center", attribute?: Attribute): FHTMLBlockElement;
-    (tagName: "cite", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "code", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "center", attribute?: Attribute): FHTMLElement;
+    (tagName: "cite", attribute?: Attribute): FHTMLElement;
+    (tagName: "code", attribute?: Attribute): FHTMLElement;
     (tagName: "col", attribute?: Attribute): FHTMLTableColElement;
     (tagName: "colgroup", attribute?: Attribute): FHTMLTableColElement;
     (tagName: "datalist", attribute?: Attribute): FHTMLDataListElement;
-    (tagName: "dd", attribute?: Attribute): FHTMLDDElement;
+    (tagName: "dd", attribute?: Attribute): FHTMLElement;
     (tagName: "del", attribute?: Attribute): FHTMLModElement;
-    (tagName: "dfn", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "dfn", attribute?: Attribute): FHTMLElement;
     (tagName: "dir", attribute?: Attribute): FHTMLDirectoryElement;
     (tagName?: "div", attribute?: Attribute): FHTMLDivElement;
     (tagName: "dl", attribute?: Attribute): FHTMLDListElement;
-    (tagName: "dt", attribute?: Attribute): FHTMLDTElement;
-    (tagName: "em", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "dt", attribute?: Attribute): FHTMLElement;
+    (tagName: "em", attribute?: Attribute): FHTMLElement;
     (tagName: "embed", attribute?: Attribute): FHTMLEmbedElement;
     (tagName: "fieldset", attribute?: Attribute): FHTMLFieldSetElement;
     (tagName: "font", attribute?: Attribute): FHTMLFontElement;
@@ -423,49 +389,49 @@ export interface createElement {
     (tagName: "head", attribute?: Attribute): FHTMLHeadElement;
     (tagName: "hr", attribute?: Attribute): FHTMLHRElement;
     (tagName: "html", attribute?: Attribute): FHTMLHtmlElement;
-    (tagName: "i", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "i", attribute?: Attribute): FHTMLElement;
     (tagName: "iframe", attribute?: Attribute): FHTMLIFrameElement;
     (tagName: "img", attribute?: Attribute): FHTMLImageElement;
     (tagName: "input", attribute?: Attribute): FHTMLInputElement;
     (tagName: "ins", attribute?: Attribute): FHTMLModElement;
-    (tagName: "isindex", attribute?: Attribute): FHTMLIsIndexElement;
-    (tagName: "kbd", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "keygen", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "isindex", attribute?: Attribute): FHTMLUnknownElement;
+    (tagName: "kbd", attribute?: Attribute): FHTMLElement;
+    (tagName: "keygen", attribute?: Attribute): FHTMLElement;
     (tagName: "label", attribute?: Attribute): FHTMLLabelElement;
     (tagName: "legend", attribute?: Attribute): FHTMLLegendElement;
     (tagName: "li", attribute?: Attribute): FHTMLLIElement;
     (tagName: "link", attribute?: Attribute): FHTMLLinkElement;
-    (tagName: "listing", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "listing", attribute?: Attribute): FHTMLPreElement;
     (tagName: "map", attribute?: Attribute): FHTMLMapElement;
     (tagName: "marquee", attribute?: Attribute): FHTMLMarqueeElement;
     (tagName: "menu", attribute?: Attribute): FHTMLMenuElement;
     (tagName: "meta", attribute?: Attribute): FHTMLMetaElement;
-    (tagName: "nextid", attribute?: Attribute): FHTMLNextIdElement;
-    (tagName: "nobr", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "nextid", attribute?: Attribute): FHTMLUnknownElement;
+    (tagName: "nobr", attribute?: Attribute): FHTMLElement;
     (tagName: "object", attribute?: Attribute): FHTMLObjectElement;
     (tagName: "ol", attribute?: Attribute): FHTMLOListElement;
     (tagName: "optgroup", attribute?: Attribute): FHTMLOptGroupElement;
     (tagName: "option", attribute?: Attribute): FHTMLOptionElement;
     (tagName: "p", attribute?: Attribute): FHTMLParagraphElement;
     (tagName: "param", attribute?: Attribute): FHTMLParamElement;
-    (tagName: "plaintext", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "plaintext", attribute?: Attribute): FHTMLElement;
     (tagName: "pre", attribute?: Attribute): FHTMLPreElement;
     (tagName: "progress", attribute?: Attribute): FHTMLProgressElement;
     (tagName: "q", attribute?: Attribute): FHTMLQuoteElement;
-    (tagName: "rt", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "ruby", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "s", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "samp", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "rt", attribute?: Attribute): FHTMLElement;
+    (tagName: "ruby", attribute?: Attribute): FHTMLElement;
+    (tagName: "s", attribute?: Attribute): FHTMLElement;
+    (tagName: "samp", attribute?: Attribute): FHTMLElement;
     (tagName: "script", attribute?: Attribute): FHTMLScriptElement;
     (tagName: "select", attribute?: Attribute): FHTMLSelectElement;
-    (tagName: "small", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "small", attribute?: Attribute): FHTMLElement;
     (tagName: "source", attribute?: Attribute): FHTMLSourceElement;
     (tagName: "span", attribute?: Attribute): FHTMLSpanElement;
-    (tagName: "strike", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "strong", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "strike", attribute?: Attribute): FHTMLElement;
+    (tagName: "strong", attribute?: Attribute): FHTMLElement;
     (tagName: "style", attribute?: Attribute): FHTMLStyleElement;
-    (tagName: "sub", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "sup", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "sub", attribute?: Attribute): FHTMLElement;
+    (tagName: "sup", attribute?: Attribute): FHTMLElement;
     (tagName: "table", attribute?: Attribute): FHTMLTableElement;
     (tagName: "tbody", attribute?: Attribute): FHTMLTableSectionElement;
     (tagName: "td", attribute?: Attribute): FHTMLTableDataCellElement;
@@ -476,12 +442,12 @@ export interface createElement {
     (tagName: "title", attribute?: Attribute): FHTMLTitleElement;
     (tagName: "tr", attribute?: Attribute): FHTMLTableRowElement;
     (tagName: "track", attribute?: Attribute): FHTMLTrackElement;
-    (tagName: "tt", attribute?: Attribute): FHTMLPhraseElement;
-    (tagName: "u", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "tt", attribute?: Attribute): FHTMLElement;
+    (tagName: "u", attribute?: Attribute): FHTMLElement;
     (tagName: "ul", attribute?: Attribute): FHTMLUListElement;
-    (tagName: "var", attribute?: Attribute): FHTMLPhraseElement;
+    (tagName: "var", attribute?: Attribute): FHTMLElement;
     (tagName: "video", attribute?: Attribute): FHTMLVideoElement;
-    (tagName: "xmp", attribute?: Attribute): FHTMLBlockElement;
+    (tagName: "xmp", attribute?: Attribute): FHTMLPreElement;
     (tagName: string, attribute?: Attribute): FHTMLElement;
 }
 
@@ -681,9 +647,11 @@ function FElement(tagName: string = "div", attribute?: Attribute) {
 
 export const Element = FElement as any as Class;
 
-export const createElement: createElement = (tagName, attribute) => {
+function _createElement(tagName, attribute) {
     return new Element(tagName, attribute);
 }
+
+export const createElement = _createElement as any as createElement;
 
 Element.prototype = {
     isFlagrated: true

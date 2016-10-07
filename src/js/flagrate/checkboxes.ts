@@ -120,7 +120,7 @@ function FCheckboxes(opt: Option = {}) {
         if (typeof item === "object") {
             extendObject(_item, item);
         } else {
-            _item.label = typeof item === "string" ? item : item.toString(10);
+            _item.label = typeof item === "string" ? item : item.toString();
             _item.value = item;
         }
 
