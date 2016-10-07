@@ -70,8 +70,8 @@ export interface Option {
 }
 
 export interface Col extends ColOption {
-    /** readonly */isSorted?: boolean;
-    /** readonly */isAsc?: boolean;
+    readonly isSorted?: boolean;
+    readonly isAsc?: boolean;
 
     _id?: string;
     _th?: FHTMLTableHeaderCellElement;
@@ -102,7 +102,7 @@ export interface ColOption {
 export interface Row extends RowOption {
     cell?: { [colKey: string]: string | number | Cell };
 
-    /** readonly */tr?: FHTMLTableRowElement;
+    readonly tr?: FHTMLTableRowElement;
 
     _grid?: Grid;
     _tr?: FHTMLTableRowElement;
@@ -133,8 +133,8 @@ export interface RowOption {
 }
 
 export interface Cell extends CellOption {
-    /** readonly */td?: FHTMLTableDataCellElement;
-    /** readonly */div?: FHTMLDivElement;
+    readonly td?: FHTMLTableDataCellElement;
+    readonly div?: FHTMLDivElement;
 
     _td?: FHTMLTableDataCellElement;
     _div?: FHTMLDivElement;
@@ -605,8 +605,8 @@ export class Grid {
                     this._cols[i]._th.removeClassName("flagrate-grid-col-sorted-asc");
                 }
 
-                this._cols[i].isSorted = true;
-                this._cols[i].isAsc = isAsc;
+                (<any>this._cols[i]).isSorted = true;
+                (<any>this._cols[i]).isAsc = isAsc;
 
                 this._sortedByKey = key;
                 this._sortedByAsc = isAsc;
@@ -615,8 +615,8 @@ export class Grid {
                     this._cols[i]._th.removeClassName("flagrate-grid-col-sorted-asc").removeClassName("flagrate-grid-col-sorted-desc");
                 }
 
-                this._cols[i].isSorted = false;
-                this._cols[i].isAsc = null;
+                (<any>this._cols[i]).isSorted = false;
+                (<any>this._cols[i]).isAsc = null;
             }
         }
 
