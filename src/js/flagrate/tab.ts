@@ -72,9 +72,10 @@ export interface Instance {
     /** get index by same object. */
     indexOf(tabItem: TabItem): number;
 
-    tabs?: TabItem[];
-    bodyless?: boolean;
-    selectedIndex?: number;
+    readonly tabs?: TabItem[];
+    readonly bodyless?: boolean;
+    readonly selectedIndex?: number;
+
     onSelect?(event?: TabEvent, tabItem?: TabItem): void;
 
     _tabs?: TabItem[];
