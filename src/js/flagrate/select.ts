@@ -52,26 +52,19 @@ export interface Instance {
 
     onChange?(event?: any, menu?: this): void;
 
-    /** readonly. */
-    listView?: boolean;
+    readonly listView?: boolean;
 
-    /** readonly. */
-    multiple?: boolean;
+    readonly multiple?: boolean;
 
-    /** readonly. */
-    items?: ItemOption[];
+    readonly items?: ItemOption[];
 
-    /** readonly. */
-    max?: number;
+    readonly max?: number;
 
-    /** readonly. */
-    selectedIndex?: number;
+    readonly selectedIndex?: number;
 
-    /** readonly. */
-    selectedIndexes?: number[];
+    readonly selectedIndexes?: number[];
 
-    /** readonly. */
-    isPulldown?: boolean;
+    readonly isPulldown?: boolean;
 
     _pulldown?: Pulldown;
     _grid?: Grid;
