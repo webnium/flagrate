@@ -136,6 +136,8 @@ export interface InputOption {
     id?: string;
     /** style of input. (using flagrate.Element.setStyle) */
     style?: Property;
+    /** additional attribute of input. */
+    attribute?: Attribute;
 
     // anyway,
     placeholder?: string;
@@ -877,6 +879,10 @@ export class Form {
 
             if (input.style) {
                 input.element.setStyle(input.style);
+            }
+
+            if (input.attribute) {
+                input.element.writeAttribute(input.attribute);
             }
 
             // toString is alias for toStr.
