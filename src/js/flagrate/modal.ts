@@ -148,7 +148,8 @@ export class Modal {
         }
 
         if (_opt["description"]) {
-            this._opt["description"] = _opt["description"];
+            // description has deprecated but no schedule to remove.
+            this._opt.subtitle = _opt["description"];
         }
 
         if (_opt.buttons) {
