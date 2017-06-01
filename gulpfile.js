@@ -64,7 +64,7 @@ gulp.task("tsc", ["clean-js"], () => {
         .pipe(typescript({
             typescript: require("typescript"),
             target: "es6",
-            module: "es6",
+            module: "system",
             removeComments: false,
             declaration: true,
             outFile: "flagrate.js"
