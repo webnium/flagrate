@@ -59,7 +59,7 @@ export interface ModalButtonOption {
     label?: string;
     icon?: string;
     color?: string;
-    onSelect?(): void;
+    onSelect?(e?: Event, modal?: Modal): void;
     isFocused?: boolean;
     isDisabled?: boolean;
     className?: string;
@@ -182,9 +182,6 @@ export class Modal {
 
     get buttons(): Button[] {
         return this.getButtons();
-    }
-    set buttons(buttons: Button[]) {
-        this.setButtons(buttons);
     }
 
     get id(): string {
@@ -429,7 +426,7 @@ export class Modal {
         return this._buttons.map(button => button._button);
     }
 
-    setButtons(buttons: Button[]): this {
+    setButtons(buttons: ModalButtonOption[]): this {
 
         this._buttons = buttons;
         this._createButtons();
