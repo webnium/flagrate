@@ -476,7 +476,7 @@ export class Form {
         for (let i = 0, l = removes.length; i < l; i++) {
             if (removes[i].container) {
                 removes[i].container.remove();
-                delete removes[i].container;
+                delete (<any>removes[i]).container;
             }
         }
 
