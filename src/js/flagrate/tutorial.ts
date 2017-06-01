@@ -17,7 +17,7 @@
 
 import { emptyFunction } from "./util";
 import { Element } from "./element";
-import { Button, Option as ButtonOption } from "./button";
+import { Button } from "./button";
 import { Popover } from "./popover";
 import { Modal } from "./modal";
 
@@ -82,6 +82,18 @@ export interface Step {
 
 export interface AsyncCallback {
     (): void;
+}
+
+export interface ButtonOption {
+    id?: string;
+    className?: string;
+    color?: string;
+    label?: string;
+    labelHTML?: string;
+    icon?: string;
+    isFocused?: boolean;
+    isDisabled?: boolean;
+    onSelect?(): void;
 }
 
 /*?
