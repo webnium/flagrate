@@ -606,6 +606,7 @@ export class Modal {
 
         const active = document.activeElement && document.activeElement.tagName;
 
+        if (this.visible() === false) { return; }
         if (active !== "BODY" && active !== "DIV" && active !== "BUTTON") { return; }
         if (window.getSelection().toString() !== "") { return; }
 
