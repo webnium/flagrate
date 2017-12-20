@@ -1485,11 +1485,13 @@ export class Form {
             Radio buttons input. (uses flagrate.Radios)
 
             * `items` (Array):
+            * `selectedIndex` (Number)
         **/
         radios: {
             create() {
                 return new Radios({
-                    items: this.items
+                    items: this.items,
+                    selectedIndex: this.selectedIndex
                 });
             },
             getVal(): string {
