@@ -110,7 +110,7 @@ function FRadios(opt: Option = {}) {
 
     radios.onChange = opt.onChange;
 
-    radios.selectedIndex = opt.selectedIndex || -1;
+    radios.selectedIndex = (opt.selectedIndex === void 0) ? -1 : opt.selectedIndex;
 
     radios._items = [];
 
